@@ -1,2 +1,0 @@
-# EAT
-Efficiency Analysis Trees

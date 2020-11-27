@@ -50,6 +50,8 @@ EAT <- function(data, x, y, fold = 5, numStop = 5, na.rm = T) {
   conflict_prefer("mutate", "dplyr")
 
   data <- preProcess(data, x, y, na.rm = na.rm)
+  
+  # PRUEBAAAAAAAAAAA
 
   # Size data
   N <- nrow(data)

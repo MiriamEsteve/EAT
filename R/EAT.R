@@ -51,8 +51,8 @@ EAT <- function(data, x, y, fold = 5, numStop = 5, na.rm = T) {
 
   data <- preProcess(data, x, y, na.rm = na.rm)
   
-  # PRUEBAAAAAAAAAAA
-
+  # PRUEBA: APRENDIENDO GITHUB
+  
   # Size data
   N <- nrow(data)
 

@@ -51,8 +51,6 @@ EAT <- function(data, x, y, fold = 5, numStop = 5, na.rm = T) {
 
   data <- preProcess(data, x, y, na.rm = na.rm)
   
-  # PRUEBA: APRENDIENDO GITHUB
-  
   # Size data
   N <- nrow(data)
 
@@ -151,7 +149,6 @@ deepEAT <- function(data, x, y, numStop) {
     "SL" = -1,
     "SR" = -1,
     "index" = data[["id"]],
-    "varInfo" = rep(list(list(Inf, Inf, Inf)), nX),
     "R" = -1,
     "xi" = -1,
     "s" = -1,

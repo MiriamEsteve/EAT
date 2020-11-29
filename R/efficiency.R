@@ -11,7 +11,7 @@
 #'
 #' @return Number of rows, matrix for scoring, matrix of inputs, matrix of outputs, a Pareto-coordinates, predictions, number of inputs, number of outputs and number of leaf nodes.
 eff_data <- function(data, tree, x, y) {
-
+  
   SL <- a <- NULL
 
   j <- nrow(data)
@@ -49,11 +49,11 @@ eff_data <- function(data, tree, x, y) {
 #'
 #' @importFrom lpSolveAPI make.lp lp.control set.objfn add.constraint set.type set.bounds get.objective
 #'
-#' @return A numerical vector with scores.
+#' @return A numerical vector with efficiency scores.
 EAT_BCC_output <- function(data, tree, x, y) {
-
+  
  efficiency_data <- eff_data(data, tree, x, y)
-
+ 
  j <- efficiency_data[[1]]
  scores <- efficiency_data[[2]]
  x_k <- efficiency_data[[3]]
@@ -426,23 +426,30 @@ EAT_WA <- function(data, tree, x, y) {
 
 #' @title Efficiency Scores
 #'
-#' @description This function returns a numeric vector with the efficiency scores, an histogram and a brief descriptive analysis.
+#' @description This function returns a numeric vector with the efficiency score for each DMU, an histogram and a brief descriptive analysis.
 #'
 #' @param data Data to be used.
 #' @param tree Tree structure.
 #' @param x Column input indexes in data.
 #' @param y Column output indexes in data.
-#' @param scores_model Model to get scores. "EAT_BCC_output" and "EAT_BBC_input" for BCC model with output and input orientation respectively; "EAT_DD" for directional distance model; "EAT_Rusell_output" and "EAT_Rusell_input" for Rusell models with output and input orientation respectively and "EAT_WA" for Weighted Additive models.
+#' @param scores_model Model to get scores. "EAT_BCC_output" and "EAT_BCC_input" for BCC model with output and input orientation respectively; "EAT_DD" for directional distance model; "EAT_Rusell_output" and "EAT_Rusell_input" for Rusell models with output and input orientation respectively and "EAT_WA" for Weighted Additive models.
+#' @param color Logical. If True, observations with same efficient level output are painted the same level.
 #'
-#' @importFrom ggplot2 ggplot aes geom_col theme element_text
-#' @importFrom dplyr summarise %>%
+#' @importFrom ggplot2 ggplot aes geom_col theme element_text fill alpha scale_fill_brewer scale_alpha_discrete
+#' @importFrom dplyr summarise %>% mutate left_join group_by
 #' @importFrom stats median quantile sd
 #'
 #' @export
 #'
 #' @return Efficiency scores
-efficiency_scores <- function(data, tree, x, y, scores_model) {
-
+efficiency_scores <- function(data, tree, x, y, scores_model, color = T) {
+  
+  if (!scores_model %in% c("EAT_BCC_output", "EAT_BCC_input", "EAT_DD", 
+                           "EAT_Rusell_input", "EAT_Rusell_output", 
+                           "EAT_WA")){
+    stop("You should choose an available model. Please check help(efficiency_scores)")
+  }
+  
   if (scores_model == "EAT_BCC_output"){
     scores <- EAT_BCC_output(data, tree, x, y)
 
@@ -469,13 +476,38 @@ efficiency_scores <- function(data, tree, x, y, scores_model) {
 
   descriptive <- scores %>%
     summarise("Mean" = round(mean(scores$V1), 2),
-              "Std. Deviation" = round(sd(scores$V1), 2),
+              "Std. Dev." = round(sd(scores$V1), 2),
               "Min" = round(min(scores$V1), 2),
               "Q1" = round(quantile(scores$V1)[[2]], 2),
               "Median" = round(median(scores$V1), 2),
               "Q3" = round(quantile(scores$V1)[[3]], 2),
               "Max" = round(max(scores$V1), 2)
               )
+  
+  if(color == T){
+    
+    predictions <- eat::predict(tree, data, x, y)
+    
+    levels <- unique(predictions)
+    
+    levels <- levels %>%
+      mutate(Group = as.factor(1:nrow(levels)))
+    
+    scores <- cbind(scores, predictions) %>%
+      left_join(levels) %>% 
+      group_by(Group) %>%
+      mutate(Efficient = as.factor(ifelse(V1 == max(V1), 1, 0)))
+    
+    efficiency_histogram <- ggplot(scores,
+                                   aes(x = reorder(row.names(scores), - V1), y = V1,
+                                       fill = Group, alpha = Efficient)) +
+      geom_col() +
+      theme(axis.text.x = element_text(angle = 45)) +
+      xlab("DMU") +
+      ylab("Score") +
+      scale_fill_brewer(palette = "Set1") + 
+      scale_alpha_discrete(range = c(0.4, 0.9))
+  }
 
   efficiency_histogram <- ggplot(scores,
                                  aes(x = reorder(row.names(scores), - V1), y = V1)) +

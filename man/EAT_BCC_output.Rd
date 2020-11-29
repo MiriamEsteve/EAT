@@ -16,7 +16,7 @@ EAT_BCC_output(data, tree, x, y)
 \item{y}{Column output indexes in data.}
 }
 \value{
-A numerical vector with scores.
+A numerical vector with efficiency scores.
 }
 \description{
 BCC output-oriented

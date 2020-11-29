@@ -4,7 +4,7 @@
 \alias{efficiency_scores}
 \title{Efficiency Scores}
 \usage{
-efficiency_scores(data, tree, x, y, scores_model)
+efficiency_scores(data, tree, x, y, scores_model, color = T)
 }
 \arguments{
 \item{data}{Data to be used.}
@@ -15,11 +15,13 @@ efficiency_scores(data, tree, x, y, scores_model)
 
 \item{y}{Column output indexes in data.}
 
-\item{scores_model}{Model to get scores. "EAT_BCC_output" and "EAT_BBC_input" for BCC model with output and input orientation respectively; "EAT_DD" for directional distance model; "EAT_Rusell_output" and "EAT_Rusell_input" for Rusell models with output and input orientation respectively and "EAT_WA" for Weighted Additive models.}
+\item{scores_model}{Model to get scores. "EAT_BCC_output" and "EAT_BCC_input" for BCC model with output and input orientation respectively; "EAT_DD" for directional distance model; "EAT_Rusell_output" and "EAT_Rusell_input" for Rusell models with output and input orientation respectively and "EAT_WA" for Weighted Additive models.}
+
+\item{color}{Logical. If True, observations with same efficient level output are painted the same level.}
 }
 \value{
 Efficiency scores
 }
 \description{
-This function returns a numeric vector with the efficiency scores, an histogram and a brief descriptive analysis.
+This function returns a numeric vector with the efficiency score for each DMU, an histogram and a brief descriptive analysis.
 }

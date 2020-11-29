@@ -286,7 +286,8 @@ efficiency <- efficiency_scores(data = training,
                                 tree = multioutput_tree, 
                                 x = input,
                                 y = output, 
-                                scores_model = "EAT_BCC_output")
+                                scores_model = "EAT_BCC_output",
+                                color = T)
 
 efficiency[[2]]
 efficiency[[3]]

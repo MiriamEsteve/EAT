@@ -435,7 +435,7 @@ EAT_WA <- function(data, tree, x, y) {
 #' @param scores_model Model to get scores. "EAT_BCC_output" and "EAT_BCC_input" for BCC model with output and input orientation respectively; "EAT_DD" for directional distance model; "EAT_Rusell_output" and "EAT_Rusell_input" for Rusell models with output and input orientation respectively and "EAT_WA" for Weighted Additive models.
 #' @param color Logical. If True, observations with same efficient level output are painted the same level.
 #'
-#' @importFrom ggplot2 ggplot aes geom_col theme element_text fill alpha scale_fill_brewer scale_alpha_discrete
+#' @importFrom ggplot2 ggplot aes geom_col theme element_text scale_fill_brewer scale_alpha_discrete
 #' @importFrom dplyr summarise %>% mutate left_join group_by
 #' @importFrom stats median quantile sd
 #'
@@ -506,15 +506,17 @@ efficiency_scores <- function(data, tree, x, y, scores_model, color = T) {
       xlab("DMU") +
       ylab("Score") +
       scale_fill_brewer(palette = "Set1") + 
-      scale_alpha_discrete(range = c(0.4, 0.9))
+      scale_alpha_discrete(range = c(0.4, 0.9)) +
+      theme(legend.position = "bottom")
+  } else {
+    
+    efficiency_histogram <- ggplot(scores,
+                                   aes(x = reorder(row.names(scores), - V1), y = V1)) +
+      geom_col() +
+      theme(axis.text.x = element_text(angle = 45)) +
+      xlab("DMU") +
+      ylab("Score")
   }
-
-  efficiency_histogram <- ggplot(scores,
-                                 aes(x = reorder(row.names(scores), - V1), y = V1)) +
-    geom_col() +
-    theme(axis.text.x = element_text(angle = 45)) +
-    xlab("DMU") +
-    ylab("Score")
 
   return(list(scores, descriptive, efficiency_histogram))
 

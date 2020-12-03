@@ -1,10 +1,10 @@
-#' @title Check Efficiency Analysis Tree.
+#' @title Check Efficiency Analysis Trees.
 #'
-#' @description This function verifies if tree keeps to Pareto-dominance properties.
+#' @description This function verifies if a specific tree keeps to Pareto-dominance properties.
 #'
-#' @param tree List structure with the tree nodes.
+#' @param tree A list containing EAT nodes.
 #'
-#' @return Message indicating if the tree is acceptable or breaks some Pareto-dominance relationship.
+#' @return Message indicating if the tree is acceptable or warning in case of breaking any Pareto-dominance relationship.
 check <- function(tree) {
   resComp <- NULL
   check <- 1

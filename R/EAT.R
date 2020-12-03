@@ -1,55 +1,71 @@
 #' @title Efficiency Analysis Trees
 #'
-#' @description This function generates a production frontier similar to FDH through an adaptation of regression trees based on CART methodology.
+#' @description This function generates a stepped production frontier through regression trees. 
 #'
-#' @param data Data to be used. Dataframe or matrix objects are acceptable.
-#' @param x Column input indexes in data.
-#' @param y Column output indexes in data.
-#' @param fold Number of folds in which is divided the original dataset to apply Cross-Validation.
-#' @param numStop Minimun number of observations in a node for a split to be attempted.
-#' @param na.rm If True, NA is omitted.
+#' @param data Dataframe or matrix containing the variables in the model.
+#' @param x Vector. Column input indexes in data.
+#' @param y Vector. Column output indexes in data.
+#' @param numStop Integer. Minimun number of observations in a node for a split to be attempted.
+#' @param fold Integer. Number of folds in which is divided the dataset to apply cross-validation during the pruning.
+#' @param na.rm Logical. If True, NA rows are omitted. If False, an error occurs in case of NA rows.
 #'
-#' @details The EAT function generates a regression tree model based on CART \insertCite{breiman1984}{eat} under a new approach that guarantees the obtaining of a stepped production frontier that fulfills the property of free disposability. This frontier shares the aforementioned aspects with the FDH frontier \insertCite{deprins1984}{eat} but enhances some of its disadvantages such as the overfitting problem or the underestimation of technical inefficiency. In a first stage, a deep tree is generated. Subsequently, its pruning is carried out using the weakest-ling pruning method \insertCite{breiman1984}{eat}.
+#' @details The EAT function generates a regression tree model based on CART \insertCite{breiman1984}{eat} under a new approach that guarantees the obtaining of a stepped production frontier that fulfills the property of free disposability. This frontier shares the aforementioned aspects with the FDH frontier \insertCite{deprins1984}{eat} but enhances some of its disadvantages such as the overfitting problem or the underestimation of technical inefficiency. More details in \insertCite{esteve2020}{eat}
 #'
 #' @references
 #' \insertRef{breiman1984}{eat} \cr
-#' \insertRef{deprins1984}{eat}
+#' \cr
+#' \insertRef{deprins1984}{eat} \cr
+#' \cr
+#' \insertRef{esteve2020}{eat}
 #'
-#' @importFrom dplyr %>%
+#' @importFrom dplyr %>% mutate row_number
 #' @importFrom conflicted conflict_prefer
 #' @importFrom Rdpack reprompt
+#' 
+#' @return A list of class EAT is returned containing data, control parmeters and the Efficiency Analysis Trees model.
 #'
 #' @examples
-#'
-#' # Single output scenario
+#' # ====================== #
+#' # Single output scenario #
+#' # ====================== #
 #'
 #' X1 <- runif(50, 1, 10)
 #' X2 <- runif(50, 2, 10)
 #' Y1 <- log(X1) + 3 - abs(rnorm(50, mean = 0, sd = 0.4))
 #'
-#' matrix <- data.frame(X1 = X1, X2 = X2, Y1 = Y1)
+#' simulated <- data.frame(x1 = X1, x2 = X2, y1 = Y1)
 #'
-#' EAT(data = matrix, x = c(1,2), y = 3, fold = 3, numStop = 4)
-#'
-#' # Multi-output scenario
+#' EAT(data = simulated, x = c(1,2), y = 3, numStop = 5, fold = 5)
+#' 
+#' # ====================== #
+#' #  Multi output scenario #
+#' # ====================== #
 #'
 #' X1 <- runif(50, 1, 10)
 #' X2 <- runif(50, 2, 10)
 #' Y1 <- log(X1) + 3 - abs(rnorm(50, mean = 0, sd = 0.4))
 #' Y2 <- log(X1) + 2 - abs(rnorm(50, mean = 0, sd = 0.7))
 #'
-#' matrix <- data.frame(X1 = X1, X2 = X2, Y1 = Y1, Y2 = Y2)
+#' simulated <- data.frame(x1 = X1, x2 = X2, y1 = Y1, y2 = Y2)
 #'
-#' EAT(data = matrix, x = c(1,2), y = c(3, 4))
+#' EAT(data = simulated, x = c(1,2), y = c(3, 4), numStop = 3, fold = 7)
 #'
 #' @export
-#'
-#' @return List object with the best pruned tree by weakest-link pruning.
-EAT <- function(data, x, y, fold = 5, numStop = 5, na.rm = T) {
+EAT <- function(data, x, y, numStop = 5, fold = 5, na.rm = T) {
   conflict_prefer("filter", "dplyr")
-  conflict_prefer("mutate", "dplyr")
+  
+  EAT_object <- list("data" = list(data = data,
+                                   x = x,
+                                   y = y),
+                     "control" = list(fold = fold, 
+                                    numStop = numStop, 
+                                    na.rm = na.rm),
+                     "tree" = NULL)
+  
+  class(EAT_object) <- "EAT"
 
-  data <- preProcess(data, x, y, na.rm = na.rm)
+  data <- preProcess(data, x, y, na.rm = na.rm) %>%
+    mutate(id = row_number())
   
   # Size data
   N <- nrow(data)
@@ -89,19 +105,21 @@ EAT <- function(data, x, y, fold = 5, numStop = 5, na.rm = T) {
 
   # selectTk
   Tk <- selectTk(Tk, tree_alpha_list, SE)
-
+  
   for (i in 1:length(Tk[["tree"]])) {
     if (Tk[["tree"]][[i]][["SL"]] == -1) {
       Tk[["tree"]][[i]][["xi"]] <- Tk[["tree"]][[i]][["s"]] <- -1
     }
   }
+  
+  print_results(Tk[["tree"]], data, x)
+  
+  EAT_object[["tree"]] <- Tk[["tree"]]
 
-  print_results(data, x, Tk[["tree"]])
-
-  return(Tk[["tree"]])
+  invisible(EAT_object)
 }
 
-#' @title Deep Efficiency Analysis Tree
+#' @title Deep Efficiency Analysis Trees
 #'
 #' @description This function creates a deep tree and a set of possible prunings.
 #'
@@ -222,7 +240,7 @@ deepEAT <- function(data, x, y, numStop) {
 #' @importFrom knitr kable
 #'
 #' @return Output print
-print_results <- function(data, x, tree) {
+print_results <- function(tree, data, x) {
 
   output_names <- names(data)[(length(x)+1):(ncol(data)-1)]
 

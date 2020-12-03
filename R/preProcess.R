@@ -1,58 +1,50 @@
-#' @title Data errors
+#' @title Data preprocessing
 #'
-#' @description This function displays error messages in relation with data such as presence of NA or not allowed classes of data.
+#' @description This function displays error messages in relation with data such as presence of NA values or not allowed classes of data.
 #'
-#' @param data Data to be used. Dataframe or matrix objects are acceptable.
-#' @param x Column input indexes in data.
-#' @param y Column output indexes in data.
-#' @param na.rm If True, NA rows are omitted.
-#' @param check If check = 1, the function comes from predictor function and thus NA's should not be omitted.
+#' @param data Dataframe or matrix containing the variables in the model.
+#' @param x Vector. Column input indexes in data.
+#' @param y Vector. Column output indexes in data.
+#' @param na.rm Logical. If True, NA rows are omitted. If False, an error occurs in case of NA rows.
 #'
-#' @importFrom dplyr %>% mutate row_number
 #' @importFrom stats na.omit
 #'
-#' @return Data processed
-preProcess <- function(data, x, y, na.rm = T, check = 0) {
-  data <- data %>% as.data.frame()
-
-  # Evaluación de variables respuesta. Si no es numerica o entera, lanzar mensaje de error
+#' @return Data processed in the [X, Y] format with only allowed classes.
+preProcess <- function(data, x, y, na.rm = T) {
+  data <- as.data.frame(data)
 
   for (i in y) {
     if (is.numeric(data[, i]) || is.integer(data[, i]) || is.double(data[, i])) {
       next
     } else {
-      stop(cat("The variable", names(data[i]), "is not valid. Only numeric variables are allowed as response variable. \n"))
+      stop(cat("The variable", names(data[i]), "must be numeric, integer or double \n"))
     }
   }
-
-  # Evaluación de variables explicativas
-
+  
   for (i in x) {
     if(is.ordered(data[, i])){
       data[, i] <- as.numeric(data[, i])
     } else if (is.numeric(data[, i]) || is.integer(data[, i]) || is.double(data[, i])){
       next
     } else {
-      stop(cat("The variable", names(data[i]), "is not valid. Only numeric or ordened factors classes are allowed as explanatory variable. In case of an ordinal variable, you should order = T. \n"))
+      stop(cat("The variable", names(data[i]), "must be numeric, integer or double. In case of an ordinal variable, order = T is necessary. \n"))
     }
   }
 
-  # Evaluación de NA's
   if (any(is.na(data[, c(x, y)]))){
     if (na.rm == T){
-      if (check == 1){
+      if (sys.calls()[[sys.nframe()-1]] == "predict(tree, data, x, y)"){
         data <- data
       } else {
         data <- na.omit(data)
         warning("Rows with NA values have been omitted")
       }
     } else {
-      stop("Presence of NA values")
+      stop("Presence of NA values. Please, detele or impute those registers or set na.rm = TRUE to omit them. \n")
     }
   }
 
-  data <- data[, c(x, y)] %>%
-    mutate(id = row_number())
+  data <- data[, c(x, y)]
 
   return(data)
 }

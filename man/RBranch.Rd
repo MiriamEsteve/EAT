@@ -2,18 +2,18 @@
 % Please edit documentation in R/alpha.R
 \name{RBranch}
 \alias{RBranch}
-\title{RBranch}
+\title{Error and leaves of the branch to be pruned}
 \usage{
 RBranch(t, tree)
 }
 \arguments{
-\item{t}{A given node.}
+\item{t}{List. A given EAT node.}
 
-\item{tree}{List structure with the tree nodes.}
+\item{tree}{A list containing EAT nodes.}
 }
 \value{
-List structure with the sum of the errors of the children of the given node and the total number of leaf nodes that comes from it.
+List with the sum of the errors of the children of the given node and the total number of leaf nodes that comes from it.
 }
 \description{
-Recursive function that calculates the error of a node as the sum of the errors of its children and the total number of leaf nodes that come from it.
+This function calculates the error of a branch as the sum of the errors of its children and the total number of leaf nodes that come from it.
 }

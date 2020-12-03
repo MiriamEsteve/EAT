@@ -2,7 +2,7 @@
 % Please edit documentation in R/EAT.R
 \name{deepEAT}
 \alias{deepEAT}
-\title{Deep Efficiency Analysis Tree}
+\title{Deep Efficiency Analysis Trees}
 \usage{
 deepEAT(data, x, y, numStop)
 }

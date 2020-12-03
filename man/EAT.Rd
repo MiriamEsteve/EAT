@@ -4,55 +4,61 @@
 \alias{EAT}
 \title{Efficiency Analysis Trees}
 \usage{
-EAT(data, x, y, fold = 5, numStop = 5, na.rm = T)
+EAT(data, x, y, numStop = 5, fold = 5, na.rm = T)
 }
 \arguments{
-\item{data}{Data to be used. Dataframe or matrix objects are acceptable.}
+\item{data}{Dataframe or matrix containing the variables in the model.}
 
-\item{x}{Column input indexes in data.}
+\item{x}{Vector. Column input indexes in data.}
 
-\item{y}{Column output indexes in data.}
+\item{y}{Vector. Column output indexes in data.}
 
-\item{fold}{Number of folds in which is divided the original dataset to apply Cross-Validation.}
+\item{numStop}{Integer. Minimun number of observations in a node for a split to be attempted.}
 
-\item{numStop}{Minimun number of observations in a node for a split to be attempted.}
+\item{fold}{Integer. Number of folds in which is divided the dataset to apply cross-validation during the pruning.}
 
-\item{na.rm}{If True, NA is omitted.}
+\item{na.rm}{Logical. If True, NA rows are omitted. If False, an error occurs in case of NA rows.}
 }
 \value{
-List object with the best pruned tree by weakest-link pruning.
+A list of class EAT is returned containing data, control parmeters and the Efficiency Analysis Trees model.
 }
 \description{
-This function generates a production frontier similar to FDH through an adaptation of regression trees based on CART methodology.
+This function generates a stepped production frontier through regression trees.
 }
 \details{
-The EAT function generates a regression tree model based on CART \insertCite{breiman1984}{eat} under a new approach that guarantees the obtaining of a stepped production frontier that fulfills the property of free disposability. This frontier shares the aforementioned aspects with the FDH frontier \insertCite{deprins1984}{eat} but enhances some of its disadvantages such as the overfitting problem or the underestimation of technical inefficiency. In a first stage, a deep tree is generated. Subsequently, its pruning is carried out using the weakest-ling pruning method \insertCite{breiman1984}{eat}.
+The EAT function generates a regression tree model based on CART \insertCite{breiman1984}{eat} under a new approach that guarantees the obtaining of a stepped production frontier that fulfills the property of free disposability. This frontier shares the aforementioned aspects with the FDH frontier \insertCite{deprins1984}{eat} but enhances some of its disadvantages such as the overfitting problem or the underestimation of technical inefficiency. More details in \insertCite{esteve2020}{eat}
 }
 \examples{
-
-# Single output scenario
+# ====================== #
+# Single output scenario #
+# ====================== #
 
 X1 <- runif(50, 1, 10)
 X2 <- runif(50, 2, 10)
 Y1 <- log(X1) + 3 - abs(rnorm(50, mean = 0, sd = 0.4))
 
-matrix <- data.frame(X1 = X1, X2 = X2, Y1 = Y1)
+simulated <- data.frame(x1 = X1, x2 = X2, y1 = Y1)
 
-EAT(data = matrix, x = c(1,2), y = 3, fold = 3, numStop = 4)
+EAT(data = simulated, x = c(1,2), y = 3, numStop = 5, fold = 5)
 
-# Multi-output scenario
+# ====================== #
+#  Multi output scenario #
+# ====================== #
 
 X1 <- runif(50, 1, 10)
 X2 <- runif(50, 2, 10)
 Y1 <- log(X1) + 3 - abs(rnorm(50, mean = 0, sd = 0.4))
 Y2 <- log(X1) + 2 - abs(rnorm(50, mean = 0, sd = 0.7))
 
-matrix <- data.frame(X1 = X1, X2 = X2, Y1 = Y1, Y2 = Y2)
+simulated <- data.frame(x1 = X1, x2 = X2, y1 = Y1, y2 = Y2)
 
-EAT(data = matrix, x = c(1,2), y = c(3, 4))
+EAT(data = simulated, x = c(1,2), y = c(3, 4), numStop = 3, fold = 7)
 
 }
 \references{
 \insertRef{breiman1984}{eat} \cr
-\insertRef{deprins1984}{eat}
+\cr
+\insertRef{deprins1984}{eat} \cr
+\cr
+\insertRef{esteve2020}{eat}
 }

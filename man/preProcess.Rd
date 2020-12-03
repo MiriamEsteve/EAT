@@ -2,24 +2,22 @@
 % Please edit documentation in R/preProcess.R
 \name{preProcess}
 \alias{preProcess}
-\title{Data errors}
+\title{Data preprocessing}
 \usage{
-preProcess(data, x, y, na.rm = T, check = 0)
+preProcess(data, x, y, na.rm = T)
 }
 \arguments{
-\item{data}{Data to be used. Dataframe or matrix objects are acceptable.}
+\item{data}{Dataframe or matrix containing the variables in the model.}
 
-\item{x}{Column input indexes in data.}
+\item{x}{Vector. Column input indexes in data.}
 
-\item{y}{Column output indexes in data.}
+\item{y}{Vector. Column output indexes in data.}
 
-\item{na.rm}{If True, NA rows are omitted.}
-
-\item{check}{If check = 1, the function comes from predictor function and thus NA's should not be omitted.}
+\item{na.rm}{Logical. If True, NA rows are omitted. If False, an error occurs in case of NA rows.}
 }
 \value{
-Data processed
+Data processed in the [X, Y] format with only allowed classes.
 }
 \description{
-This function displays error messages in relation with data such as presence of NA or not allowed classes of data.
+This function displays error messages in relation with data such as presence of NA values or not allowed classes of data.
 }

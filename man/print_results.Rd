@@ -4,14 +4,14 @@
 \alias{print_results}
 \title{Print results}
 \usage{
-print_results(data, x, tree)
+print_results(tree, data, x)
 }
 \arguments{
+\item{tree}{Tree structure.}
+
 \item{data}{Data to be used.}
 
 \item{x}{Column input indexes in data.}
-
-\item{tree}{Tree structure.}
 }
 \value{
 Output print

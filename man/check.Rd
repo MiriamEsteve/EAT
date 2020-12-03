@@ -2,16 +2,16 @@
 % Please edit documentation in R/check.R
 \name{check}
 \alias{check}
-\title{Check Efficiency Analysis Tree.}
+\title{Check Efficiency Analysis Trees.}
 \usage{
 check(tree)
 }
 \arguments{
-\item{tree}{List structure with the tree nodes.}
+\item{tree}{A list containing EAT nodes.}
 }
 \value{
-Message indicating if the tree is acceptable or breaks some Pareto-dominance relationship.
+Message indicating if the tree is acceptable or warning in case of breaking any Pareto-dominance relationship.
 }
 \description{
-This function verifies if tree keeps to Pareto-dominance properties.
+This function verifies if a specific tree keeps to Pareto-dominance properties.
 }

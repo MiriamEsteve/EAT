@@ -53,7 +53,7 @@ posIdNode <- function(tree, idNode) {
 #'
 #' @return A data frame with the expected value in one column for each dependent variable based on the given dataset.
 predict <- function(tree, data, x, y) {
-  data <- preProcess(data, x, y, na.rm = T, check = 1)
+  data <- preProcess(data, x, y, na.rm = T)
 
   predictions <- c()
 

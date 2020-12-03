@@ -2,16 +2,19 @@
 % Please edit documentation in R/alpha.R
 \name{alpha}
 \alias{alpha}
-\title{Alpha}
+\title{Calculation of alpha for pruning procedure}
 \usage{
 alpha(tree)
 }
 \arguments{
-\item{tree}{List structure with the tree nodes.}
+\item{tree}{A list containing EAT nodes.}
 }
 \value{
-Minimun alpha associated with a suitable node to be pruned.
+Numeric value corresponfing to the minimun alpha associated with a suitable node to be pruned.
 }
 \description{
-This function gets the minimun alpha for each possible pruning.
+This function gets the minimun alpha for each subtree evaluated during the pruning procedure of EAT.
+}
+\references{
+\insertRef{breiman1984}{eat}
 }

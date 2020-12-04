@@ -18,7 +18,7 @@
 #' \cr
 #' \insertRef{esteve2020}{eat}
 #'
-#' @importFrom dplyr %>% mutate row_number
+#' @importFrom dplyr %>% mutate row_number select
 #' @importFrom conflicted conflict_prefer
 #' @importFrom Rdpack reprompt
 #' 
@@ -54,16 +54,6 @@
 EAT <- function(data, x, y, numStop = 5, fold = 5, na.rm = T) {
   conflict_prefer("filter", "dplyr")
   
-  EAT_object <- list("data" = list(data = data,
-                                   x = x,
-                                   y = y),
-                     "control" = list(fold = fold, 
-                                    numStop = numStop, 
-                                    na.rm = na.rm),
-                     "tree" = NULL)
-  
-  class(EAT_object) <- "EAT"
-
   data <- preProcess(data, x, y, na.rm = na.rm) %>%
     mutate(id = row_number())
   
@@ -77,7 +67,7 @@ EAT <- function(data, x, y, numStop = 5, fold = 5, na.rm = T) {
   # Size 'x' and 'y'
   nX <- length(x)
   nY <- length(y)
-
+  
   # Deep tree
   data <- append(data, -1, 0)
 
@@ -85,7 +75,7 @@ EAT <- function(data, x, y, numStop = 5, fold = 5, na.rm = T) {
   tree_alpha_list <- deepEAT(data, x, y, numStop)
 
   data <- data[-1] %>% as.data.frame()
-
+   
   # Best Tk for now
   Tk <- tree_alpha_list[[1]]
 
@@ -112,47 +102,48 @@ EAT <- function(data, x, y, numStop = 5, fold = 5, na.rm = T) {
     }
   }
   
-  print_results(Tk[["tree"]], data, x)
+  EAT <- EAT_object(data, x, y, fold, numStop, na.rm, Tk[["tree"]])
   
-  EAT_object[["tree"]] <- Tk[["tree"]]
+  print_results(EAT)
 
-  invisible(EAT_object)
+  invisible(EAT)
 }
 
 #' @title Deep Efficiency Analysis Trees
 #'
-#' @description This function creates a deep tree and a set of possible prunings.
+#' @description This function creates a deep tree and a set of possible prunings by weakest-link pruning procedure.
 #'
-#' @param data Data to be used.
-#' @param x Column input indexes in data.
-#' @param y Column output indexes in data.
-#' @param numStop Minimun number of observations on a node to be splitted.
+#' @param data Dataframe or matrix containing the variables in the model.
+#' @param x Vector. Column input indexes in data.
+#' @param y Vector. Column output indexes in data.
+#' @param numStop Integer. Minimun number of observations in a node for a split to be attempted.
 #'
 #' @importFrom dplyr filter mutate %>% row_number
 #' @importFrom conflicted conflict_prefer
 #'
-#' @return List with each possible pruning for the deep tree and its alpha associated.
+#' @return List containing each possible pruning for the deep tree and its alpha associated.
 deepEAT <- function(data, x, y, numStop) {
-
+  
   # Check if deepEAT is called by EAT
-  if (length(data[[1]]) == 1) {
-    enter <- 1
-    data <- data[-1] %>% as.data.frame()
-  } else {
-    enter <- 0
-
-    conflict_prefer("filter", "dplyr")
-    conflict_prefer("mutate", "dplyr")
-
-    data <- data[, c(x, y)] %>%
-      as.data.frame() %>%
-      mutate(id = row_number())
-
+  
+   if (length(data[[1]]) == 1){
+       enter <- 1
+       data <- data[-1] %>% as.data.frame()
+    } else {
+       enter <- 0
+       conflict_prefer("filter", "dplyr")
+    
+       data <- data[, c(x, y)] %>%
+         as.data.frame() %>%
+         mutate(id = row_number())
+    
     # Reorder index 'x' and 'y' in data
-    x <- 1:((ncol(data) - 1) - length(y))
-    y <- (length(x) + 1):(ncol(data) - 1)
-  }
-
+      x <- 1:((ncol(data) - 1) - length(y))
+      y <- (length(x) + 1):(ncol(data) - 1)
+   }
+  
+  # if (sys.calls()[[sys.nframe()-1]] == "treesForRCV(notLv, x, y, fold, numStop)") {
+  
   # Size data
   N <- nrow(data)
 
@@ -221,6 +212,8 @@ deepEAT <- function(data, x, y, numStop) {
   }
 
   leaves <- NULL
+  
+  # sys.calls()[[sys.nframe()-1]] == "treesForRCV(notLv, x, y, fold, numStop)" / enter == 1
 
   if (enter == 1) {
     return(tree_alpha_list)
@@ -229,42 +222,73 @@ deepEAT <- function(data, x, y, numStop) {
   }
 }
 
-#' @title Print results
+#' @title Print leaf nodes results
 #'
-#' @description This function prints for each terminal node: the number of observations in it, the efficiency level of the outputs and the mean square error.
+#' @description This function prints the number of observations and the proportion, the efficiency level of the outputs and the mean square error for each final node.
 #'
-#' @param data Data to be used.
-#' @param x Column input indexes in data.
-#' @param tree Tree structure.
+#' @param EAT A EAT object
 #'
 #' @importFrom knitr kable
 #'
-#' @return Output print
-print_results <- function(tree, data, x) {
+#' @return Printing in table format with the data described above.
+print_results <- function(EAT) {
 
-  output_names <- names(data)[(length(x)+1):(ncol(data)-1)]
+  return(kable(EAT[["nodes_df"]][["leafnodes_df"]]))
+  
+}
 
-  colnames <- c("Group", "N", output_names, "Error")
-
+#' @title EAT object
+#'
+#' @description This function saves information about the EAT model 
+#'
+#' @param data Dataframe or matrix containing the variables in the model.
+#' @param x Vector. Column input indexes in data.
+#' @param y Vector. Column output indexes in data.
+#' @param numStop Integer. Minimun number of observations in a node for a split to be attempted.
+#' @param fold Integer. Number of folds in which is divided the dataset to apply cross-validation during the pruning.
+#' @param na.rm Logical. If True, NA rows are omitted. If False, an error occurs in case of NA rows.
+#' @param tree A list containing the nodes of the EAT pruned tree.
+#'
+#' @importFrom dplyr %>% select filter
+#'
+#' @return EAT object
+EAT_object <- function(data, x, y, numStop, fold, na.rm, tree) {
+  
+  output_names <- names(data)[y]
+  
+  colnames <- c("Node", "N", "Proportion", output_names, "Error")
+  
   SL <- NULL
 
-  tree_df <- data.frame(Reduce(rbind, tree)) %>%
+  nodes_frame <- data.frame(Reduce(rbind, tree)) 
+  
+  nodes_frame <- nodes_frame %>%
+    mutate(N = sapply(nodes_frame$index, length),
+           MSE = round(sqrt(unlist(R)), 2),
+           Prop = (N / N[1]) * 100)
+  
+  nodes_frame[, output_names] <- unlist(nodes_frame[ ,"y"])
+  
+  nodes_frame <- nodes_frame %>%
+    select(id, SL, N, Prop, output_names, MSE)
+  
+  leaf_nodes <- nodes_frame %>%
     filter(SL == -1)
+  
+  EAT_object <- list("data" = list(data = data %>% select(-id),
+                                   x = x,
+                                   y = y,
+                                   output_names = output_names),
+                     "control" = list(fold = fold, 
+                                      numStop = numStop, 
+                                      na.rm = na.rm),
+                     "tree" = tree,
+                     "nodes_df" = list(nodes_df = nodes_frame %>% select(-SL),
+                                       leafnodes_df = leaf_nodes %>% select(-SL))
+                     )
 
-  results <- matrix(
-    ncol = length(colnames),
-    nrow = nrow(tree_df),
-    dimnames = list(NULL, colnames)
-  ) %>% as.data.frame()
-
-  results[, "Group"] <- 1:nrow(results)
-  results[, "Error"] <- round(sqrt(unlist(tree_df[, "R"])), 2)
-
-  for(i in 1:nrow(results)){
-    results[i, "N"] <- length(unlist(tree_df[i, "index"]))
-    results[i, 3:(ncol(results)-1)] <- unlist(tree_df[i,"y"])
-  }
-
-  return(print(kable(results, "pipe")))
-
+  class(EAT_object) <- "EAT"
+  
+  return(EAT_object)
+  
 }

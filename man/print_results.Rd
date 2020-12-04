@@ -2,20 +2,16 @@
 % Please edit documentation in R/EAT.R
 \name{print_results}
 \alias{print_results}
-\title{Print results}
+\title{Print leaf nodes results}
 \usage{
-print_results(tree, data, x)
+print_results(EAT)
 }
 \arguments{
-\item{tree}{Tree structure.}
-
-\item{data}{Data to be used.}
-
-\item{x}{Column input indexes in data.}
+\item{EAT}{A EAT object}
 }
 \value{
-Output print
+Printing in table format with the data described above.
 }
 \description{
-This function prints for each terminal node: the number of observations in it, the efficiency level of the outputs and the mean square error.
+This function prints the number of observations and the proportion, the efficiency level of the outputs and the mean square error for each final node.
 }

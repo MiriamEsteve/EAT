@@ -7,17 +7,17 @@
 deepEAT(data, x, y, numStop)
 }
 \arguments{
-\item{data}{Data to be used.}
+\item{data}{Dataframe or matrix containing the variables in the model.}
 
-\item{x}{Column input indexes in data.}
+\item{x}{Vector. Column input indexes in data.}
 
-\item{y}{Column output indexes in data.}
+\item{y}{Vector. Column output indexes in data.}
 
-\item{numStop}{Minimun number of observations on a node to be splitted.}
+\item{numStop}{Integer. Minimun number of observations in a node for a split to be attempted.}
 }
 \value{
-List with each possible pruning for the deep tree and its alpha associated.
+List containing each possible pruning for the deep tree and its alpha associated.
 }
 \description{
-This function creates a deep tree and a set of possible prunings.
+This function creates a deep tree and a set of possible prunings by weakest-link pruning procedure.
 }

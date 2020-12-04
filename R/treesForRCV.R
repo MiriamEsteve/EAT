@@ -24,13 +24,13 @@ generateLv <- function(data, fold) {
       Lv[[v + 1]] <- data[1:numRowsFold, ] %>%
         mutate(id = row_number())
 
-      notLv[[v + 1]] <- data[-(1:numRowsFold), ] %>%
+      notLv[[v + 1]] <- data[- (1:numRowsFold), ] %>%
         mutate(id = row_number())
     } else {
       Lv[[v + 1]] <- data[(v * numRowsFold + 1):((v + 1) * numRowsFold), ] %>%
         mutate(id = row_number())
 
-      notLv[[v + 1]] <- data[-((v * numRowsFold + 1):((v + 1) * numRowsFold)), ] %>%
+      notLv[[v + 1]] <- data[- ((v * numRowsFold + 1):((v + 1) * numRowsFold)), ] %>%
         mutate(id = row_number())
     }
   }
@@ -53,8 +53,8 @@ treesForRCV <- function(notLv, x, y, fold, numStop) {
   TAiv <- vector("list", fold)
 
   for (v in 1:fold) {
-
-    # Insert row to know deepEAT is called by this one
+    
+    # ¿Quitar?
     notLv[[v]] <- append(notLv[[v]], -1, 0)
     TAiv[[v]] <- deepEAT(notLv[[v]], x, y, numStop)
   }

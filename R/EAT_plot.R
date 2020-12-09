@@ -1,28 +1,35 @@
 #' @title Efficiency Analysis Trees Plot
 #'
-#' @description This function creates a plot with the tree-structure object result of EAT function
+#' @description Plot an EAT model. 
 #'
-#' @param tree Tree-structure object of EAT function.
-#' @param data Data to be used. Dataframe or matrix objects are acceptable.
-#' @param x Column input indexes in data.
-#' @param y Column output indxes in data.
+#' @param t An EAT object.
 #'
 #' @importFrom partykit as.partynode party partysplit
 #' @importFrom ggparty ggparty geom_edge geom_edge_label geom_node_label
 #' @importFrom ggplot2 theme aes
-#'
+#' 
+#' @return Plot object with the following elements for each node:
+#' id: node index \cr
+#' \cr
+#' R: mean square error \cr
+#' \cr
+#' Samples: number of observations in a node \cr
+#' \cr
+#' Variable: splitting variable \cr
+#' \cr
+#' y: output prediction
+#' 
 #' @export
-#'
-#' @return Plot object with the tree-structure.
-EAT_plot <- function(tree, data, x, y) {
-  data <- preProcess(data, x, y, na.rm = T)
-
+EAT_plot <- function(t) {
   splitvar <- Id <- R <- nodesize <- Y <- n1 <- n2 <-  NULL
-
-  nodelist <- vector("list", length(tree))
-
+  
+  tree <- t[["tree"]]
+  data <- t[["data"]][["data"]]
+  y <- t[["data"]][["y"]]
+  
   N <- nrow(data)
-
+  nodelist <- vector("list", length(tree))
+  
   for (i in 1:length(nodelist)) {
     if (tree[[i]][["s"]] == -1) {
       nodelist[[i]] <- list(
@@ -143,9 +150,9 @@ EAT_plot <- function(tree, data, x, y) {
 
 #' @title Layout for nodes in EAT_plot
 #'
-#' @description This function modifies the coordinates of the nodes in the EAT_plot function.
+#' @description This function modifies the coordinates of the nodes in the EAT_plot function to overcome overlapping.
 #'
-#' @param py Object from party.
+#' @param py party object.
 #'
 #' @importFrom ggparty ggparty
 #'

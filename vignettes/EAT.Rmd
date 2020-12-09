@@ -37,13 +37,13 @@ This vignette is intended to know the main functions of `EAT` library. [Efficien
 
 The `EAT` algorithm must be conceived as a modeling of the response variable (output) in order to know its most efficient levels for each of the different regions of the input space that are generated. Thus, subspaces with homogeneous DMUs (since they must share the characteristics of said subspace) are delimited and the maximun expected output for that subspace is provided. In this way, the `EAT` predictor results in a monotonic increasing frontier with a stepped form where each of these steps corresponds to a node of the tree which contains observations with efficient  and non-efficient output levels.
 
-Although the model training has only been described for a single response variable so far, multiple output scenarios are also available. Additionally, modeling of the response variable(s) can be done using individual CARTs for regression or using Random Forest. On the other hand, the result of `EAT` can be plotted as a tree structure to illustrate the relationship between the predictors and the predicted variable and, in the case of a single input and a single output (`y ~ x`), a representation of the frontier is acceptable. Finally, a ranking of variables can be obtained, giving the possibility of making a feature selection.
+Although the model training has only been described for a single response variable so far, multiple output scenarios are also available. Additionally, modeling of the response variable(s) can be done using individual CARTs for regression or using Random Forest. On the other hand, the `EAT` object can be plotted as a tree structure to illustrate the relationship between the predictors and the predicted variable and, in the case of a single input and a single output (`y ~ x`), a representation of the frontier is acceptable. Finally, a ranking of variables can be obtained, giving the possibility of making a feature selection.
 
 With the purpose of clarifying the previously exposed contents, the `PISAindex` database is collected from [socialprogress](https://www.socialprogress.org/). This has been included in the `EAT` package and contains the followig features:
 
 * 72 countries which take the PISA test.
 * 3 variables related to information about the country (rownames included).
-* 3 possible outputs corresponding to the PISA score in Science, Reading and Maths.
+* 3 possible outputs corresponding to the PISA score in Science, Reading and Mathematics.
 * 13 possible inputs: 
   * 4 related to Basic Human Needs field.
   * 4 related to Foundations of Wellbeing field.
@@ -71,7 +71,7 @@ data("PISAindex")
 n <- nrow(PISAindex)
 
 # Training indexes
-t_index <- sample(1:n, n * 0.7)
+t_index <- sample(1:n, n * 0.8)
 
 # Training set
 training <- PISAindex[t_index, ]
@@ -91,12 +91,15 @@ EAT(data, x, y,
     na.rm = TRUE)
 ```
 
-The `frontier` function displays a very interesting plot that combines a scatter plot of the DMUs with the selected variables and the frontier obtained with `EAT`. If `rownames = T`, rownames are showed in the plot instead of points.
+The `frontier` function displays the frontier estimated by EAT. Training DMUs can be included by `train.data = TRUE` and its color and shape can be modified with `train.color` and `pch` respectively. Finally, rownames can be included instead of points with `rownames = TRUE` and the label size can be changed with `rwn.size`.
 
 ```{r frontier, eval = F}
-frontier(data, tree, 
-         x, y,
-         rownames = FALSE)
+frontier(t,
+         train.data = FALSE,
+         train.color = "black",
+         pch = 19,
+         rownames = FALSE,
+         rwn.size = 3)
 ```
 
 ```{r single_scenario, collapse = FALSE}
@@ -106,19 +109,19 @@ input <- 6
 # Output indexes
 output <- 3
 
+# Modeling
 single_model <- EAT(data = training, 
                     x = input, 
                     y = output)
 ```
 
-The printed output of `EAT` clearly shows the number of groups formed with its error, size and the efficient levels of said groups regarding its outputs. Additionally, `EAT` returns a `list` with the following elements for each node:
+The printed output of `EAT` clearly shows the number of groups formed with its error, size, proportion and the efficient levels of said groups regarding its outputs. Additionally, `EAT[["tree"]]` returns a `list` with the following elements for each node:
 
 * **id**: node index.
 * **F**: father node index.
 * **SL**: left son index.
 * **SR**: right son index.
 * **index**: observation indexes in a node.
-* **varInfo**: information for ranking of variables.
 * **R**: mean square error in a node.
 * **xi**: index of the variable that produces the split in a node.
 * **s**: threshold of the variable xi by which the split takes place.
@@ -129,14 +132,23 @@ The printed output of `EAT` clearly shows the number of groups formed with its e
 To continue, the frontier of the previous model is displayed:
 
 ```{r single_scenario_frontier, fig.width = 10.5, fig.height = 6, fig.align = 'center'}
-frontier(data = training, 
-         tree = single_model, 
-         x = input, 
-         y = output, 
-         rownames = T)
+frontier <- frontier(t = single_model,
+                     train.data = T,
+                     train.color = "#F8766D",
+                     rownames = T,
+                     rwn.size = 3)
+
+plot(frontier)
 ```
 
-We can observe how the frontier has 3 steps corresponding to the 3 leaf nodes obtained in the `EAT` model. For each of these steps, a level of efficiency in terms of the output is given with respect to the amount of inputs (in this case level of NBMC) used by the observations contained in the step. In addition, we can appreciate 3 DMUs in the horizontal plane of the frontier: MYS (Malaysia), LVA (Latvia) and SGP (Singapur). These are efficient and the rest of observations below its specifical step should obtain the same level of output to them to be efficient.
+We can observe how the frontier has 4 steps corresponding to the 4 leaf nodes obtained in the `EAT` model. For each of these steps, a level of efficiency in terms of the output is given with respect to the amount of inputs (in this case level of `NBMC`) used by the observations contained in the step. In addition, we can appreciate 4 DMUs in the horizontal plane of the frontier: IDN (Indonesia), MYS (Malaysia), LTV (Latvia) and SGP (Singapur). These are efficient and the rest of observations below its specifical step should obtain the same level of output to them to be efficient.
+
+Additionally, we could include more layers by `ggplot2`. In this case, we add the observations belonging to the test set.
+
+```{r single_scenario_frontier_test, fig.width = 10.5, fig.height = 6, fig.align = 'center'}
+frontier +
+  ggplot2::geom_point(data = test, ggplot2::aes(x = NBMC, y = S_PISA))
+```
 
 ## Singe output scenario & feature selection
 
@@ -150,11 +162,10 @@ output <- 3
 science_model <- EAT(data = training, x = input, y = output)
 ```
 
-Now, `frontier` cannot be used since we are in a multivariate scenario. `frontier` allows us to see very clearly the regions of the input space originated with `EAT`, however, this is impossible with more than 2 inputs. In this case, it is provided the typical tree structure in which the relations between the predicted variable(s) and the predictive variable(s) are showed. `EAT_plot` performs a tree plot in the same line of simplicity for the user, since only the `tree` object from `EAT`, the `data` used for the analysis and the indexes `x` and `y` have to be introduced. 
+Now, `frontier` cannot be used since we are in a multivariate scenario. `frontier` allows us to see very clearly the regions of the input space originated with `EAT`, however, this is impossible with more than 1 input and 1 output. In this case, it is provided the typical tree structure in which the relations between the predicted variable(s) and the predictive variable(s) are showed. `EAT_plot` performs a tree plot in the same line of simplicity for the user, since only the `EAT` object have to be introduced. 
 
-```{r EAT_plot, eval = F}
-EAT_plot(tree, data, 
-         x, y)
+```{r EAT_plot, fig.width = 10.5, fig.height = 9, fig.align = 'center'}
+EAT_plot(t = science_model)
 ```
 
 In each node, we can obtain the following information:
@@ -165,12 +176,7 @@ In each node, we can obtain the following information:
 * **Variable**: name of the variable that produces the split.
 * **y**: vector corresponding to the output prediction.
 
-```{r science_plot, fig.width = 10.5, fig.height = 9, fig.align = 'center'}
-EAT_plot(tree = science_model, data = training, 
-         x = input, y = output)
-```
-
-`EAT` allows a feature selection. For this purpose, a histogram with the importance of each variable is displayed. Additionally, the user can vary the importance threshold in the graph with the argument `threshold` and the number of decimals units for importance with `r`.
+Additionally, `EAT` allows a feature selection. For this purpose, a histogram with the importance of each variable is displayed. Additionally, the user can vary the importance threshold in the graph with the argument `threshold` and the number of decimals units for importance with `r`.
 
 ```{r Breiman, eval = F}
 M_Breiman(data, tree, 
@@ -181,13 +187,13 @@ M_Breiman(data, tree,
 
 Now, we carry out a ranking of variables and repeat the same analysis only with those features whose importance is greater than 75, that is, **NBMC**, **I**, **PR**, **EQ**, **AIC**, **WS**, **GDP_PPP** and **S**.
 
-```{r science_importance, fig.width = 10.5, fig.height = 6, fig.align = 'center'}
+```{r science_importance, fig.width = 10.5, fig.height = 6, fig.align = 'center', eval = F}
 M_Breiman(data = training, tree = science_model, 
           x = input, y = output,
           threshold = 75)
 ```
 
-```{r science_reduced_model, collapse = FALSE}
+```{r science_reduced_model, collapse = FALSE, eval = F}
 # Input indexes
 input <- c(6, 7, 8, 11, 13, 14, 16, 18)
 
@@ -197,7 +203,7 @@ output <- 3
 science_reduced_model <- EAT(data = training, x = input, y = output)
 ```
 
-```{r science_reduced_model_plot, fig.width = 10.5, fig.height = 8, fig.align = 'center'}
+```{r science_reduced_model_plot, fig.width = 10.5, fig.height = 8, fig.align = 'center', eval = F}
 EAT_plot(tree = science_reduced_model, data = training, 
          x = input, y = output)
 ```
@@ -206,13 +212,13 @@ In this way, we can, on the one hand, know which are the most important variable
 
 In this section, we also deal with `fold` and `numStop` arguments (by default both are 5). This last modeling, with `fold = 5` and `numStop = 5`, results in the tree shown above with 25 nodes. The tree size is highly dependent on the `numStop` argument, which indicates how much the minimum number of observations must be in a node to be considered a leaf node. So, higher values in `numStop` smaller size of the tree. About the `fold` argument, it is related to the cross-validation technique for pruning and indicates how many parts the data set has been divided into to select the training and test parts. Although it is not directly related to the size of the tree, its modification can lead to different frontiers. So now, we introduce `numStop = 8` expecting a smaller tree.
 
-```{r science_reduced_model_second, collapse = FALSE}
+```{r science_reduced_model_second, collapse = FALSE, eval = F}
 
 science_reduced_model_second <- EAT(data = training, x = input, y = output,
                                     numStop = 8)
 ```
 
-```{r science_reduced_model_second_plot, fig.width = 10.5, fig.height = 8, fig.align = 'center'}
+```{r science_reduced_model_second_plot, fig.width = 10.5, fig.height = 8, fig.align = 'center', eval = F}
 EAT_plot(tree = science_reduced_model_second, data = training, 
          x = input, y = output)
 ```
@@ -221,7 +227,7 @@ EAT_plot(tree = science_reduced_model_second, data = training,
 
 A very engaging point of the `EAT` algorithm is the possibility of modeling multi-output scenarios. Also, it should be noted that this does not result in more complex syntax or interpretations. In the following example, all the available inputs are used to obtain a vector of maximum output level corresponding to the grades of Science, Reading and Mathematics
 
-```{r multioutput}
+```{r multioutput, eval = F}
 # Input indexes
 input <- 6:18
 
@@ -232,7 +238,7 @@ multioutput_tree <- EAT(data = training, x = input, y = output,
                         numStop = 8)
 ```
 
-```{r plot_multioutput, fig.width = 10.5, fig.height = 8, fig.align = 'center'}
+```{r plot_multioutput, fig.width = 10.5, fig.height = 8, fig.align = 'center', eval = F}
 EAT_plot(tree = multioutput_tree, data = training, 
          x = input, y = output)
 ```
@@ -244,7 +250,7 @@ predict(tree, data,
         x, y)
 ```
 
-```{r prediction, collapse = F}
+```{r prediction, collapse = F, eval = F}
 predictions <- eat::predict(tree = multioutput_tree,
                             data = test,
                             x = input,
@@ -281,7 +287,7 @@ The following models are available:
 * `EAT_WA`: Weighted Additive adapted to EAT with input orientation.
 
 
-```{r scores,  fig.width = 10.5, fig.height = 8, fig.align = 'center', collapse = FALSE}
+```{r scores,  fig.width = 10.5, fig.height = 8, fig.align = 'center', collapse = FALSE, eval = F}
 efficiency <- efficiency_scores(data = training, 
                                 tree = multioutput_tree, 
                                 x = input,
@@ -297,7 +303,7 @@ efficiency[[3]]
 
 ### Categorical variables
 
-```{r continent}
+```{r continent, eval = F}
 # Continent is a character vector, so we transform it into a factor class
 PISAindex$Continent <- as.factor(PISAindex$Continent)
 ```
@@ -309,7 +315,7 @@ The variables allowed in the algorithm are the following:
 
 Now, we introduce Continent as factor variable. We should get an error message since the variable Continet is a nominal categorical variable and only ordered factors are allowed.
 
-```{r preprocess_factor, error = TRUE, collapse = FALSE}
+```{r preprocess_factor, error = TRUE, collapse = FALSE, eval = F}
 # Input indexes
 input <- c(3, 7:19)
 
@@ -321,7 +327,7 @@ reading_model <- EAT(data = PISAindex, x = input, y = output)
 
 However, ordinal categorical variables can be used in `EAT`. To do this, we are going to categorize the variable `GDP_PPP` into 4 different groups: `Low`, `Medium`, `High` and `Very high`
 
-```{r GDP_PPP_category, eval = FALSE}
+```{r GDP_PPP_category, eval = FALSE, eval = F}
 PISAindex$GDP_PPP_cat <- cut(PISAindex$GDP_PPP,
                             breaks = c(0, 16.686, 31.419, 47.745, Inf),
                             include.lowest = T,
@@ -350,7 +356,7 @@ categorized_model <- EAT(data = PISAindex, x = input, y = output,
 ### Presence of NAs values
 
 Another possible source of errors can come from the presence of `NA` values. The argument, `na.rm` is set to `TRUE` by default, thus `NA` rows are ignored. However, it is interesting to know the possible error in case of presence of this type of values. For this purpose, we set the argument `na.rm = F` and model the Reading PISA score in 2018 when Spain did not obtain results. 
-```{r narm, error = TRUE, collapse = FALSE}
+```{r narm, error = TRUE, collapse = FALSE, eval = F}
 # Input indexes
 x <- 7:19
 

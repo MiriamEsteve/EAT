@@ -7,7 +7,7 @@
 posIdNode(tree, idNode)
 }
 \arguments{
-\item{tree}{List structure with the tree nodes.}
+\item{tree}{A list containing EAT nodes.}
 
 \item{idNode}{Id of a specific node.}
 }
@@ -15,5 +15,5 @@ posIdNode(tree, idNode)
 Position of the node or -1 if it is not found.
 }
 \description{
-This function looks for the position of a given node in the tree.
+This function finds the node where a register is located.
 }

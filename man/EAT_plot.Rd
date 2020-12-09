@@ -4,20 +4,23 @@
 \alias{EAT_plot}
 \title{Efficiency Analysis Trees Plot}
 \usage{
-EAT_plot(tree, data, x, y)
+EAT_plot(t)
 }
 \arguments{
-\item{tree}{Tree-structure object of EAT function.}
-
-\item{data}{Data to be used. Dataframe or matrix objects are acceptable.}
-
-\item{x}{Column input indexes in data.}
-
-\item{y}{Column output indxes in data.}
+\item{t}{An EAT object.}
 }
 \value{
-Plot object with the tree-structure.
+Plot object with the following elements for each node:
+id: node index \cr
+\cr
+R: mean square error \cr
+\cr
+Samples: number of observations in a node \cr
+\cr
+Variable: splitting variable \cr
+\cr
+y: output prediction
 }
 \description{
-This function creates a plot with the tree-structure object result of EAT function
+Plot an EAT model.
 }

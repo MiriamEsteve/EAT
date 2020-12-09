@@ -7,11 +7,11 @@
 layout(py)
 }
 \arguments{
-\item{py}{Object from party.}
+\item{py}{party object.}
 }
 \value{
 Suitable modification of layout dataframe.
 }
 \description{
-This function modifies the coordinates of the nodes in the EAT_plot function.
+This function modifies the coordinates of the nodes in the EAT_plot function to overcome overlapping.
 }

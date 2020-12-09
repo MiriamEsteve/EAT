@@ -2,22 +2,18 @@
 % Please edit documentation in R/predictor.R
 \name{predict}
 \alias{predict}
-\title{Predict}
+\title{Model prediction}
 \usage{
-predict(tree, data, x, y)
+predict(t, newdata)
 }
 \arguments{
-\item{tree}{List structure with the tree nodes.}
+\item{t}{An EAT object.}
 
-\item{data}{Data to be predicted.}
-
-\item{x}{Column input indexes in data.}
-
-\item{y}{Column output indexes in data.}
+\item{newdata}{Dataframe. Set of input variables to predict on.}
 }
 \value{
-A data frame with the expected value in one column for each dependent variable based on the given dataset.
+Data frame with predicted values with as many columns as outputs.
 }
 \description{
-This function predicts the expected value based on a dataset
+This function predicts the expected output by an EAT object.
 }

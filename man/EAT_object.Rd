@@ -4,7 +4,7 @@
 \alias{EAT_object}
 \title{EAT object}
 \usage{
-EAT_object(data, x, y, numStop, fold, na.rm, tree)
+EAT_object(data, x, y, register_names, numStop, fold, na.rm, tree)
 }
 \arguments{
 \item{data}{Dataframe or matrix containing the variables in the model.}
@@ -12,6 +12,8 @@ EAT_object(data, x, y, numStop, fold, na.rm, tree)
 \item{x}{Vector. Column input indexes in data.}
 
 \item{y}{Vector. Column output indexes in data.}
+
+\item{register_names}{String vector. Data rownames.}
 
 \item{numStop}{Integer. Minimun number of observations in a node for a split to be attempted.}
 

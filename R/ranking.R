@@ -204,10 +204,10 @@ M_Breiman <- function(object, r) {
 #'
 #' @param object An EAT or a RFEAT object.
 #' @param r Integer. Decimal units.
-#' @param threshold Numeric. Importance score value in which a broken line should be graphed.
 #' @param barplot Logical. If True, barplot with importance scores is displayed.
+#' @param threshold Numeric. Importance score value in which a broken line should be graphed.
 #'
-#' @return
+#' @return Dataframe with scores or list with scores and barplot.
 #' 
 #' @export   
 ranking <- function(object, r = 2, threshold = 70, barplot = TRUE) {

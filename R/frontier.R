@@ -1,4 +1,4 @@
-#' @title Monoinput and monooutput EAT scenario
+#' @title Single input and output scenario EAT frontier
 #'
 #' @description This function creates a plot with the frontier estimated by EAT for the scenario corresponding to one input and one output.
 #'

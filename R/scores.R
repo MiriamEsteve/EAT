@@ -57,7 +57,7 @@ RCV <- function(N, Lv, y, alphaIprim, fold, TAiv) {
   BestTivs <- vector("list", fold)
   Rcv <- 0.0
   nY <- length(y)
-
+  
   for (v in 1:fold) {
     Tiv <- list()
     TivAux <- TAiv[[v]][[1]]

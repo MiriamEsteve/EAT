@@ -54,6 +54,8 @@
 EAT <- function(data, x, y, numStop = 5, fold = 5, na.rm = T) {
   conflict_prefer("filter", "dplyr")
   
+  register_names <- rownames(data)
+  
   data <- preProcess(data, x, y, na.rm = na.rm) %>%
     mutate(id = row_number())
   
@@ -70,12 +72,12 @@ EAT <- function(data, x, y, numStop = 5, fold = 5, na.rm = T) {
   
   # Deep tree
   data <- append(data, -1, 0)
-
+  
   # Insert row to know deepEAT is called by this one
   tree_alpha_list <- deepEAT(data, x, y, numStop)
 
   data <- data[-1] %>% as.data.frame()
-   
+  
   # Best Tk for now
   Tk <- tree_alpha_list[[1]]
 
@@ -102,7 +104,7 @@ EAT <- function(data, x, y, numStop = 5, fold = 5, na.rm = T) {
     }
   }
   
-  EAT <- EAT_object(data, x, y, fold, numStop, na.rm, Tk[["tree"]])
+  EAT <- EAT_object(data, x, y, register_names, fold, numStop, na.rm, Tk[["tree"]])
   
   print_results(EAT)
 
@@ -233,7 +235,7 @@ deepEAT <- function(data, x, y, numStop) {
 #' @return Printing in table format with the data described above.
 print_results <- function(EAT) {
 
-  return(kable(EAT[["nodes_df"]][["leafnodes_df"]]))
+  return(print(kable(EAT[["nodes_df"]][["leafnodes_df"]]), "pipe"))
   
 }
 
@@ -244,6 +246,7 @@ print_results <- function(EAT) {
 #' @param data Dataframe or matrix containing the variables in the model.
 #' @param x Vector. Column input indexes in data.
 #' @param y Vector. Column output indexes in data.
+#' @param register_names String vector. Data rownames.
 #' @param numStop Integer. Minimun number of observations in a node for a split to be attempted.
 #' @param fold Integer. Number of folds in which is divided the dataset to apply cross-validation during the pruning.
 #' @param na.rm Logical. If True, NA rows are omitted. If False, an error occurs in case of NA rows.
@@ -252,9 +255,10 @@ print_results <- function(EAT) {
 #' @importFrom dplyr %>% select filter
 #'
 #' @return EAT object
-EAT_object <- function(data, x, y, numStop, fold, na.rm, tree) {
+EAT_object <- function(data, x, y, register_names, numStop, fold, na.rm, tree) {
   
   output_names <- names(data)[y]
+  input_names <- names(data)[x]
   
   colnames <- c("Node", "N", "Proportion", output_names, "Error")
   
@@ -265,7 +269,7 @@ EAT_object <- function(data, x, y, numStop, fold, na.rm, tree) {
   nodes_frame <- nodes_frame %>%
     mutate(N = sapply(nodes_frame$index, length),
            MSE = round(sqrt(unlist(R)), 2),
-           Prop = (N / N[1]) * 100)
+           Prop = round((N / N[1]) * 100), 2)
   
   nodes_frame[, output_names] <- unlist(nodes_frame[ ,"y"])
   
@@ -278,7 +282,9 @@ EAT_object <- function(data, x, y, numStop, fold, na.rm, tree) {
   EAT_object <- list("data" = list(data = data %>% select(-id),
                                    x = x,
                                    y = y,
-                                   output_names = output_names),
+                                   input_names = input_names,
+                                   output_names = output_names,
+                                   row_names = register_names),
                      "control" = list(fold = fold, 
                                       numStop = numStop, 
                                       na.rm = na.rm),

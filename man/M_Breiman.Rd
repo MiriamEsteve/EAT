@@ -2,26 +2,18 @@
 % Please edit documentation in R/ranking.R
 \name{M_Breiman}
 \alias{M_Breiman}
-\title{Importance of Breiman}
+\title{Breiman Importance}
 \usage{
-M_Breiman(data, tree, x, y, r = 2, threshold = 70)
+M_Breiman(object, r)
 }
 \arguments{
-\item{data}{Data to be used.}
-
-\item{tree}{Tree-object of EAT function.}
-
-\item{x}{Column input indexes in data.}
-
-\item{y}{Column output indexes in data.}
+\item{object}{An EAT or a RFEAT object.}
 
 \item{r}{Decimal units.}
-
-\item{threshold}{Importance value in which a broken line should be graphed for feature selection.}
 }
 \value{
 Dataframe with one column and the importance of each variable in rows.
 }
 \description{
-This function evaluates the importance of each predictor variable by Breiman method.
+This function evaluates the importance of each predictor by the notion of surrogate splits.
 }

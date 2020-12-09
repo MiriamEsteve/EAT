@@ -2,18 +2,18 @@
 % Please edit documentation in R/ranking.R
 \name{barplot_importance}
 \alias{barplot_importance}
-\title{Barplot variable importance}
+\title{Barplot Variable Importance}
 \usage{
 barplot_importance(m, threshold)
 }
 \arguments{
-\item{m}{Dataframe with the importance of each variable.}
+\item{m}{Dataframe with the importance of each predictor.}
 
-\item{threshold}{Importance value in which a broken line should be graphed for feature selection.}
+\item{threshold}{Importance score value in which a broken line should be graphed.}
 }
 \value{
-Barplot that represents each variable in the x-axis and its importance in the y-axis. It returns the numeric values too.
+Barplot representing each variable in the x-axis and its importance in the y-axis.
 }
 \description{
-This function generates a barplot with the importance of each variable.
+This function generates a barplot with the importance of each predictor.
 }

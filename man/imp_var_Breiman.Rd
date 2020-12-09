@@ -7,9 +7,9 @@
 imp_var_Breiman(data, tree, x, y, r)
 }
 \arguments{
-\item{data}{Data to be used.}
+\item{data}{Data from EAT object.}
 
-\item{tree}{Tree-object of EAT function.}
+\item{tree}{Tree from EAT object.}
 
 \item{x}{Column input indexes in data.}
 

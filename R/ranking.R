@@ -1,99 +1,34 @@
-#' @title Barplot variable importance
+#' @title Barplot Variable Importance
 #'
-#' @description This function generates a barplot with the importance of each variable.
+#' @description This function generates a barplot with the importance of each predictor.
 #'
-#' @param m Dataframe with the importance of each variable.
-#' @param threshold Importance value in which a broken line should be graphed for feature selection.
+#' @param m Dataframe with the importance of each predictor.
+#' @param threshold Importance score value in which a broken line should be graphed.
 #'
 #' @importFrom ggplot2 ggplot geom_col xlab aes geom_hline
 #' @importFrom conflicted conflict_prefer
 #' @importFrom stats reorder
 #'
-#' @return Barplot that represents each variable in the x-axis and its importance in the y-axis. It returns the numeric values too.
+#' @return Barplot representing each variable in the x-axis and its importance in the y-axis.
 barplot_importance <- function(m, threshold) {
   Importance <- NULL
 
-  ggplot(m, aes(x = reorder(row.names(m), -Importance), y = Importance)) +
+  barplot_importance <- ggplot(m, aes(x = reorder(row.names(m), -Importance), 
+                                      y = Importance)) +
     geom_col() +
     geom_hline(yintercept = threshold, linetype = "dotted",
                color = "blue", size = 1.5) +
     xlab("Variable")
-}
-
-#' @title Importance of Breiman
-#'
-#' @description This function evaluates the importance of each predictor variable by Breiman method.
-#'
-#' @param data Data to be used.
-#' @param tree Tree-object of EAT function.
-#' @param x Column input indexes in data.
-#' @param y Column output indexes in data.
-#' @param r Decimal units.
-#' @param threshold Importance value in which a broken line should be graphed for feature selection.
-#'
-#' @importFrom dplyr %>% filter rename arrange
-#' @importFrom conflicted conflict_prefer
-#'
-#' @export
-#'
-#' @return Dataframe with one column and the importance of each variable in rows.
-M_Breiman <- function(data, tree, x, y, r = 2, threshold = 70) {
-  conflict_prefer("filter", "dplyr")
-
-  data <- preProcess(data, x, y, na.rm = T)
-
-  x <- 1:((ncol(data) - 1) - length(y))
-  y <- (length(x) + 1):(ncol(data) - 1)
-
-  nX <- length(x)
-
-  resultado <- imp_var_Breiman(data, tree, x, y, r)
-
-  M <- as.list(rep(0, nX))
-
-  xi <- desc <- Importance <- id <- NULL
-
-  for (var in 1:nX) {
-    for (t in 1:length(tree)) {
-      if (tree[[t]][["s"]] == -1) next
-
-      errors <- resultado %>% filter(
-        xi == var,
-        id == tree[[t]][["id"]]
-      )
-
-      M[[var]] <- M[[var]] + (tree[[t]][["R"]] - errors[1, "R(tL_p)"] - errors[1, "R(tR_p)"])
-    }
-  }
-
-  M <- rbind(unlist(M)) %>% data.frame()
-
-  names(M) <- names(data[, x])
-
-  maxM <- max(M)
-
-  if (maxM != 0) {
-    m <- round(((100 * M) / maxM), r)
-
-    M <- rbind(M, m)
-  } else {
-    print("Divide by zero")
-  }
-
-  m <- t(m) %>%
-    as.data.frame() %>%
-    rename("Importance" = "V1") %>%
-    arrange(desc(Importance))
-
-  return(list(m, barplot_importance(m, threshold = threshold)))
+  
+  return(barplot_importance)
 }
 
 #' @title Importance variable of Breiman
 #'
 #' @description This function recalculates all the possible splits, with the exception of the actual used, and for each node and variable gets the best split based on their degree of importance.
 #'
-#' @param data Data to be used.
-#' @param tree Tree-object of EAT function.
+#' @param data Data from EAT object.
+#' @param tree Tree from EAT object.
 #' @param x Column input indexes in data.
 #' @param y Column output indexes in data.
 #' @param r Decimal units.
@@ -124,7 +59,7 @@ imp_var_Breiman <- function(data, tree, x, y, r) {
 
       for (i in 2:length(array)) {
         if (tree[[t]][["s"]] == array[i]) next
-
+        
         errLp_errRp_tLp_tRp <- estimEAT(
           data, tree, tree[[t]], xi,
           array[i], y
@@ -198,4 +133,112 @@ imp_var_Breiman <- function(data, tree, x, y, r) {
     filter(!(id %in% unlist(empty)))
 
   return(resultado)
+}
+
+#' @title Breiman Importance
+#'
+#' @description This function evaluates the importance of each predictor by the notion of surrogate splits.
+#'
+#' @param object An EAT or a RFEAT object.
+#' @param r Decimal units.
+#'
+#' @importFrom dplyr %>%  mutate row_number filter rename arrange
+#' @importFrom conflicted conflict_prefer
+#'
+#' @export
+#'
+#' @return Dataframe with one column and the importance of each variable in rows.
+M_Breiman <- function(object, r) {
+  
+  data <- object[["data"]][["data"]] %>%
+    mutate(id = row_number())
+  tree <- object[["tree"]]
+  x <- object[["data"]][["x"]] 
+  y <- object[["data"]][["y"]]
+  nX <- length(x)
+  
+  resultado <- imp_var_Breiman(data, tree, x, y, r)
+  
+  M <- as.list(rep(0, nX))
+  
+  xi <- desc <- Importance <- id <- NULL
+  
+  for (var in 1:nX) {
+    for (t in 1:length(tree)) {
+      if (tree[[t]][["s"]] == -1) next
+      
+      errors <- resultado %>% filter(
+        xi == var,
+        id == tree[[t]][["id"]]
+      )
+      
+      M[[var]] <- M[[var]] + (tree[[t]][["R"]] - errors[1, "R(tL_p)"] - errors[1, "R(tR_p)"])
+    }
+  }
+  
+  M <- rbind(unlist(M)) %>% data.frame()
+  
+  names(M) <- names(data[, x])
+  
+  maxM <- max(M)
+  
+  if (maxM != 0) {
+    m <- round(((100 * M) / maxM), r)
+    
+    M <- rbind(M, m)
+  } else {
+    print("Divide by zero")
+  }
+  
+  m <- t(m) %>%
+    as.data.frame() %>%
+    rename("Importance" = "V1") %>%
+    arrange(desc(Importance))
+  
+  return(m)
+}
+
+#' @title Ranking of variables
+#'
+#' @description This function calculates variable importance for an EAT or RFEAT object.
+#'
+#' @param object An EAT or a RFEAT object.
+#' @param r Integer. Decimal units.
+#' @param threshold Numeric. Importance score value in which a broken line should be graphed.
+#' @param barplot Logical. If True, barplot with importance scores is displayed.
+#'
+#' @return
+#' 
+#' @export   
+ranking <- function(object, r = 2, threshold = 70, barplot = TRUE) {
+  
+  if (!class(object) %in% c("EAT", "RFEAT")){
+    stop("Only EAT or RFEAT objects are supported")
+    
+  } else if(length(object[["data"]][["x"]]) < 2){
+    stop("More than two predictors are necessary")
+  }
+
+  if (class(object) == "EAT") {
+    scores <- M_Breiman(object = object, r = r)
+    
+  } else if (class(object) == "RFEAT") {
+    print("Adios")
+    
+  }
+  
+  if (barplot == T){
+    barplot <- barplot_importance(scores, threshold = threshold)
+    return(list(scores, barplot))
+    
+  } else {
+    return(scores)
+  }
+  
+  # EAT_ranking.default <- function(x) "Hola"
+  # RFEAT_ranking.default <- function(x) "Adios"
+  # g <- function(x) {
+    # UseMethod("RFEAT_ranking")
+  # }
+
 }

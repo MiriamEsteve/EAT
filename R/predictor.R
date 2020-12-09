@@ -22,9 +22,9 @@ predictor <- function(tree, register) {
 
 #' @title Position of the node
 #'
-#' @description This function looks for the position of a given node in the tree.
+#' @description This function finds the node where a register is located.
 #'
-#' @param tree List structure with the tree nodes.
+#' @param tree A list containing EAT nodes.
 #' @param idNode Id of a specific node.
 #'
 #' @return Position of the node or -1 if it is not found.
@@ -38,30 +38,42 @@ posIdNode <- function(tree, idNode) {
   return(-1)
 }
 
-#' @title Predict
+#' @title Model prediction
 #'
-#' @description This function predicts the expected value based on a dataset
+#' @description This function predicts the expected output by an EAT object.
 #'
-#' @param tree List structure with the tree nodes.
-#' @param data Data to be predicted.
-#' @param x Column input indexes in data.
-#' @param y Column output indexes in data.
+#' @param t An EAT object.
+#' @param newdata Dataframe. Set of input variables to predict on.
 #'
 #' @importFrom dplyr %>%
 #'
+#' @return Data frame with predicted values with as many columns as outputs.
+#' 
 #' @export
-#'
-#' @return A data frame with the expected value in one column for each dependent variable based on the given dataset.
-predict <- function(tree, data, x, y) {
-  data <- preProcess(data, x, y, na.rm = T)
-
+predict <- function(t, newdata) {
+  
+  train_names <- t[["data"]][["input_names"]]
+  test_names <- names(newdata)
+  
+  if (class(newdata) != "data.frame"){
+    stop("newdata must be a data.frame")
+  }else if (length(train_names) != length(test_names)){
+    stop("Training and prediction data must have the same number of variables")
+  } else if (!all(train_names == test_names)){
+    stop(cat("Variable name: ", test_names[1], "not found in taining data"))
+  }
+  
+  y <- t[["data"]][["y"]] 
+  
+  tree <- t[["tree"]]
+  
   predictions <- c()
 
-  for(register in 1:nrow(data)){
+  for(register in 1:nrow(newdata)){
     ti <- 1
 
     while (tree[[ti]][["SL"]] != -1) {
-      if (data[register, ][tree[[ti]][["xi"]]] < as.data.frame(tree[[ti]][["s"]])) {
+      if (newdata[register, ][tree[[ti]][["xi"]]] < as.data.frame(tree[[ti]][["s"]])) {
         ti <- posIdNode(tree, tree[[ti]][["SL"]])
       } else {
         ti <- posIdNode(tree, tree[[ti]][["SR"]])
@@ -73,7 +85,7 @@ predict <- function(tree, data, x, y) {
   predictions <- matrix(predictions, ncol = length(y), byrow = T) %>%
     as.data.frame()
 
-  names(predictions) <- names(data)[(length(x)+1):(ncol(data)-1)]
+  names(predictions) <-  paste(t[["data"]][["output_names"]],"_pred", sep = "")
 
   return(predictions)
 }

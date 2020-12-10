@@ -416,98 +416,51 @@ efficiency_scores <- function(object, scores_model, r = 4) {
   print(kable(descriptive), "pipe")
 
   return(round(scores, r))
-
 }
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-#' @title Efficiency Bar Plot
+#' @title Efficiency Scores Bar Plot
 #'
 #' @description This function returns a bar plot with scores
 #'
-#' @param scores Score object
-#' @param data Data to be used.
-#' @param tree Tree structure.
-#' @param x Column input indexes in data.
-#' @param y Column output indexes in data.
-#' @param color Logical. If True, observations with same efficient level output are painted the same level.
+#' @param object An EAT object.
+#' @param scores Dataframe with scores.
+#' @param color Logical. If True, observations with same efficient level output are painted in the same color.
 #'
-#' @importFrom ggplot2 ggplot aes geom_col theme element_text scale_fill_brewer scale_alpha_discrete
-#' @importFrom dplyr  %>% mutate left_join group_by
+#' @importFrom ggplot2 ggplot aes geom_col theme element_text labs
 #' @importFrom stats median quantile sd
 #'
 #' @export
 #'
-#' @return Efficiency scores
-efficiency_barplot <- function(scores, data, tree, x, y, color = T) {
+#' @return Bar plot with efficiency scores
+efficiency_barplot <- function(object, scores, color = T) {
   
   if(color == T){
     
-    predictions <- eat::predict(tree, data, x, y)
+    groups <- object[["nodes_df"]][["leafnodes_df"]][, c(1, 6)]
     
-    levels <- unique(predictions)
+    scores_df <- data.frame(scores = scores,
+                            Group = NA)
     
-    levels <- levels %>%
-      mutate(Group = as.factor(1:nrow(levels)))
+    rownames(scores_df) <- object[["data"]][["row_names"]]
     
-    scores <- cbind(scores, predictions) %>%
-      left_join(levels) %>% 
-      group_by(Group) %>%
-      mutate(Efficient = as.factor(ifelse(V1 == max(V1), 1, 0)))
+    for (i in 1:nrow(scores_df)){
+      scores_df[groups[i, "index"][[1]], "Group"] <- groups[i, "id"]
+    }
     
-    efficiency_histogram <- ggplot(scores,
-                                   aes(x = reorder(row.names(scores), - V1), y = V1,
-                                       fill = Group, alpha = Efficient)) +
+    efficiency_histogram <- ggplot(scores_df,
+                                   aes(x = reorder(row.names(scores_df), - Score), y = Score,
+                                       fill = as.factor(Group))) +
       geom_col() +
       theme(axis.text.x = element_text(angle = 45), legend.position = "bottom") +
       xlab("DMU") +
-      ylab("Score") +
-      scale_fill_brewer(palette = "Set1") + 
-      scale_alpha_discrete(range = c(0.4, 0.9))
+      ylab("Score") + 
+      labs(fill = "Group")
+      # scale_fill_brewer(palette = "Set1")
+      # scale_alpha_discrete(range = c(0.4, 0.9))
   } else {
     
-    efficiency_histogram <- ggplot(scores,
-                                   aes(x = reorder(row.names(scores), - V1), y = V1)) +
+    efficiency_histogram <- ggplot(scores_df,
+                                   aes(x = reorder(row.names(scores_df), - Score), y = Score)) +
       geom_col() +
       theme(axis.text.x = element_text(angle = 45)) +
       xlab("DMU") +
@@ -515,7 +468,6 @@ efficiency_barplot <- function(scores, data, tree, x, y, color = T) {
   }
   
   return(efficiency_histogram)
-  
 }
 
 #' @title Efficiency Density and Barplot

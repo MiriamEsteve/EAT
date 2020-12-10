@@ -229,13 +229,17 @@ deepEAT <- function(data, x, y, numStop) {
 #' @description This function prints the number of observations and the proportion, the efficiency level of the outputs and the mean square error for each final node.
 #'
 #' @param EAT A EAT object
-#'
+#' 
+#' @imporFrom dplyr %>% select
 #' @importFrom knitr kable
 #'
 #' @return Printing in table format with the data described above.
 print_results <- function(EAT) {
 
-  return(print(kable(EAT[["nodes_df"]][["leafnodes_df"]]), "pipe"))
+  results <- EAT[["nodes_df"]][["leafnodes_df"]] %>%
+    select(-index)
+  
+  return(print(kable(results), "pipe"))
   
 }
 
@@ -294,7 +298,7 @@ EAT_object <- function(data, x, y, register_names, numStop, fold, na.rm, tree) {
   nodes_frame[, output_names] <- unlist(nodes_frame[ ,"y"])
   
   nodes_frame <- nodes_frame %>%
-    select(id, SL, N, Prop, output_names, MSE)
+    select(id, SL, N, Prop, output_names, MSE, index)
   
   # Leaf nodes
   leaf_nodes <- nodes_frame %>%

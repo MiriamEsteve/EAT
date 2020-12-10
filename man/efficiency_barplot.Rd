@@ -2,25 +2,19 @@
 % Please edit documentation in R/efficiency.R
 \name{efficiency_barplot}
 \alias{efficiency_barplot}
-\title{Efficiency Bar Plot}
+\title{Efficiency Scores Bar Plot}
 \usage{
-efficiency_barplot(scores, data, tree, x, y, color = T)
+efficiency_barplot(object, scores, color = T)
 }
 \arguments{
-\item{scores}{Score object}
+\item{object}{An EAT object.}
 
-\item{data}{Data to be used.}
+\item{scores}{Dataframe with scores.}
 
-\item{tree}{Tree structure.}
-
-\item{x}{Column input indexes in data.}
-
-\item{y}{Column output indexes in data.}
-
-\item{color}{Logical. If True, observations with same efficient level output are painted the same level.}
+\item{color}{Logical. If True, observations with same efficient level output are painted in the same color.}
 }
 \value{
-Efficiency scores
+Bar plot with efficiency scores
 }
 \description{
 This function returns a bar plot with scores

@@ -107,7 +107,7 @@ EAT <- function(data, x, y, numStop = 5, fold = 5, na.rm = T) {
   EAT <- EAT_object(data, x, y, register_names, fold, numStop, na.rm, Tk[["tree"]])
   
   print_results(EAT)
-
+  
   invisible(EAT)
 }
 
@@ -257,6 +257,7 @@ print_results <- function(EAT) {
 #' @return EAT object
 EAT_object <- function(data, x, y, register_names, numStop, fold, na.rm, tree) {
   
+  # Output and input names
   output_names <- names(data)[y]
   input_names <- names(data)[x]
   
@@ -264,8 +265,27 @@ EAT_object <- function(data, x, y, register_names, numStop, fold, na.rm, tree) {
   
   SL <- NULL
 
-  nodes_frame <- data.frame(Reduce(rbind, tree)) 
+  # Tree as data.frame
+  nodes_frame <- data.frame(Reduce(rbind, tree))
   
+  # a
+  atreeTk <- nodes_frame  %>% 
+    filter(SL == -1) %>% 
+    select(a)
+  
+  atreeTk <- as.data.frame(do.call(cbind, atreeTk$a)) %>% 
+    t()
+  
+  # y
+  ytreeTk <- nodes_frame %>% 
+    filter(SL == -1) %>% 
+    select(y)
+  
+  ytreeTk <- as.data.frame(do.call(cbind, ytreeTk$y)) %>%
+    unlist() %>%
+    matrix(ncol = length(y), byrow = T)
+  
+  # Nodes frame for results
   nodes_frame <- nodes_frame %>%
     mutate(N = sapply(nodes_frame$index, length),
            MSE = round(sqrt(unlist(R)), 2),
@@ -276,9 +296,10 @@ EAT_object <- function(data, x, y, register_names, numStop, fold, na.rm, tree) {
   nodes_frame <- nodes_frame %>%
     select(id, SL, N, Prop, output_names, MSE)
   
+  # Leaf nodes
   leaf_nodes <- nodes_frame %>%
     filter(SL == -1)
-  
+
   EAT_object <- list("data" = list(data = data %>% select(-id),
                                    x = x,
                                    y = y,
@@ -290,10 +311,24 @@ EAT_object <- function(data, x, y, register_names, numStop, fold, na.rm, tree) {
                                       na.rm = na.rm),
                      "tree" = tree,
                      "nodes_df" = list(nodes_df = nodes_frame %>% select(-SL),
-                                       leafnodes_df = leaf_nodes %>% select(-SL))
-                     )
+                                       leafnodes_df = leaf_nodes %>% select(-SL)),
+                     "model" = list(nodes = length(tree),
+                                    leaf_nodes = nrow(atreeTk),
+                                    RMSE = NULL,
+                                    a = atreeTk,
+                                    y = ytreeTk))
 
   class(EAT_object) <- "EAT"
+  
+  # RMSE
+  data.p <- as.data.frame(data[, x])
+  names(data.p)[x] <- input_names
+  
+  predictions <- eat::predict(EAT_object, data.p)
+  
+  RMSE <- sqrt(sum((data[, y] - predictions) ^ 2) / nrow(data))
+  
+  EAT_object[["model"]][["RMSE"]] <- RMSE
   
   return(EAT_object)
   

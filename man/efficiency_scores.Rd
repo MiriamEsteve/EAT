@@ -4,24 +4,26 @@
 \alias{efficiency_scores}
 \title{Efficiency Scores}
 \usage{
-efficiency_scores(data, tree, x, y, scores_model, FDH = FALSE)
+efficiency_scores(object, scores_model, r = 4)
 }
 \arguments{
-\item{data}{Data to be used.}
+\item{object}{An EAT object.}
 
-\item{tree}{Tree structure.}
+\item{scores_model}{Mathematic programming model to calculate scores. 
+\itemize{
+\item{\code{EAT_BCC_out}} BBC model. Output orientation.
+\item{\code{EAT_BCC_in}}  BBC model. Input orientation.
+\item{\code{EAT_DDF}}     Directional distance model.
+\item{\code{EAT_RSL_out}} Rusell model. Output orientation
+\item{\code{EAT_RSL_in}}  Rusell model. Input orientation.
+\item{\code{EAT_WAM}}     Weighted Additive model.
+}}
 
-\item{x}{Column input indexes in data.}
-
-\item{y}{Column output indexes in data.}
-
-\item{scores_model}{Model to get scores. "EAT_BCC_output" and "EAT_BCC_input" for BCC model with output and input orientation respectively; "EAT_DD" for directional distance model; "EAT_Rusell_output" and "EAT_Rusell_input" for Rusell models with output and input orientation respectively and "EAT_WA" for Weighted Additive models.}
-
-\item{FDH}{...}
+\item{r}{Integer. Decimal units for scores.}
 }
 \value{
 Efficiency scores
 }
 \description{
-This function returns a numeric vector with the efficiency score for each DMU, an histogram and a brief descriptive analysis.
+This function calculates the efficiency scores for each DMU.
 }

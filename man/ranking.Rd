@@ -16,7 +16,7 @@ ranking(object, r = 2, threshold = 70, barplot = TRUE)
 \item{barplot}{Logical. If True, barplot with importance scores is displayed.}
 }
 \value{
-
+Dataframe with scores or list with scores and barplot.
 }
 \description{
 This function calculates variable importance for an EAT or RFEAT object.

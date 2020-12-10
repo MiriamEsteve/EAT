@@ -169,7 +169,7 @@ EAT_DDF <- function(j, scores, x_k, y_k, atreeTk, ytreeTk, nX, nY, N_leaves) {
 #' @importFrom lpSolveAPI make.lp lp.control set.objfn add.constraint set.type set.bounds get.objective
 #'
 #' @return A numerical vector with scores.
-EAT_RUS_in <- function(j, scores, x_k, y_k, atreeTk, ytreeTk, nX, nY, N_leaves) {
+EAT_RSL_in <- function(j, scores, x_k, y_k, atreeTk, ytreeTk, nX, nY, N_leaves) {
   for(d in 1:j){
     
     objVal <- matrix(ncol = N_leaves + nX, nrow = 1)
@@ -227,7 +227,7 @@ EAT_RUS_in <- function(j, scores, x_k, y_k, atreeTk, ytreeTk, nX, nY, N_leaves) 
 #' @importFrom lpSolveAPI make.lp lp.control set.objfn add.constraint set.type set.bounds get.objective
 #'
 #' @return A numerical vector with scores.
-EAT_RUS_out <- function(j, scores, x_k, y_k, atreeTk, ytreeTk, nX, nY, N_leaves) {
+EAT_RSL_out <- function(j, scores, x_k, y_k, atreeTk, ytreeTk, nX, nY, N_leaves) {
   for(d in 1:j){
     
     objVal <- matrix(ncol = N_leaves + nY, nrow = 1)
@@ -344,8 +344,8 @@ EAT_WAM <- function(j, scores, x_k, y_k, atreeTk, ytreeTk, nX, nY, N_leaves) {
 #' \item{\code{EAT_BCC_out}} BBC model. Output orientation.
 #' \item{\code{EAT_BCC_in}}  BBC model. Input orientation.
 #' \item{\code{EAT_DDF}}     Directional distance model.
-#' \item{\code{EAT_RUS_out}} Rusell model. Output orientation
-#' \item{\code{EAT_RUS_in}}  Rusell model. Input orientation.
+#' \item{\code{EAT_RSL_out}} Rusell model. Output orientation
+#' \item{\code{EAT_RSL_in}}  Rusell model. Input orientation.
 #' \item{\code{EAT_WAM}}     Weighted Additive model.
 #' }
 #' @param r Integer. Decimal units for scores.
@@ -360,7 +360,7 @@ EAT_WAM <- function(j, scores, x_k, y_k, atreeTk, ytreeTk, nX, nY, N_leaves) {
 efficiency_scores <- function(object, scores_model, r = 4) {
   
   if (!scores_model %in% c("EAT_BCC_out", "EAT_BCC_in", "EAT_DDF", 
-                           "EAT_RUS_out", "EAT_RUS_in", "EAT_WAM")){
+                           "EAT_RSL_out", "EAT_RSL_in", "EAT_WAM")){
     stop("You should choose an available model. Please check help(efficiency_scores)")
   }
   
@@ -387,11 +387,11 @@ efficiency_scores <- function(object, scores_model, r = 4) {
   } else if (scores_model == "EAT_DDF"){
     scores <- EAT_DDF(j, scores, x_k, y_k, atreeTk, ytreeTk, nX, nY, N_leaves)
 
-  } else if (scores_model == "EAT_RUS_out"){
-    scores <- EAT_RUS_out(j, scores, x_k, y_k, atreeTk, ytreeTk, nX, nY, N_leaves)
+  } else if (scores_model == "EAT_RSL_out"){
+    scores <- EAT_RSL_out(j, scores, x_k, y_k, atreeTk, ytreeTk, nX, nY, N_leaves)
 
-  } else if (scores_model == "EAT_RUS_in"){
-    scores <- EAT_RUS_in(j, scores, x_k, y_k, atreeTk, ytreeTk, nX, nY, N_leaves)
+  } else if (scores_model == "EAT_RSL_in"){
+    scores <- EAT_RSL_in(j, scores, x_k, y_k, atreeTk, ytreeTk, nX, nY, N_leaves)
 
   } else if (scores_model == "EAT_WAM"){
     scores <- EAT_WAM(j, scores, x_k, y_k, atreeTk, ytreeTk, nX, nY, N_leaves)

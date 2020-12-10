@@ -24,7 +24,7 @@ frontier(
 
 \item{rownames}{Logical. If T, row names are displayed instead of points.}
 
-\item{rwn.size}{Integer. Rowname size}
+\item{rwn.size}{Integer. Rowname size.}
 }
 \value{
 Scatter plot with DMUs and the frontier predicted by EAT.

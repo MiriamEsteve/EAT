@@ -2,22 +2,32 @@
 % Please edit documentation in R/efficiency.R
 \name{EAT_DDF}
 \alias{EAT_DDF}
-\title{EAT Directional Distance}
+\title{Directional Distance Function mathematical programming model}
 \usage{
-EAT_DDF(data, tree, x, y)
+EAT_DDF(j, scores, x_k, y_k, atreeTk, ytreeTk, nX, nY, N_leaves)
 }
 \arguments{
-\item{data}{Data to be used.}
+\item{j}{Integer. Number of DMUs.}
 
-\item{tree}{Tree structure.}
+\item{scores}{Matrix. Empty matrix for scores.}
 
-\item{x}{Column input indexes in data.}
+\item{x_k}{Dataframe. Set of input variables.}
 
-\item{y}{Column output indexes in data.}
+\item{y_k}{Dataframe. Set of output variables.}
+
+\item{atreeTk}{Matrix. Set of "a" Pareto-coordinates.}
+
+\item{ytreeTk}{Matrix. Set of predictions.}
+
+\item{nX}{Integer. Number of inputs.}
+
+\item{nY}{Integer. Number of outputs.}
+
+\item{N_leaves}{Integer. Number of leaf nodes.}
 }
 \value{
 A numerical vector with scores.
 }
 \description{
-EAT Directional Distance
+Directional Distance Function.
 }

@@ -7,7 +7,7 @@
 #' @param train.color String. Color for training DMUs.
 #' @param pch Integer. Point shape.
 #' @param rownames Logical. If T, row names are displayed instead of points.
-#' @param rwn.size Integer. Rowname size
+#' @param rwn.size Integer. Rowname size.
 #'
 #' @importFrom ggplot2 ggplot aes_string geom_point geom_line geom_text xlab ylab
 #' @importFrom conflicted conflict_prefer

@@ -21,7 +21,7 @@ data("PISAindex")
 n <- nrow(PISAindex)
 
 # Training indexes
-t_index <- sample(1:n, n * 0.7)
+t_index <- sample(1:n, n * 0.8)
 
 # Training set
 training <- PISAindex[t_index, ]
@@ -36,9 +36,12 @@ test <- PISAindex[-t_index, ]
 #      na.rm = TRUE)
 
 ## ----frontier, eval = F-------------------------------------------------------
-#  frontier(data, tree,
-#           x, y,
-#           rownames = FALSE)
+#  frontier(t,
+#           train.data = FALSE,
+#           train.color = "black",
+#           pch = 19,
+#           rownames = FALSE,
+#           rwn.size = 3)
 
 ## ----single_scenario, collapse = FALSE----------------------------------------
 # Input indexes
@@ -47,16 +50,23 @@ input <- 6
 # Output indexes
 output <- 3
 
+# Modeling
 single_model <- EAT(data = training, 
                     x = input, 
                     y = output)
 
 ## ----single_scenario_frontier, fig.width = 10.5, fig.height = 6, fig.align = 'center'----
-frontier(data = training, 
-         tree = single_model, 
-         x = input, 
-         y = output, 
-         rownames = T)
+frontier <- frontier(t = single_model,
+                     train.data = T,
+                     train.color = "#F8766D",
+                     rownames = T,
+                     rwn.size = 3)
+
+plot(frontier)
+
+## ----single_scenario_frontier_test, fig.width = 10.5, fig.height = 6, fig.align = 'center'----
+frontier +
+  ggplot2::geom_point(data = test, ggplot2::aes(x = NBMC, y = S_PISA))
 
 ## ----science_model, collapse = FALSE------------------------------------------
 input <- 6:18
@@ -65,102 +75,120 @@ output <- 3
 
 science_model <- EAT(data = training, x = input, y = output)
 
-## ----EAT_plot, eval = F-------------------------------------------------------
-#  EAT_plot(tree, data,
-#           x, y)
+## ----EAT_plot, fig.width = 10.5, fig.height = 9, fig.align = 'center', eval = FALSE----
+#  EAT_plot(t)
 
 ## ----science_plot, fig.width = 10.5, fig.height = 9, fig.align = 'center'-----
-EAT_plot(tree = science_model, data = training, 
-         x = input, y = output)
+EAT_plot(t = science_model)
 
-## ----Breiman, eval = F--------------------------------------------------------
-#  M_Breiman(data, tree,
-#           x, y,
-#           r = 2,
-#           threshold = 70)
+## ----ranking, eval = F--------------------------------------------------------
+#  ranking(object,
+#          r = 2,
+#          barplot = TRUE,
+#          threshold = 70)
 
 ## ----science_importance, fig.width = 10.5, fig.height = 6, fig.align = 'center'----
-M_Breiman(data = training, tree = science_model, 
-          x = input, y = output,
-          threshold = 75)
+ranking(object = science_model,
+        r = 2,
+        barplot = TRUE,
+        threshold = 70)
 
-## ----science_reduced_model, collapse = FALSE----------------------------------
+## ----science_var_reduced_model, collapse = FALSE------------------------------
 # Input indexes
-input <- c(6, 7, 8, 11, 13, 14, 16, 18)
+input <- c(6, 8, 12, 16, 18)
 
 # Output index
 output <- 3
 
-science_reduced_model <- EAT(data = training, x = input, y = output)
+science_var_reduced_model <- EAT(data = training, x = input, y = output)
 
-## ----science_reduced_model_plot, fig.width = 10.5, fig.height = 8, fig.align = 'center'----
-EAT_plot(tree = science_reduced_model, data = training, 
-         x = input, y = output)
+## ----compare_models, collapse = FALSE-----------------------------------------
+cat("Science model --> RMSE: ", science_model[["model"]][["RMSE"]], "| length: ", science_model[["model"]][["nodes"]])
+
+cat("Science variables model reduced --> RMSE: ", science_var_reduced_model[["model"]][["RMSE"]], "| length: ", science_var_reduced_model[["model"]][["nodes"]])
+
+## ----science_reduced_plot, fig.width = 10.5, fig.height = 9, fig.align = 'center'----
+EAT_plot(t = science_var_reduced_model)
 
 ## ----science_reduced_model_second, collapse = FALSE---------------------------
+# Input indexes
+input <- c(6, 8, 12, 16, 18)
 
-science_reduced_model_second <- EAT(data = training, x = input, y = output,
-                                    numStop = 8)
+# Output index
+output <- 3
+
+science_var_reduced_numStop <- EAT(data = training, 
+                                   x = input, 
+                                   y = output,
+                                   numStop = 8)
+
+## ----compare_models2, collapse = FALSE----------------------------------------
+cat("Science model --> RMSE: ", science_model[["model"]][["RMSE"]], "| length: ", science_model[["model"]][["nodes"]])
+
+cat("Science variables model reduced --> RMSE: ", science_var_reduced_model[["model"]][["RMSE"]], "| length: ", science_var_reduced_model[["model"]][["nodes"]])
+
+cat("Science variable model reduced NumStop --> RMSE: ", science_var_reduced_numStop[["model"]][["RMSE"]], "| length: ", science_var_reduced_numStop[["model"]][["nodes"]])
 
 ## ----science_reduced_model_second_plot, fig.width = 10.5, fig.height = 8, fig.align = 'center'----
-EAT_plot(tree = science_reduced_model_second, data = training, 
-         x = input, y = output)
+EAT_plot(t = science_var_reduced_numStop)
 
-## ----multioutput--------------------------------------------------------------
+## ----smr_model, collapse = FALSE----------------------------------------------
 # Input indexes
 input <- 6:18
 
 # Output indexes
 output <- 3:5
 
-multioutput_tree <- EAT(data = training, x = input, y = output,
-                        numStop = 8)
+smr_model <- EAT(data = training, 
+                 x = input, 
+                 y = output,
+                 numStop = 6)
 
-## ----plot_multioutput, fig.width = 10.5, fig.height = 8, fig.align = 'center'----
-EAT_plot(tree = multioutput_tree, data = training, 
-         x = input, y = output)
+## ----smr_model_plot, fig.width = 10.5, fig.height = 8, fig.align = 'center'----
+EAT_plot(t = smr_model)
 
 ## ----predict, eval = F--------------------------------------------------------
-#  predict(tree, data,
-#          x, y)
+#  eat::predict(t, newdata)
 
 ## ----prediction, collapse = F-------------------------------------------------
-predictions <- eat::predict(tree = multioutput_tree,
-                            data = test,
-                            x = input,
-                            y = output)
-
-class(predictions)
+eat::predict(t = smr_model,
+             newdata = test[, input])
 
 ## ----efficiency, eval = FALSE-------------------------------------------------
-#  efficiency_scores(data, tree,
-#                    x, y,
-#                    scores_model)
+#  efficiency_scores(object,
+#                    score_model,
+#                    r = 4)
 
-## ----scores,  fig.width = 10.5, fig.height = 8, fig.align = 'center', collapse = FALSE----
-efficiency <- efficiency_scores(data = training, 
-                                tree = multioutput_tree, 
-                                x = input,
-                                y = output, 
-                                scores_model = "EAT_BCC_output")
+## ----scores, collapse = FALSE-------------------------------------------------
+scores <- efficiency_scores(object = smr_model, 
+                  scores_model = "EAT_BCC_in",
+                  r = 4)
 
-efficiency[[2]]
-efficiency[[3]]
+## ----barplot_scores, collapse = FALSE, fig.width = 10.5, fig.height = 8, fig.align = 'center'----
+efficiency_barplot(object = smr_model,
+                   scores = scores,
+                   color = F)
 
-## ----continent----------------------------------------------------------------
-# Continent is a character vector, so we transform it into a factor class
-PISAindex$Continent <- as.factor(PISAindex$Continent)
+## ----efficiency_density, collapse = FALSE, fig.width = 10.5, fig.height = 8, fig.align = 'center'----
+efficiency_density(object = smr_model,
+                   scores = scores,
+                   FDH = TRUE)
 
-## ----preprocess_factor, error = TRUE, collapse = FALSE------------------------
-# Input indexes
-input <- c(3, 7:19)
 
-# Output indexes
-output <- 6
+## ----continent, eval = F------------------------------------------------------
+#  # Continent is a character vector, so we transform it into a factor class
+#  PISAindex$Continent <- as.factor(PISAindex$Continent)
 
-reading_model <- EAT(data = PISAindex, x = input, y = output)
+## ----preprocess_factor, error = TRUE, collapse = FALSE, eval = F--------------
+#  # Input indexes
+#  input <- c(3, 7:19)
+#  
+#  # Output indexes
+#  output <- 6
+#  
+#  reading_model <- EAT(data = PISAindex, x = input, y = output)
 
-## ----GDP_PPP_category, eval = FALSE-------------------------------------------
+## ----GDP_PPP_category, eval = FALSE, eval = F---------------------------------
 #  PISAindex$GDP_PPP_cat <- cut(PISAindex$GDP_PPP,
 #                              breaks = c(0, 16.686, 31.419, 47.745, Inf),
 #                              include.lowest = T,
@@ -184,13 +212,13 @@ reading_model <- EAT(data = PISAindex, x = input, y = output)
 #  categorized_model <- EAT(data = PISAindex, x = input, y = output,
 #                           numStop = 15)
 
-## ----narm, error = TRUE, collapse = FALSE-------------------------------------
-# Input indexes
-x <- 7:19
-
-# Output indexes
-y <- 5
-
-reading_model <- EAT(data = PISAindex, x = x, y = y, 
-                     na.rm = F)
+## ----narm, error = TRUE, collapse = FALSE, eval = F---------------------------
+#  # Input indexes
+#  x <- 7:19
+#  
+#  # Output indexes
+#  y <- 5
+#  
+#  reading_model <- EAT(data = PISAindex, x = x, y = y,
+#                       na.rm = F)
 

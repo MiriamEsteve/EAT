@@ -164,7 +164,11 @@ science_model <- EAT(data = training, x = input, y = output)
 
 Now, `frontier` cannot be used since we are in a multivariate scenario. `frontier` allows us to see very clearly the regions of the input space originated with `EAT`, however, this is impossible with more than 1 input and 1 output. In this case, it is provided the typical tree structure in which the relations between the predicted variable(s) and the predictive variable(s) are showed. `EAT_plot` performs a tree plot in the same line of simplicity for the user, since only the `EAT` object have to be introduced. 
 
-```{r EAT_plot, fig.width = 10.5, fig.height = 9, fig.align = 'center'}
+```{r EAT_plot, fig.width = 10.5, fig.height = 9, fig.align = 'center', eval = FALSE}
+EAT_plot(t)
+```
+
+```{r science_plot, fig.width = 10.5, fig.height = 9, fig.align = 'center'}
 EAT_plot(t = science_model)
 ```
 
@@ -176,128 +180,182 @@ In each node, we can obtain the following information:
 * **Variable**: name of the variable that produces the split.
 * **y**: vector corresponding to the output prediction.
 
-Additionally, `EAT` allows a feature selection. For this purpose, a histogram with the importance of each variable is displayed. Additionally, the user can vary the importance threshold in the graph with the argument `threshold` and the number of decimals units for importance with `r`.
+Additionally, `EAT` allows a feature selection. For this purpose, `ranking` function is showed. In this case, `EAT` or `RFEAT` (more details later) objects are accepted. The user can specify the number of decimal units (`r`), a barplot with the scores of importance (`barplot`) and a broken line to display in the graph (`threshold`).
 
-```{r Breiman, eval = F}
-M_Breiman(data, tree, 
-         x, y,
-         r = 2,
-         threshold = 70)
+```{r ranking, eval = F}
+ranking(object,
+        r = 2,
+        barplot = TRUE,
+        threshold = 70)
 ```
 
-Now, we carry out a ranking of variables and repeat the same analysis only with those features whose importance is greater than 75, that is, **NBMC**, **I**, **PR**, **EQ**, **AIC**, **WS**, **GDP_PPP** and **S**.
-
-```{r science_importance, fig.width = 10.5, fig.height = 6, fig.align = 'center', eval = F}
-M_Breiman(data = training, tree = science_model, 
-          x = input, y = output,
-          threshold = 75)
+```{r science_importance, fig.width = 10.5, fig.height = 6, fig.align = 'center'}
+ranking(object = science_model,
+        r = 2,
+        barplot = TRUE,
+        threshold = 70)
 ```
 
-```{r science_reduced_model, collapse = FALSE, eval = F}
+Now, we carry out a feature selection by the score obtained in `ranking`. We set `threshold` in 75 and we select those features whose importance is greater than this value, that is, **S**, **GDP_PPP**, **NBMC**, **HW** and **I**. We repeat the analysis:
+
+```{r science_var_reduced_model, collapse = FALSE}
 # Input indexes
-input <- c(6, 7, 8, 11, 13, 14, 16, 18)
+input <- c(6, 8, 12, 16, 18)
 
 # Output index
 output <- 3
 
-science_reduced_model <- EAT(data = training, x = input, y = output)
+science_var_reduced_model <- EAT(data = training, x = input, y = output)
 ```
 
-```{r science_reduced_model_plot, fig.width = 10.5, fig.height = 8, fig.align = 'center', eval = F}
-EAT_plot(tree = science_reduced_model, data = training, 
-         x = input, y = output)
+
+```{r compare_models, collapse = FALSE}
+cat("Science model --> RMSE: ", science_model[["model"]][["RMSE"]], "| length: ", science_model[["model"]][["nodes"]])
+
+cat("Science variables model reduced --> RMSE: ", science_var_reduced_model[["model"]][["RMSE"]], "| length: ", science_var_reduced_model[["model"]][["nodes"]])
 ```
 
-In this way, we can, on the one hand, know which are the most important variables for obtaining maximum levels of our output and, on the other hand, repeat the analysis with fewer variables, thus reducing computation time at the expense of a slight increase in error.
+In this way we can, on the one hand, know which are the most important variables for obtaining maximum levels of our output(s) and, on the other hand, repeat the analysis with fewer variables and then, reducing computation time.
 
-In this section, we also deal with `fold` and `numStop` arguments (by default both are 5). This last modeling, with `fold = 5` and `numStop = 5`, results in the tree shown above with 25 nodes. The tree size is highly dependent on the `numStop` argument, which indicates how much the minimum number of observations must be in a node to be considered a leaf node. So, higher values in `numStop` smaller size of the tree. About the `fold` argument, it is related to the cross-validation technique for pruning and indicates how many parts the data set has been divided into to select the training and test parts. Although it is not directly related to the size of the tree, its modification can lead to different frontiers. So now, we introduce `numStop = 8` expecting a smaller tree.
-
-```{r science_reduced_model_second, collapse = FALSE, eval = F}
-
-science_reduced_model_second <- EAT(data = training, x = input, y = output,
-                                    numStop = 8)
+```{r science_reduced_plot, fig.width = 10.5, fig.height = 9, fig.align = 'center'}
+EAT_plot(t = science_var_reduced_model)
 ```
 
-```{r science_reduced_model_second_plot, fig.width = 10.5, fig.height = 8, fig.align = 'center', eval = F}
-EAT_plot(tree = science_reduced_model_second, data = training, 
-         x = input, y = output)
+In this section, we also deal with `fold` and `numStop` arguments (by default both are 5). This last modeling, with `fold = 5` and `numStop = 5`, results in the tree shown above with 23 nodes. The tree size is highly dependent on the `numStop` argument, which indicates how much the minimum number of observations must be in a node to be considered a leaf node. So, higher values in `numStop` smaller size of the tree. About the `fold` argument, it is related to the cross-validation technique for pruning and indicates how many parts the data set has been divided into to select the training and test parts. Although it is not directly related to the size of the tree, its modification can lead to different frontiers. So now, we introduce `numStop = 8` expecting a smaller tree.
+
+```{r science_reduced_model_second, collapse = FALSE}
+# Input indexes
+input <- c(6, 8, 12, 16, 18)
+
+# Output index
+output <- 3
+
+science_var_reduced_numStop <- EAT(data = training, 
+                                   x = input, 
+                                   y = output,
+                                   numStop = 8)
+```
+
+```{r compare_models2, collapse = FALSE}
+cat("Science model --> RMSE: ", science_model[["model"]][["RMSE"]], "| length: ", science_model[["model"]][["nodes"]])
+
+cat("Science variables model reduced --> RMSE: ", science_var_reduced_model[["model"]][["RMSE"]], "| length: ", science_var_reduced_model[["model"]][["nodes"]])
+
+cat("Science variable model reduced NumStop --> RMSE: ", science_var_reduced_numStop[["model"]][["RMSE"]], "| length: ", science_var_reduced_numStop[["model"]][["nodes"]])
+```
+
+Now we have found a model that surpasses the previous two: size as small as the first and error as low as the second.
+
+```{r science_reduced_model_second_plot, fig.width = 10.5, fig.height = 8, fig.align = 'center'}
+EAT_plot(t = science_var_reduced_numStop)
 ```
 
 ## Example 2: the multioutput scenario
 
-A very engaging point of the `EAT` algorithm is the possibility of modeling multi-output scenarios. Also, it should be noted that this does not result in more complex syntax or interpretations. In the following example, all the available inputs are used to obtain a vector of maximum output level corresponding to the grades of Science, Reading and Mathematics
+A very engaging point of the `EAT` algorithm is the possibility of modeling multi-output scenarios in a natural way. It should be noted that this does not result in more complex syntax or interpretations. In the following example, all the available inputs are used to obtain a vector of maximum output level corresponding to the grades of Science, Reading and Mathematics.
 
-```{r multioutput, eval = F}
+```{r smr_model, collapse = FALSE}
 # Input indexes
 input <- 6:18
 
 # Output indexes
 output <- 3:5
 
-multioutput_tree <- EAT(data = training, x = input, y = output,
-                        numStop = 8)
+smr_model <- EAT(data = training, 
+                 x = input, 
+                 y = output,
+                 numStop = 6)
 ```
 
-```{r plot_multioutput, fig.width = 10.5, fig.height = 8, fig.align = 'center', eval = F}
-EAT_plot(tree = multioutput_tree, data = training, 
-         x = input, y = output)
+```{r smr_model_plot, fig.width = 10.5, fig.height = 8, fig.align = 'center'}
+EAT_plot(t = smr_model)
 ```
 
-`predict` function returns a `data.frame` with the expected output for a set of observations.
+As any other Machine Learning algorithm, `EAT` performs predictions by `predict` function. `predict` returns a `data.frame` with the expected output(s) for a set of observations. `::` should be used to avoid conflicts between packages. The arguments to the `predict` function are `t` (an `EAT` object) and `newdata` (dataframe with input variables). 
 
 ```{r predict, eval = F}
-predict(tree, data, 
-        x, y)
+eat::predict(t, newdata)
 ```
 
-```{r prediction, collapse = F, eval = F}
-predictions <- eat::predict(tree = multioutput_tree,
-                            data = test,
-                            x = input,
-                            y = output)
-
-class(predictions)
+```{r prediction, collapse = F}
+eat::predict(t = smr_model,
+             newdata = test[, input])
 ```
+
+## Efficiency scores
+
+Efficiency scores are numerical values which indicates the grade of efficiency of certain DMU. Depending on the model used, the efficiency paradigm changes. `efficiency_scores` provides a numeric vector with the efficiency score for each DMU and a brief descriptive analysis.
+
+```{r efficiency, eval = FALSE}
+efficiency_scores(object,
+                  score_model,
+                  r = 4)
+```
+
+The following models are available:
+
+* `EAT_BCC_out`: Banker Charnes and Cooper adapted to EAT with output orientation.
+* `EAT_BCC_in`: Banker Charnes and Cooper adapted to EAT with input orientation.
+* `EAT_DDF`: Directional Distance Function adapted to EAT.
+* `EAT_RSL_out`: Rusell adapted to EAT with output orientation.
+* `EAT_RSL_in`: Rusell adapted to EAT with input orientation.
+* `EAT_WAM`: Weighted Additive Model adapted to EAT.
+
+In addition, a number of decimal units (`r`) can be added for calculating scores. 
+
+```{r scores, collapse = FALSE}
+scores <- efficiency_scores(object = smr_model, 
+                  scores_model = "EAT_BCC_in",
+                  r = 4)
+```
+
+Scores can be represented in two ways:
+
+* A jitter plot from `ggplot2` is provided. DMUs are grouped in nodes (same input paradigm) and its score are showed. A black point represents the score mean in a group and the line the standard deviation. Finally, the user can specify an upper bound (`upb`) and a lower bound (`lwb`) in order to show the labels.
+
+```{r efficiency_jitter, eval = FALSE}
+efficiency_jitter(object, scores,
+                  lwb = 0, upb = 1)
+```
+
+```{r jitter_single, collapse = FALSE, fig.width = 10.5, fig.height = 8, fig.align = 'center'}
+efficiency_jitter(object = single_model,
+                  scores = scores,
+                  lwb = 0.7)
+```
+
+* A density plot from `ggplot2` is available too. In red, density of `EAT` and in blue density of `FDH`
+
+```{r efficiency_density, eval = F}
+efficiency_density(object,
+                   scores,
+                   FDH = TRUE)
+
+```
+
+```{r density_single, collapse = FALSE, fig.width = 10.5, fig.height = 8, fig.align = 'center'}
+efficiency_density(object = single_model,
+                   scores = scores,
+                   FDH = TRUE)
+
+```
+
+**COMPARAR CON LA FRONTERA**
+
+```{r frontier_comparar, fig.width = 10.5, fig.height = 6, fig.align = 'center'}
+plot(frontier)
+```
+
+
 
 At this point, a brief summary of the available functions is presented:
 
 * `EAT` performs an individual regression tree to predict the maximum level of the output(s)
 * `frontier` returns a plot showing the prediction frontier and DMUs using a scatter plot. It is only availabe por one input and one output.
 * `EAT_plot` displays a tree-structure plot with detailed information on nodes and space division.
-* `M_Breiman` calculates the importance of each of the variables.
+* `ranking` calculates the importance for each predictor.
 * `predict` returns a prediction for each observation.
 
-## Efficiency scores
-
-Efficiency scores are numerical values which indicates the grade of efficiency of certain DMU. Depending on the model used, the efficiency thresholds change. `efficiency_scores` provides a numeric vector with the efficiency scores, an histogram and a brief descriptive analysis to know the score variability.
-
-```{r efficiency, eval = FALSE}
-efficiency_scores(data, tree,
-                  x, y,
-                  scores_model)
-```
-
-The following models are available:
-
-* `EAT_BBC_output`: Banker Charnes and Cooper adapted to EAT with output orientation.
-* `EAT_BBC_input`: Banker Charnes and Cooper adapted to EAT with input orientation.
-* `EAT_DD`: Directional Distance adapted to EAT.
-* `EAT_Rusell_output`: Rusell adapted to EAT with output orientation.
-* `EAT_Rusell_input`: Rusell adapted to EAT with input orientation.
-* `EAT_WA`: Weighted Additive adapted to EAT with input orientation.
-
-
-```{r scores,  fig.width = 10.5, fig.height = 8, fig.align = 'center', collapse = FALSE, eval = F}
-efficiency <- efficiency_scores(data = training, 
-                                tree = multioutput_tree, 
-                                x = input,
-                                y = output, 
-                                scores_model = "EAT_BCC_output",
-                                color = T)
-
-efficiency[[2]]
-efficiency[[3]]
-```
 
 ## Posible errors in EAT
 

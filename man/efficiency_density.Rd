@@ -2,24 +2,20 @@
 % Please edit documentation in R/efficiency.R
 \name{efficiency_density}
 \alias{efficiency_density}
-\title{Efficiency Density FDH and EAT}
+\title{Efficiency Scores Density Plot}
 \usage{
-efficiency_density(scores, data, tree, x, y)
+efficiency_density(object, scores, FDH = TRUE)
 }
 \arguments{
-\item{scores}{Score object}
+\item{object}{An EAT object.}
 
-\item{data}{Data to be used.}
+\item{scores}{Dataframe with scores.}
 
-\item{tree}{Tree structure.}
-
-\item{x}{Column input indexes in data.}
-
-\item{y}{Column output indexes in data.}
+\item{FDH}{Logical. If FDH = TRUE, density plot for FDH is showed too.}
 }
 \value{
-Efficiency scores
+Density plot for scores
 }
 \description{
-This function returns a density plot
+Density plot for scores. EAT scores in red and FDH scores in blue.
 }

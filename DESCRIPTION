@@ -23,6 +23,7 @@ Imports:
     ggplot2,
     ggparty,
     partykit,
+    ggrepel,
     Rdpack,
     lpSolveAPI
 Suggests: 

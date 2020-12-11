@@ -9,14 +9,14 @@
 #' @param rownames Logical. If T, row names are displayed instead of points.
 #' @param rwn.size Integer. Rowname size.
 #'
-#' @importFrom ggplot2 ggplot aes_string geom_point geom_line geom_text xlab ylab
+#' @importFrom ggplot2 ggplot aes_string geom_point geom_line geom_text xlab ylab xlim ylim
 #' @importFrom conflicted conflict_prefer
 #'
 #' @return Scatter plot with DMUs and the frontier predicted by EAT.
 #' 
 #' @export
-frontier <- function(t, train.data = FALSE, train.color = "black", pch = 19, rownames = FALSE, 
-                     rwn.size = 3){
+frontier <- function(t, train.data = FALSE, train.color = "black", pch = 19, 
+                     rownames = FALSE, rwn.size = 3){
   conflict_prefer("predict", "eat")
   
   t_data <- t[["data"]][["data"]]
@@ -26,6 +26,8 @@ frontier <- function(t, train.data = FALSE, train.color = "black", pch = 19, row
   tree <- t[["tree"]]
   x_names <- t[["data"]][["input_names"]]
   y_names <- t[["data"]][["output_names"]]
+  
+  x1 <- NULL
 
   if(length(x) > 1 || length(y) > 1){
     stop(cat("More than one input or one output are not allowed"))

@@ -235,6 +235,8 @@ deepEAT <- function(data, x, y, numStop) {
 #'
 #' @return Printing in table format with the data described above.
 print_results <- function(EAT) {
+  
+  index <- NULL
 
   results <- EAT[["nodes_df"]][["leafnodes_df"]] %>%
     select(-index)
@@ -267,7 +269,7 @@ EAT_object <- function(data, x, y, register_names, numStop, fold, na.rm, tree) {
   
   colnames <- c("Node", "N", "Proportion", output_names, "Error")
   
-  SL <- NULL
+  SL <- a <- R <- N <- id <- Prop <- MSE <- index <- NULL
 
   # Tree as data.frame
   nodes_frame <- data.frame(Reduce(rbind, tree))

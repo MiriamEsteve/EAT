@@ -25,7 +25,8 @@ Imports:
     partykit,
     ggrepel,
     Rdpack,
-    lpSolveAPI
+    lpSolveAPI,
+    utils
 Suggests: 
     rmarkdown,
     testthat

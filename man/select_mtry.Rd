@@ -2,22 +2,22 @@
 % Please edit documentation in R/rfEAT.R
 \name{select_mtry}
 \alias{select_mtry}
-\title{Select m_try}
+\title{Select possible inputs in split.}
 \usage{
 select_mtry(s_mtry, t, nX, nY)
 }
 \arguments{
-\item{s_mtry}{Select number of inputs. It could be: "Breiman", "DEA1", "DEA2", "DEA3" or "DEA4"}
+\item{s_mtry}{Select number of inputs. It could be: \code{"Breiman"}, \code{"DEA1"}, \code{"DEA2"}, \code{"DEA3"} or \code{"DEA4"}.}
 
-\item{t}{Node}
+\item{t}{Node which is being splitted.}
 
-\item{nX}{Number of columns input indexes in data.}
+\item{nX}{Number of inputs in data.}
 
-\item{nY}{Number of columns output indexes in}
+\item{nY}{Number of outputa in data.}
 }
 \value{
 Number of inputs selected according with the rule specified.
 }
 \description{
-This function is a middle function to build "m" EAT trees in forest
+This function selects the number of inputs for a split in Random Forest.
 }

@@ -17,7 +17,7 @@ EAT(data, x, y, numStop = 5, fold = 5, na.rm = T)
 
 \item{fold}{Integer. Number of folds in which is divided the dataset to apply cross-validation during the pruning.}
 
-\item{na.rm}{Logical. If True, NA rows are omitted. If False, an error occurs in case of NA rows.}
+\item{na.rm}{Logical. If \code{TRUE}, \code{NA} rows are omitted.}
 }
 \value{
 A list of class EAT is returned containing data, control parmeters and the Efficiency Analysis Trees model.

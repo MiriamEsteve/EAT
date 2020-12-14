@@ -337,8 +337,11 @@ EAT_WAM <- function(j, scores, x_k, y_k, atreeTk, ytreeTk, nX, nY, N_leaves) {
 #' @title Efficiency Scores
 #'
 #' @description This function calculates the efficiency scores for each DMU.
-#'
+#' 
+#' @param data Dataframe for which the efficiency score is calculated.
 #' @param object An EAT object.
+#' @param x Vector. Column input indexes in data.
+#' @param y Vector. Column output indexes in data.
 #' @param scores_model Mathematic programming model to calculate scores. 
 #' \itemize{
 #' \item{\code{EAT_BCC_out}} BBC model. Output orientation.
@@ -349,6 +352,7 @@ EAT_WAM <- function(j, scores, x_k, y_k, atreeTk, ytreeTk, nX, nY, N_leaves) {
 #' \item{\code{EAT_WAM}}     Weighted Additive model.
 #' }
 #' @param r Integer. Decimal units for scores.
+#' @param na.rm Logical. If \code{TRUE}, \code{NA} rows are omitted.
 #'  
 #' @importFrom dplyr summarise %>%
 #' @importFrom stats median quantile sd
@@ -357,25 +361,39 @@ EAT_WAM <- function(j, scores, x_k, y_k, atreeTk, ytreeTk, nX, nY, N_leaves) {
 #' @export
 #'
 #' @return Efficiency scores
-efficiency_scores <- function(object, scores_model, r = 4) {
+efficiency_EAT <- function(data, x, y, object, 
+                           scores_model, r = 4, na.rm = TRUE) {
   
   if (!scores_model %in% c("EAT_BCC_out", "EAT_BCC_in", "EAT_DDF", 
                            "EAT_RSL_out", "EAT_RSL_in", "EAT_WAM")){
     stop("You should choose an available model. Please check help(efficiency_scores)")
   }
   
-  data <- object[["data"]][["data"]]
-  x <- object[["data"]][["x"]]
-  y <- object[["data"]][["y"]]
+  train_names <- c(object[["data"]][["input_names"]], object[["data"]][["output_names"]])
   
+  data <- preProcess(data, x, y, na.rm = T)
+  x <- 1:(ncol(data) - length(y))
+  y <- (length(x) + 1):ncol(data)
+  
+  data_names <- names(data)
+  
+  if (!is.data.frame(data)){
+    stop("newdata must be a data.frame")
+  } else if (length(train_names) != length(data_names)){
+    stop("Training and prediction data must have the same number of variables")
+  } else if (!all(train_names == data_names)){
+    stop(cat("Variable name: ", data_names[1], "not found in taining data"))
+  }
+
   j <- nrow(data)
   scores <- matrix(nrow = j, ncol = 1)
   x_k <- as.matrix(data[, x])
   y_k <- as.matrix(data[, y])
-  atreeTk <- object[["model"]][["a"]]
-  ytreeTk <- object[["model"]][["y"]]
   nX <- length(x)
   nY <- length(y)
+  
+  atreeTk <- object[["model"]][["a"]]
+  ytreeTk <- object[["model"]][["y"]]
   N_leaves <- object[["model"]][["leaf_nodes"]]
   
   if (scores_model == "EAT_BCC_out"){
@@ -396,8 +414,6 @@ efficiency_scores <- function(object, scores_model, r = 4) {
   } else if (scores_model == "EAT_WAM"){
     scores <- EAT_WAM(j, scores, x_k, y_k, atreeTk, ytreeTk, nX, nY, N_leaves)
   }
-
-  V1 <- NULL
 
   scores <- as.data.frame(scores)
   names(scores) <- scores_model
@@ -435,8 +451,6 @@ efficiency_scores <- function(object, scores_model, r = 4) {
 #'
 #' @return Geom jitter plot with DMUs and scores.
 efficiency_jitter <- function(object, scores, upb = 1, lwb = 0) {
-  
-  id <- index <- Group <- Score <- NULL
   
   groups <- object[["nodes_df"]][["leafnodes_df"]] %>%
     select(id, index)

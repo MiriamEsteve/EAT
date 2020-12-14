@@ -11,8 +11,7 @@
 #'
 #' @return Barplot representing each variable in the x-axis and its importance in the y-axis.
 barplot_importance <- function(m, threshold) {
-  Importance <- NULL
-
+  
   barplot_importance <- ggplot(m, aes(x = reorder(row.names(m), -Importance), 
                                       y = Importance)) +
     geom_col() +
@@ -37,8 +36,6 @@ barplot_importance <- function(m, threshold) {
 #'
 #' @return A dataframe with the best split for each node and variable and its importance.
 imp_var_Breiman <- function(data, tree, x, y, r) {
-  id <- NULL
-
   index <- tree[[1]][["index"]]
 
   result <- list()
@@ -115,8 +112,6 @@ imp_var_Breiman <- function(data, tree, x, y, r) {
     }
   }
 
-  X1 <- X2 <- X3 <- X4 <- X5 <- X6 <- X7 <- NULL
-
   resultado <- matrix(unlist(result), nrow = length(result), byrow = T) %>%
     data.frame() %>%
     rename(
@@ -160,8 +155,6 @@ M_Breiman <- function(object, r) {
   resultado <- imp_var_Breiman(data, tree, x, y, r)
   
   M <- as.list(rep(0, nX))
-  
-  xi <- desc <- Importance <- id <- NULL
   
   for (var in 1:nX) {
     for (t in 1:length(tree)) {
@@ -210,7 +203,7 @@ M_Breiman <- function(object, r) {
 #' @return Dataframe with scores or list with scores and barplot.
 #' 
 #' @export   
-ranking <- function(object, r = 2, threshold = 70, barplot = TRUE) {
+ranking_EAT <- function(object, r = 2, threshold = 70, barplot = TRUE) {
   
   if (!class(object) %in% c("EAT", "RFEAT")){
     stop("Only EAT or RFEAT objects are supported")

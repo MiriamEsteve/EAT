@@ -309,24 +309,44 @@ scores <- efficiency_scores(object = smr_model,
                   r = 4)
 ```
 
-efficiency_barplot
+Scores can be represented in two ways:
 
-Esta función hay que mejorarla bastante
+* A jitter plot from `ggplot2` is provided. DMUs are grouped in nodes (same input paradigm) and its score are showed. A black point represents the score mean in a group and the line the standard deviation. Finally, the user can specify an upper bound (`upb`) and a lower bound (`lwb`) in order to show the labels.
 
-```{r barplot_scores, collapse = FALSE, fig.width = 10.5, fig.height = 8, fig.align = 'center'}
-efficiency_barplot(object = smr_model,
-                   scores = scores,
-                   color = F)
+```{r efficiency_jitter, eval = FALSE}
+efficiency_jitter(object, scores,
+                  lwb = 0, upb = 1)
 ```
 
-efficiency_density
+```{r jitter_single, collapse = FALSE, fig.width = 10.5, fig.height = 8, fig.align = 'center'}
+efficiency_jitter(object = single_model,
+                  scores = scores,
+                  lwb = 0.7)
+```
 
-```{r efficiency_density, collapse = FALSE, fig.width = 10.5, fig.height = 8, fig.align = 'center'}
-efficiency_density(object = smr_model,
+* A density plot from `ggplot2` is available too. In red, density of `EAT` and in blue density of `FDH`
+
+```{r efficiency_density, eval = F}
+efficiency_density(object,
+                   scores,
+                   FDH = TRUE)
+
+```
+
+```{r density_single, collapse = FALSE, fig.width = 10.5, fig.height = 8, fig.align = 'center'}
+efficiency_density(object = single_model,
                    scores = scores,
                    FDH = TRUE)
 
 ```
+
+**COMPARAR CON LA FRONTERA**
+
+```{r frontier_comparar, fig.width = 10.5, fig.height = 6, fig.align = 'center'}
+plot(frontier)
+```
+
+
 
 At this point, a brief summary of the available functions is presented:
 

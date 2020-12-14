@@ -203,7 +203,7 @@ split <- function(data, tree, leaves, t, x, y, numStop) {
 mse <- function(data, t, y) {
   if (length(y) == 1) t[["y"]] <- unlist(t[["y"]])
 
-  error <- sum((data[t[["index"]], y] - t[["y"]])^2) / (nrow(data) * length(y))
+  error <- sum((data[t[["index"]], y] - t[["y"]]) ^ 2) / (nrow(data) * length(y))
 
   return(round(error, 4))
 }

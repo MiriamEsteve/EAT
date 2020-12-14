@@ -1,13 +1,15 @@
 #' @title Efficiency Analysis Trees
 #'
 #' @description This function generates a stepped production frontier through regression trees. 
+#' 
+#' @name EAT
 #'
 #' @param data Dataframe or matrix containing the variables in the model.
 #' @param x Vector. Column input indexes in data.
 #' @param y Vector. Column output indexes in data.
 #' @param numStop Integer. Minimun number of observations in a node for a split to be attempted.
 #' @param fold Integer. Number of folds in which is divided the dataset to apply cross-validation during the pruning.
-#' @param na.rm Logical. If True, NA rows are omitted. If False, an error occurs in case of NA rows.
+#' @param na.rm Logical. If \code{TRUE}, \code{NA} rows are omitted.
 #'
 #' @details The EAT function generates a regression tree model based on CART \insertCite{breiman1984}{eat} under a new approach that guarantees the obtaining of a stepped production frontier that fulfills the property of free disposability. This frontier shares the aforementioned aspects with the FDH frontier \insertCite{deprins1984}{eat} but enhances some of its disadvantages such as the overfitting problem or the underestimation of technical inefficiency. More details in \insertCite{esteve2020}{eat}
 #'
@@ -164,7 +166,8 @@ deepEAT <- function(data, x, y, numStop) {
     "xi" = -1,
     "s" = -1,
     "y" = -1,
-    "a" = apply(data[, x, drop = F], 2, min) %>% unname(),
+    "a" = apply(data[, x, drop = F], 2, min) %>% 
+      unname(),
     "b" = rep(Inf, nX)
   )
 
@@ -230,14 +233,12 @@ deepEAT <- function(data, x, y, numStop) {
 #'
 #' @param EAT A EAT object
 #' 
-#' @imporFrom dplyr %>% select
+#' @importFrom dplyr %>% select
 #' @importFrom knitr kable
 #'
 #' @return Printing in table format with the data described above.
 print_results <- function(EAT) {
   
-  index <- NULL
-
   results <- EAT[["nodes_df"]][["leafnodes_df"]] %>%
     select(-index)
   
@@ -268,11 +269,9 @@ EAT_object <- function(data, x, y, register_names, numStop, fold, na.rm, tree) {
   input_names <- names(data)[x]
   
   colnames <- c("Node", "N", "Proportion", output_names, "Error")
-  
-  SL <- a <- R <- N <- id <- Prop <- MSE <- index <- NULL
 
   # Tree as data.frame
-  nodes_frame <- data.frame(Reduce(rbind, tree))
+  nodes_frame <- as.data.frame(Reduce(rbind, tree))
   
   # a
   atreeTk <- nodes_frame  %>% 
@@ -330,9 +329,9 @@ EAT_object <- function(data, x, y, register_names, numStop, fold, na.rm, tree) {
   data.p <- as.data.frame(data[, x])
   names(data.p)[x] <- input_names
   
-  predictions <- eat::predict(EAT_object, data.p)
+  predictions <- predict_EAT(EAT_object, data.p)
   
-  RMSE <- sqrt(sum((data[, y] - predictions) ^ 2) / nrow(data))
+  RMSE <- sqrt(sum((data[, y] - predictions[, y]) ^ 2) / nrow(data))
   
   EAT_object[["model"]][["RMSE"]] <- RMSE
   

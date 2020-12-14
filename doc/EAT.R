@@ -164,16 +164,29 @@ scores <- efficiency_scores(object = smr_model,
                   scores_model = "EAT_BCC_in",
                   r = 4)
 
-## ----barplot_scores, collapse = FALSE, fig.width = 10.5, fig.height = 8, fig.align = 'center'----
-efficiency_barplot(object = smr_model,
-                   scores = scores,
-                   color = F)
+## ----efficiency_jitter, eval = FALSE------------------------------------------
+#  efficiency_jitter(object, scores,
+#                    lwb = 0, upb = 1)
 
-## ----efficiency_density, collapse = FALSE, fig.width = 10.5, fig.height = 8, fig.align = 'center'----
-efficiency_density(object = smr_model,
+## ----jitter_single, collapse = FALSE, fig.width = 10.5, fig.height = 8, fig.align = 'center'----
+efficiency_jitter(object = single_model,
+                  scores = scores,
+                  lwb = 0.7)
+
+## ----efficiency_density, eval = F---------------------------------------------
+#  efficiency_density(object,
+#                     scores,
+#                     FDH = TRUE)
+#  
+
+## ----density_single, collapse = FALSE, fig.width = 10.5, fig.height = 8, fig.align = 'center'----
+efficiency_density(object = single_model,
                    scores = scores,
                    FDH = TRUE)
 
+
+## ----frontier_comparar, fig.width = 10.5, fig.height = 6, fig.align = 'center'----
+plot(frontier)
 
 ## ----continent, eval = F------------------------------------------------------
 #  # Continent is a character vector, so we transform it into a factor class

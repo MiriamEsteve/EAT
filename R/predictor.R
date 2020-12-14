@@ -38,11 +38,11 @@ posIdNode <- function(tree, idNode) {
   return(-1)
 }
 
-#' @title Model prediction
+#' @title Model prediction for EAT
 #'
 #' @description This function predicts the expected output by an EAT object.
 #'
-#' @param t An EAT object.
+#' @param object An EAT object.
 #' @param newdata Dataframe. Set of input variables to predict on.
 #'
 #' @importFrom dplyr %>%
@@ -50,22 +50,22 @@ posIdNode <- function(tree, idNode) {
 #' @return Data frame with predicted values with as many columns as outputs.
 #' 
 #' @export
-predict <- function(t, newdata) {
+predict_EAT <- function(object, newdata) {
   
-  train_names <- t[["data"]][["input_names"]]
+  train_names <- object[["data"]][["input_names"]]
   test_names <- names(newdata)
   
-  if (class(newdata) != "data.frame"){
+  if (!is.data.frame(newdata)){
     stop("newdata must be a data.frame")
-  }else if (length(train_names) != length(test_names)){
+  } else if (length(train_names) != length(test_names)){
     stop("Training and prediction data must have the same number of variables")
   } else if (!all(train_names == test_names)){
     stop(cat("Variable name: ", test_names[1], "not found in taining data"))
   }
   
-  y <- t[["data"]][["y"]] 
+  y <- object[["data"]][["y"]] 
   
-  tree <- t[["tree"]]
+  tree <- object[["tree"]]
   
   predictions <- c()
 
@@ -85,7 +85,9 @@ predict <- function(t, newdata) {
   predictions <- matrix(predictions, ncol = length(y), byrow = T) %>%
     as.data.frame()
 
-  names(predictions) <-  paste(t[["data"]][["output_names"]],"_pred", sep = "")
+  names(predictions) <-  paste(object[["data"]][["output_names"]],"_pred", sep = "")
+  
+  predictions <-cbind(newdata, predictions)
 
   return(predictions)
 }

@@ -1,49 +1,46 @@
-#' @title Single input and output scenario EAT frontier
+#' @title EAT frontier graph for a single input and output scenario
 #'
 #' @description This function creates a plot with the frontier estimated by EAT for the scenario corresponding to one input and one output.
+#' 
+#' @name frontier
 #'
-#' @param t An EAT object.
-#' @param train.data Logical. If T, training DMUs are displayed.
+#' @param object An EAT object.
+#' @param train.data Logical. If \code{TRUE}, training DMUs are displayed.
 #' @param train.color String. Color for training DMUs.
 #' @param pch Integer. Point shape.
-#' @param rownames Logical. If T, row names are displayed instead of points.
-#' @param rwn.size Integer. Rowname size.
+#' @param size Integer. Point size.
+#' @param rwn Logical. If \code{TRUE}, rownames are displayed instead of points.
 #'
 #' @importFrom ggplot2 ggplot aes_string geom_point geom_line geom_text xlab ylab xlim ylim
-#' @importFrom conflicted conflict_prefer
+#' @importFrom ggrepel geom_label_repel
 #'
-#' @return Scatter plot with DMUs and the frontier predicted by EAT.
+#' @return Estimated production frontier 
 #' 
 #' @export
-frontier <- function(t, train.data = FALSE, train.color = "black", pch = 19, 
-                     rownames = FALSE, rwn.size = 3){
-  conflict_prefer("predict", "eat")
-  
-  t_data <- t[["data"]][["data"]]
-  rownames(t_data) <- t[["data"]][["row_names"]]
-  x <- t[["data"]][["x"]]
-  y <- t[["data"]][["y"]]
-  tree <- t[["tree"]]
-  x_names <- t[["data"]][["input_names"]]
-  y_names <- t[["data"]][["output_names"]]
-  
-  x1 <- NULL
+frontier <- function(object, train.data = FALSE, train.color = "black", 
+                     pch = 19, size = 1, rwn = FALSE){
+
+  t_data <- object[["data"]][["data"]]
+  rownames(t_data) <- object[["data"]][["row_names"]]
+  x <- object[["data"]][["x"]]
+  y <- object[["data"]][["y"]]
+  tree <- object[["tree"]]
+  x_names <- object[["data"]][["input_names"]]
+  y_names <- object[["data"]][["output_names"]]
 
   if(length(x) > 1 || length(y) > 1){
-    stop(cat("More than one input or one output are not allowed"))
+    stop("More than one input or one output are not allowed")
 
   } else {
 
-    x_values <- NULL
-    
-    fp <- data.frame(x_values = seq(min(t_data[, x]), max(t_data[, x]),  length.out = 2000))
+    fp <- data.frame(x_values = seq(min(t_data[, x]), max(t_data[, x]),  
+                                    length.out = 2000))
     names(fp) <- x_names
-    pred <- predict(t, fp)
-    fp[, "frontier"] <- pred
-    names(fp)[1] <- "x1"
+    pred <- predict_EAT(object, fp)
+    names(pred) <- c("x1", "frontier")
 
     plot <- ggplot(t_data) +
-     geom_line(data = fp, aes(x = x1, y = frontier), size = 1, colour = "turquoise4") +
+      geom_line(data = pred, aes(x = x1, y = frontier), size = 1, colour = "turquoise4") +
       xlab(x_names) +
       ylab(y_names)
     
@@ -52,20 +49,20 @@ frontier <- function(t, train.data = FALSE, train.color = "black", pch = 19,
         xlim(c(min(fp$x1), max(fp$x1))) +
         ylim(c(min(fp$frontier) - (min(fp$frontier) / 10), max(fp$frontier)))
     } else {
-      if (rownames == T){
-        plot <- plot +
-          geom_text(aes_string(x = x_names, 
-                               y = y_names, 
-                               label = "rownames(t_data)"),
-                    color = train.color,
-                    size = rwn.size)
-      } else {
+      plot <- plot + 
+        geom_point(aes_string(x = x_names, y = y_names),
+                   color = train.color,
+                   pch = pch,
+                   size = size)
+      
+      if (rwn == TRUE){
         plot <- plot + 
-          geom_point(aes_string(x =x_names, y = y_names),
-                     color = train.color,
-                     pch = pch)
+          geom_text_repel(aes_string(x = x_names, y = y_names, 
+                                     label = "rownames(t_data)"))
       }
     }
   }
   return(plot)
 }
+
+  

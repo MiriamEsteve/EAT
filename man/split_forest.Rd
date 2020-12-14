@@ -4,7 +4,7 @@
 \alias{split_forest}
 \title{Split node in Random Forest EAT}
 \usage{
-split_forest(data, tree, leaves, t, y, numStop, arrayK)
+split_forest(data, tree, leaves, t, x, y, numStop, arrayK)
 }
 \arguments{
 \item{data}{Data to be used.}
@@ -15,11 +15,13 @@ split_forest(data, tree, leaves, t, y, numStop, arrayK)
 
 \item{t}{Node which is being splitted.}
 
+\item{x}{Column input indexes in data.}
+
 \item{y}{Column output indexes in data.}
 
 \item{numStop}{Minimun number of observations on a node to be splitted.}
 
-\item{arrayK}{Column input indexes in data selected by s_mtry}
+\item{arrayK}{Column input indexes in data selected by s_mtry.}
 }
 \value{
 Leaves and tree lists updated with the new children nodes.

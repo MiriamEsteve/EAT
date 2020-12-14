@@ -4,10 +4,10 @@
 \alias{EAT_plot}
 \title{Efficiency Analysis Trees Plot}
 \usage{
-EAT_plot(t)
+EAT_plot(object)
 }
 \arguments{
-\item{t}{An EAT object.}
+\item{object}{An EAT object.}
 }
 \value{
 Plot object with the following elements for each node:

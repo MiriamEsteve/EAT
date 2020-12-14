@@ -2,32 +2,32 @@
 % Please edit documentation in R/frontier.R
 \name{frontier}
 \alias{frontier}
-\title{Single input and output scenario EAT frontier}
+\title{EAT frontier graph for a single input and output scenario}
 \usage{
 frontier(
-  t,
+  object,
   train.data = FALSE,
   train.color = "black",
   pch = 19,
-  rownames = FALSE,
-  rwn.size = 3
+  size = 1,
+  rwn = FALSE
 )
 }
 \arguments{
-\item{t}{An EAT object.}
+\item{object}{An EAT object.}
 
-\item{train.data}{Logical. If T, training DMUs are displayed.}
+\item{train.data}{Logical. If \code{TRUE}, training DMUs are displayed.}
 
 \item{train.color}{String. Color for training DMUs.}
 
 \item{pch}{Integer. Point shape.}
 
-\item{rownames}{Logical. If T, row names are displayed instead of points.}
+\item{size}{Integer. Point size.}
 
-\item{rwn.size}{Integer. Rowname size.}
+\item{rwn}{Logical. If \code{TRUE}, rownames are displayed instead of points.}
 }
 \value{
-Scatter plot with DMUs and the frontier predicted by EAT.
+Estimated production frontier
 }
 \description{
 This function creates a plot with the frontier estimated by EAT for the scenario corresponding to one input and one output.

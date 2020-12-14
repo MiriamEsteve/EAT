@@ -4,22 +4,26 @@
 \alias{RFEAT}
 \title{Random Forest EAT}
 \usage{
-RFEAT(m, data, x, y, numStop = 5, s_mtry = "Breiman")
+RFEAT(data, x, y, numStop = 5, m, s_mtry = "Breiman", na.rm = TRUE)
 }
 \arguments{
-\item{data}{Data to be used.}
+\item{data}{Dataframe or matrix containing the variables in the model.}
 
-\item{x}{Column input indexes in data.}
+\item{x}{Vector. Column input indexes in data.}
 
-\item{y}{Column output indexes in}
+\item{y}{Vector. Column output indexes in data.}
 
-\item{numStop}{Ending rule}
+\item{numStop}{Integer. Minimun number of observations in a node for a split to be attempted.}
 
-\item{s_mtry}{Select number of inputs. It could be: "Breiman", "DEA1", "DEA2", "DEA3" or "DEA4"}
+\item{m}{Integer. Number of trees to be build.}
+
+\item{s_mtry}{Select number of inputs. It could be: \code{"Breiman"}, \code{"DEA1"}, \code{"DEA2"}, \code{"DEA3"} or \code{"DEA4"}.}
+
+\item{na.rm}{Logical. If True, NA rows are omitted. If False, an error occurs in case of NA rows.}
 }
 \value{
 List of m trees in forest and the error that will be used in the ranking of the importance of the variables.
 }
 \description{
-This function build "m" EAT trees in forest
+This function build "m" EAT trees in a forest structure.
 }

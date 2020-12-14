@@ -91,15 +91,15 @@ EAT(data, x, y,
     na.rm = TRUE)
 ```
 
-The `frontier` function displays the frontier estimated by EAT. Training DMUs can be included by `train.data = TRUE` and its color and shape can be modified with `train.color` and `pch` respectively. Finally, rownames can be included instead of points with `rownames = TRUE` and the label size can be changed with `rwn.size`.
+The `frontier` function displays the frontier estimated by `EAT`. Training DMUs can be showed by a scatterplot if `train.data = TRUE` and its color, shape and size can be modified with `train.color`, `pch` and `size` respectively. Finally, rownames can be included with `rwn = TRUE`.
 
 ```{r frontier, eval = F}
-frontier(t,
+frontier(object,
          train.data = FALSE,
          train.color = "black",
          pch = 19,
-         rownames = FALSE,
-         rwn.size = 3)
+         rwn = FALSE,
+         size = 1.5)
 ```
 
 ```{r single_scenario, collapse = FALSE}
@@ -132,11 +132,11 @@ The printed output of `EAT` clearly shows the number of groups formed with its e
 To continue, the frontier of the previous model is displayed:
 
 ```{r single_scenario_frontier, fig.width = 10.5, fig.height = 6, fig.align = 'center'}
-frontier <- frontier(t = single_model,
-                     train.data = T,
+frontier <- frontier(object = single_model,
+                     train.data = TRUE,
                      train.color = "#F8766D",
-                     rownames = T,
-                     rwn.size = 3)
+                     rwn = TRUE,
+                     size = 1.5)
 
 plot(frontier)
 ```
@@ -165,11 +165,11 @@ science_model <- EAT(data = training, x = input, y = output)
 Now, `frontier` cannot be used since we are in a multivariate scenario. `frontier` allows us to see very clearly the regions of the input space originated with `EAT`, however, this is impossible with more than 1 input and 1 output. In this case, it is provided the typical tree structure in which the relations between the predicted variable(s) and the predictive variable(s) are showed. `EAT_plot` performs a tree plot in the same line of simplicity for the user, since only the `EAT` object have to be introduced. 
 
 ```{r EAT_plot, fig.width = 10.5, fig.height = 9, fig.align = 'center', eval = FALSE}
-EAT_plot(t)
+EAT_plot(object)
 ```
 
 ```{r science_plot, fig.width = 10.5, fig.height = 9, fig.align = 'center'}
-EAT_plot(t = science_model)
+EAT_plot(object = science_model)
 ```
 
 In each node, we can obtain the following information:
@@ -183,17 +183,17 @@ In each node, we can obtain the following information:
 Additionally, `EAT` allows a feature selection. For this purpose, `ranking` function is showed. In this case, `EAT` or `RFEAT` (more details later) objects are accepted. The user can specify the number of decimal units (`r`), a barplot with the scores of importance (`barplot`) and a broken line to display in the graph (`threshold`).
 
 ```{r ranking, eval = F}
-ranking(object,
-        r = 2,
-        barplot = TRUE,
-        threshold = 70)
+ranking_EAT(object,
+            r = 2,
+            barplot = TRUE,
+            threshold = 70)
 ```
 
 ```{r science_importance, fig.width = 10.5, fig.height = 6, fig.align = 'center'}
-ranking(object = science_model,
-        r = 2,
-        barplot = TRUE,
-        threshold = 70)
+ranking_EAT(object = science_model,
+            r = 2,
+            barplot = TRUE,
+            threshold = 70)
 ```
 
 Now, we carry out a feature selection by the score obtained in `ranking`. We set `threshold` in 75 and we select those features whose importance is greater than this value, that is, **S**, **GDP_PPP**, **NBMC**, **HW** and **I**. We repeat the analysis:
@@ -218,7 +218,7 @@ cat("Science variables model reduced --> RMSE: ", science_var_reduced_model[["mo
 In this way we can, on the one hand, know which are the most important variables for obtaining maximum levels of our output(s) and, on the other hand, repeat the analysis with fewer variables and then, reducing computation time.
 
 ```{r science_reduced_plot, fig.width = 10.5, fig.height = 9, fig.align = 'center'}
-EAT_plot(t = science_var_reduced_model)
+EAT_plot(object = science_var_reduced_model)
 ```
 
 In this section, we also deal with `fold` and `numStop` arguments (by default both are 5). This last modeling, with `fold = 5` and `numStop = 5`, results in the tree shown above with 23 nodes. The tree size is highly dependent on the `numStop` argument, which indicates how much the minimum number of observations must be in a node to be considered a leaf node. So, higher values in `numStop` smaller size of the tree. About the `fold` argument, it is related to the cross-validation technique for pruning and indicates how many parts the data set has been divided into to select the training and test parts. Although it is not directly related to the size of the tree, its modification can lead to different frontiers. So now, we introduce `numStop = 8` expecting a smaller tree.
@@ -247,7 +247,7 @@ cat("Science variable model reduced NumStop --> RMSE: ", science_var_reduced_num
 Now we have found a model that surpasses the previous two: size as small as the first and error as low as the second.
 
 ```{r science_reduced_model_second_plot, fig.width = 10.5, fig.height = 8, fig.align = 'center'}
-EAT_plot(t = science_var_reduced_numStop)
+EAT_plot(object = science_var_reduced_numStop)
 ```
 
 ## Example 2: the multioutput scenario
@@ -268,18 +268,18 @@ smr_model <- EAT(data = training,
 ```
 
 ```{r smr_model_plot, fig.width = 10.5, fig.height = 8, fig.align = 'center'}
-EAT_plot(t = smr_model)
+EAT_plot(object = smr_model)
 ```
 
-As any other Machine Learning algorithm, `EAT` performs predictions by `predict` function. `predict` returns a `data.frame` with the expected output(s) for a set of observations. `::` should be used to avoid conflicts between packages. The arguments to the `predict` function are `t` (an `EAT` object) and `newdata` (dataframe with input variables). 
+As any other Machine Learning algorithm, `EAT` performs predictions by `predict` function. `predict` returns a `data.frame` with the expected output(s) for a set of observations. The arguments to the `predict` function are `t` (an `EAT` object) and `newdata` (dataframe with input variables). 
 
 ```{r predict, eval = F}
-eat::predict(t, newdata)
+predict_EAT(object, newdata)
 ```
 
 ```{r prediction, collapse = F}
-eat::predict(t = smr_model,
-             newdata = test[, input])
+predict_EAT(object = smr_model,
+            newdata = test[, input])
 ```
 
 ## Efficiency scores
@@ -287,9 +287,10 @@ eat::predict(t = smr_model,
 Efficiency scores are numerical values which indicates the grade of efficiency of certain DMU. Depending on the model used, the efficiency paradigm changes. `efficiency_scores` provides a numeric vector with the efficiency score for each DMU and a brief descriptive analysis.
 
 ```{r efficiency, eval = FALSE}
-efficiency_scores(object,
-                  score_model,
-                  r = 4)
+efficiency_EAT(data, x, y, 
+               object,
+               score_model,
+               r = 4)
 ```
 
 The following models are available:
@@ -304,9 +305,12 @@ The following models are available:
 In addition, a number of decimal units (`r`) can be added for calculating scores. 
 
 ```{r scores, collapse = FALSE}
-scores <- efficiency_scores(object = smr_model, 
-                  scores_model = "EAT_BCC_in",
-                  r = 4)
+scores <- efficiency_EAT(data = training,
+                         x = input, 
+                         y = output,
+                         object = smr_model, 
+                         scores_model = "EAT_BCC_in",
+                         r = 4)
 ```
 
 Scores can be represented in two ways:
@@ -345,6 +349,9 @@ efficiency_density(object = single_model,
 ```{r frontier_comparar, fig.width = 10.5, fig.height = 6, fig.align = 'center'}
 plot(frontier)
 ```
+
+## Random Forest
+
 
 
 

@@ -2,7 +2,7 @@
 #'
 #' @description Plot an EAT model. 
 #'
-#' @param t An EAT object.
+#' @param object An EAT object.
 #'
 #' @importFrom partykit as.partynode party partysplit
 #' @importFrom ggparty ggparty geom_edge geom_edge_label geom_node_label
@@ -20,12 +20,10 @@
 #' y: output prediction
 #' 
 #' @export
-EAT_plot <- function(t) {
-  splitvar <- Id <- R <- nodesize <- Y <- n1 <- n2 <-  NULL
-  
-  tree <- t[["tree"]]
-  data <- t[["data"]][["data"]]
-  y <- t[["data"]][["y"]]
+EAT_plot <- function(object) {
+  tree <- object[["tree"]]
+  data <- object[["data"]][["data"]]
+  y <- object[["data"]][["y"]]
   
   N <- nrow(data)
   nodelist <- vector("list", length(tree))

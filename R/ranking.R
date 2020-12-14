@@ -35,7 +35,7 @@ barplot_importance <- function(m, threshold) {
 #' @importFrom dplyr %>% filter
 #'
 #' @return A dataframe with the best split for each node and variable and its importance.
-imp_var_Breiman <- function(data, tree, x, y, r) {
+imp_var_CART <- function(data, tree, x, y, r) {
   index <- tree[[1]][["index"]]
 
   result <- list()
@@ -152,7 +152,7 @@ M_Breiman <- function(object, r) {
   y <- object[["data"]][["y"]]
   nX <- length(x)
   
-  resultado <- imp_var_Breiman(data, tree, x, y, r)
+  resultado <- imp_var_CART(data, tree, x, y, r)
   
   M <- as.list(rep(0, nX))
   

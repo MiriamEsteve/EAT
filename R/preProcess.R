@@ -17,7 +17,7 @@ preProcess <- function(data, x, y, na.rm = T) {
     if (is.numeric(data[, i]) || is.integer(data[, i]) || is.double(data[, i])) {
       next
     } else {
-      stop(cat("The variable", names(data[i]), "must be numeric, integer or double \n"))
+      stop(paste("The variable", names(data[i]), "must be numeric, integer or double \n"))
     }
   }
   
@@ -27,7 +27,7 @@ preProcess <- function(data, x, y, na.rm = T) {
     } else if (is.numeric(data[, i]) || is.integer(data[, i]) || is.double(data[, i])){
       next
     } else {
-      stop(cat("The variable", names(data[i]), "must be numeric, integer or double. In case of an ordinal variable, order = T is necessary. \n"))
+      stop(paste("The variable", names(data[i]), "must be numeric, integer or double. In case of an ordinal variable, order = T is necessary. \n"))
     }
   }
 

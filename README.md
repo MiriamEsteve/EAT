@@ -13,5 +13,5 @@ Although the model training has only been described for a single response variab
 ```{r library}
 library(eat)
 d <- data("PISAindex")
-print(d)
+print(5 + 5)
 ```

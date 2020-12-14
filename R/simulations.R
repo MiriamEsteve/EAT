@@ -9,7 +9,7 @@
 #' @importFrom stats runif rnorm
 #'
 #' @return Data frame with the values of a scenario with nX inputs and nY outputs.
-sgl_out_sce <- function(N, nX) {
+sgle.out_scenario <- function(N, nX) {
   if(!(nX %in% c(1, 3, 6, 9, 12, 15))){
     stop(paste(nX, "is not allowed"))
   }
@@ -64,7 +64,7 @@ sgl_out_sce <- function(N, nX) {
       (data[, "x4"] ** 0.005) + (data[, "x5"] ** 0.001) + (data[, "x6"] ** 0.004) +
       (data[, "x7"] ** 0.08) + (data[, "x8"] ** 0.05) + (data[, "x9"] ** 0.05) +
       (data[, "x10"] ** 0.05) + (data[, "x11"] ** 0.025) + (data[, "x12"] ** 0.025) +
-      (data[, "x13"] ** 0.025) + (data[, "x14"] ** 0.025) + (data["x15"] ** 0.15)
+      (data[, "x13"] ** 0.025) + (data[, "x14"] ** 0.025) + (data[, "x15"] ** 0.15)
     data["y"] = y - u
     data["yD"] = y
   }
@@ -73,13 +73,11 @@ sgl_out_sce <- function(N, nX) {
 }
 
 
-#' @title Multioutput data generation
+#' @title 2 inputs & 2 outputs scenario
 #'
-#' @description This function is used to simulate the data in a multioutput scenario.
+#' @description This function is used to simulate the data in a scenario with 2 inputs and 2 outputs.
 #'
 #' @param N Sample size.
-#' @param nX Number of inputs.
-#' @param nY Number of outputs.
 #' @param border Percentage of DMU's in the frontier.
 #' @param noise Random noise.
 #'
@@ -87,7 +85,10 @@ sgl_out_sce <- function(N, nX) {
 #' @importFrom stats runif rnorm
 #'
 #' @return Data frame with the values of a scenario with nX inputs and nY outputs.
-simulated_data <- function(N, nX, nY, border, noise = NULL) {
+two.out_two.in_scenario <- function(N, border, noise = NULL) {
+  nX <- 2
+  nY <- 2
+  
   colnames <- c(paste("x", 1:nX, sep = ""), paste("y", 1:nY, sep = ""))
 
   data <- matrix(

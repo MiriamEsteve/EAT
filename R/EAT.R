@@ -78,7 +78,8 @@ EAT <- function(data, x, y, numStop = 5, fold = 5, na.rm = T) {
   # Insert row to know deepEAT is called by this one
   tree_alpha_list <- deepEAT(data, x, y, numStop)
 
-  data <- data[-1] %>% as.data.frame()
+  data <- data[-1] %>% 
+    as.data.frame()
   
   # Best Tk for now
   Tk <- tree_alpha_list[[1]]

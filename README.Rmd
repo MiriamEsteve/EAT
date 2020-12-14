@@ -20,4 +20,6 @@ Although the model training has only been described for a single response variab
 library(eat)
 d <- data("PISAindex")
 print(5 + 5)
+print(6 + 6)
+print(1 + 1)
 ```

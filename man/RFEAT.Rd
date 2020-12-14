@@ -19,7 +19,7 @@ RFEAT(data, x, y, numStop = 5, m, s_mtry = "Breiman", na.rm = TRUE)
 
 \item{s_mtry}{Select number of inputs. It could be: \code{"Breiman"}, \code{"DEA1"}, \code{"DEA2"}, \code{"DEA3"} or \code{"DEA4"}.}
 
-\item{na.rm}{Logical. If True, NA rows are omitted. If False, an error occurs in case of NA rows.}
+\item{na.rm}{Logical. If \code{TRUE}, NA rows are omitted.}
 }
 \value{
 List of m trees in forest and the error that will be used in the ranking of the importance of the variables.

@@ -11,8 +11,6 @@
 #' @importFrom dplyr %>%
 #' @importFrom stats runif rnorm
 #'
-#' @export
-#'
 #' @return Data frame with the values of a scenario with nX inputs and nY outputs.
 simulated_data <- function(N, nX, nY, border, noise = NULL) {
   colnames <- c(paste("x", 1:nX, sep = ""), paste("y", 1:nY, sep = ""))
@@ -48,12 +46,16 @@ simulated_data <- function(N, nX, nY, border, noise = NULL) {
     N_sample <- length(index)
 
     half_normal <- rnorm(N_sample, 0, 0.3**(1 / 2)) %>%
-      abs() %>%
-      exp()
+      abs()
+    
+    half_normal <- exp(half_normal)
 
     if (!is.null(noise)) {
-      normal1 <- rnorm(N_sample, 0, 0.01**(1 / 2)) %>% exp()
-      normal2 <- rnorm(N_sample, 0, 0.01**(1 / 2)) %>% exp()
+      normal1 <- rnorm(N_sample, 0, 0.01**(1 / 2))
+      normal1 <- exp(normal1)
+      
+      normal2 <- rnorm(N_sample, 0, 0.01**(1 / 2))
+      normal2 <- exp(normal2)
 
       data[index, "y1"] <- data[index, "y1"] / (half_normal * normal1)
       data[index, "y2"] <- data[index, "y2"] / (half_normal * normal2)

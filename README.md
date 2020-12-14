@@ -1,10 +1,4 @@
----
-title: "EAT: Efficiency Analysis Trees"
-author: "Víctor Javier España Roch"
-output:
-  html_document:
-    self_contained: false
----
+# EAT: Efficiency Analysis Trees
 
 [Efficiency Analysis Trees](https://www.sciencedirect.com/science/article/pii/S0957417420306072) is an alghoritm by which a production frontier is obtained through and adaptation of regression trees based on CART. The generation of production frontiers falls within the field of efficiency analysis, of which some concepts must be known:
 
@@ -21,5 +15,3 @@ library(eat)
 d <- data("PISAindex")
 print(d)
 ```
-
-data("records")

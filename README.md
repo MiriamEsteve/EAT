@@ -1,3 +1,9 @@
+---
+output: 
+  html_document:
+    keep_md: true
+---
+
 # EAT: Efficiency Analysis Trees
 
 [Efficiency Analysis Trees](https://www.sciencedirect.com/science/article/pii/S0957417420306072) is an alghoritm by which a production frontier is obtained through and adaptation of regression trees based on CART. The generation of production frontiers falls within the field of efficiency analysis, of which some concepts must be known:
@@ -10,8 +16,13 @@ The `EAT` algorithm must be conceived as a modeling of the response variable (ou
 
 Although the model training has only been described for a single response variable so far, multiple output scenarios are also available. Additionally, modeling of the response variable(s) can be done using individual CARTs for regression or using Random Forest. On the other hand, the `EAT` object can be plotted as a tree structure to illustrate the relationship between the predictors and the predicted variable and, in the case of a single input and a single output (`y ~ x`), a representation of the frontier is acceptable. Finally, a ranking of variables can be obtained, giving the possibility of making a feature selection.
 
-```{r library}
+
+```r
 library(eat)
 d <- data("PISAindex")
-gitprint(5 + 5)
+print(5 + 5)
+```
+
+```
+## [1] 10
 ```

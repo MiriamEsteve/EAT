@@ -238,14 +238,15 @@ RandomEAT <- function(data, x, y, numStop, s_mtry){
 #' @param numStop Integer. Minimun number of observations in a node for a split to be attempted.
 #' @param m Integer. Number of trees to be build.
 #' @param s_mtry  Select number of inputs. It could be: \code{"Breiman"}, \code{"DEA1"}, \code{"DEA2"}, \code{"DEA3"} or \code{"DEA4"}.
-#' @param na.rm Logical. If True, NA rows are omitted. If False, an error occurs in case of NA rows.
+#' @param na.rm Logical. If \code{TRUE}, NA rows are omitted.
 #'
 #' @importFrom dplyr %>% row_number
 #'
 #' @export
 #' 
 #' @return List of m trees in forest and the error that will be used in the ranking of the importance of the variables.
-RFEAT <- function(data, x, y, numStop = 5, m, s_mtry = "Breiman", na.rm = TRUE){
+RFEAT <- function(data, x, y, numStop = 5, m, 
+                  s_mtry = "Breiman", na.rm = TRUE){
   conflict_prefer("filter", "dplyr")
   
   register_names <- rownames(data)

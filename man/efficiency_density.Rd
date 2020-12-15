@@ -4,17 +4,15 @@
 \alias{efficiency_density}
 \title{Efficiency Scores Density Plot}
 \usage{
-efficiency_density(object, scores, FDH = TRUE)
+efficiency_density(scores_EAT, scores_FDH = NULL)
 }
 \arguments{
-\item{object}{An EAT object.}
+\item{scores_EAT}{Dataframe with EAT scores.}
 
-\item{scores}{Dataframe with scores.}
-
-\item{FDH}{Logical. If FDH = TRUE, density plot for FDH is showed too.}
+\item{scores_FDH}{Optional. Dataframe with FDH scores.}
 }
 \value{
-Density plot for scores
+Density plot for scores and data.frame with numeric results.
 }
 \description{
 Density plot for scores. EAT scores in red and FDH scores in blue.

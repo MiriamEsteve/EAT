@@ -37,6 +37,6 @@ check <- function(tree) {
   if (check == 0) {
     warning("The tree doesn't fullfill the Pareto-Dominance conditions")
   } else {
-    cat("\n", "Tree built correctly")
+    return(TRUE)
   }
 }

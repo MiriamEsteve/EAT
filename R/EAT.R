@@ -262,7 +262,7 @@ print_results <- function(EAT) {
 #'
 #' @importFrom dplyr %>% select filter
 #'
-#' @return EAT object
+#' @return An EAT object
 EAT_object <- function(data, x, y, register_names, numStop, fold, na.rm, tree) {
   
   # Output and input names
@@ -328,9 +328,13 @@ EAT_object <- function(data, x, y, register_names, numStop, fold, na.rm, tree) {
   
   # RMSE
   data.p <- as.data.frame(data[, x])
-  names(data.p)[x] <- input_names
+  pred <- data.frame()
+  for (i in 1:nrow(data.p)){
+    pred <- rbind(pred, predictor(tree, data.p[i, ]))
+  }
   
-  predictions <- predict_EAT(EAT_object, data.p)
+  predictions <- cbind(data.p, pred)
+  names(predictions) <- c(input_names, output_names)
   
   RMSE <- sqrt(sum((data[, y] - predictions[, y]) ^ 2) / nrow(data))
   

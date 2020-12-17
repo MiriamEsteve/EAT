@@ -9,18 +9,20 @@
 #' @importFrom ggplot2 theme aes
 #' 
 #' @return Plot object with the following elements for each node:
-#' id: node index \cr
-#' \cr
-#' R: mean square error \cr
-#' \cr
-#' Samples: number of observations in a node \cr
-#' \cr
-#' Variable: splitting variable \cr
-#' \cr
-#' y: output prediction
+#' \itemize{
+#' \item{id}: node index .
+#' \item{R}: mean square error in the node.
+#' \item{Samples}: number of observations in the node.
+#' \item{Variables}: splitting variable.
+#' \item{y}: output prediction.
+#' }
 #' 
 #' @export
 EAT_plot <- function(object) {
+  if (class(object) != "EAT"){
+    stop(paste(object, "must be an EAT object"))
+  }
+  
   tree <- object[["tree"]]
   data <- object[["data"]][["data"]]
   y <- object[["data"]][["y"]]

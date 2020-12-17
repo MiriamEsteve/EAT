@@ -27,8 +27,8 @@ frontier(
 \item{rwn}{Logical. If \code{TRUE}, rownames are displayed instead of points.}
 }
 \value{
-Estimated production frontier
+Plot with estimated production frontier
 }
 \description{
-This function creates a plot with the frontier estimated by EAT for the scenario corresponding to one input and one output.
+This function creates a plot with the frontier estimated by EAT for a scenario corresponding to one input and one output.
 }

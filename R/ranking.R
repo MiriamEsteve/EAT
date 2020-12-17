@@ -6,18 +6,19 @@
 #' @param threshold Importance score value in which a broken line should be graphed.
 #'
 #' @importFrom ggplot2 ggplot geom_col xlab aes geom_hline
-#' @importFrom conflicted conflict_prefer
 #' @importFrom stats reorder
 #'
 #' @return Barplot representing each variable in the x-axis and its importance in the y-axis.
 barplot_importance <- function(m, threshold) {
-  
   barplot_importance <- ggplot(m, aes(x = reorder(row.names(m), -Importance), 
                                       y = Importance)) +
     geom_col() +
-    geom_hline(yintercept = threshold, linetype = "dotted",
-               color = "blue", size = 1.5) +
     xlab("Variable")
+  
+  if (!is.null(threshold)) {
+    barplot_importance <- barplot_importance +
+      geom_hline(yintercept = threshold, color = "#F8766D", size = 1.25)
+  }
   
   return(barplot_importance)
 }
@@ -35,7 +36,7 @@ barplot_importance <- function(m, threshold) {
 #' @importFrom dplyr %>% filter
 #'
 #' @return A dataframe with the best split for each node and variable and its importance.
-imp_var_CART <- function(data, tree, x, y, r) {
+imp_var_EAT <- function(data, tree, x, y, r) {
   index <- tree[[1]][["index"]]
 
   result <- list()
@@ -152,7 +153,7 @@ M_Breiman <- function(object, r) {
   y <- object[["data"]][["y"]]
   nX <- length(x)
   
-  resultado <- imp_var_CART(data, tree, x, y, r)
+  resultado <- imp_var_EAT(data, tree, x, y, r)
   
   M <- as.list(rep(0, nX))
   
@@ -191,34 +192,30 @@ M_Breiman <- function(object, r) {
   return(m)
 }
 
-#' @title Ranking of variables
+#' @title Ranking of variables by EAT
 #'
-#' @description This function calculates variable importance for an EAT or RFEAT object.
+#' @description This function calculates variable importance for an EAT object.
 #'
-#' @param object An EAT or a RFEAT object.
+#' @param object An EAT object.
 #' @param r Integer. Decimal units.
-#' @param barplot Logical. If True, barplot with importance scores is displayed.
-#' @param threshold Numeric. Importance score value in which a broken line should be graphed.
+#' @param barplot Logical. If \code{TRUE}, a barplot with importance scores is displayed.
+#' @param threshold Numeric. Importance score value in which a line is graphed.
 #'
 #' @return Dataframe with scores or list with scores and barplot.
 #' 
 #' @export   
 ranking_EAT <- function(object, r = 2, threshold = 70, barplot = TRUE) {
   
-  if (!class(object) %in% c("EAT", "RFEAT")){
-    stop("Only EAT or RFEAT objects are supported")
+  if (class(object) != "EAT"){
+    stop(paste(object, "must be an EAT object"))
     
-  } else if(length(object[["data"]][["x"]]) < 2){
+  } 
+  
+  if(length(object[["data"]][["x"]]) < 2){
     stop("More than two predictors are necessary")
   }
-
-  if (class(object) == "EAT") {
-    scores <- M_Breiman(object = object, r = r)
-    
-  } else if (class(object) == "RFEAT") {
-    print("Adios")
-    
-  }
+  
+  scores <- M_Breiman(object = object, r = r)
   
   if (barplot == T){
     barplot <- barplot_importance(scores, threshold = threshold)

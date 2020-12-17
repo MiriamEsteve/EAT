@@ -47,7 +47,7 @@ posIdNode <- function(tree, idNode) {
 #'
 #' @importFrom dplyr %>%
 #'
-#' @return Data frame with predicted values with as many columns as outputs.
+#' @return Data frame with the original data and the predicted values.
 #' 
 #' @export
 predict_EAT <- function(object, newdata) {
@@ -55,12 +55,16 @@ predict_EAT <- function(object, newdata) {
   train_names <- object[["data"]][["input_names"]]
   test_names <- names(newdata)
   
+  if (class(object) != "EAT"){
+    stop(paste(object, "must be an EAT object"))
+  }
+  
   if (!is.data.frame(newdata)){
     stop("newdata must be a data.frame")
   } else if (length(train_names) != length(test_names)){
     stop("Training and prediction data must have the same number of variables")
   } else if (!all(train_names == test_names)){
-    stop(cat("Variable name: ", test_names[1], "not found in taining data"))
+    stop(paste("Variable name: ", test_names[1], "not found in taining data"))
   }
   
   y <- object[["data"]][["y"]] 
@@ -81,13 +85,15 @@ predict_EAT <- function(object, newdata) {
     }
     predictions <- append(predictions, unlist(tree[[ti]][["y"]]))
   }
-
+  
   predictions <- matrix(predictions, ncol = length(y), byrow = T) %>%
     as.data.frame()
 
-  names(predictions) <-  paste(object[["data"]][["output_names"]],"_pred", sep = "")
+  names(predictions) <- paste(object[["data"]][["output_names"]],"_pred", sep = "")
   
-  predictions <-cbind(newdata, predictions)
-
-  return(predictions)
+  print(predictions)
+  
+  predictions <- cbind(newdata, predictions)
+  
+  invisible(predictions)
 }

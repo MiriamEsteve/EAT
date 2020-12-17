@@ -2,20 +2,22 @@
 % Please edit documentation in R/rfEAT.R
 \name{efficiency_RFEAT}
 \alias{efficiency_RFEAT}
-\title{Efficiency Objects of Random Forest EAT}
+\title{RFEAT Efficiency Scores}
 \usage{
-efficiency_RFEAT(data, forest_err, y)
+efficiency_RFEAT(data, x, y, object)
 }
 \arguments{
-\item{data}{Data to be used.}
+\item{data}{Dataframe for which the efficiency score is calculated.}
 
-\item{forest_err}{List was returned by RFEAT function}
+\item{x}{Vector. Column input indexes in data.}
 
 \item{y}{Column output indexes in data.}
+
+\item{object}{A RFEAT object}
 }
 \value{
 Number of rows, matrix for scoring, matrix of inputs, matrix of outputs, a Pareto-coordinates, predictions, number of inputs, number of outputs and number of leaf nodes.
 }
 \description{
-Efficiency score of Random Forest EAT
+This function calculates the efficiency scores for each DMU by an RFEAT model.
 }

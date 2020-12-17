@@ -4,7 +4,7 @@
 \alias{efficiency_FDH}
 \title{FDH Efficiency Scores}
 \usage{
-efficiency_FDH(data, x, y, scores_model = "FDH_BCC_out", r = 4, na.rm = TRUE)
+efficiency_FDH(data, x, y, scores_model, r = 4, na.rm = TRUE)
 }
 \arguments{
 \item{data}{Dataframe for which the efficiency score is calculated.}

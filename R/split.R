@@ -41,7 +41,7 @@ estimEAT <- function(data, leaves, t, xi, s, y) {
     yInfLeft <- rep(list(0), nY)
 
     N_leaves <- length(leaves)
-
+  
     if (N_leaves != 0) {
       for (i in 1:N_leaves) {
         if (comparePareto(tL, leaves[[i]]) == 1) {
@@ -219,7 +219,7 @@ mse <- function(data, t, y) {
 #' @return True if the node is a final node and false in other case.
 isFinalNode <- function(obs, data, numStop) {
   data <- as.data.frame(data)
-
+  
   if (length(obs) <= numStop || sum(duplicated(data[obs, ])) == length(obs) - 1) {
     return(TRUE)
   }

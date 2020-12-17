@@ -45,7 +45,7 @@ select_mtry <- function(s_mtry, t, nX, nY){
   nt = length(t["index"])
   mtry = 0
   
-  if(s_mtry == "Breiman") {
+  if(s_mtry == "BRM") {
     mtry = nX / 3
   
   }else if(s_mtry == "DEA1") {
@@ -101,6 +101,14 @@ split_forest <- function(data, tree, leaves, t, x, y, numStop, arrayK){
       unique() %>% 
       sort()
     
+    if(xi == 1){
+      datos1 <<- data[index, xi]
+    } else if (xi == 2){
+      datos2 <<- data[index, xi]
+    }
+
+    if (length(S) == 1) next
+    
     for(i in 2:length(S)){
       tL_tR_ <- estimEAT(data, leaves, t, xi, S[i], y)
       tL_ <- tL_tR_[[1]]
@@ -118,7 +126,6 @@ split_forest <- function(data, tree, leaves, t, x, y, numStop, arrayK){
         tL <- tL_
         tR <- tR_
       }
-      
     }
   }
   
@@ -135,7 +142,7 @@ split_forest <- function(data, tree, leaves, t, x, y, numStop, arrayK){
   
   
   # If they are end nodes, set VarInfo all to zero
-  if(isFinalNode(tR[["index"]], data, numStop)){
+  if(isFinalNode(tR[["index"]], data[, x], numStop)){
     tR[["varInfo"]] <- rep(list(list(0, 0, 0)), nX)
     tR[["xi"]] <- tR[["s"]] <- -1
     leaves <- append(leaves, list(tR), 0)
@@ -143,7 +150,7 @@ split_forest <- function(data, tree, leaves, t, x, y, numStop, arrayK){
     leaves <- append(leaves, list(tR))
   }
   
-  if(isFinalNode(tL[["index"]], data, numStop)){
+  if(isFinalNode(tL[["index"]], data[, x], numStop)){
     tL[["varInfo"]] <- rep(list(list(0, 0, 0)), nX)
     tL[["xi"]] <- tL[["s"]] <- -1
     leaves <- append(leaves, list(tL), 0)
@@ -209,7 +216,7 @@ RandomEAT <- function(data, x, y, numStop, s_mtry){
   while(N_leaves != 0){
     t <- leaves[[N_leaves]]
     leaves[[N_leaves]] <- NULL # Drop t selected
-    if(isFinalNode(t[["index"]], data, numStop)) break
+    if(isFinalNode(t[["index"]], data[, x], numStop)) break
     
     mtry <- select_mtry(s_mtry, t, nX, nY)
     # Randomly select k (<P) of the original predictors
@@ -237,7 +244,14 @@ RandomEAT <- function(data, x, y, numStop, s_mtry){
 #' @param y Vector. Column output indexes in data.
 #' @param numStop Integer. Minimun number of observations in a node for a split to be attempted.
 #' @param m Integer. Number of trees to be build.
-#' @param s_mtry  Select number of inputs. It could be: \code{"Breiman"}, \code{"DEA1"}, \code{"DEA2"}, \code{"DEA3"} or \code{"DEA4"}.
+#' @param s_mtry Select number of inputs in each split.
+#' \itemize{
+#' \item{\code{"Breiman"}}: \code{in / 3}
+#' \item{\code{"DEA1"}}: \code{(obs / 2) - out}  
+#' \item{\code{"DEA2"}}: \code{(obs / 3) - out}
+#' \item{\code{"DEA3"}}: \code{obs - 2 * out}
+#' \item{\code{"DEA4"}}: \code{min(obs / out, (obs / 3) - out)}
+#' }
 #' @param na.rm Logical. If \code{TRUE}, NA rows are omitted.
 #'
 #' @importFrom dplyr %>% row_number
@@ -299,10 +313,12 @@ RFEAT <- function(data, x, y, numStop = 5, m,
     
     if(all(sapply(y_EstimArr, identical, 0)))
       next
-    err <- err + sum((reg_i[y] - (y_EstimArr/Ki))^2)
+    err <- err + sum((reg_i[y] - (y_EstimArr / Ki)) ^ 2)
   }
   
-  return(list(forest, err/N))
+  RFEAT <- RFEAT_object(data, x, y, register_names, numStop, m, s_mtry, na.rm, forest, err / N)
+  
+  invisible(RFEAT)
 }
 
 #' @title Random Forest EAT predictions
@@ -327,25 +343,43 @@ RF_predictor <- function(forest, xn){
   return(y_result)
 }
 
-#' @title Efficiency Objects of Random Forest EAT
+#' @title RFEAT Efficiency Scores
 #'
-#' @description Efficiency score of Random Forest EAT
+#' @description This function calculates the efficiency scores for each DMU by an RFEAT model.
 #'
-#' @param data Data to be used.
-#' @param forest_err List was returned by RFEAT function
+#' @param data Dataframe for which the efficiency score is calculated.
+#' @param x Vector. Column input indexes in data.
 #' @param y Column output indexes in data.
+#' @param object A RFEAT object
 #'
 #' @importFrom dplyr %>% mutate
 #' 
 #' @export
 #'
 #' @return Number of rows, matrix for scoring, matrix of inputs, matrix of outputs, a Pareto-coordinates, predictions, number of inputs, number of outputs and number of leaf nodes.
-efficiency_RFEAT <- function(data, forest_err, y){
+efficiency_RFEAT <- function(data, x, y, object){
+  
+  train_names <- c(object[["data"]][["input_names"]], object[["data"]][["output_names"]])
+  
+  data <- preProcess(data, x, y, na.rm = T)
+  x <- 1:(ncol(data) - length(y))
+  y <- (length(x) + 1):ncol(data)
+  
+  data_names <- names(data)
+  
+  if (!is.data.frame(data)){
+    stop("data must be a data.frame")
+  } else if (length(train_names) != length(data_names)){
+    stop("Training and prediction data must have the same number of variables")
+  } else if (!all(train_names == data_names)){
+    stop(paste("Variable name: ", data_names[1], "not found in taining data"))
+  }
+  
   N <- nrow(data)
   nY <- length(y)
   
   # Forest values return by RFEAT()
-  forest <- forest_err[[1]]
+  forest <- object[["forest"]]
   
   data <- data %>% 
     mutate(scoreRF = rep(0, N))
@@ -365,5 +399,195 @@ efficiency_RFEAT <- function(data, forest_err, y){
     data$scoreRF[xn] <- min(y_result[xn, ])
   }
   
-  return(data)
+  print(data$scoreRF)
+  
+  invisible(data)
+}
+
+#' @title RFEAT object
+#'
+#' @description This function saves information about the RFEAT model 
+#' 
+#' @param data Dataframe or matrix containing the variables in the model.
+#' @param x Vector. Column input indexes in data.
+#' @param y Vector. Column output indexes in data.
+#' @param numStop Integer. Minimun number of observations in a node for a split to be attempted.
+#' @param m Integer. Number of trees to be build.
+#' @param s_mtry Select number of inputs in each split.
+#' \itemize{
+#' \item{\code{"Breiman"}}: \code{in / 3}
+#' \item{\code{"DEA1"}}: \code{(obs / 2) - out}  
+#' \item{\code{"DEA2"}}: \code{(obs / 3) - out}
+#' \item{\code{"DEA3"}}: \code{obs - 2 * out}
+#' \item{\code{"DEA4"}}: \code{min(obs / out, (obs / 3) - out)}
+#' }
+#' @param na.rm Logical. If \code{TRUE}, NA rows are omitted.
+#' @param forest A list containing the individual EAT trees.
+#' @param error Error in forest.
+#'
+#' @importFrom dplyr %>% select filter
+#'
+#' @return An RFEAT object
+RFEAT_object <- function(data, x, y, register_names, numStop, m, s_mtry, na.rm, forest, error) {
+  
+  # Output and input names
+  output_names <- names(data)[y]
+  input_names <- names(data)[x]
+
+  RFEAT_object <- list("data" = list(data = data %>% select(-id),
+                                     x = x,
+                                     y = y,
+                                     input_names = input_names,
+                                     output_names = output_names,
+                                     row_names = register_names),
+                     "control" = list(numStop = numStop,
+                                      m = m,
+                                      s_mtry = s_mtry,
+                                      na.rm = na.rm),
+                     "forest" = forest,
+                     "error" = error)
+  
+  class(RFEAT_object) <- "RFEAT"
+
+  return(RFEAT_object)
+  
+}
+
+#' @title Model prediction for RFEAT
+#'
+#' @description This function predicts the expected output by an RFEAT object.
+#'
+#' @param object An RFEAT object.
+#' @param newdata Dataframe. Set of input variables to predict on.
+#'
+#' @importFrom dplyr %>%
+#'
+#' @return Data frame with the original data and the predicted values.
+#' 
+#' @export
+predict_RFEAT <- function(object, newdata) {
+  
+  train_names <- object[["data"]][["input_names"]]
+  test_names <- names(newdata)
+  
+  if (class(object) != "RFEAT"){
+    stop(paste(object, "must be an RFEAT object"))
+  }
+  
+  if (!is.data.frame(newdata)){
+    stop("newdata must be a data.frame")
+  } else if (length(train_names) != length(test_names)){
+    stop("Training and prediction data must have the same number of variables")
+  } else if (!all(train_names == test_names)){
+    stop(paste("Variable name: ", test_names[1], "not found in taining data"))
+  }
+  
+  y <- object[["data"]][["y"]] 
+  forest <- object[["forest"]]
+  m <- object[["control"]][["m"]]
+  
+  predictions <- data.frame()
+  
+  for(register in 1:nrow(newdata)){
+    y_result <- rep(list(list()), m)
+    
+    for(tree in 1:m){
+      y_result[[tree]] <- predictor(forest[[tree]], newdata[register, ])
+    }
+    
+    y_result <- as.data.frame(matrix(unlist(y_result), nrow = length(unlist(y_result[1]))))
+    y_result <- apply(y_result, 1, "mean")
+    
+    predictions <- rbind(predictions, y_result)
+    
+  }
+  
+  names(predictions) <-  paste(object[["data"]][["output_names"]],"_pred", sep = "")
+  
+  print(predictions)
+  
+  predictions <-cbind(newdata, predictions)
+  
+  invisible(predictions)
+}
+
+#' @title Ranking of variables by RFEAT
+#'
+#' @description This function calculates variable importance for an RFEAT object.
+#'
+#' @param object An RFEAT object.
+#' @param r Integer. Decimal units.
+#' @param barplot Logical. If \code{TRUE}, a barplot with importance scores is displayed.
+#'
+#' @return Dataframe with scores or list with scores and barplot.
+#' 
+#' @export   
+ranking_RFEAT <- function(object, r = 2, barplot = TRUE) {
+  
+  if (class(object) != "RFEAT"){
+    stop(paste(object, "must be an RFEAT object"))
+    
+  } 
+  
+  if(length(object[["data"]][["x"]]) < 2){
+    stop("More than two predictors are necessary")
+  }
+  
+  scores <- imp_var_RFEAT(object = object, r = r)
+  
+  if (barplot == T){
+    barplot <- barplot_importance(scores, threshold = NULL)
+    return(list(scores, barplot))
+    
+  } else {
+    return(scores)
+  }
+  
+  # EAT_ranking.default <- function(x) "Hola"
+  # RFEAT_ranking.default <- function(x) "Adios"
+  # g <- function(x) {
+  # UseMethod("RFEAT_ranking")
+  # }
+  
+}
+
+#' @title Importance variable of xj in Random Forest EAT
+#'
+#' @description Importance variable of xj in Random Forest EAT
+#'
+#' @param object An RFEAT object
+#' @param r Integer. Decimal units.
+#' 
+#' @importFrom dplyr %>% arrange
+#'
+#' @export
+#'
+#' @return List of importance of inputs xj
+imp_var_RFEAT <- function(object, r = r){
+  
+  err <- object[["error"]]
+  data <- object[["data"]][["data"]]
+  x <- object[["data"]][["x"]]
+  y <- object[["data"]][["y"]]
+  numStop <- object[["control"]][["numStop"]]
+  m <- object[["control"]][["m"]]
+  s_mtry <- object[["control"]][["s_mtry"]]
+  
+  imp <- data.frame()
+  
+  for(xi in x){
+    #Barajar xi
+    df_xi <- data[sample(nrow(data), nrow(data), replace = TRUE), ]
+    rf_err_xi = RFEAT(df_xi, x, y, numStop, m, s_mtry)
+    err_xi = rf_err_xi[["error"]]
+    imp <- rbind(imp, (100 * ((err_xi - err)/err)))
+  }
+  
+  rownames(imp) <- object[["data"]][["input_names"]]
+  colnames(imp) <- "Importance"
+  
+  imp <- imp %>%
+    arrange(desc(Importance))
+  
+  return(imp)
 }

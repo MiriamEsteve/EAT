@@ -4,12 +4,12 @@
 \alias{efficiency_jitter}
 \title{Efficiency Scores Jitter Plot}
 \usage{
-efficiency_jitter(object, scores, upb = 1, lwb = 0)
+efficiency_jitter(object, scores_EAT, upb = 1, lwb = 0)
 }
 \arguments{
 \item{object}{An EAT object.}
 
-\item{scores}{Dataframe with scores.}
+\item{scores_EAT}{Dataframe with scores.}
 
 \item{upb}{Numeric. Upper bound for labeling.}
 

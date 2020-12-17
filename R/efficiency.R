@@ -362,7 +362,7 @@ EAT_WAM <- function(j, scores, x_k, y_k, atreeTk, ytreeTk, nX, nY, N_leaves) {
 #'
 #' @return Efficiency scores
 efficiency_EAT <- function(data, x, y, object, 
-                           scores_model = "EAT_BCC_out", r = 4, na.rm = TRUE) {
+                           scores_model, r = 4, na.rm = TRUE) {
   
   if (!scores_model %in% c("EAT_BCC_out", "EAT_BCC_in", "EAT_DDF", 
                            "EAT_RSL_out", "EAT_RSL_in", "EAT_WAM")){
@@ -428,14 +428,14 @@ efficiency_EAT <- function(data, x, y, object,
               "Q3" = round(quantile(scores[, 1])[[3]], 2),
               "Max" = round(max(scores[, 1]), 2)
               )
+  
+  print(round(scores, r))
 
   scores_df <- cbind(data, round(scores, r)) 
   
-  print(scores_df)
-  
   print(kable(descriptive), "pipe")
 
-  return(scores_df)
+  invisible(scores_df)
 }
 
 #' @title FDH Efficiency Scores
@@ -464,7 +464,7 @@ efficiency_EAT <- function(data, x, y, object,
 #'
 #' @return Efficiency scores
 efficiency_FDH <- function(data, x, y, 
-                           scores_model = "FDH_BCC_out", r = 4, na.rm = TRUE) {
+                           scores_model, r = 4, na.rm = TRUE) {
   
   if (!scores_model %in% c("FDH_BCC_out", "FDH_BCC_in", "FDH_DDF", 
                            "FDH_RSL_out", "FDH_RSL_in", "FDH_WAM")){
@@ -519,13 +519,13 @@ efficiency_FDH <- function(data, x, y,
               "Max" = round(max(scores[, 1]), 2)
     )
   
-  scores_df <- cbind(data, round(scores, r)) 
+  print(round(scores, r))
   
-  print(scores_df)
+  scores_df <- cbind(data, round(scores, r)) 
   
   print(kable(descriptive), "pipe")
   
-  return(scores_df)
+  invisible(scores_df)
 }
 
 #' @title Efficiency Scores Jitter Plot
@@ -533,7 +533,7 @@ efficiency_FDH <- function(data, x, y,
 #' @description This function returns a jitter plot. DMUs are grouped in nodes (same input paradigm) and its score are showed. A black point represents the score mean in a group and the line the standard deviation. Finally, the user can specify an upper bound (upb) and a lower bound (lwb) in order to show the labels.
 #'
 #' @param object An EAT object.
-#' @param scores Dataframe with scores.
+#' @param scores_EAT Dataframe with scores.
 #' @param upb Numeric. Upper bound for labeling.
 #' @param lwb Numeric. Lower bound for labeling.
 #'
@@ -544,12 +544,15 @@ efficiency_FDH <- function(data, x, y,
 #' @export
 #'
 #' @return Geom jitter plot with DMUs and scores.
-efficiency_jitter <- function(object, scores, upb = 1, lwb = 0) {
+efficiency_jitter <- function(object, scores_EAT, upb = 1, lwb = 0) {
+  if (class(object) != "EAT"){
+    stop(paste(object, "must be an EAT object"))
+  }
   
   groups <- object[["nodes_df"]][["leafnodes_df"]] %>%
     select(id, index)
   
-  scores_df <- data.frame(Score = scores,
+  scores_df <- data.frame(Score = scores_EAT,
                           Group = NA)
   
   names(scores_df) <- c("Score", "Group")
@@ -585,31 +588,41 @@ efficiency_jitter <- function(object, scores, upb = 1, lwb = 0) {
 #' @param scores_EAT Dataframe with EAT scores.
 #' @param scores_FDH Optional. Dataframe with FDH scores.
 #'
-#' @importFrom ggplot2 ggplot aes_string geom_histogram geom_density
+#' @importFrom ggplot2 ggplot geom_density
 #'
 #' @export
 #'
 #' @return Density plot for scores and data.frame with numeric results.
 efficiency_density <- function(scores_EAT, scores_FDH = NULL) {
   
-  scores_EAT <- as.data.frame(scores_EAT)
-  
-  efficiency_density <- ggplot() +
-    geom_density(data = scores_EAT, aes_string(names(scores_EAT)[1]), alpha = .3, 
-                 fill = "#FF583A", colour = "#FF583A") +
-    xlab("Score") +
-    ylab("Density")
-  
-  if (!is.null(scores_FDH)){
-  
-    scores_FDH <- as.data.frame(scores_FDH)
+  if (is.null(scores_FDH)) {
     
-    names(scores_FDH) <- "scores_FDH"
-  
-    efficiency_density <- efficiency_density + 
-      geom_density(data = scores_FDH, aes_string(x = "scores_FDH"), 
-                   alpha = .3, 
-                   fill = "#00AFBB", colour = "#00AFBB") 
+    scores_EAT <- as.data.frame(scores_EAT)
+    scores_EAT$Model <- factor("EAT") 
+    names(scores_EAT) <- c("EAT", "Model")
+    
+    efficiency_density <- ggplot(scores_EAT, aes(x = EAT, fill = Model, colour = Model)) +
+      geom_density(alpha = .2) +
+      xlab("Score") +
+      ylab("Density")
+    
+  } else {
+    
+    scores_EAT <- as.data.frame(scores_EAT)
+    scores_EAT$Model <- factor("EAT")
+    names(scores_EAT)[1] <- "score"
+    
+    scores_FDH <- as.data.frame(scores_FDH)
+    scores_FDH$Model <- factor("FDH")
+    names(scores_FDH)[1] <- "score"
+    
+    scores_df <- rbind(scores_EAT, scores_FDH)
+    
+    efficiency_density <- ggplot(scores_df, aes(x = score, fill = Model, colour = Model)) +
+      geom_density(alpha = .2) +
+      xlab("Score") +
+      ylab("Density") 
+    
   }
   
   return(efficiency_density)

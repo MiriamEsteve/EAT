@@ -2,22 +2,22 @@
 % Please edit documentation in R/ranking.R
 \name{ranking_EAT}
 \alias{ranking_EAT}
-\title{Ranking of variables}
+\title{Ranking of variables by EAT}
 \usage{
 ranking_EAT(object, r = 2, threshold = 70, barplot = TRUE)
 }
 \arguments{
-\item{object}{An EAT or a RFEAT object.}
+\item{object}{An EAT object.}
 
 \item{r}{Integer. Decimal units.}
 
-\item{threshold}{Numeric. Importance score value in which a broken line should be graphed.}
+\item{threshold}{Numeric. Importance score value in which a line is graphed.}
 
-\item{barplot}{Logical. If True, barplot with importance scores is displayed.}
+\item{barplot}{Logical. If \code{TRUE}, a barplot with importance scores is displayed.}
 }
 \value{
 Dataframe with scores or list with scores and barplot.
 }
 \description{
-This function calculates variable importance for an EAT or RFEAT object.
+This function calculates variable importance for an EAT object.
 }

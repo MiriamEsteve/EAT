@@ -1,6 +1,6 @@
 #' @title EAT frontier graph for a single input and output scenario
 #'
-#' @description This function creates a plot with the frontier estimated by EAT for the scenario corresponding to one input and one output.
+#' @description This function creates a plot with the frontier estimated by EAT for a scenario corresponding to one input and one output.
 #' 
 #' @name frontier
 #'
@@ -14,11 +14,15 @@
 #' @importFrom ggplot2 ggplot aes_string geom_point geom_line geom_text xlab ylab xlim ylim
 #' @importFrom ggrepel geom_label_repel
 #'
-#' @return Estimated production frontier 
+#' @return Plot with estimated production frontier
 #' 
 #' @export
 frontier <- function(object, train.data = FALSE, train.color = "black", 
                      pch = 19, size = 1, rwn = FALSE){
+  
+  if (class(object) != "EAT"){
+    stop(paste(object, "must be an EAT object"))
+  }
 
   t_data <- object[["data"]][["data"]]
   rownames(t_data) <- object[["data"]][["row_names"]]
@@ -36,7 +40,13 @@ frontier <- function(object, train.data = FALSE, train.color = "black",
     fp <- data.frame(x_values = seq(min(t_data[, x]), max(t_data[, x]),  
                                     length.out = 2000))
     names(fp) <- x_names
-    pred <- predict_EAT(object, fp)
+    
+    pred <- data.frame()
+    for (i in 1:nrow(fp)){
+      pred <- rbind(pred, predictor(tree, fp[i, ]))
+    }
+    
+    pred <- cbind(fp, pred)
     names(pred) <- c("x1", "frontier")
 
     plot <- ggplot(t_data) +
@@ -46,8 +56,8 @@ frontier <- function(object, train.data = FALSE, train.color = "black",
     
     if (train.data == FALSE){
       plot <- plot +
-        xlim(c(min(fp$x1), max(fp$x1))) +
-        ylim(c(min(fp$frontier) - (min(fp$frontier) / 10), max(fp$frontier)))
+        xlim(c(min(pred$x1), max(pred$x1))) +
+        ylim(c(min(pred$frontier) - (min(pred$frontier) / 10), max(pred$frontier)))
     } else {
       plot <- plot + 
         geom_point(aes_string(x = x_names, y = y_names),

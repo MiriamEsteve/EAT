@@ -12,7 +12,7 @@ predict_EAT(object, newdata)
 \item{newdata}{Dataframe. Set of input variables to predict on.}
 }
 \value{
-Data frame with predicted values with as many columns as outputs.
+Data frame with the original data and the predicted values.
 }
 \description{
 This function predicts the expected output by an EAT object.

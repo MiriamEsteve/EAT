@@ -24,7 +24,7 @@ EAT_object(data, x, y, register_names, numStop, fold, na.rm, tree)
 \item{tree}{A list containing the nodes of the EAT pruned tree.}
 }
 \value{
-EAT object
+An EAT object
 }
 \description{
 This function saves information about the EAT model

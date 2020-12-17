@@ -4,15 +4,7 @@
 \alias{efficiency_EAT}
 \title{EAT Efficiency Scores}
 \usage{
-efficiency_EAT(
-  data,
-  x,
-  y,
-  object,
-  scores_model = "EAT_BCC_out",
-  r = 4,
-  na.rm = TRUE
-)
+efficiency_EAT(data, x, y, object, scores_model, r = 4, na.rm = TRUE)
 }
 \arguments{
 \item{data}{Dataframe for which the efficiency score is calculated.}

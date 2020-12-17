@@ -360,7 +360,7 @@ EAT_WAM <- function(j, scores, x_k, y_k, atreeTk, ytreeTk, nX, nY, N_leaves) {
 #'
 #' @export
 #'
-#' @return Efficiency scores
+#' @return Dataframe with input variables and efficiency scores by an EAT model.
 efficiency_EAT <- function(data, x, y, object, 
                            scores_model, r = 4, na.rm = TRUE) {
   
@@ -462,7 +462,7 @@ efficiency_EAT <- function(data, x, y, object,
 #' 
 #' @export
 #'
-#' @return Efficiency scores
+#' @return Dataframe with input variables and efficiency scores by a FDH model.
 efficiency_FDH <- function(data, x, y, 
                            scores_model, r = 4, na.rm = TRUE) {
   

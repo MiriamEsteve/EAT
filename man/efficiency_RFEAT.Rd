@@ -16,7 +16,7 @@ efficiency_RFEAT(data, x, y, object)
 \item{object}{A RFEAT object}
 }
 \value{
-Number of rows, matrix for scoring, matrix of inputs, matrix of outputs, a Pareto-coordinates, predictions, number of inputs, number of outputs and number of leaf nodes.
+Dataframe with input variables and efficiency scores by a RFEAT model.
 }
 \description{
 This function calculates the efficiency scores for each DMU by an RFEAT model.

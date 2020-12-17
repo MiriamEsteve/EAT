@@ -356,7 +356,7 @@ RF_predictor <- function(forest, xn){
 #' 
 #' @export
 #'
-#' @return Number of rows, matrix for scoring, matrix of inputs, matrix of outputs, a Pareto-coordinates, predictions, number of inputs, number of outputs and number of leaf nodes.
+#' @return Dataframe with input variables and efficiency scores by a RFEAT model.
 efficiency_RFEAT <- function(data, x, y, object){
   
   train_names <- c(object[["data"]][["input_names"]], object[["data"]][["output_names"]])

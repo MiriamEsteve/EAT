@@ -30,7 +30,7 @@ efficiency_EAT(data, x, y, object, scores_model, r = 4, na.rm = TRUE)
 \item{na.rm}{Logical. If \code{TRUE}, \code{NA} rows are omitted.}
 }
 \value{
-Efficiency scores
+Dataframe with input variables and efficiency scores by an EAT model.
 }
 \description{
 This function calculates the efficiency scores for each DMU by an EAT model.

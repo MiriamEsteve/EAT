@@ -19,6 +19,8 @@ alpha <- function(tree) {
     numleaves <- errBranch_numleaves[[2]]
 
     alpha <- (tree[[i]][["R"]] - errBranch) / (numleaves - 1)
+    
+    if(alpha < 0) alpha <- 0
 
     if (alpha < alpha_min) {
       alpha_min <- alpha

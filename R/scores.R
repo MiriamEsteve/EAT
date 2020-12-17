@@ -26,7 +26,7 @@ scores <- function(N, Lv_notLv, x, y, fold, numStop, Tk, tree_alpha_list) {
 
   # tree_alpha_list until -1
   for (t in 1:(length(tree_alpha_list) - 1)) {
-    alphaIprim <- (tree_alpha_list[[t]][["alpha"]] * tree_alpha_list[[t + 1]][["alpha"]])^(1 / 2)
+    alphaIprim <- (tree_alpha_list[[t]][["alpha"]] * tree_alpha_list[[t + 1]][["alpha"]]) ^ (1 / 2)
 
     score_BestTivsAux <- RCV(N, Lv, y, alphaIprim, fold, TAiv)
     tree_alpha_list[[t]][["score"]] <- score_BestTivsAux[[1]]
@@ -65,6 +65,7 @@ RCV <- function(N, Lv, y, alphaIprim, fold, TAiv) {
     for (i in 1:(length(TAiv[[v]]) - 1)) {
       # cat("i: ", i)
       # print(length(TAiv[[v]])
+  
       if (TAiv[[v]][[i]][["alpha"]] <= alphaIprim) {
         Tiv <- TAiv[[v]][[i]]
         TivAux <- Tiv

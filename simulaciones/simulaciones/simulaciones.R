@@ -87,7 +87,7 @@ for (nX in c(1, 3, 6, 9, 12, 15)){
       
       # Predictions for FDH
       
-      predictions <- eat:::FDH(data, x, y)
+      predictions <- predict_FDH(data, x, y)
       dif <- predictions[, "y_pred"] - data[, "yD"]
       
       # MSE

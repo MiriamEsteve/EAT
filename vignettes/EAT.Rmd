@@ -82,8 +82,7 @@ test <- PISAindex[-t_index, ]
 
 ## Warming up: one input and one output scenario
 
-The `EAT` function is the centerpiece of `eat` library. `EAT` performs a regression tree based on CART methodology under a new approach that guarantees obtaining a frontier that fulfills the property of free disposability. Its development has been thought so that even true R novices can easily use the library. 
-The minimum arguments of the function are the data (`data`) containing the study variables, the indexes of the predictor variables or inputs (`x`) and the indixes of the predicted variables or outputs (`y`). Additionally, the `numStop` and `fold` arguments are included for those more experienced users in the field of Machine Learning and tree-based models. Modifying these two allows obtaining different frontiers and therefore selecting the one that best suits the needs of the analysis. `numStop` refers to the minimum number of observations in a node to be divided and is directly related to the size of the tree. The higher the value of `numStop` the smaller the size of the tree. On the other hand, `fold` refers to the number of parts in which the data set is divided to apply the cross-validation technique, although, in this case, its variation is not so directly related to size. The function returns an `EAT` object.
+The `EAT` function is the centerpiece of `eat` library. `EAT` performs a regression tree based on CART methodology under a new approach that guarantees obtaining a frontier that fulfills the property of free disposability. Its development has been thought so that even true R novices can easily use the library. The minimum arguments of the function are the data (`data`) containing the study variables, the indexes of the predictor variables or inputs (`x`) and the indixes of the predicted variables or outputs (`y`). Additionally, the `numStop` and `fold` arguments are included for those more experienced users in the field of Machine Learning and tree-based models. Modifying these two allows obtaining different frontiers and therefore selecting the one that best suits the needs of the analysis. `numStop` refers to the minimum number of observations in a node to be divided and is directly related to the size of the tree. The higher the value of `numStop` the smaller the size of the tree. On the other hand, `fold` refers to the number of parts in which the data set is divided to apply the cross-validation technique, although, in this case, its variation is not so directly related to size. The function returns an `EAT` object.
 
 ```{r EAT, eval = F}
 EAT(data, x, y, 
@@ -388,7 +387,13 @@ forest <- RFEAT(data = training,
                 na.rm = TRUE)
 ```
 
-```{r predict_EAT}
+Predictions for the `RFEAT` model are made using the `predict_RFEAT` function. To do this, the output is predicted by each of the `m` individual trees trained and subsequently the mean value of all the predictions is obtained. `predict_RFEAT` requires a `RFEAT` object (from `RFEAT` function) and a set of input variables to predict on (`newdata`) returning then, a dataframe with the inputs and predicted variables.
+
+```{r predict_EAT, eval = FALSE}
+predict_RFEAT(object, newdata)
+```
+
+```{r predict_EAT_ex}
 predictions_RFEAT <- predict_RFEAT(forest, test[, input])
 ```
 
@@ -401,6 +406,15 @@ EAT_vs_RFEAT <- cbind(test[, 3:5], predictions_EAT[, 14:16], predictions_RFEAT[,
 print(EAT_vs_RFEAT)
 ```
 
+Finally, a specific method to calculate efficiency scores applied to `RFEAT` can be utilized using the `efficiency_RFEAT` function. 
+
+```{r eff_scores, eval = FALSE}
+efficiency_RFEAT(data = training,
+                 x = input,
+                 y = output,
+                 object = forest)
+```
+
 ```{r scores_RF}
 scoresRF <- efficiency_RFEAT(data = training,
                              x = input,
@@ -408,8 +422,16 @@ scoresRF <- efficiency_RFEAT(data = training,
                              object = forest)
 ```
 
-```{r ranking_RFEAT}
-ranking_RFEAT(forest, r = 2)
+And finally, a ranking of variable importance by `ranking_RFEAT` where `object` is a `RFEAT`, `r` is the number of decimal units and a `barplot` can be included with `barplot = TRUE`.
+
+```{r ranking_RFEAT, eval = FALSE}
+ranking_RFEAT(object, r = 2,
+              barplot = TRUE)
+```
+
+```{r ranking_RFEAT_ex, eval = FALSE}
+ranking_RFEAT(forest, r = 2,
+              barplot = TRUE)
 ```
 
 ## Posible errors in EAT

@@ -100,12 +100,6 @@ split_forest <- function(data, tree, leaves, t, x, y, numStop, arrayK){
     S <- data[index, xi] %>% 
       unique() %>% 
       sort()
-    
-    if(xi == 1){
-      datos1 <<- data[index, xi]
-    } else if (xi == 2){
-      datos2 <<- data[index, xi]
-    }
 
     if (length(S) == 1) next
     
@@ -408,55 +402,6 @@ efficiency_RFEAT <- function(data, x, y, object){
   invisible(data)
 }
 
-#' @title RFEAT object
-#'
-#' @description This function saves information about the RFEAT model 
-#' 
-#' @param data Dataframe or matrix containing the variables in the model.
-#' @param x Vector. Column input indexes in data.
-#' @param y Vector. Column output indexes in data.
-#' @param numStop Integer. Minimun number of observations in a node for a split to be attempted.
-#' @param m Integer. Number of trees to be build.
-#' @param s_mtry Select number of inputs in each split.
-#' \itemize{
-#' \item{\code{"Breiman"}}: \code{in / 3}
-#' \item{\code{"DEA1"}}: \code{(obs / 2) - out}  
-#' \item{\code{"DEA2"}}: \code{(obs / 3) - out}
-#' \item{\code{"DEA3"}}: \code{obs - 2 * out}
-#' \item{\code{"DEA4"}}: \code{min(obs / out, (obs / 3) - out)}
-#' }
-#' @param na.rm Logical. If \code{TRUE}, NA rows are omitted.
-#' @param forest A list containing the individual EAT trees.
-#' @param error Error in forest.
-#'
-#' @importFrom dplyr %>% select filter
-#'
-#' @return An RFEAT object
-RFEAT_object <- function(data, x, y, register_names, numStop, m, s_mtry, na.rm, forest, error) {
-  
-  # Output and input names
-  output_names <- names(data)[y]
-  input_names <- names(data)[x]
-
-  RFEAT_object <- list("data" = list(data = data %>% select(-id),
-                                     x = x,
-                                     y = y,
-                                     input_names = input_names,
-                                     output_names = output_names,
-                                     row_names = register_names),
-                     "control" = list(numStop = numStop,
-                                      m = m,
-                                      s_mtry = s_mtry,
-                                      na.rm = na.rm),
-                     "forest" = forest,
-                     "error" = error)
-  
-  class(RFEAT_object) <- "RFEAT"
-
-  return(RFEAT_object)
-  
-}
-
 #' @title Model prediction for RFEAT
 #'
 #' @description This function predicts the expected output by an RFEAT object.
@@ -563,9 +508,6 @@ ranking_RFEAT <- function(object, r = 2, barplot = TRUE) {
 #' @param r Integer. Decimal units.
 #' 
 #' @importFrom dplyr %>% arrange
-#'
-#' @export
-#'
 #' @return List of importance of inputs xj
 imp_var_RFEAT <- function(object, r = r){
   

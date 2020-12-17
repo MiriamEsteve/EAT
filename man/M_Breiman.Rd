@@ -7,7 +7,7 @@
 M_Breiman(object, r)
 }
 \arguments{
-\item{object}{An EAT or a RFEAT object.}
+\item{object}{An EAT object.}
 
 \item{r}{Decimal units.}
 }

@@ -1,6 +1,6 @@
 #' @title EAT frontier graph for a single input and output scenario
 #'
-#' @description This function creates a plot with the frontier estimated by EAT for a scenario corresponding to one input and one output.
+#' @description This function displays a plot with the frontier estimated by EAT for a scenario corresponding to one input and one output.
 #' 
 #' @name frontier
 #'

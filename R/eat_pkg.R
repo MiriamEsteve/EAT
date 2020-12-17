@@ -39,7 +39,9 @@ utils::globalVariables(c("x1", "x_values",
                          "id", "index", "Group", "Score",
                          "xi", "desc", "Importance", "id",
                          "Importance",
-                         "id", "X1", "X2", "X3", "X4", "X5", "X6", "X7")) 
+                         "id", "X1", "X2", "X3", "X4", "X5", "X6", "X7",
+                         "RF", 
+                         "Model", "score")) 
 
-# frontier - print_results - EAT_object - EAT_plot - efficiency_scores - efficiency_jitter - M_Breiman - barplot_importance - imp_var_Breiman
+# frontier - print_results - EAT_object - EAT_plot - efficiency_scores - efficiency_jitter - M_Breiman - barplot_importance - imp_var_Breiman - efficiency_RFEAT - efficiency_density
 

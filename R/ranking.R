@@ -135,13 +135,10 @@ imp_var_EAT <- function(data, tree, x, y, r) {
 #'
 #' @description This function evaluates the importance of each predictor by the notion of surrogate splits.
 #'
-#' @param object An EAT or a RFEAT object.
+#' @param object An EAT object.
 #' @param r Decimal units.
 #'
 #' @importFrom dplyr %>%  mutate row_number filter rename arrange
-#' @importFrom conflicted conflict_prefer
-#'
-#' @export
 #'
 #' @return Dataframe with one column and the importance of each variable in rows.
 M_Breiman <- function(object, r) {

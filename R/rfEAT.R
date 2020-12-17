@@ -349,7 +349,7 @@ RF_predictor <- function(forest, xn){
 #'
 #' @param data Dataframe for which the efficiency score is calculated.
 #' @param x Vector. Column input indexes in data.
-#' @param y Column output indexes in data.
+#' @param y Vector. Column output indexes in data.
 #' @param object A RFEAT object
 #'
 #' @importFrom dplyr %>% mutate
@@ -399,7 +399,11 @@ efficiency_RFEAT <- function(data, x, y, object){
     data$scoreRF[xn] <- min(y_result[xn, ])
   }
   
-  print(data$scoreRF)
+  scoreRF <- as.data.frame(data$scoreRF)
+  names(scoreRF) <- "scoreRF"
+  rownames(scoreRF) <- object[["data"]][["row_names"]]
+  
+  print(scoreRF)
   
   invisible(data)
 }
@@ -457,7 +461,7 @@ RFEAT_object <- function(data, x, y, register_names, numStop, m, s_mtry, na.rm, 
 #'
 #' @description This function predicts the expected output by an RFEAT object.
 #'
-#' @param object An RFEAT object.
+#' @param object A RFEAT object.
 #' @param newdata Dataframe. Set of input variables to predict on.
 #'
 #' @importFrom dplyr %>%

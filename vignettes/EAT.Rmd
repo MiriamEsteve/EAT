@@ -82,7 +82,8 @@ test <- PISAindex[-t_index, ]
 
 ## Warming up: one input and one output scenario
 
-The `EAT` function is the centerpiece of `EAT` library. `EAT` performs a individual regression tree based on CART methodology under a new approach that guarantees obtaining a frontier that fulfills the property of free disposability. Its development has even been thought so that even true R newbies can use the library. If you are relatively new in `R` language, you will only have to enter the data (`data`) and the corresponding indexes for the inputs (`x`) and outputs (`y`). If, conversely, you are a more experimental user and you also have knowledge about Machine Learning and other tree-based models, you can vary the `numStop` and `fold` arguments to obtain different frontiers and select the one that best suits your analysis.
+The `EAT` function is the centerpiece of `eat` library. `EAT` performs a regression tree based on CART methodology under a new approach that guarantees obtaining a frontier that fulfills the property of free disposability. Its development has been thought so that even true R novices can easily use the library. 
+The minimum arguments of the function are the data (`data`) containing the study variables, the indexes of the predictor variables or inputs (`x`) and the indixes of the predicted variables or outputs (`y`). Additionally, the `numStop` and `fold` arguments are included for those more experienced users in the field of Machine Learning and tree-based models. Modifying these two allows obtaining different frontiers and therefore selecting the one that best suits the needs of the analysis. `numStop` refers to the minimum number of observations in a node to be divided and is directly related to the size of the tree. The higher the value of `numStop` the smaller the size of the tree. On the other hand, `fold` refers to the number of parts in which the data set is divided to apply the cross-validation technique, although, in this case, its variation is not so directly related to size. The function returns an `EAT` object.
 
 ```{r EAT, eval = F}
 EAT(data, x, y, 
@@ -360,13 +361,14 @@ efficiency_density(scores_EAT = scores_EAT$EAT_BCC_out,
 
 ## Random Forest
 
-Random Forest (`RFEAT`) has also been developed with the aim of providing greater stability to the results obtained by `EAT`. Now, a new argument, `m`, is introduced that indicates the number of `EAT` individual trees that are used to build the forest. `s_mtry` indicates the number of inputs that can be selected in each split. Being, $n_{x}$ the number of inputs, $n_{y}$ the number of outputs and $N$ the sample size, the available options in `s_mtry` are:
+Random Forest EAT (`RFEAT`) has also been developed with the aim of providing a greater stability to the results obtained by `EAT`. The function requires the `data` containing the variables for the analysis, `x` and `y` corresponding to the inputs and outputs indexes respectively, the minimun number of observation in a node for a split to be attempted (`numStop`) and `na.rm` to ignore observations with `NA` cells. All these arguments are used for the construction of the `m` individual `EAT` trees that make up the random forest. Finally, the argument `s_mtry` indicates the number of inputs that can be selected in each split. Being, $n_{x}$ the number of inputs, $n_{y}$ the number of outputs and $N$ the sample size, the available options in `s_mtry` are: 
 
 * `Breiman` = $\frac{n_{x}}{3}$
 * `DEA1` = $\frac{N}{2} - n_{y}$
 * `DEA2` = $\frac{N}{3} - n_{y}$
 * `DEA3` = $N - 2 \cdot n_{y}$
 * `DEA4` = $min(\frac{N}{n_{y}}, \frac{N}{3} - n_{y})$
+
 
 ```{r RF, eval = FALSE}
 RFEAT(data, x, y,

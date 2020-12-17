@@ -7,7 +7,7 @@
 predict_RFEAT(object, newdata)
 }
 \arguments{
-\item{object}{An RFEAT object.}
+\item{object}{A RFEAT object.}
 
 \item{newdata}{Dataframe. Set of input variables to predict on.}
 }

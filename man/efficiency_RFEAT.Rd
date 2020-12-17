@@ -11,7 +11,7 @@ efficiency_RFEAT(data, x, y, object)
 
 \item{x}{Vector. Column input indexes in data.}
 
-\item{y}{Column output indexes in data.}
+\item{y}{Vector. Column output indexes in data.}
 
 \item{object}{A RFEAT object}
 }

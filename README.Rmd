@@ -104,7 +104,9 @@ scores_FDH <- efficiency_FDH(data = PISAindex,
 ```{r jitter, fig.width = 10, fig.height = 8}
 efficiency_jitter(object = multioutput,
                   scores_EAT = scores_EAT$EAT_BCC_out,
-                  )
+                  scores_model = "EAT_BCC_out",
+                  upb = NULL,
+                  lwb = NULL)
 ```
 
 * Efficiency density plot

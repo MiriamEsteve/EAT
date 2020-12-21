@@ -329,13 +329,15 @@ Two graphic representations are available:
 
 ```{r efficiency_jitter, eval = FALSE}
 efficiency_jitter(object, scores_EAT,
-                  lwb = 0, upb = 1)
+                  scores_model,
+                  lwb = NULL, upb = NULL)
 ```
 
 ```{r jitter_single, collapse = FALSE, fig.width = 10.5, fig.height = 8, fig.align = 'center'}
 efficiency_jitter(object = single_model,
                   scores_EAT = scores_EAT$EAT_BCC_out,
-                  upb= 1)
+                  scores_model = "EAT_BCC_out",
+                  lwb = 1.2)
 ```
 
 We verify that, indeed, those DMUs with an efficiency level equal to or less than 1 (shown with the label) are those that are arranged in the horizontal steps of the frontier.

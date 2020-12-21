@@ -180,12 +180,14 @@ scores_FDH <- efficiency_FDH(data = training,
 
 ## ----efficiency_jitter, eval = FALSE------------------------------------------
 #  efficiency_jitter(object, scores_EAT,
-#                    lwb = 0, upb = 1)
+#                    scores_model,
+#                    lwb = NULL, upb = NULL)
 
 ## ----jitter_single, collapse = FALSE, fig.width = 10.5, fig.height = 8, fig.align = 'center'----
 efficiency_jitter(object = single_model,
                   scores_EAT = scores_EAT$EAT_BCC_out,
-                  upb= 1)
+                  scores_model = "EAT_BCC_out",
+                  lwb = 1.2)
 
 ## ----frontier_comparar, fig.width = 10.5, fig.height = 6, fig.align = 'center'----
 plot(frontier)

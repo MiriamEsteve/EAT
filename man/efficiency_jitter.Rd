@@ -4,20 +4,30 @@
 \alias{efficiency_jitter}
 \title{Efficiency Scores Jitter Plot}
 \usage{
-efficiency_jitter(object, scores_EAT, upb = 1, lwb = 0)
+efficiency_jitter(object, scores_EAT, scores_model, upb = NULL, lwb = NULL)
 }
 \arguments{
 \item{object}{An EAT object.}
 
 \item{scores_EAT}{Dataframe with scores.}
 
+\item{scores_model}{Mathematic programming model of scores_EAT. 
+\itemize{
+\item{\code{EAT_BCC_out}} BBC model. Output orientation.
+\item{\code{EAT_BCC_in}}  BBC model. Input orientation.
+\item{\code{EAT_DDF}}     Directional distance model.
+\item{\code{EAT_RSL_out}} Rusell model. Output orientation
+\item{\code{EAT_RSL_in}}  Rusell model. Input orientation.
+\item{\code{EAT_WAM}}     Weighted Additive model.
+}}
+
 \item{upb}{Numeric. Upper bound for labeling.}
 
 \item{lwb}{Numeric. Lower bound for labeling.}
 }
 \value{
-Geom jitter plot with DMUs and scores.
+Jitter plot with DMUs and scores.
 }
 \description{
-This function returns a jitter plot. DMUs are grouped in nodes (same input paradigm) and its score are showed. A black point represents the score mean in a group and the line the standard deviation. Finally, the user can specify an upper bound (upb) and a lower bound (lwb) in order to show the labels.
+This function returns a jitter plot. DMUs are grouped in nodes (same input paradigm) and its scores are showed. A black point represents the mean score in a group and the line the standard deviation. Finally, efficient DMUs are labeled and the user can specify an upper bound (upb) and a lower bound (lwb) in order to show extra labels.
 }

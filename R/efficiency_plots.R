@@ -1,9 +1,18 @@
 #' @title Efficiency Scores Jitter Plot
 #'
-#' @description This function returns a jitter plot. DMUs are grouped in nodes (same input paradigm) and its score are showed. A black point represents the score mean in a group and the line the standard deviation. Finally, the user can specify an upper bound (upb) and a lower bound (lwb) in order to show the labels.
+#' @description This function returns a jitter plot. DMUs are grouped in nodes (same input paradigm) and its scores are showed. A black point represents the mean score in a group and the line the standard deviation. Finally, efficient DMUs are labeled and the user can specify an upper bound (upb) and a lower bound (lwb) in order to show extra labels.
 #'
 #' @param object An EAT object.
 #' @param scores_EAT Dataframe with scores.
+#' @param scores_model Mathematic programming model of scores_EAT. 
+#' \itemize{
+#' \item{\code{EAT_BCC_out}} BBC model. Output orientation.
+#' \item{\code{EAT_BCC_in}}  BBC model. Input orientation.
+#' \item{\code{EAT_DDF}}     Directional distance model.
+#' \item{\code{EAT_RSL_out}} Rusell model. Output orientation
+#' \item{\code{EAT_RSL_in}}  Rusell model. Input orientation.
+#' \item{\code{EAT_WAM}}     Weighted Additive model.
+#' } 
 #' @param upb Numeric. Upper bound for labeling.
 #' @param lwb Numeric. Lower bound for labeling.
 #'
@@ -13,10 +22,15 @@
 #'
 #' @export
 #'
-#' @return Geom jitter plot with DMUs and scores.
-efficiency_jitter <- function(object, scores_EAT, upb = 1, lwb = 0) {
+#' @return Jitter plot with DMUs and scores.
+efficiency_jitter <- function(object, scores_EAT, scores_model, upb = NULL, lwb = NULL) {
   if (class(object) != "EAT"){
-    stop(paste(object, "must be an EAT object"))
+    stop("object must be an EAT object")
+  }
+  
+  if (!scores_model %in% c("EAT_BCC_out", "EAT_BCC_in", "EAT_DDF", 
+                           "EAT_RSL_out", "EAT_RSL_in", "EAT_WAM")){
+    stop(paste(scores_model, "is not available. Please, check help(efficiency_EAT)"))
   }
   
   groups <- object[["nodes_df"]][["leafnodes_df"]] %>%
@@ -44,9 +58,31 @@ efficiency_jitter <- function(object, scores_EAT, upb = 1, lwb = 0) {
   
   jitter_plot <- ggplot(scores_df, aes(x = Group, y = Score, color = Group)) + 
     geom_jitter(position = position_jitter(0.2), size = 2) +
-    stat_summary(fun.data = data_summary, color = "black") +
-    geom_text_repel(aes(label = ifelse(Score >= lwb & Score <= upb, 
-                                       rownames(scores_df), "")))
+    stat_summary(fun.data = data_summary, color = "black")
+  
+  if (scores_model %in% c("EAT_BCC_out", "EAT_BCC_in", "EAT_RSL_out", "EAT_RSL_in")){
+    jitter_plot <- jitter_plot +
+    geom_text_repel(aes(label = ifelse(Score == 1, 
+                                         rownames(scores_df), "")))
+  } else {
+    jitter_plot <- jitter_plot +
+      geom_text_repel(aes(label = ifelse(Score == 0, 
+                                         rownames(scores_df), "")))
+  }
+  
+  if (!is.null(lwb) && !is.null(upb)){
+    jitter_plot <- jitter_plot + 
+      geom_text_repel(aes(label = ifelse(Score >= lwb & Score <= upb, 
+                                         rownames(scores_df), "")))
+  } else if (!is.null(upb)) {
+    jitter_plot <- jitter_plot +
+      geom_text_repel(aes(label = ifelse(Score <= upb, 
+                                         rownames(scores_df), "")))
+  } else if (!is.null(lwb)) {
+    jitter_plot <- jitter_plot +
+      geom_text_repel(aes(label = ifelse(Score >= lwb, 
+                                         rownames(scores_df), "")))
+  }
   
   return(jitter_plot)
 }

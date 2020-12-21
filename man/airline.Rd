@@ -19,6 +19,6 @@ A data frame with 10 rows and 6 variables:
 airline
 }
 \description{
-A dataset containing ...
+A dataset containing 2 inputs and 4 outputs
 }
 \keyword{datasets}

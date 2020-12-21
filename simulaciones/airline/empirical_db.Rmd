@@ -1,0 +1,65 @@
+---
+title: "Empirical Database"
+author: "Víctor Javier España Roch"
+date: "17/12/2020"
+output: word_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE, warning = FALSE, message = FALSE)
+```
+
+```{r library}
+library(eat)
+setwd("C:/Users/victo/Desktop/UNIVERSIDAD/EAT/simulaciones")
+library(readxl)
+airline <- read_excel("airline.xlsx")
+```
+
+## Airline database
+
+Random Forest EAT (`RFEAT`) has also been developed with the aim of providing a greater stability to the results obtained by `EAT`. The function requires the `data` containing the variables for the analysis, `x` and `y` corresponding to the inputs and outputs indexes respectively, the minimun number of observation in a node for a split to be attempted (`numStop`) and `na.rm` to ignore observations with `NA` cells. All these arguments are used for the construction of the `m` individual `EAT` trees that make up the random forest. Finally, the argument `s_mtry` indicates the number of inputs that can be selected in each split. Being, $n_{x}$ the number of inputs, $n_{y}$ the number of outputs and $N$ the sample size, the available options in `s_mtry` are: 
+
+* `Breiman` = $\frac{n_{x}}{3}$
+* `DEA1` = $\frac{N}{2} - n_{y}$
+* `DEA2` = $\frac{N}{3} - n_{y}$
+* `DEA3` = $N - 2 \cdot n_{y}$
+* `DEA4` = $min(\frac{N}{n_{y}}, \frac{N}{3} - n_{y})$
+
+```{r airline}
+RFEAT_airline <- RFEAT(data = airline,
+                       x = 1:2,
+                       y = 3:6,
+                       numStop = 1,
+                       m = 50,
+                       s_mtry = "Breiman",
+                       na.rm = TRUE)
+```
+
+Predictions for the `RFEAT` model are made using the `predict_RFEAT` function. To do this, the output is predicted by each of the `m` individual trees trained and subsequently the mean value of all the predictions is obtained. `predict_RFEAT` requires a `RFEAT` object (from `RFEAT` function) and a set of input variables to predict on (`newdata`) returning then, a dataframe with the inputs and predicted variables.
+
+```{r predict_RFEAT}
+predictions_RFEAT <- predict_RFEAT(object = RFEAT_airline,
+                                   newdata = airline[, 1:2])
+```
+
+And finally, a ranking of variable importance by `ranking_RFEAT` where `object` is a `RFEAT`, `r` is the number of decimal units and a `barplot` can be included with `barplot = TRUE`.
+
+```{r efficiency_RFEAT}
+scoresRF <- efficiency_RFEAT(data = airline,
+                             x = 1:2,
+                             y = 3:6,
+                             object = RFEAT_airline)
+```
+
+
+
+
+
+
+
+
+
+
+
+

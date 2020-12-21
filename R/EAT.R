@@ -56,9 +56,11 @@
 EAT <- function(data, x, y, numStop = 5, fold = 5, na.rm = T) {
   conflict_prefer("filter", "dplyr")
   
-  register_names <- rownames(data)
+  data <- preProcess(data, x, y, na.rm = na.rm)
   
-  data <- preProcess(data, x, y, na.rm = na.rm) %>%
+  rwn <- data[[1]]
+  
+  data <- data[[2]] %>%
     mutate(id = row_number())
   
   # Size data
@@ -107,7 +109,7 @@ EAT <- function(data, x, y, numStop = 5, fold = 5, na.rm = T) {
     }
   }
   
-  EAT <- EAT_object(data, x, y, register_names, fold, numStop, na.rm, Tk[["tree"]])
+  EAT <- EAT_object(data, x, y, rwn, fold, numStop, na.rm, Tk[["tree"]])
   
   print_results(EAT)
   

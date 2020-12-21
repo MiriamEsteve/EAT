@@ -11,7 +11,7 @@
 #' @return Data frame with the original data and the predicted values by and FDH model.
 predict_FDH <- function(data, x, y) {
   
-  data <- preProcess(data, x, y, na.rm = TRUE)
+  data <- preProcess(data, x, y, na.rm = TRUE)[[2]]
   x <- 1:(ncol(data) - length(y))
   y <- (length(x) + 1):ncol(data)
   
@@ -75,7 +75,7 @@ efficiency_FDH <- function(data, x, y,
     stop("data must be a data.frame")
   } 
   
-  data <- preProcess(data, x, y, na.rm = T)
+  data <- preProcess(data, x, y, na.rm = T)[[2]]
   x <- 1:(ncol(data) - length(y))
   y <- (length(x) + 1):ncol(data)
   

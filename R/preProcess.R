@@ -1,6 +1,6 @@
 #' @title Data preprocessing
 #'
-#' @description This function displays error messages in relation with data such as presence of NA values or not allowed classes of data.
+#' @description This function displays error messages in relation with data such as presence of NA values or not allowed classes of data. Also, it prepares the data in the required format and gets the names of the rows.
 #'
 #' @param data Dataframe or matrix containing the variables in the model.
 #' @param x Vector. Column input indexes in data.
@@ -9,10 +9,10 @@
 #'
 #' @importFrom stats na.omit
 #'
-#' @return Data processed in the [X, Y] format with only allowed classes.
+#' @return List containing rownames and data processed in the [X, Y] format with only allowed classes.
 preProcess <- function(data, x, y, na.rm = T) {
   data <- as.data.frame(data)
-
+  
   for (i in y) {
     if (is.numeric(data[, i]) || is.integer(data[, i]) || is.double(data[, i])) {
       next
@@ -37,7 +37,7 @@ preProcess <- function(data, x, y, na.rm = T) {
         data <- data
       } else {
         data <- na.omit(data)
-        warning("Rows with NA values have been omitted")
+        warning("Rows with NA values have been omitted \n")
       }
     } else {
       stop("Presence of NA values. Please, detele or impute those registers or set na.rm = TRUE to omit them. \n")
@@ -45,8 +45,10 @@ preProcess <- function(data, x, y, na.rm = T) {
   }
 
   data <- data[, c(x, y)]
+  
+  rwn <- row.names(data)
 
-  return(data)
+  return(list(rwn, data))
 }
 
 

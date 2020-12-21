@@ -371,7 +371,7 @@ efficiency_EAT <- function(data, x, y, object,
   
   train_names <- c(object[["data"]][["input_names"]], object[["data"]][["output_names"]])
   
-  data <- preProcess(data, x, y, na.rm = T)
+  data <- preProcess(data, x, y, na.rm = T)[[2]]
   x <- 1:(ncol(data) - length(y))
   y <- (length(x) + 1):ncol(data)
   

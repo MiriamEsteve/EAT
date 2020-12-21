@@ -257,9 +257,11 @@ RFEAT <- function(data, x, y, numStop = 5, m,
                   s_mtry = "Breiman", na.rm = TRUE){
   conflict_prefer("filter", "dplyr")
   
-  register_names <- rownames(data)
+  data <- preProcess(data, x, y, na.rm = na.rm)
   
-  data <- preProcess(data, x, y, na.rm = na.rm) %>%
+  rwn <- data[[1]]
+  
+  data <- data[[2]] %>%
     mutate(id = row_number())
   
   # Reorder index 'x' and 'y' in data
@@ -310,7 +312,7 @@ RFEAT <- function(data, x, y, numStop = 5, m,
     err <- err + sum((reg_i[y] - (y_EstimArr / Ki)) ^ 2)
   }
   
-  RFEAT <- RFEAT_object(data, x, y, register_names, numStop, m, s_mtry, na.rm, forest, err / N)
+  RFEAT <- RFEAT_object(data, x, y, rwn, numStop, m, s_mtry, na.rm, forest, err / N)
   
   invisible(RFEAT)
 }
@@ -355,7 +357,7 @@ efficiency_RFEAT <- function(data, x, y, object){
   
   train_names <- c(object[["data"]][["input_names"]], object[["data"]][["output_names"]])
   
-  data <- preProcess(data, x, y, na.rm = T)
+  data <- preProcess(data, x, y, na.rm = T)[[2]]
   x <- 1:(ncol(data) - length(y))
   y <- (length(x) + 1):ncol(data)
   

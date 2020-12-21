@@ -14,12 +14,145 @@ output:
 
 The `EAT` algorithm must be conceived as a modeling of the response variable (output) in order to know its most efficient levels for each of the different regions of the input space that are generated. Thus, subspaces with homogeneous DMUs (since they must share the characteristics of said subspace) are delimited and the maximun expected output for that subspace is provided. In this way, the `EAT` predictor results in a monotonic increasing frontier with a stepped form where each of these steps corresponds to a node of the tree which contains observations with efficient  and non-efficient output levels.
 
-Although the model training has only been described for a single response variable so far, multiple output scenarios are also available. Additionally, modeling of the response variable(s) can be done using individual CARTs for regression or using Random Forest. On the other hand, the `EAT` object can be plotted as a tree structure to illustrate the relationship between the predictors and the predicted variable and, in the case of a single input and a single output (`y ~ x`), a representation of the frontier is acceptable. Finally, a ranking of variables can be obtained, giving the possibility of making a feature selection.
+```{r, include = FALSE}
+knitr::opts_chunk$set(
+  collapse = TRUE,
+  comment = "",
+  warning = FALSE,
+  message = FALSE
+)
+```
 
 ```{r library}
 library(eat)
-d <- data("PISAindex")
-print(5 + 5)
-print(6 + 6)
-print(1 + 1)
+data("PISAindex")
+```
+
+* EAT model with 1 input (`NBMC`) and 1 output (`S_PISA`).
+
+```{r model1}
+single_model <- EAT(data = PISAindex, 
+                    x = 6,
+                    y = 4,
+                    numStop = 1,
+                    fold = 5,
+                    na.rm = TRUE)
+```
+
+* Plot the frontier
+
+```{r frontier, fig.width = 10}
+frontier(single_model,
+         train.data = TRUE,
+         train.color = "black",
+         pch = 19,
+         size = 1,
+         rwn = TRUE)
+```
+
+* EAT model with 18 inputs and 3 outputs
+
+```{r model2}
+multioutput <- EAT(data = PISAindex, 
+                   x = 6:18,
+                   y = 3:5,
+                   numStop = 6,
+                   fold = 5,
+                   na.rm = TRUE)
+```
+
+* Ranking of importance of variables for EAT
+
+```{r ranking, fig.width = 10}
+ranking_EAT(object = multioutput,
+            r = 2,
+            threshold = 75,
+            barplot = TRUE)
+```
+
+* Plot an EAT model
+
+```{r plot, fig.width = 10, fig.height = 10}
+EAT_plot(object = multioutput)
+```
+
+* Efficiency scores EAT
+
+```{r eff_EAT}
+scores_EAT <- efficiency_EAT(data = PISAindex,
+                             x = 6:18,
+                             y = 3:5,
+                             object = multioutput,
+                             scores_model = "EAT_BCC_out",
+                             r = 2,
+                             na.rm = TRUE)
+```
+
+* Efficiency scores FDH
+
+```{r eff}
+scores_FDH <- efficiency_FDH(data = PISAindex,
+                             x = 6:18,
+                             y = 3:5,
+                             scores_model = "FDH_BCC_out",
+                             r = 4,
+                             na.rm = TRUE)
+```
+
+* Efficiency jitter plot
+
+```{r jitter, fig.width = 10, fig.height = 8}
+efficiency_jitter(object = multioutput,
+                  scores_EAT = scores_EAT$EAT_BCC_out,
+                  )
+```
+
+* Efficiency density plot
+
+```{r density, fig.width = 10, fig.height = 8}
+efficiency_density(scores_EAT = scores_EAT$EAT_BCC_out,
+                   scores_FDH = scores_FDH$FDH_BCC_out)
+```
+
+* EAT predict 
+
+```{r predict}
+predict_EAT(object = multioutput,
+            newdata = PISAindex[, 6:18])
+```
+
+* RFEAT model
+
+```{r RFEAT_model}
+RFEAT_model <- RFEAT(data = PISAindex,
+                     x = 6:18,
+                     y = 3:5,
+                     numStop = 5,
+                     m = 5,
+                     s_mtry = "Breiman",
+                     na.rm = TRUE)
+```
+
+* RFEAT ranking
+
+```{r RFEAT_ranking}
+ranking_RFEAT(object = RFEAT_model,
+              r = 4,
+              barplot = TRUE)
+```
+
+* RFEAT scores
+
+```{r RFEAT_scores}
+efficiency_RFEAT(data = PISAindex,
+                 x = 6:18,
+                 y = 3:5,
+                 object = RFEAT_model)
+```
+
+* RFEAT predict
+
+```{r RFEAT_predict}
+predict_RFEAT(object = RFEAT_model,
+              newdata = PISAindex[, 6:18])
 ```

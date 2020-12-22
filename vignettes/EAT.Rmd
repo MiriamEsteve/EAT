@@ -4,6 +4,7 @@ date: "`r Sys.Date()`"
 author: "Miguel Hernández University"
 output: 
   rmarkdown::html_vignette:
+    # self_contained: no
 vignette: >
   %\VignetteIndexEntry{EAT: Efficiency Analysis Trees}
   %\VignetteEngine{knitr::rmarkdown}
@@ -431,8 +432,8 @@ ranking_RFEAT(object, r = 2,
               barplot = TRUE)
 ```
 
-```{r ranking_RFEAT_ex, eval = FALSE}
-ranking_RFEAT(forest, r = 2,
+```{r ranking_RFEAT_ex, fig.width = 10.5, fig.height = 8, fig.align = 'center'}
+ranking_RFEAT(object = forest, r = 2,
               barplot = TRUE)
 ```
 

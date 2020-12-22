@@ -2,15 +2,26 @@ Package: eat
 Title: Efficiency Analysis Trees
 Version: 0.1.0
 Authors@R: c(
-    person("Persona", "Uno", email = "hadley@rstudio.com", role = "cre"),
-    person("Persona", "Dos", email = "winston@rstudio.com", role = "aut"),
-    person("Persona", "Tres", email = "winston2@rstudio.com", role = "aut"),
-    person("Persona", "Cuatro", email = "winston3@rstudio.com", role = "aut"),
-    person("Persona", "Cinco", email = "winston4@rstudio.com", role = "aut"),
-    person("Persona", "Seis", email = "winston5@rstudio.com", role = "aut"))
-Description: Estimation of production frontiers similar to Free Disposal Hull (FDH) model 
-    through an adaptation of regression trees based on Classification and Regression 
-    Trees (CART) methodology. 
+    person(given = "Miriam", 
+           family = "Esteve", 
+           role = c("cre", "aut"),
+           email = "miriam.estevec@umh.es",
+           comment = c(ORCID = "0000-0002-5908-0581")),
+    person(given = "Víctor", 
+           family = "España", 
+           role = c("aut")),
+    person(given = "Juan", 
+           family = "Aparicio", 
+           role = c("aut"),
+           comment = c(ORCID = "0000-0002-0867-0004")),
+    person(given = "Jesús Javier", 
+           family = "Rodríguez", 
+           role = c("aut")),
+    person(given = "Xavier", 
+           family = "Barber", 
+           role = c("ctr"),
+           comment = c(ORCID = "0000-0003-3079-5855"))
+           )
 License: GPL-3
 Encoding: UTF-8
 LazyData: true

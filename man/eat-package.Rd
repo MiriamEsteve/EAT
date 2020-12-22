@@ -9,14 +9,14 @@
 This package provides functions to determine production frontiers and technical efficiency measures through non-parametric techniques based upon regression trees. The package includes code for estimating radial input, output, directional and additive measures, plotting graphical representations of the scores and the production frontiers by means of trees, and determining rankings of importance of input variables in the analysis. Additionally, an adaptation of Random Forest by a set of individual Efficiency Analysis Trees for estimating technical efficiency is also included.
 }
 \seealso{
-Repositorio en Github: \url{https://github.com/MiriamEsteve/EAT} \cr
+Github: \url{https://github.com/MiriamEsteve/EAT} \cr
 \cr
 \insertRef{esteve2020}{eat}
 }
 \author{
 \strong{Mantainer}: \itemize{
-\item{Víctor Javier España Roch \email{email@rstudio.com}}
-\item{Míriam Esteve Campello}
+\item{Míriam Esteve Campello \email{email@rstudio.com}}
+\item{Víctor Javier España Roch}
 } \cr
 Authors:
 \itemize{
@@ -24,8 +24,10 @@ Authors:
 \item{Víctor Javier España Roch}
 \item{Juan Aparicio Baeza}
 \item{Jesús Javier Rodríguez Sala}
+}
+Contributors:
+\itemize{
 \item{Xavier Barber Vallés}
-\item{Alejandro Rabasa Dolado} 
 }
 }
 \keyword{internal}

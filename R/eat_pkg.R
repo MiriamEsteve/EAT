@@ -6,8 +6,8 @@
 #' 
 #' @author 
 #' \strong{Mantainer}: \itemize{
-#' \item{Víctor Javier España Roch \email{email@@rstudio.com}}
-#' \item{Míriam Esteve Campello}
+#' \item{Míriam Esteve Campello \email{miriam.estevec@@umh.es}}
+#' \item{Víctor Javier España Roch}
 #' } \cr
 #' Authors:
 #' \itemize{
@@ -15,8 +15,10 @@
 #' \item{Víctor Javier España Roch}
 #' \item{Juan Aparicio Baeza}
 #' \item{Jesús Javier Rodríguez Sala}
+#' }
+#' Contributors:
+#' \itemize{
 #' \item{Xavier Barber Vallés}
-#' \item{Alejandro Rabasa Dolado} 
 #' }
 #' 
 #' @importFrom utils globalVariables
@@ -25,7 +27,7 @@
 #' @keywords internal  
 #' 
 #' @seealso 
-#' Repositorio en Github: \url{https://github.com/MiriamEsteve/EAT} \cr
+#' Github: \url{https://github.com/MiriamEsteve/EAT} \cr
 #' \cr
 #' \insertRef{esteve2020}{eat}
 #' 

@@ -6,3 +6,5 @@
 ^README.html
 ^README_files
 ^simulaciones
+^revdep$
+^README\.Rmd$

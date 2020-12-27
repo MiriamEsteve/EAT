@@ -15,7 +15,7 @@ Github: \url{https://github.com/MiriamEsteve/EAT} \cr
 }
 \author{
 \strong{Mantainer}: \itemize{
-\item{Míriam Esteve Campello \email{email@rstudio.com}}
+\item{Míriam Esteve Campello \email{miriam.estevec@umh.es}}
 \item{Víctor Javier España Roch}
 } \cr
 Authors:

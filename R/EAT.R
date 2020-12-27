@@ -110,8 +110,8 @@ EAT <- function(data, x, y, numStop = 5, fold = 5, na.rm = T) {
   }
   
   EAT <- EAT_object(data, x, y, rwn, fold, numStop, na.rm, Tk[["tree"]])
-  
-  print_results(EAT)
+
+  # print_results(EAT)
   
   invisible(EAT)
 }
@@ -230,22 +230,16 @@ deepEAT <- function(data, x, y, numStop) {
   }
 }
 
-#' @title Print leaf nodes results
-#'
-#' @description This function prints the number of observations and the proportion, the efficiency level of the outputs and the mean square error for each final node.
-#'
-#' @param EAT A EAT object
-#' 
 #' @importFrom dplyr %>% select
 #' @importFrom knitr kable
-#'
-#' @return Printing in table format with the data described above.
-print_results <- function(EAT) {
+#' 
+#' @export
+print.EAT <- function(x, ...) {
   
-  results <- EAT[["nodes_df"]][["leafnodes_df"]] %>%
-    select(-index)
+  results <- x[["nodes_df"]][["leafnodes_df"]] %>%
+    select(- index)
   
-  return(print(kable(results), "pipe"))
+  print(kable(results), "pipe")
   
 }
 

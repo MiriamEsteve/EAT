@@ -216,7 +216,7 @@ ranking_EAT <- function(object, r = 2, threshold = 70, barplot = TRUE) {
   
   if (barplot == T){
     barplot <- barplot_importance(scores, threshold = threshold)
-    return(list(scores, barplot))
+    return(list(scores = scores, barplot = barplot))
     
   } else {
     return(scores)

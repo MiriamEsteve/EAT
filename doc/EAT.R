@@ -55,6 +55,8 @@ single_model <- EAT(data = training,
                     x = input, 
                     y = output)
 
+print(single_model)
+
 ## ----single_scenario_frontier, fig.width = 10.5, fig.height = 6, fig.align = 'center'----
 frontier <- frontier(object = single_model,
                      train.data = TRUE,
@@ -74,6 +76,8 @@ input <- 6:18
 output <- 3
 
 science_model <- EAT(data = training, x = input, y = output)
+
+print(science_model)
 
 ## ----EAT_plot, fig.width = 10.5, fig.height = 9, fig.align = 'center', eval = FALSE----
 #  EAT_plot(object)
@@ -102,6 +106,8 @@ output <- 3
 
 science_var_reduced_model <- EAT(data = training, x = input, y = output)
 
+print(science_var_reduced_model)
+
 ## ----compare_models, collapse = FALSE-----------------------------------------
 cat("Science model --> RMSE: ", science_model[["model"]][["RMSE"]], "| length: ", science_model[["model"]][["nodes"]])
 
@@ -121,6 +127,8 @@ science_var_reduced_numStop <- EAT(data = training,
                                    x = input, 
                                    y = output,
                                    numStop = 8)
+
+print(science_var_reduced_numStop)
 
 ## ----compare_models2, collapse = FALSE----------------------------------------
 cat("Science model --> RMSE: ", science_model[["model"]][["RMSE"]], "| length: ", science_model[["model"]][["nodes"]])
@@ -143,6 +151,8 @@ smr_model <- EAT(data = training,
                  x = input, 
                  y = output,
                  numStop = 7)
+
+print(smr_model)
 
 ## ----smr_model_plot, fig.width = 10.5, fig.height = 8, fig.align = 'center'----
 EAT_plot(object = smr_model)
@@ -214,7 +224,7 @@ output <- 3:5
 
 forest <- RFEAT(data = training, 
                 x = input, y = output,
-                numStop = 7, m = 10,
+                numStop = 7, m = 1,
                 s_mtry = "Breiman",
                 na.rm = TRUE)
 
@@ -248,9 +258,9 @@ scoresRF <- efficiency_RFEAT(data = training,
 #  ranking_RFEAT(object, r = 2,
 #                barplot = TRUE)
 
-## ----ranking_RFEAT_ex, eval = FALSE-------------------------------------------
-#  ranking_RFEAT(forest, r = 2,
-#                barplot = TRUE)
+## ----ranking_RFEAT_ex, fig.width = 10.5, fig.height = 8, fig.align = 'center'----
+ranking_RFEAT(object = forest, r = 2,
+              barplot = TRUE)
 
 ## ----continent, eval = F------------------------------------------------------
 #  # Continent is a character vector, so we transform it into a factor class

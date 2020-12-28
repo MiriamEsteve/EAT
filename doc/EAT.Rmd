@@ -4,6 +4,7 @@ date: "`r Sys.Date()`"
 author: "Miguel Hernández University"
 output: 
   rmarkdown::html_vignette:
+    # self_contained: no
 vignette: >
   %\VignetteIndexEntry{EAT: Efficiency Analysis Trees}
   %\VignetteEngine{knitr::rmarkdown}
@@ -113,6 +114,8 @@ output <- 3
 single_model <- EAT(data = training, 
                     x = input, 
                     y = output)
+
+print(single_model)
 ```
 
 The printed output of `EAT` clearly shows the number of groups formed with its error, size, proportion and the efficient levels of said groups regarding its outputs. Additionally, `EAT[["tree"]]` returns a `list` with the following elements for each node:
@@ -160,6 +163,8 @@ input <- 6:18
 output <- 3
 
 science_model <- EAT(data = training, x = input, y = output)
+
+print(science_model)
 ```
 
 Now, `frontier` cannot be used since we are in a multivariate scenario. `frontier` allows us to see the regions of the input space originated with `EAT` in a very clearly way, however, this is impossible with more than 1 input and 1 output. In this case, it is provided the typical tree structure in which the relations between the predicted variable(s) and the predictive variable(s) are showed. `EAT_plot` performs a tree plot in the same line of simplicity for the user, since only the `EAT` object have to be introduced. 
@@ -206,6 +211,8 @@ input <- c(6, 8, 12, 16, 18)
 output <- 3
 
 science_var_reduced_model <- EAT(data = training, x = input, y = output)
+
+print(science_var_reduced_model)
 ```
 
 
@@ -234,6 +241,8 @@ science_var_reduced_numStop <- EAT(data = training,
                                    x = input, 
                                    y = output,
                                    numStop = 8)
+
+print(science_var_reduced_numStop)
 ```
 
 ```{r compare_models2, collapse = FALSE}
@@ -265,6 +274,8 @@ smr_model <- EAT(data = training,
                  x = input, 
                  y = output,
                  numStop = 7)
+
+print(smr_model)
 ```
 
 ```{r smr_model_plot, fig.width = 10.5, fig.height = 8, fig.align = 'center'}
@@ -384,7 +395,7 @@ output <- 3:5
 
 forest <- RFEAT(data = training, 
                 x = input, y = output,
-                numStop = 7, m = 10,
+                numStop = 7, m = 1,
                 s_mtry = "Breiman",
                 na.rm = TRUE)
 ```
@@ -431,8 +442,8 @@ ranking_RFEAT(object, r = 2,
               barplot = TRUE)
 ```
 
-```{r ranking_RFEAT_ex, eval = FALSE}
-ranking_RFEAT(forest, r = 2,
+```{r ranking_RFEAT_ex, fig.width = 10.5, fig.height = 8, fig.align = 'center'}
+ranking_RFEAT(object = forest, r = 2,
               barplot = TRUE)
 ```
 

@@ -167,14 +167,14 @@ science_model <- EAT(data = training, x = input, y = output)
 print(science_model)
 ```
 
-Now, `frontier` cannot be used since we are in a multivariate scenario. `frontier` allows us to see the regions of the input space originated with `EAT` in a very clearly way, however, this is impossible with more than 1 input and 1 output. In this case, it is provided the typical tree structure in which the relations between the predicted variable(s) and the predictive variable(s) are showed. `EAT_plot` performs a tree plot in the same line of simplicity for the user, since only the `EAT` object have to be introduced. 
+Now, `frontier` cannot be used since we are in a multivariate scenario. `frontier` allows us to see the regions of the input space originated with `EAT` in a very clearly way, however, this is impossible with more than 1 input and 1 output. In this case, it is provided the typical tree structure in which the relations between the predicted variable(s) and the predictive variable(s) are showed. `plotEAT` performs a tree plot in the same line of simplicity for the user, since only the `EAT` object have to be introduced. 
 
-```{r EAT_plot, fig.width = 10.5, fig.height = 9, fig.align = 'center', eval = FALSE}
-EAT_plot(object)
+```{r plotEAT, fig.width = 10.5, fig.height = 9, fig.align = 'center', eval = FALSE}
+plotEAT(object)
 ```
 
 ```{r science_plot, fig.width = 10.5, fig.height = 9, fig.align = 'center'}
-EAT_plot(object = science_model)
+plotEAT(object = science_model)
 ```
 
 In each node, we can obtain the following information:
@@ -225,7 +225,7 @@ cat("Science variables model reduced --> RMSE: ", science_var_reduced_model[["mo
 In this way we can, on the one hand, know which are the most important variables for obtaining maximum levels of our output(s) and, on the other hand, repeat the analysis with fewer variables and then, reducing computation time.
 
 ```{r science_reduced_plot, fig.width = 10.5, fig.height = 9, fig.align = 'center'}
-EAT_plot(object = science_var_reduced_model)
+plotEAT(object = science_var_reduced_model)
 ```
 
 In this section, we also deal with `fold` and `numStop` arguments (by default both are 5). This last modeling, with `fold = 5` and `numStop = 5`, results in the tree shown above with 23 nodes. The tree size is highly dependent on the `numStop` argument, which indicates how much the minimum number of observations must be in a node to be considered a leaf node. So, higher values in `numStop` smaller size of the tree. About the `fold` argument, it is related to the cross-validation technique for pruning and indicates how many parts the data set has been divided into to select the training and test parts. Although it is not directly related to the size of the tree, its modification can lead to different frontiers. So now, we introduce `numStop = 8` expecting a smaller tree.
@@ -256,7 +256,7 @@ cat("Science variable model reduced NumStop --> RMSE: ", science_var_reduced_num
 This new model, with 8 fewer variables than the first model and specifying `numStop = 8`, achieves a great balance between the error and the size of the tree compared to the two previous models.
 
 ```{r science_reduced_model_second_plot, fig.width = 10.5, fig.height = 8, fig.align = 'center'}
-EAT_plot(object = science_var_reduced_numStop)
+plotEAT(object = science_var_reduced_numStop)
 ```
 
 ## Example 2: the multioutput scenario
@@ -279,7 +279,7 @@ print(smr_model)
 ```
 
 ```{r smr_model_plot, fig.width = 10.5, fig.height = 8, fig.align = 'center'}
-EAT_plot(object = smr_model)
+plotEAT(object = smr_model)
 ```
 
 As any other Machine Learning algorithm, `EAT` performs predictions by `predict_EAT` function. `predict_EAT` returns a `data.frame` with the data and the expected output(s) for a set of observations. The arguments to the `predict_EAT` function are `object` (an `EAT` object) and `newdata` (dataframe with input variables). 

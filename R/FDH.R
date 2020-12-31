@@ -9,7 +9,7 @@
 #' @export
 #'
 #' @return Data frame with the original data and the predicted values by and FDH model.
-predict_FDH <- function(data, x, y) {
+predictFDH <- function(data, x, y) {
   
   data <- preProcess(data, x, y, na.rm = TRUE)[[2]]
   x <- 1:(ncol(data) - length(y))
@@ -61,10 +61,22 @@ predict_FDH <- function(data, x, y) {
 #' @importFrom stats median quantile sd
 #' 
 #' @export
+#' 
+#' @examples
+#' 
+#' X1 <- runif(50, 1, 10)
+#' X2 <- runif(50, 2, 10)
+#' Y1 <- log(X1) + 3 - abs(rnorm(50, mean = 0, sd = 0.4))
+#' Y2 <- log(X1) + 2 - abs(rnorm(50, mean = 0, sd = 0.7))
+#'
+#' simulated <- data.frame(x1 = X1, x2 = X2, y1 = Y1, y2 = Y2)
+#'
+#' efficiencyFDH(data = simulated, x = c(1, 2), y = c(3, 4), scores_model = "FDH_BCC_out",
+#'               r = 2, na.rm = TRUE)
 #'
 #' @return Dataframe with input variables and efficiency scores by a FDH model.
-efficiency_FDH <- function(data, x, y, 
-                           scores_model, r = 4, na.rm = TRUE) {
+efficiencyFDH <- function(data, x, y, 
+                          scores_model, r = 4, na.rm = TRUE) {
   
   if (!scores_model %in% c("FDH_BCC_out", "FDH_BCC_in", "FDH_DDF", 
                            "FDH_RSL_out", "FDH_RSL_in", "FDH_WAM")){

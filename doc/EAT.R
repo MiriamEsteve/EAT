@@ -79,23 +79,23 @@ science_model <- EAT(data = training, x = input, y = output)
 
 print(science_model)
 
-## ----EAT_plot, fig.width = 10.5, fig.height = 9, fig.align = 'center', eval = FALSE----
-#  EAT_plot(object)
+## ----plotEAT, fig.width = 10.5, fig.height = 9, fig.align = 'center', eval = FALSE----
+#  plotEAT(object)
 
 ## ----science_plot, fig.width = 10.5, fig.height = 9, fig.align = 'center'-----
-EAT_plot(object = science_model)
+plotEAT(object = science_model)
 
 ## ----ranking, eval = F--------------------------------------------------------
-#  ranking_EAT(object,
-#              r = 2,
-#              barplot = TRUE,
-#              threshold = 70)
+#  rankingEAT(object,
+#             r = 2,
+#             barplot = TRUE,
+#             threshold = 70)
 
 ## ----science_importance, fig.width = 10.5, fig.height = 6, fig.align = 'center'----
-ranking_EAT(object = science_model,
-            r = 2,
-            barplot = TRUE,
-            threshold = 70)
+rankingEAT(object = science_model,
+           r = 2,
+           barplot = TRUE,
+           threshold = 70)
 
 ## ----science_var_reduced_model, collapse = FALSE------------------------------
 # Input indexes
@@ -114,7 +114,7 @@ cat("Science model --> RMSE: ", science_model[["model"]][["RMSE"]], "| length: "
 cat("Science variables model reduced --> RMSE: ", science_var_reduced_model[["model"]][["RMSE"]], "| length: ", science_var_reduced_model[["model"]][["nodes"]])
 
 ## ----science_reduced_plot, fig.width = 10.5, fig.height = 9, fig.align = 'center'----
-EAT_plot(object = science_var_reduced_model)
+plotEAT(object = science_var_reduced_model)
 
 ## ----science_reduced_model_second, collapse = FALSE---------------------------
 # Input indexes
@@ -138,7 +138,7 @@ cat("Science variables model reduced --> RMSE: ", science_var_reduced_model[["mo
 cat("Science variable model reduced NumStop --> RMSE: ", science_var_reduced_numStop[["model"]][["RMSE"]], "| length: ", science_var_reduced_numStop[["model"]][["nodes"]])
 
 ## ----science_reduced_model_second_plot, fig.width = 10.5, fig.height = 8, fig.align = 'center'----
-EAT_plot(object = science_var_reduced_numStop)
+plotEAT(object = science_var_reduced_numStop)
 
 ## ----smr_model, collapse = FALSE----------------------------------------------
 # Input indexes
@@ -155,66 +155,66 @@ smr_model <- EAT(data = training,
 print(smr_model)
 
 ## ----smr_model_plot, fig.width = 10.5, fig.height = 8, fig.align = 'center'----
-EAT_plot(object = smr_model)
+plotEAT(object = smr_model)
 
 ## ----predict, eval = F--------------------------------------------------------
-#  predict_EAT(object, newdata)
+#  predictEAT(object, newdata)
 
 ## ----prediction, collapse = F-------------------------------------------------
-predictions_EAT <- predict_EAT(object = smr_model,
-                           newdata = test[, input])
+predictions_EAT <- predictEAT(object = smr_model,
+                             newdata = test[, input])
 
 ## ----efficiency, eval = FALSE-------------------------------------------------
-#  efficiency_EAT(data, x, y,
-#                 object,
-#                 score_model,
-#                 r = 4)
+#  efficiencyEAT(data, x, y,
+#                object,
+#                score_model,
+#                r = 4)
 #  
-#  efficiency_FDH(data, x, y,
-#                 score_model,
-#                 r = 4)
+#  efficiencyFDH(data, x, y,
+#                score_model,
+#                r = 4)
 
 ## ----scores, collapse = FALSE-------------------------------------------------
-scores_EAT <- efficiency_EAT(data = training,
-                             x = 6, 
-                             y = 3,
-                             object = single_model, 
-                             scores_model = "EAT_BCC_out",
-                             r = 4)
+scores_EAT <- efficiencyEAT(data = training,
+                            x = 6, 
+                            y = 3,
+                            object = single_model, 
+                            scores_model = "EAT_BCC_out",
+                            r = 4)
 
-scores_FDH <- efficiency_FDH(data = training,
-                             x = 6, 
-                             y = 3,
-                             scores_model = "FDH_BCC_out",
-                             r = 4)
+scores_FDH <- efficiencyFDH(data = training,
+                            x = 6, 
+                            y = 3,
+                            scores_model = "FDH_BCC_out",
+                            r = 4)
 
 ## ----efficiency_jitter, eval = FALSE------------------------------------------
-#  efficiency_jitter(object, scores_EAT,
-#                    scores_model,
-#                    lwb = NULL, upb = NULL)
+#  efficiencyJitter(object, scores_EAT,
+#                   scores_model,
+#                   lwb = NULL, upb = NULL)
 
 ## ----jitter_single, collapse = FALSE, fig.width = 10.5, fig.height = 8, fig.align = 'center'----
-efficiency_jitter(object = single_model,
-                  scores_EAT = scores_EAT$EAT_BCC_out,
-                  scores_model = "EAT_BCC_out",
-                  lwb = 1.2)
+efficiencyJitter(object = single_model,
+                 scores_EAT = scores_EAT$EAT_BCC_out,
+                 scores_model = "EAT_BCC_out",
+                 lwb = 1.2)
 
 ## ----frontier_comparar, fig.width = 10.5, fig.height = 6, fig.align = 'center'----
 plot(frontier)
 
 ## ----efficiency_density, eval = F---------------------------------------------
-#  efficiency_density(scores_EAT,
-#                     scores_FDH = NULL)
+#  efficiencyDensity(scores_EAT,
+#                    scores_FDH = NULL)
 #  
 
 ## ----density_single, collapse = FALSE, fig.width = 10.5, fig.height = 8, fig.align = 'center'----
-efficiency_density(scores_EAT = scores_EAT$EAT_BCC_out,
-                   scores_FDH = scores_FDH$FDH_BCC_out)
+efficiencyDensity(scores_EAT = scores_EAT$EAT_BCC_out,
+                  scores_FDH = scores_FDH$FDH_BCC_out)
 
 
 ## ----RF, eval = FALSE---------------------------------------------------------
 #  RFEAT(data, x, y,
-#        numStop = 5, m,
+#        numStop = 5, m = 50,
 #        s_mtry = "Breiman",
 #        na.rm = TRUE)
 
@@ -224,15 +224,15 @@ output <- 3:5
 
 forest <- RFEAT(data = training, 
                 x = input, y = output,
-                numStop = 7, m = 1,
+                numStop = 7, m = 5,
                 s_mtry = "Breiman",
                 na.rm = TRUE)
 
 ## ----predict_EAT, eval = FALSE------------------------------------------------
-#  predict_RFEAT(object, newdata)
+#  predictRFEAT(object, newdata)
 
 ## ----predict_EAT_ex-----------------------------------------------------------
-predictions_RFEAT <- predict_RFEAT(forest, test[, input])
+predictions_RFEAT <- predictRFEAT(forest, test[, input])
 
 ## ----EAT_vs_RFEAT-------------------------------------------------------------
 names(predictions_EAT)[14:16] <- c("S_EAT", "R_EAT", "M_EAT")
@@ -243,24 +243,24 @@ EAT_vs_RFEAT <- cbind(test[, 3:5], predictions_EAT[, 14:16], predictions_RFEAT[,
 print(EAT_vs_RFEAT)
 
 ## ----eff_scores, eval = FALSE-------------------------------------------------
-#  efficiency_RFEAT(data = training,
-#                   x = input,
-#                   y = output,
-#                   object = forest)
+#  efficiencyRFEAT(data = training,
+#                  x = input,
+#                  y = output,
+#                  object = forest)
 
 ## ----scores_RF----------------------------------------------------------------
-scoresRF <- efficiency_RFEAT(data = training,
-                             x = input,
-                             y = output,
-                             object = forest)
+scoresRF <- efficiencyRFEAT(data = training,
+                            x = input,
+                            y = output,
+                            object = forest)
 
 ## ----ranking_RFEAT, eval = FALSE----------------------------------------------
-#  ranking_RFEAT(object, r = 2,
+#  rankingRFEAT(object, r = 2,
 #                barplot = TRUE)
 
 ## ----ranking_RFEAT_ex, fig.width = 10.5, fig.height = 8, fig.align = 'center'----
-ranking_RFEAT(object = forest, r = 2,
-              barplot = TRUE)
+rankingRFEAT(object = forest, r = 2,
+             barplot = TRUE)
 
 ## ----continent, eval = F------------------------------------------------------
 #  # Continent is a character vector, so we transform it into a factor class

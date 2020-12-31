@@ -357,21 +357,45 @@ EAT_WAM <- function(j, scores, x_k, y_k, atreeTk, ytreeTk, nX, nY, N_leaves) {
 #' @importFrom dplyr summarise %>%
 #' @importFrom stats median quantile sd
 #' 
-#'
 #' @export
+#' 
+#' @examples
+#' 
+#' X1 <- runif(50, 1, 10)
+#' X2 <- runif(50, 2, 10)
+#' Y1 <- log(X1) + 3 - abs(rnorm(50, mean = 0, sd = 0.4))
+#' Y2 <- log(X1) + 2 - abs(rnorm(50, mean = 0, sd = 0.7))
+#'
+#' simulated <- data.frame(x1 = X1, x2 = X2, y1 = Y1, y2 = Y2)
+#' 
+#' n <- nrow(simulated)
+#' t_index <- sample(1:n, n * 0.8)
+#' training <- simulated[t_index, ]
+#' test <- simulated[-t_index, ]
+#' 
+#' EAT_model <- EAT(data = training, x = c(1,2), y = c(3, 4), numStop = 3, fold = 7)
+#'
+#' efficiencyEAT(data = training, x = c(1, 2), y = c(3, 4), object = EAT_model, 
+#'               scores_model = "EAT_BCC_out", r = 2, na.rm = TRUE)
+#' 
+#' efficiencyEAT(data = test, x = c(1, 2), y = c(3, 4), object = EAT_model, 
+#'               scores_model = "EAT_BCC_out", r = 2, na.rm = TRUE)
 #'
 #' @return Dataframe with input variables and efficiency scores by an EAT model.
-efficiency_EAT <- function(data, x, y, object, 
+efficiencyEAT <- function(data, x, y, object, 
                            scores_model, r = 4, na.rm = TRUE) {
   
   if (!scores_model %in% c("EAT_BCC_out", "EAT_BCC_in", "EAT_DDF", 
                            "EAT_RSL_out", "EAT_RSL_in", "EAT_WAM")){
-    stop(paste(scores_model, "is not available. Please, check help(efficiency_EAT)"))
+    stop(paste(scores_model, "is not available. Please, check help(efficiencyEAT)"))
   }
   
   train_names <- c(object[["data"]][["input_names"]], object[["data"]][["output_names"]])
   
-  data <- preProcess(data, x, y, na.rm = T)[[2]]
+  rwn_data <- preProcess(data, x, y, na.rm = T)
+  
+  rwn <- rwn_data[[1]]
+  data <- rwn_data[[2]]
   x <- 1:(ncol(data) - length(y))
   y <- (length(x) + 1):ncol(data)
   
@@ -417,7 +441,7 @@ efficiency_EAT <- function(data, x, y, object,
 
   scores <- as.data.frame(scores)
   names(scores) <- scores_model
-  rownames(scores) <- object[["data"]][["row_names"]]
+  rownames(scores) <- rwn
 
   descriptive <- scores %>%
     summarise("Mean" = round(mean(scores[, 1]), 2),
@@ -437,9 +461,3 @@ efficiency_EAT <- function(data, x, y, object,
 
   invisible(scores_df)
 }
-
-
-
-
-
-

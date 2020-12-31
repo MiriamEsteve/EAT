@@ -201,7 +201,7 @@ M_Breiman <- function(object, r) {
 #' @return Dataframe with scores or list with scores and barplot.
 #' 
 #' @export   
-ranking_EAT <- function(object, r = 2, threshold = 70, barplot = TRUE) {
+rankingEAT <- function(object, r = 2, threshold = 70, barplot = TRUE) {
   
   if (class(object) != "EAT"){
     stop(paste(object, "must be an EAT object"))

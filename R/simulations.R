@@ -9,7 +9,7 @@
 #' @importFrom stats runif rnorm
 #'
 #' @return Data frame with the values of a scenario with nX inputs and nY outputs.
-Y1.simul <- function(N, nX) {
+Y1.sim <- function(N, nX) {
   if(!(nX %in% c(1, 3, 6, 9, 12, 15))){
     stop(paste(nX, "is not allowed"))
   }
@@ -85,7 +85,7 @@ Y1.simul <- function(N, nX) {
 #' @importFrom stats runif rnorm
 #'
 #' @return Data frame with the values of a scenario with 2 inputs and 2 outputs.
-X2Y2.simul <- function(N, border, noise = NULL) {
+X2Y2.sim <- function(N, border, noise = NULL) {
   nX <- 2
   nY <- 2
   

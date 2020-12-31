@@ -35,7 +35,7 @@ bagging <- function(data, x, y){
 #'
 #' @description This function selects the number of inputs for a split in Random Forest.
 #'
-#' @param s_mtry  Select number of inputs. It could be: \code{"Breiman"}, \code{"DEA1"}, \code{"DEA2"}, \code{"DEA3"} or \code{"DEA4"}.
+#' @param s_mtry  Select number of inputs. It could be: \code{"Breiman"}, \code{"DEA1"}, \code{"DEA2"}, \code{"DEA3"} or \code{"DEA4"} or any integer.
 #' @param t Node which is being splitted.
 #' @param nX Number of inputs in data.
 #' @param nY Number of outputa in data.
@@ -165,7 +165,7 @@ split_forest <- function(data, tree, leaves, t, x, y, numStop, arrayK){
 #' @param x Vector. Column input indexes in data.
 #' @param y Vector. Column output indexes in data.
 #' @param numStop Integer. Minimun number of observations in a node for a split to be attempted.
-#' @param s_mtry  Select number of inputs. It could be: \code{"Breiman"}, \code{"DEA1"}, \code{"DEA2"}, \code{"DEA3"} or \code{"DEA4"}
+#' @param s_mtry  Select number of inputs. It could be: \code{"Breiman"}, \code{"DEA1"}, \code{"DEA2"}, \code{"DEA3"} or \code{"DEA4"} or any integer.
 #' 
 #' @return List of m trees in forest and the error that will be used in the ranking of the importance of the variables.
 RandomEAT <- function(data, x, y, numStop, s_mtry){
@@ -231,14 +231,14 @@ RandomEAT <- function(data, x, y, numStop, s_mtry){
 
 #' @title Random Forest EAT
 #'
-#' @description This function build "m" EAT trees in a forest structure.
+#' @description This function build \code{m} individual Efficiency Analysis Trees in a forest structure.
 #' 
 #' @param data Dataframe or matrix containing the variables in the model.
 #' @param x Vector. Column input indexes in data.
 #' @param y Vector. Column output indexes in data.
 #' @param numStop Integer. Minimun number of observations in a node for a split to be attempted.
 #' @param m Integer. Number of trees to be build.
-#' @param s_mtry Select number of inputs in each split.
+#' @param s_mtry Select number of inputs in each split. It can be an integer or any of the following options:
 #' \itemize{
 #' \item{\code{"Breiman"}}: \code{in / 3}
 #' \item{\code{"DEA1"}}: \code{(obs / 2) - out}  
@@ -252,8 +252,20 @@ RandomEAT <- function(data, x, y, numStop, s_mtry){
 #'
 #' @export
 #' 
+#' @examples 
+#' 
+#' X1 <- runif(50, 1, 10)
+#' X2 <- runif(50, 2, 10)
+#' Y1 <- log(X1) + 3 - abs(rnorm(50, mean = 0, sd = 0.4))
+#' Y2 <- log(X1) + 2 - abs(rnorm(50, mean = 0, sd = 0.7))
+#'
+#' simulated <- data.frame(x1 = X1, x2 = X2, y1 = Y1, y2 = Y2)
+#'
+#' Rf_model <- RFEAT(data = simulated, x = c(1,2), y = c(3, 4), numStop = 5,
+#'                   m = 100, s_mtry = "Breiman", na.rm = TRUE)
+#' 
 #' @return List of m trees in forest and the error that will be used in the ranking of the importance of the variables.
-RFEAT <- function(data, x, y, numStop = 5, m, 
+RFEAT <- function(data, x, y, numStop = 5, m = 50, 
                   s_mtry = "Breiman", na.rm = TRUE){
   conflict_prefer("filter", "dplyr")
   
@@ -351,13 +363,37 @@ RF_predictor <- function(forest, xn){
 #' @importFrom dplyr %>% mutate
 #' 
 #' @export
+#' 
+#' @examples
+#' 
+#' X1 <- runif(50, 1, 10)
+#' X2 <- runif(50, 2, 10)
+#' Y1 <- log(X1) + 3 - abs(rnorm(50, mean = 0, sd = 0.4))
+#' Y2 <- log(X1) + 2 - abs(rnorm(50, mean = 0, sd = 0.7))
+#'
+#' simulated <- data.frame(x1 = X1, x2 = X2, y1 = Y1, y2 = Y2)
+#' 
+#' n <- nrow(simulated)
+#' t_index <- sample(1:n, n * 0.8)
+#' training <- simulated[t_index, ]
+#' test <- simulated[-t_index, ]
+#' 
+#' RFEAT_model <- RFEAT(data = training, x = c(1,2), y = c(3, 4), numStop = 5,
+#'                      m = 50, s_mtry = "Breiman", na.rm = TRUE)
+#'
+#' efficiencyRFEAT(data = training, x = c(1, 2), y = c(3, 4), object = RFEAT_model)
+#' 
+#' efficiencyRFEAT(data = test, x = c(1, 2), y = c(3, 4), object = RFEAT_model)
 #'
 #' @return Dataframe with input variables and efficiency scores by a RFEAT model.
-efficiency_RFEAT <- function(data, x, y, object){
+efficiencyRFEAT <- function(data, x, y, object){
   
   train_names <- c(object[["data"]][["input_names"]], object[["data"]][["output_names"]])
   
-  data <- preProcess(data, x, y, na.rm = T)[[2]]
+  rwn_data <- preProcess(data, x, y, na.rm = T)
+  
+  rwn <- rwn_data[[1]]
+  data <- rwn_data[[2]]
   x <- 1:(ncol(data) - length(y))
   y <- (length(x) + 1):ncol(data)
   
@@ -397,7 +433,7 @@ efficiency_RFEAT <- function(data, x, y, object){
   
   scoreRF <- as.data.frame(data$scoreRF)
   names(scoreRF) <- "scoreRF"
-  rownames(scoreRF) <- object[["data"]][["row_names"]]
+  rownames(scoreRF) <- rwn
   
   print(scoreRF)
   
@@ -416,7 +452,7 @@ efficiency_RFEAT <- function(data, x, y, object){
 #' @return Data frame with the original data and the predicted values.
 #' 
 #' @export
-predict_RFEAT <- function(object, newdata) {
+predictRFEAT <- function(object, newdata) {
   
   train_names <- object[["data"]][["input_names"]]
   test_names <- names(newdata)
@@ -453,11 +489,11 @@ predict_RFEAT <- function(object, newdata) {
     
   }
   
-  names(predictions) <-  paste(object[["data"]][["output_names"]],"_pred", sep = "")
+  names(predictions) <-  paste(object[["data"]][["output_names"]], "_pred", sep = "")
   
   print(predictions)
   
-  predictions <-cbind(newdata, predictions)
+  predictions <- cbind(newdata, predictions)
   
   invisible(predictions)
 }
@@ -473,7 +509,7 @@ predict_RFEAT <- function(object, newdata) {
 #' @return Dataframe with scores or list with scores and barplot.
 #' 
 #' @export   
-ranking_RFEAT <- function(object, r = 2, barplot = TRUE) {
+rankingRFEAT <- function(object, r = 2, barplot = TRUE) {
   
   if (class(object) != "RFEAT"){
     stop(paste(object, "must be an RFEAT object"))
@@ -511,7 +547,7 @@ ranking_RFEAT <- function(object, r = 2, barplot = TRUE) {
 #' 
 #' @importFrom dplyr %>% arrange
 #' @return List of importance of inputs xj
-imp_var_RFEAT <- function(object, r = r){
+imp_var_RFEAT <- function(object, r = 2){
   
   err <- object[["error"]]
   data <- object[["data"]][["data"]]

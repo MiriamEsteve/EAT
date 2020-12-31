@@ -16,6 +16,21 @@
 #'
 #' @return Plot with estimated production frontier
 #' 
+#' @examples
+#' 
+#' data("PISAindex")
+#' n <- nrow(PISAindex)
+#' t_index <- sample(1:n, n * 0.8)
+#' training <- PISAindex[t_index, ]
+#' test <- PISAindex[-t_index, ]
+#' 
+#' single_model <- EAT(data = training, x = 6, y = 3)
+#' 
+#' frontier <- frontier(object = single_model, train.data = TRUE, train.color = "#F8766D",
+#'                      rwn = TRUE, size = 1.5)
+#' 
+#' plot(frontier)
+#' 
 #' @export
 frontier <- function(object, train.data = FALSE, train.color = "black", 
                      pch = 19, size = 1, rwn = FALSE){

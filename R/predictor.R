@@ -50,7 +50,7 @@ posIdNode <- function(tree, idNode) {
 #' @return Data frame with the original data and the predicted values.
 #' 
 #' @export
-predict_EAT <- function(object, newdata) {
+predictEAT <- function(object, newdata) {
   
   train_names <- object[["data"]][["input_names"]]
   test_names <- names(newdata)

@@ -20,7 +20,7 @@ EAT_object <- function(data, x, y, register_names, numStop, fold, na.rm, tree) {
   output_names <- names(data)[y]
   input_names <- names(data)[x]
   
-  colnames <- c("Node", "N", "Proportion", output_names, "Error")
+  colnames <- c("Node", "n(t)", "Proportion", output_names, "Error")
   
   # Tree as data.frame
   nodes_frame <- as.data.frame(Reduce(rbind, tree))

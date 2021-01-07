@@ -352,6 +352,7 @@ EAT_WAM <- function(j, scores, x_k, y_k, atreeTk, ytreeTk, nX, nY, N_leaves) {
 #' \item{\code{EAT_WAM}}     Weighted Additive model.
 #' }
 #' @param r Integer. Decimal units for scores.
+#' @param FDH. Logical. If \code{TRUE}, FDH scores are calculated with the programming model selected in \code{scores_model}
 #' @param na.rm Logical. If \code{TRUE}, \code{NA} rows are omitted.
 #'  
 #' @importFrom dplyr summarise %>%
@@ -383,7 +384,8 @@ EAT_WAM <- function(j, scores, x_k, y_k, atreeTk, ytreeTk, nX, nY, N_leaves) {
 #'
 #' @return Dataframe with input variables and efficiency scores by an EAT model.
 efficiencyEAT <- function(data, x, y, object, 
-                           scores_model, r = 4, na.rm = TRUE) {
+                          scores_model, r = 4, FDH = TRUE,
+                          na.rm = TRUE) {
   
   if (!scores_model %in% c("EAT_BCC_out", "EAT_BCC_in", "EAT_DDF", 
                            "EAT_RSL_out", "EAT_RSL_in", "EAT_WAM")){
@@ -422,29 +424,60 @@ efficiencyEAT <- function(data, x, y, object,
   
   if (scores_model == "EAT_BCC_out"){
     scores <- EAT_BCC_out(j, scores, x_k, y_k, atreeTk, ytreeTk, nX, nY, N_leaves)
+    
+    if (FDH == TRUE){
+      scores_FDH <- EAT_BCC_out(j, scores, x_k, y_k, x_k, y_k, nX, nY, j)
+      FDH_model <- "FDH_BCC_out"
+    }
 
   } else if (scores_model == "EAT_BCC_in"){
     scores <- EAT_BCC_in(j, scores, x_k, y_k, atreeTk, ytreeTk, nX, nY, N_leaves)
+    
+    if (FDH == TRUE){
+      scores_FDH <- EAT_BCC_in(j, scores, x_k, y_k, x_k, y_k, nX, nY, j)
+      FDH_model <- "FDH_BCC_in"
+    }
 
   } else if (scores_model == "EAT_DDF"){
     scores <- EAT_DDF(j, scores, x_k, y_k, atreeTk, ytreeTk, nX, nY, N_leaves)
+    
+    if (FDH == TRUE){
+      scores_FDH <- EAT_DDF(j, scores, x_k, y_k, x_k, y_k, nX, nY, j)
+      FDH_model <- "FDH_DDF"
+    }
 
   } else if (scores_model == "EAT_RSL_out"){
     scores <- EAT_RSL_out(j, scores, x_k, y_k, atreeTk, ytreeTk, nX, nY, N_leaves)
+    
+    if (FDH == TRUE){
+      scores_FDH <- EAT_RSL_out(j, scores, x_k, y_k, x_k, y_k, nX, nY, j)
+      FDH_model <- "FDH_RSL_out"
+    }
 
   } else if (scores_model == "EAT_RSL_in"){
     scores <- EAT_RSL_in(j, scores, x_k, y_k, atreeTk, ytreeTk, nX, nY, N_leaves)
+    
+    if (FDH == TRUE){
+      scores_FDH <- EAT_RSL_in(j, scores, x_k, y_k, x_k, y_k, nX, nY, j)
+      FDH_model <- "FDH_RSL_in"
+    }
 
   } else if (scores_model == "EAT_WAM"){
     scores <- EAT_WAM(j, scores, x_k, y_k, atreeTk, ytreeTk, nX, nY, N_leaves)
+    
+    if (FDH == TRUE){
+      scores_FDH <- EAT_WAM(j, scores, x_k, y_k, x_k, y_k, nX, nY, j)
+      FDH_model <- "FDH_WAM"
+    }
   }
 
   scores <- as.data.frame(scores)
   names(scores) <- scores_model
   rownames(scores) <- rwn
-
+  
   descriptive <- scores %>%
-    summarise("Mean" = round(mean(scores[, 1]), 2),
+    summarise("Model" = "EAT",
+              "Mean" = round(mean(scores[, 1]), 2),
               "Std. Dev." = round(sd(scores[, 1]), 2),
               "Min" = round(min(scores[, 1]), 2),
               "Q1" = round(quantile(scores[, 1])[[2]], 2),
@@ -453,11 +486,41 @@ efficiencyEAT <- function(data, x, y, object,
               "Max" = round(max(scores[, 1]), 2)
               )
   
-  print(round(scores, r))
-
-  scores_df <- cbind(data, round(scores, r)) 
+  if (FDH == TRUE){
+    scores_FDH <- as.data.frame(scores_FDH)
+    names(scores_FDH) <- FDH_model
+    rownames(scores_FDH) <- rwn
+    
+    descriptive_FDH <- scores %>%
+      summarise("Model" = "FDH",
+                "Mean" = round(mean(scores_FDH[, 1]), 2),
+                "Std. Dev." = round(sd(scores_FDH[, 1]), 2),
+                "Min" = round(min(scores_FDH[, 1]), 2),
+                "Q1" = round(quantile(scores_FDH[, 1])[[2]], 2),
+                "Median" = round(median(scores_FDH[, 1]), 2),
+                "Q3" = round(quantile(scores_FDH[, 1])[[3]], 2),
+                "Max" = round(max(scores_FDH[, 1]), 2)
+      )
+  }
   
-  print(kable(descriptive), "pipe")
-
-  invisible(scores_df)
+  if (FDH == TRUE){
+    
+    scores_df <- cbind(data, round(scores, r), round(scores_FDH, r))
+    print(scores_df[, c(ncol(scores_df) - 1, ncol(scores_df))])
+    
+    print(kable(descriptive), "pipe")
+    print(kable(descriptive_FDH), "pipe")
+    
+    invisible(scores_df)
+    
+  } else {
+    
+    scores_df <- cbind(data, round(scores, r))
+    print(round(scores_df[, ncol(scores_df)], r))
+    
+    print(kable(descriptive), "pipe")
+    
+    invisible(scores_df)
+    
+  }
 }

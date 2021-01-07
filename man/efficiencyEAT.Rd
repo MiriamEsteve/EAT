@@ -4,7 +4,16 @@
 \alias{efficiencyEAT}
 \title{EAT Efficiency Scores}
 \usage{
-efficiencyEAT(data, x, y, object, scores_model, r = 4, na.rm = TRUE)
+efficiencyEAT(
+  data,
+  x,
+  y,
+  object,
+  scores_model,
+  r = 4,
+  FDH = TRUE,
+  na.rm = TRUE
+)
 }
 \arguments{
 \item{data}{Dataframe for which the efficiency score is calculated.}
@@ -28,6 +37,8 @@ efficiencyEAT(data, x, y, object, scores_model, r = 4, na.rm = TRUE)
 \item{r}{Integer. Decimal units for scores.}
 
 \item{na.rm}{Logical. If \code{TRUE}, \code{NA} rows are omitted.}
+
+\item{FDH.}{Logical. If \code{TRUE}, FDH scores are calculated with the programming model selected in \code{scores_model}}
 }
 \value{
 Dataframe with input variables and efficiency scores by an EAT model.

@@ -239,8 +239,70 @@ print.EAT <- function(x, ...) {
   results <- x[["nodes_df"]][["leafnodes_df"]] %>%
     select(- index)
   
+  results$Proportion <- paste(as.character(results$Proportion), "%", sep = "")
+  names(results)[2] <- "n(t)"
+
   print(kable(results), "pipe")
   
 }
 
+#' @title Tuning an EAT model
+#'
+#' @description This funcion calculates the mean square error for a Efficiency Analysis Tree built with a set of given hyperparameters. 
+#'
+#' @param training Training dataframe or matrix containing the variables in the model for model construction.
+#' @param test Test dataframe or matrix containing the variables in the model for model assessment.
+#' @param x Vector. Column input indexes in data.
+#' @param y Vector. Column output indexes in data.
+#' @param numStop Vector. Set of minimun number of observations in a node for a split to be attempted.
+#' @param fold Vector. Set of number of folds in which is divided the dataset to apply cross-validation during the pruning.
+#' @param na.rm Logical. If \code{TRUE}, \code{NA} rows are omitted.
+#' 
+#' @export
+#'
+#' @return Dataframe in which each row corresponds to a given set of hyperparameters with its corresponding mean square error.
+bestEAT <- function(training, test, x, y, numStop, fold, na.rm = TRUE) {
 
+  train_names <- names(training[, c(x, y)])
+  test_names <- names(test[, c(x, y)])
+  
+  if (length(train_names) != length(test_names)){
+    stop("Training and test data must have the same number of variables")
+  } else if (!all(train_names == test_names)){
+    stop(paste("Variable name: ", test_names[1], "not found in taining data"))
+  }
+  
+  test <- preProcess(test, x, y, na.rm = na.rm)[[2]]
+  
+  hp <- expand.grid(numStop = numStop,
+                    fold = fold)
+  
+  hp$MSE <- NA
+  
+  for (i in 1:nrow(hp)) {
+    
+    EATmodel <- EAT(data = training, x = x, y = y, numStop = hp[i, "numStop"],
+                    fold = hp[i, "fold"], na.rm = TRUE)
+    
+    x.t <- EATmodel[["data"]][["x"]]
+    y.t <- EATmodel[["data"]][["y"]]
+    
+    # RMSE
+    
+    data.p <- as.data.frame(test[, x.t])
+    pred <- data.frame()
+    for (j in 1:nrow(data.p)){
+      pred <- rbind(pred, predictor(EATmodel[["tree"]], data.p[j, ]))
+    }
+    
+    predictions <- cbind(data.p, pred)
+
+    MSE <- sqrt(sum((test[, y.t] - predictions[, y.t]) ^ 2) / nrow(test))
+    
+    hp[i, "MSE"] <- round(MSE, 2)
+    
+  }
+  
+  print(hp)
+  
+}

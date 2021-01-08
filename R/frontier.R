@@ -11,7 +11,7 @@
 #' @param size Integer. Point size.
 #' @param rwn Logical. If \code{TRUE}, rownames are displayed instead of points.
 #'
-#' @importFrom ggplot2 ggplot aes_string geom_point geom_line geom_text xlab ylab xlim ylim
+#' @importFrom ggplot2 ggplot aes_string geom_point geom_step geom_text xlab ylab xlim ylim
 #' @importFrom ggrepel geom_label_repel
 #'
 #' @return Plot with estimated production frontier
@@ -51,21 +51,18 @@ frontier <- function(object, train.data = FALSE, train.color = "black",
     stop("More than one input or one output are not allowed")
 
   } else {
-
-    fp <- data.frame(x_values = seq(min(t_data[, x]), max(t_data[, x]),  
-                                    length.out = 2000))
-    names(fp) <- x_names
     
     pred <- data.frame()
-    for (i in 1:nrow(fp)){
-      pred <- rbind(pred, predictor(tree, fp[i, ]))
+    
+    for (i in 1:nrow(t_data)){
+      pred <- rbind(pred, predictor(tree, t_data[i, 1]))
     }
     
-    pred <- cbind(fp, pred)
+    pred <- cbind(t_data[, 1], pred)
     names(pred) <- c("x1", "frontier")
-
+    
     plot <- ggplot(t_data) +
-      geom_line(data = pred, aes(x = x1, y = frontier), size = 1, colour = "turquoise4") +
+      geom_step(data = pred, aes(x = x1, y = frontier), size = 1, colour = "turquoise4") +
       xlab(x_names) +
       ylab(y_names)
     

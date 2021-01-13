@@ -143,7 +143,7 @@ imp_var_EAT <- function(data, tree, x, y, r) {
 #' @return Dataframe with one column and the importance of each variable in rows.
 M_Breiman <- function(object, r) {
   
-  data <- object[["data"]][["data"]] %>%
+  data <- object[["data"]][["df"]] %>%
     mutate(id = row_number())
   tree <- object[["tree"]]
   x <- object[["data"]][["x"]] 

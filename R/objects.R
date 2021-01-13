@@ -20,8 +20,6 @@ EAT_object <- function(data, x, y, register_names, numStop, fold, na.rm, tree) {
   output_names <- names(data)[y]
   input_names <- names(data)[x]
   
-  colnames <- c("Node", "n(t)", "Proportion", output_names, "Error")
-  
   # Tree as data.frame
   nodes_frame <- as.data.frame(Reduce(rbind, tree))
   
@@ -66,11 +64,7 @@ EAT_object <- function(data, x, y, register_names, numStop, fold, na.rm, tree) {
   nodes_frame <- nodes_frame %>%
     select(id, SL, N, Proportion, output_names, MSE, index)
   
-  # Leaf nodes
-  leaf_nodes <- nodes_frame %>%
-    filter(SL == -1)
-  
-  EAT_object <- list("data" = list(data = data %>% 
+  EAT_object <- list("data" = list(df = data %>% 
                                      select(-id),
                                    x = x,
                                    y = y,
@@ -81,10 +75,7 @@ EAT_object <- function(data, x, y, register_names, numStop, fold, na.rm, tree) {
                                       numStop = numStop, 
                                       na.rm = na.rm),
                      "tree" = tree,
-                     "nodes_df" = list(nodes_df = nodes_frame %>% 
-                                         select(-SL),
-                                       leafnodes_df = leaf_nodes %>% 
-                                         select(-SL)),
+                     "nodes_df" = nodes_frame,
                      "model" = list(nodes = length(tree),
                                     leaf_nodes = nrow(atreeTk),
                                     a = atreeTk,

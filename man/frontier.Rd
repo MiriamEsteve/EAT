@@ -6,6 +6,7 @@
 \usage{
 frontier(
   object,
+  FDH = FALSE,
   train.data = FALSE,
   train.color = "black",
   pch = 19,
@@ -15,6 +16,8 @@ frontier(
 }
 \arguments{
 \item{object}{An EAT object.}
+
+\item{FDH}{Logical. If \code{TRUE}, FDH frontier is displayed.}
 
 \item{train.data}{Logical. If \code{TRUE}, training DMUs are displayed.}
 

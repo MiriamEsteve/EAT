@@ -37,7 +37,7 @@ plotEAT <- function(object) {
   }
   
   tree <- object[["tree"]]
-  data <- object[["data"]][["data"]]
+  data <- single_[["data"]][["df"]]
   y <- object[["data"]][["y"]]
   
   N <- nrow(data)
@@ -58,7 +58,6 @@ plotEAT <- function(object) {
     } else {
       nodelist[[i]] <- list(
         "id" = as.integer(i),
-
         "split" = partysplit(
           varid = as.integer(tree[[i]][["xi"]]),
           breaks = ifelse(class(tree[[i]][["s"]]) %in% c("ordered", "factor"),
@@ -68,7 +67,6 @@ plotEAT <- function(object) {
         ),
 
         "kids" = c(tree[[i]][["SL"]], tree[[i]][["SR"]]),
-
         "info" = list(
           "Y" = lapply(tree[[i]][["y"]], round, 1),
           "R" = round(sqrt(tree[[i]][["R"]]), 2),
@@ -79,13 +77,11 @@ plotEAT <- function(object) {
       )
     }
   }
-
+  
   node <- as.partynode(nodelist)
-
   py <- party(node, data)
-
   layout <- layout(py)
-
+  
   infovars <- vector("list", 5 + length(y))
 
   ynames <- c()
@@ -122,11 +118,12 @@ plotEAT <- function(object) {
 
     geom_node_label(aes(col = splitvar),
       line_list = list(
-        aes(label = paste("Id = ", Id)),
-        aes(label = paste("R = ", R)),
-        aes(label = paste("Samples = ", n1)),
-        aes(label = paste("Variable =", splitvar)),
-        aes(label = paste("y = [", do.call(paste, lapply(ynames, as.name)), "]"))
+        aes(label = paste("Id: ", Id)),
+        aes(label = paste("R: ", R)),
+        aes(label = paste("n(t): ", n1)),
+        aes(label = paste(splitvar)),
+        aes(label = paste("y: [", do.call(paste, c(lapply(ynames, as.name),
+                                                    list(sep = ","))), "]"))
       ),
 
       line_gpar = list(
@@ -142,10 +139,11 @@ plotEAT <- function(object) {
 
    geom_node_label(
      line_list = list(
-       aes(label = paste("Id = ", Id)),
-       aes(label = paste("R = ", R)),
-       aes(label = paste("Samples = ", n1)),
-       aes(label = paste("y = [", do.call(paste, lapply(ynames, as.name)), "]"))
+       aes(label = paste("Id:", Id)),
+       aes(label = paste("R:", R)),
+       aes(label = paste("n(t):", n1)),
+       aes(label = paste("y: [", do.call(paste, c(lapply(ynames, as.name),
+                                                   list(sep = ","))), "]"))
      ),
 
      line_gpar = list(

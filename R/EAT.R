@@ -165,6 +165,7 @@ deepEAT <- function(data, x, y, numStop) {
     "SL" = -1,
     "SR" = -1,
     "index" = data[["id"]],
+    "varInfo" = rep(list(c(Inf, Inf, Inf)), nX),
     "R" = -1,
     "xi" = -1,
     "s" = -1,
@@ -230,19 +231,163 @@ deepEAT <- function(data, x, y, numStop) {
   }
 }
 
-#' @importFrom dplyr %>% select
-#' @importFrom knitr kable
-#' 
 #' @export
 print.EAT <- function(x, ...) {
   
-  results <- x[["nodes_df"]][["leafnodes_df"]] %>%
-    select(- index)
+  tree <- x[["tree"]]
+  input_names <- x[["data"]][["input_names"]]
   
-  results$Proportion <- paste(as.character(results$Proportion), "%", sep = "")
-  names(results)[2] <- "n(t)"
+  # Order
+  ord <- c(1)
+  
+  # Reference vector to delete positions
+  ref <- c(tree[[1]][["SR"]], tree[[1]][["SL"]])
+  
+  while(length(ref) != 0){
+    
+    t <- ref[length(ref)]
+    
+    if (tree[[t]][["SL"]] != -1) {
+      ord <- append(ord, t)
+      ref <- c(ref[- length(ref)], tree[[t]][["SR"]], tree[[t]][["SL"]])
 
-  print(kable(results), "pipe")
+    } else {
+      ord <- append(ord, t)
+      ref <- ref[- length(ref)]
+      
+    }
+  }
+  
+  for (t in ord) {
+    cat(
+      paste(rep(" | ", floor(t / 2))),
+      paste("[", tree[[t]][["id"]], "]", sep = ""),
+      
+      if (tree[[t]][["id"]] != 1) {
+        if(tree[[t]][["id"]] %% 2 == 0) {
+          paste(input_names[tree[[tree[[t]][["F"]]]][["xi"]]], "<", 
+                round(tree[[tree[[t]][["F"]]]][["s"]], 2)) 
+          
+        } else {
+          paste(input_names[tree[[tree[[t]][["F"]]]][["xi"]]], ">=", 
+                round(tree[[tree[[t]][["F"]]]][["s"]], 2)) 
+          
+        }
+      },
+      
+      if (tree[[t]][["id"]] != 1) paste("-->"),
+      
+      "y: [", do.call(paste, c(lapply(tree[[t]][["y"]], round, 1),
+                                      list(sep = ","))),"]",
+      
+      if (tree[[t]][["SL"]] == - 1) paste("<*>"),
+      
+      "||",
+      
+      "MSE:", round(sqrt(tree[[t]][["R"]]), 2),
+      
+      "n(t):", length(tree[[t]][["index"]]),
+      
+      rep("\n", 2)
+    )
+  }
+}
+
+#' @importFrom dplyr %>% select filter
+#' 
+#' @export
+summary.EAT <- function(object, ...) {
+  
+  results <- object[["nodes_df"]] %>%
+    filter(SL == - 1) %>%
+    select(- index, - SL)
+  
+  names(results)[2:3] <- c("n(t)", "%")
+  
+  cat(
+    "\n",
+    "# ========================== #", "\n",
+    "#   Summary for leaf nodes   #", "\n",
+    "# ========================== #", rep("\n", 2) 
+    )
+  
+  print(results, row.names = FALSE)
+  
+  cat(
+    rep("\n", 1),
+    "# ========================== #", "\n",
+    "#            Tree            #", "\n",
+    "# ========================== #", 
+    rep("\n", 2) 
+  )
+  
+  cat(
+    " Inner nodes:", paste(object[["model"]][["nodes"]] - object[["model"]][["leaf_nodes"]]), "\n",
+    " Leaf nodes:", paste(object[["model"]][["leaf_nodes"]]), "\n",
+    "Total nodes:", paste(object[["model"]][["nodes"]]),
+    rep("\n", 2)
+  )
+  
+  cat("   Total MSE: ", sum(results$MSE), "\n",
+      "    numStop: ", object[["control"]][["numStop"]], "\n",
+      "       fold: ", object[["control"]][["fold"]]
+      )
+  
+  cat(
+    rep("\n", 2),
+    "# ========================== #", "\n",
+    "# Primary & surrogate splits #", "\n",
+    "# ========================== #", rep("\n", 2) 
+  )
+  
+  tree <- object[["tree"]]
+  input_names <- object[["data"]][["input_names"]]
+  
+  inp <- 1:length(input_names)
+  
+  for (t in 1:length(tree)) {
+    if (tree[[t]][["SL"]] != -1) {
+      
+      cat(
+        paste(" Node ", tree[[t]][["id"]], " --> {",
+            tree[[t]][["SL"]], ",", tree[[t]][["SR"]], "}", sep = ""),
+        "||", input_names[tree[[t]][["xi"]]], "--> {R:", round(tree[[t]][["R"]], 2),
+        "s:", round(tree[[t]][["s"]], 2), "}", "\n",
+        paste("   Surrogate splits"), "\n"
+        )
+      
+      vec <- inp[- tree[[t]][["xi"]]]
+      
+      for (j in vec){
+        
+        values <- unlist(lapply(tree[[t]][["varInfo"]][[j]], round, 2))
+        
+        cat(
+          paste("    ", input_names[j], " --> ", "{tL_R: ", values[1], ",", 
+                " tR_R: ", values[2], ",", " s: ", values[3], "}", sep = ""), "\n" 
+        )
+
+      }
+        
+      cat(
+        rep("\n", 2)
+      )
+    }
+  }
+}
+
+#' @title EAT size
+#'
+#' @description This function calculates the number of leaf nodes in the tree.
+#'
+#' @param object An EAT object.
+#' 
+#' @return Number of leaf nodes in the tree
+#' 
+#' @export
+size <- function(object) {
+  
+  return(object[["model"]][["leaf_nodes"]])
   
 }
 
@@ -300,6 +445,7 @@ bestEAT <- function(training, test, x, y, numStop, fold, na.rm = TRUE) {
     MSE <- sqrt(sum((test[, y.t] - predictions[, y.t]) ^ 2) / nrow(test))
     
     hp[i, "MSE"] <- round(MSE, 2)
+    hp[i, "length"] <- EATmodel[["model"]][["leaf_nodes"]]
     
   }
   

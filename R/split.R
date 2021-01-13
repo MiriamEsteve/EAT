@@ -147,7 +147,11 @@ split <- function(data, tree, leaves, t, x, y, numStop) {
       tR_ <- tL_tR_[[2]]
 
       err <- tL_[["R"]] + tR_[["R"]]
-
+      
+      if((t[["varInfo"]][[xi]][[1]] + t[["varInfo"]][[xi]][[2]]) > err) {
+        t[["varInfo"]][[xi]] <- list(tL_[["R"]], tR_[["R"]], S[i])
+      }
+        
       if (err < err_min) {
         t[["xi"]] <- xi
         t[["s"]] <- S[i]
@@ -172,6 +176,7 @@ split <- function(data, tree, leaves, t, x, y, numStop) {
   }))]] <- t
 
   if (isFinalNode(tR[["index"]], data[, x], numStop)) {
+    tR[["varInfo"]] <- rep(list(list(0, 0, 0)), nX)
     tR[["xi"]] <- tR[["s"]] <- -1
     leaves <- append(leaves, list(tR), 0)
   } else {
@@ -179,6 +184,7 @@ split <- function(data, tree, leaves, t, x, y, numStop) {
   }
 
   if (isFinalNode(tL[["index"]], data[, x], numStop)) {
+    tL[["varInfo"]] <- rep(list(list(0, 0, 0)), nX)
     tL[["xi"]] <- tL[["s"]] <- -1
     leaves <- append(leaves, list(tL), 0)
   } else {

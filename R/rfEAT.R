@@ -110,9 +110,6 @@ split_forest <- function(data, tree, leaves, t, x, y, numStop, arrayK){
       
       err <- tL_[["R"]] + tR_[["R"]]
       
-      if((t[["varInfo"]][[xi]][[1]] + t[["varInfo"]][[xi]][[2]]) > err)
-        t[["varInfo"]][[xi]] <- list(tL_[["R"]], tR_[["R"]], S[i])
-      
       if (err < err_min){
         t[["xi"]] <- xi
         t[["s"]] <- S[i]
@@ -135,9 +132,8 @@ split_forest <- function(data, tree, leaves, t, x, y, numStop, arrayK){
   }))]] <- t
   
   
-  # If they are end nodes, set VarInfo all to zero
+  # If they are end nodes
   if(isFinalNode(tR[["index"]], data[, x], numStop)){
-    tR[["varInfo"]] <- rep(list(list(0, 0, 0)), nX)
     tR[["xi"]] <- tR[["s"]] <- -1
     leaves <- append(leaves, list(tR), 0)
   } else{
@@ -145,7 +141,6 @@ split_forest <- function(data, tree, leaves, t, x, y, numStop, arrayK){
   }
   
   if(isFinalNode(tL[["index"]], data[, x], numStop)){
-    tL[["varInfo"]] <- rep(list(list(0, 0, 0)), nX)
     tL[["xi"]] <- tL[["s"]] <- -1
     leaves <- append(leaves, list(tL), 0)
   } else
@@ -183,7 +178,6 @@ RandomEAT <- function(data, x, y, numStop, s_mtry){
             "SL" = -1,
             "SR" = -1,
             "index" = data[["id"]],
-            "varInfo" = rep(list(c(Inf, Inf, Inf)), nX),
             "R" = -1,
             "xi" = -1,
             "s" = -1,
@@ -560,10 +554,10 @@ imp_var_RFEAT <- function(object, r = 2){
   imp <- data.frame()
   
   for(xi in x){
-    #Barajar xi
+    # Barajar xi
     df_xi <- data[sample(nrow(data), nrow(data), replace = TRUE), ]
-    rf_err_xi = RFEAT(df_xi, x, y, numStop, m, s_mtry)
-    err_xi = rf_err_xi[["error"]]
+    rf_err_xi <- RFEAT(df_xi, x, y, numStop, m, s_mtry)
+    err_xi <- rf_err_xi[["error"]]
     imp <- rbind(imp, (100 * ((err_xi - err)/err)))
   }
   

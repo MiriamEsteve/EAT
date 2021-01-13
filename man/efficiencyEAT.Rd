@@ -26,12 +26,12 @@ efficiencyEAT(
 
 \item{scores_model}{Mathematic programming model to calculate scores. 
 \itemize{
-\item{\code{EAT_BCC_out}} BBC model. Output orientation.
-\item{\code{EAT_BCC_in}}  BBC model. Input orientation.
-\item{\code{EAT_DDF}}     Directional distance model.
-\item{\code{EAT_RSL_out}} Rusell model. Output orientation
-\item{\code{EAT_RSL_in}}  Rusell model. Input orientation.
-\item{\code{EAT_WAM}}     Weighted Additive model.
+\item{\code{BCC_out}} BBC model. Output-oriented.
+\item{\code{BCC_in}}  BBC model. Input-oriented.
+\item{\code{DDF}}     Directional Distance Function.
+\item{\code{RSL_out}} Rusell model. Output-oriented.
+\item{\code{RSL_in}}  Rusell model. Input-oriented.
+\item{\code{WAM}}     Weighted Additive Model.
 }}
 
 \item{r}{Integer. Decimal units for scores.}
@@ -63,9 +63,9 @@ test <- simulated[-t_index, ]
 EAT_model <- EAT(data = training, x = c(1,2), y = c(3, 4), numStop = 3, fold = 7)
 
 efficiencyEAT(data = training, x = c(1, 2), y = c(3, 4), object = EAT_model, 
-              scores_model = "EAT_BCC_out", r = 2, na.rm = TRUE)
+              scores_model = "BCC_out", r = 2, na.rm = TRUE)
 
 efficiencyEAT(data = test, x = c(1, 2), y = c(3, 4), object = EAT_model, 
-              scores_model = "EAT_BCC_out", r = 2, na.rm = TRUE)
+              scores_model = "BCC_out", r = 2, na.rm = TRUE)
 
 }

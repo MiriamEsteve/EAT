@@ -344,12 +344,12 @@ EAT_WAM <- function(j, scores, x_k, y_k, atreeTk, ytreeTk, nX, nY, N_leaves) {
 #' @param object An EAT object.
 #' @param scores_model Mathematic programming model to calculate scores. 
 #' \itemize{
-#' \item{\code{EAT_BCC_out}} BBC model. Output orientation.
-#' \item{\code{EAT_BCC_in}}  BBC model. Input orientation.
-#' \item{\code{EAT_DDF}}     Directional distance model.
-#' \item{\code{EAT_RSL_out}} Rusell model. Output orientation
-#' \item{\code{EAT_RSL_in}}  Rusell model. Input orientation.
-#' \item{\code{EAT_WAM}}     Weighted Additive model.
+#' \item{\code{BCC_out}} BBC model. Output-oriented.
+#' \item{\code{BCC_in}}  BBC model. Input-oriented.
+#' \item{\code{DDF}}     Directional Distance Function.
+#' \item{\code{RSL_out}} Rusell model. Output-oriented.
+#' \item{\code{RSL_in}}  Rusell model. Input-oriented.
+#' \item{\code{WAM}}     Weighted Additive Model.
 #' }
 #' @param r Integer. Decimal units for scores.
 #' @param FDH. Logical. If \code{TRUE}, FDH scores are calculated with the programming model selected in \code{scores_model}
@@ -357,6 +357,7 @@ EAT_WAM <- function(j, scores, x_k, y_k, atreeTk, ytreeTk, nX, nY, N_leaves) {
 #'  
 #' @importFrom dplyr summarise %>%
 #' @importFrom stats median quantile sd
+#' @importFrom knitr kable
 #' 
 #' @export
 #' 
@@ -377,18 +378,18 @@ EAT_WAM <- function(j, scores, x_k, y_k, atreeTk, ytreeTk, nX, nY, N_leaves) {
 #' EAT_model <- EAT(data = training, x = c(1,2), y = c(3, 4), numStop = 3, fold = 7)
 #'
 #' efficiencyEAT(data = training, x = c(1, 2), y = c(3, 4), object = EAT_model, 
-#'               scores_model = "EAT_BCC_out", r = 2, na.rm = TRUE)
+#'               scores_model = "BCC_out", r = 2, na.rm = TRUE)
 #' 
 #' efficiencyEAT(data = test, x = c(1, 2), y = c(3, 4), object = EAT_model, 
-#'               scores_model = "EAT_BCC_out", r = 2, na.rm = TRUE)
+#'               scores_model = "BCC_out", r = 2, na.rm = TRUE)
 #'
 #' @return Dataframe with input variables and efficiency scores by an EAT model.
 efficiencyEAT <- function(data, x, y, object, 
                           scores_model, r = 4, FDH = TRUE,
                           na.rm = TRUE) {
   
-  if (!scores_model %in% c("EAT_BCC_out", "EAT_BCC_in", "EAT_DDF", 
-                           "EAT_RSL_out", "EAT_RSL_in", "EAT_WAM")){
+  if (!scores_model %in% c("BCC_out", "BCC_in", "DDF", 
+                           "RSL_out", "RSL_in", "WAM")){
     stop(paste(scores_model, "is not available. Please, check help(efficiencyEAT)"))
   }
   
@@ -422,48 +423,54 @@ efficiencyEAT <- function(data, x, y, object,
   ytreeTk <- object[["model"]][["y"]]
   N_leaves <- object[["model"]][["leaf_nodes"]]
   
-  if (scores_model == "EAT_BCC_out"){
+  if (scores_model == "BCC_out"){
     scores <- EAT_BCC_out(j, scores, x_k, y_k, atreeTk, ytreeTk, nX, nY, N_leaves)
+    EAT_model <- "EAT_BCC_out"
     
     if (FDH == TRUE){
       scores_FDH <- EAT_BCC_out(j, scores, x_k, y_k, x_k, y_k, nX, nY, j)
       FDH_model <- "FDH_BCC_out"
     }
 
-  } else if (scores_model == "EAT_BCC_in"){
+  } else if (scores_model == "BCC_in"){
     scores <- EAT_BCC_in(j, scores, x_k, y_k, atreeTk, ytreeTk, nX, nY, N_leaves)
+    EAT_model <- "EAT_BCC_in"
     
     if (FDH == TRUE){
       scores_FDH <- EAT_BCC_in(j, scores, x_k, y_k, x_k, y_k, nX, nY, j)
       FDH_model <- "FDH_BCC_in"
     }
 
-  } else if (scores_model == "EAT_DDF"){
+  } else if (scores_model == "DDF"){
     scores <- EAT_DDF(j, scores, x_k, y_k, atreeTk, ytreeTk, nX, nY, N_leaves)
+    EAT_model <- "EAT_DDF"
     
     if (FDH == TRUE){
       scores_FDH <- EAT_DDF(j, scores, x_k, y_k, x_k, y_k, nX, nY, j)
       FDH_model <- "FDH_DDF"
     }
 
-  } else if (scores_model == "EAT_RSL_out"){
+  } else if (scores_model == "RSL_out"){
     scores <- EAT_RSL_out(j, scores, x_k, y_k, atreeTk, ytreeTk, nX, nY, N_leaves)
+    EAT_model <- "EAT_RSL_out"
     
     if (FDH == TRUE){
       scores_FDH <- EAT_RSL_out(j, scores, x_k, y_k, x_k, y_k, nX, nY, j)
       FDH_model <- "FDH_RSL_out"
     }
 
-  } else if (scores_model == "EAT_RSL_in"){
+  } else if (scores_model == "RSL_in"){
     scores <- EAT_RSL_in(j, scores, x_k, y_k, atreeTk, ytreeTk, nX, nY, N_leaves)
+    EAT_model <- "EAT_RSL_in"
     
     if (FDH == TRUE){
       scores_FDH <- EAT_RSL_in(j, scores, x_k, y_k, x_k, y_k, nX, nY, j)
       FDH_model <- "FDH_RSL_in"
     }
 
-  } else if (scores_model == "EAT_WAM"){
+  } else if (scores_model == "WAM"){
     scores <- EAT_WAM(j, scores, x_k, y_k, atreeTk, ytreeTk, nX, nY, N_leaves)
+    EAT_model <- "EAT_WAM"
     
     if (FDH == TRUE){
       scores_FDH <- EAT_WAM(j, scores, x_k, y_k, x_k, y_k, nX, nY, j)
@@ -472,7 +479,7 @@ efficiencyEAT <- function(data, x, y, object,
   }
 
   scores <- as.data.frame(scores)
-  names(scores) <- scores_model
+  names(scores) <- EAT_model
   rownames(scores) <- rwn
   
   descriptive <- scores %>%

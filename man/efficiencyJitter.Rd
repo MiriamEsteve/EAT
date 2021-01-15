@@ -13,12 +13,12 @@ efficiencyJitter(object, scores_EAT, scores_model, upb = NULL, lwb = NULL)
 
 \item{scores_model}{Mathematic programming model of scores_EAT. 
 \itemize{
-\item{\code{EAT_BCC_out}} BBC model. Output orientation.
-\item{\code{EAT_BCC_in}}  BBC model. Input orientation.
-\item{\code{EAT_DDF}}     Directional distance model.
-\item{\code{EAT_RSL_out}} Rusell model. Output orientation
-\item{\code{EAT_RSL_in}}  Rusell model. Input orientation.
-\item{\code{EAT_WAM}}     Weighted Additive model.
+\item{\code{BCC_out}} BBC model. Output orientation.
+\item{\code{BCC_in}}  BBC model. Input orientation.
+\item{\code{DDF}}     Directional distance model.
+\item{\code{RSL_out}} Rusell model. Output orientation
+\item{\code{RSL_in}}  Rusell model. Input orientation.
+\item{\code{WAM}}     Weighted Additive model.
 }}
 
 \item{upb}{Numeric. Upper bound for labeling.}
@@ -43,8 +43,8 @@ simulated <- data.frame(x1 = X1, x2 = X2, y1 = Y1, y2 = Y2)
 EAT_model <- EAT(data = simulated, x = c(1,2), y = c(3, 4), numStop = 5, fold = 5)
 
 EAT_scores <- efficiencyEAT(data = simulated, x = c(1, 2), y = c(3, 4), object = EAT_model,
-                            scores_model = "EAT_BCC_out", r = 2, na.rm = TRUE)
+                            scores_model = "BCC_out", r = 2, na.rm = TRUE)
 
-efficiencyJitter(object = EAT_model, scores_EAT = EAT_scores, scores_model = "EAT_BCC_out")
+efficiencyJitter(object = EAT_model, scores_EAT = EAT_scores, scores_model = "BCC_out")
 
 }

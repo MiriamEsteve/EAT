@@ -2,7 +2,7 @@
 % Please edit documentation in R/efficiency.R
 \name{EAT_BCC_out}
 \alias{EAT_BCC_out}
-\title{Banker, Charnes and Cooper programming model with output orientation.}
+\title{Banker, Charnes and Cooper programming model with output orientation for an EAT model}
 \usage{
 EAT_BCC_out(j, scores, x_k, y_k, atreeTk, ytreeTk, nX, nY, N_leaves)
 }
@@ -29,5 +29,5 @@ EAT_BCC_out(j, scores, x_k, y_k, atreeTk, ytreeTk, nX, nY, N_leaves)
 A numerical vector with efficiency scores.
 }
 \description{
-Banker, Charnes and Cooper programming model with output orientation.
+Banker, Charnes and Cooper programming model with output orientation for an EAT model.
 }

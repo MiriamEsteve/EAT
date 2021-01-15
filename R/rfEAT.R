@@ -258,7 +258,7 @@ RandomEAT <- function(data, x, y, numStop, s_mtry){
 #' Rf_model <- RFEAT(data = simulated, x = c(1,2), y = c(3, 4), numStop = 5,
 #'                   m = 100, s_mtry = "Breiman", na.rm = TRUE)
 #' 
-#' @return List of m trees in forest and the error that will be used in the ranking of the importance of the variables.
+#' @return A RFEAT object.
 RFEAT <- function(data, x, y, numStop = 5, m = 50, 
                   s_mtry = "Breiman", na.rm = TRUE){
   conflict_prefer("filter", "dplyr")
@@ -312,6 +312,8 @@ RFEAT <- function(data, x, y, numStop = 5, m = 50,
         y_EstimArr <- mapply("+", y_EstimArr,  predictor(forest[[k]], reg_i[x]))
       }
     }
+    
+    # y_EstimArr is the mean prediction for each output
     
     if(all(sapply(y_EstimArr, identical, 0)))
       next
@@ -367,17 +369,10 @@ RF_predictor <- function(forest, xn){
 #'
 #' simulated <- data.frame(x1 = X1, x2 = X2, y1 = Y1, y2 = Y2)
 #' 
-#' n <- nrow(simulated)
-#' t_index <- sample(1:n, n * 0.8)
-#' training <- simulated[t_index, ]
-#' test <- simulated[-t_index, ]
-#' 
-#' RFEAT_model <- RFEAT(data = training, x = c(1,2), y = c(3, 4), numStop = 5,
+#' RFEAT_model <- RFEAT(data = simulated, x = c(1,2), y = c(3, 4), numStop = 5,
 #'                      m = 50, s_mtry = "Breiman", na.rm = TRUE)
 #'
-#' efficiencyRFEAT(data = training, x = c(1, 2), y = c(3, 4), object = RFEAT_model)
-#' 
-#' efficiencyRFEAT(data = test, x = c(1, 2), y = c(3, 4), object = RFEAT_model)
+#' efficiencyRFEAT(data = simulated, x = c(1, 2), y = c(3, 4), object = RFEAT_model)
 #'
 #' @return Dataframe with input variables and efficiency scores by a RFEAT model.
 efficiencyRFEAT <- function(data, x, y, object){
@@ -544,7 +539,7 @@ rankingRFEAT <- function(object, r = 2, barplot = TRUE) {
 imp_var_RFEAT <- function(object, r = 2){
   
   err <- object[["error"]]
-  data <- object[["data"]][["data"]]
+  data <- object[["data"]][["df"]]
   x <- object[["data"]][["x"]]
   y <- object[["data"]][["y"]]
   numStop <- object[["control"]][["numStop"]]
@@ -643,3 +638,31 @@ bestRFEAT <- function(training, test, x, y, numStop, m, s_mtry, na.rm = TRUE) {
   
 }
 
+print.RFEAT <- function(x, ...) {
+  
+  input_names <- x[["data"]][["input_names"]]
+  output_names <- x[["data"]][["output_names"]]
+  
+  cat("\n",
+      paste(" Formula: "),
+      do.call(paste, c(as.list(output_names), sep = " + ")), 
+      "~",
+      do.call(paste, c(as.list(input_names), sep = " + ")),
+      "\n"
+  )
+  
+  cat(
+    rep("\n", 1),
+    "# ========================== #", "\n",
+    "#           Forest           #", "\n",
+    "# ========================== #", 
+    rep("\n", 2) 
+  )
+  
+  cat(" Total MSE: ", round(x[["MSE"]], 2), "\n",
+      " numStop: ", x[["control"]][["numStop"]],  "\n",
+      " No. of trees (m): ", x[["control"]][["m"]], "\n",
+      " No. of inputs tried (s_mtry): ", x[["control"]][["s_mtry"]],
+      sep = "")
+  
+}

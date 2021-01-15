@@ -14,9 +14,6 @@ vignette: >
 <style>
   body {
     text-align: justify;
-    max-width: 75%;
-    margin-left: auto;
-    margin-right: auto;
     }
 </style>
 
@@ -30,30 +27,103 @@ knitr::opts_chunk$set(
 )
 ```
 
-This vignette is intended to know the main functions of `EAT` library. [Efficiency Analysis Trees](https://www.sciencedirect.com/science/article/pii/S0957417420306072) is an alghoritm by which a production frontier is obtained through and adaptation of regression trees based on CART. The generation of production frontiers falls within the field of efficiency analysis, of which some concepts must be known:
+This vignette is intended to known the main functions of the `EAT` package. [Efficiency Analysis Trees](https://www.sciencedirect.com/science/article/pii/S0957417420306072) is an algorithm that estimates a production frontier in a data-driven environment by adapting regression trees. In this way, techniques from the field of **machine learning** are incorporated into solving problems in the field of **production theory**. From the latter, a series of concepts necessary for solving problems with the `EAT` library are introduced: 
 
-* A **production frontier** is a boundary defined for those feasible combinations of input and output that are efficient.
-* A **DMU** (**D**ecision **M**aking **U**nits) is an observation of the dataset whose efficiency is to be assessed.
-* A specific DMU is **efficient** when is located at the production frontier and it has room for improvement regarding its inputs or outputs when it is in the area below the frontier.
+* A **production frontier** is a boundary defined by those input and output combinations that are feasible and efficient. 
 
-The `EAT` algorithm must be conceived as a modeling of the response variable (output) in order to know its most efficient levels for each of the different regions of the input space that are generated. Thus, subspaces with homogeneous DMUs (since they must share the characteristics of said subspace) are delimited and the maximun expected output for that subspace is provided. In this way, the `EAT` predictor results in a monotonic increasing frontier with a stepped form where each of these steps corresponds to a node of the tree which contains observations with efficient and non-efficient output levels.
+* A **D**ecision **M**aking **U**nit (**DMU**) is a observation of the dataset whose efficiency is to be assessed. A DMU will be efficient when it is located at the production frontier and will have room for improvement when it is located in the area underlying the border. A non-efficient DMU can become efficient through any of the following options: 
 
-Although the model training has only been described for a single response variable so far, multiple output scenarios are also available. Additionally, modeling of the response variable(s) can be done using individual CARTs for regression or using Random Forest. On the other hand, the `EAT` object can be plotted as a tree structure to illustrate the relationship between the predictors and the predicted variable and, in the case of a single input and a single output (`y ~ x`), a representation of the frontier is acceptable. Finally, a ranking of variables can be obtained, giving the possibility of making a feature selection.
+  * Reduce the amount of input used while keeping the same amount of output obtained.
 
-With the purpose of clarifying the previously exposed contents, the `PISAindex` database is collected from [socialprogress](https://www.socialprogress.org/). This has been included in the `EAT` package and contains the followig features:
+  * Increase the amount of output obtained while keeping the same amount of input used.
 
-* 72 countries which take the PISA test.
-* 3 variables related to information about the country (rownames included).
-* 3 possible outputs corresponding to the PISA score in Science, Reading and Mathematics.
-* 13 possible inputs: 
-  * 4 related to Basic Human Needs field.
-  * 4 related to Foundations of Wellbeing field.
-  * 4 related to Opportunity field.
-  * 1 corresponding to the Gross Domestic Product per capita adjuted by purchasing power parity.
+  * Reduce the amount of input used and increase the amount of output obtained at the same time.
 
-More details in `help(PISAindex)`. 
+The Efficiency Analysis Trees modeling is aimed at capturing the maximum trends of a set of outputs. For this purpose, DMUs under the same resource paradigm are grouped into nodes and subsequently the maximum expected output is predicted for each node. The Efficiency Analysis Trees estimator results in a monotonic increasing frontier with a stepped form where each of these steps corresponds to a node of the tree containing homogeneus DMUs with efficient and non-efficient output levels.
 
-Therefore, `EAT` will be applied in order to create homogeneous groups of countries in terms of their social characteristics (Basic Human Needs, Foundations of Wellbeing, Oportunity and GDP PPP per capita) and subsequently to know for each of these groups what is the maximum PISA score expected in one or more areas.
+In this section, an **EAT** model, an **RFEAT** model,  **FDH** model and a **DEA** model refer to a modeling carried out using Efficiency Analysis Trees technique, Random Forest + Efficiency Analysis Trees technique, Free Disposal Hull mathematical program or Data Envelopment Analysis model respectively. The functions developed in the `EAT` library will always be oriented to one of the 4 previous models (EAT, RFEAT, FDH or DEA) and can be divided into 7 categories depending on its purpose:
+
+```{r table, echo = FALSE}
+library(dplyr)
+
+functions <- data.frame("Purpose" = c(rep("modeling", 2), 
+                                      rep("tuning", 2), 
+                                      rep("plotting", 2),
+                                      rep("efficiency scoring", 3), 
+                                      rep("scores plotting", 2),
+                                      rep("prediction", 3), 
+                                      rep("ranking", 2)), 
+                        "Function name" = c("EAT", "RFEAT", 
+                                            "bestEAT", "bestRFEAT", 
+                                            "frontier", "plotEAT", 
+                                            "efficiencyEAT", "efficiencyCEAT", "efficiencyRFEAT",
+                                            "efficiencyDensity", "efficiencyJitter",
+                                            "predictEAT", "predictRFEAT", "predictFDH",
+                                            "rankingEAT", "rankingRFEAT"), 
+                        "Usage" = c("Apply Efficiency Analysis Trees technique to a data frame.",
+                                    "Apply Random Forest + Efficiency Analysis technique to a data frame.",
+                                    "Tune an EAT model.",
+                                    "Tune a RFEAT model.",
+                                    "Graph the estimated frontier through an EAT model in a low dimensional scenario
+                                    (FDH estimated frontier is optional).",
+                                    "Graph a tree structure through an EAT model.",
+                                    "Calculate DMU efficiency scores through an EAT model (through an FDH model is optional).",
+                                    "Calculate DMU efficiency scores through a convexified  EAT model (through an DEA model is optional).",
+                                    "Calculate DMU efficiency scores through an RFEAT model (through an FDH model is optional).",
+                                    "Graph a density plot for a vector of efficiency scores (EAT, FDH and RFEAT are available).",
+                                    "Graph a jitter plot for a vector of efficiency scores calculated through an EAT model.",
+                                    "Predict the output through an EAT model.",
+                                    "Predict the output through a RFEAT model.",
+                                    "Predict the output through a FDH model.",
+                                    "Calculate the variable importance through an EAT model.",
+                                    "Calculate the variable importance through a RFEAT model.")
+                        )
+
+kableExtra::kable(functions) %>%
+  kableExtra::kable_styling("striped", full_width = F) %>%
+  kableExtra::collapse_rows(columns = 1, valign = "middle") %>%
+  kableExtra::row_spec(c(1:2, 5:6, 10:11, 15:16), background = "#DBFFD6") %>%
+  kableExtra::row_spec(c(3:4, 7:9, 12:14), background = "#FFFFD1") 
+```
+
+The `PISAindex` database is included as a data object in the `EAT` library and will be used to exemplify the package functions. On the one hand, the inputs correspond to 13 variables that define the socioeconomic context of a country by means of a score in the range [1-100] obtained from [Social Progress Index](https://www.socialprogress.org/). On the other hand, the performance of each country in the PISA exams is measured by the average score of its schools in the disciplines of Science, Reading and Mathematics and they have been collected from [PISA 2018 Results](https://www.oecd.org/pisa/Combined_Executive_Summaries_PISA_2018.pdf).
+
+The following variables are collected for 72 countries that take the PISA exam:
+
+* **Country**, **Continent** and a 3-letter code that identifies the country following the ISO 3166 ALPHA-3 as rownames.
+
+* *Outputs* :
+
+  * **S_PISA** : mean score on the PISA exam in Science.
+  * **R_PISA** : mean score on the PISA exam in Reading.
+  * **M_PISA** : mean score on the PISA exam in Mathematics.
+  
+* *Inputs* :
+
+  * Basic Human Needs field : 
+  
+    * **NBMC** : Nutrition and Basic Medical Care.
+    * **WS** : Water and Sanitation.
+    * **S** : Shelter.
+    * **PS** : Personal Safety.
+    
+  * Foundations of Wellbeing field :
+  
+    * **ABK** : Access to Basic Knowledge.
+    * **AIC** : Access to Information and Communications. 
+    * **HW** : Health and Wellness.
+    * **EQ** : Environmental Quality.
+    
+  * Opportunity field :
+  
+    * **PR** : Personal Rights.
+    * **PFC** : Personal Freedom and Choice.
+    * **I** : Inclusiveness.
+    * **AAE** : Access to Advanced Education.
+    
+  * **GDP_PPP** : Gross Domestic Product based on Purchasing Power Parity.
+    
+Therefore, `EAT` package will be applied in order to create homogeneous groups of countries in terms of their social characteristics (Basic Human Needs, Foundations of Wellbeing, Oportunity and GDP PPP per capita) and subsequently to know for each of these groups what is the maximum PISA score expected in one specific discipline or in more than one.
 
 ```{r seed}
 # We save the seed for reproducibility of the results
@@ -65,25 +135,11 @@ library(eat)
 data("PISAindex")
 ```
 
-```{r training_test}
-# We split into training and test datasets to assess the models
+## Modeling a scenario with an input and an output. Plotting the frontier
 
-# Observations in the dataset
-n <- nrow(PISAindex)
+### EAT()
 
-# Training indexes
-t_index <- sample(1:n, n * 0.8)
-
-# Training set
-training <- PISAindex[t_index, ]
-
-# Test set
-test <- PISAindex[-t_index, ]
-```
-
-## Warming up: one input and one output scenario
-
-The `EAT` function is the centerpiece of `eat` library. `EAT` performs a regression tree based on CART methodology under a new approach that guarantees obtaining a frontier that fulfills the property of free disposability. Its development has been thought so that even true R novices can easily use the library. The minimum arguments of the function are the data (`data`) containing the study variables, the indexes of the predictor variables or inputs (`x`) and the indixes of the predicted variables or outputs (`y`). Additionally, the `numStop` and `fold` arguments are included for those more experienced users in the field of Machine Learning and tree-based models. Modifying these two allows obtaining different frontiers and therefore selecting the one that best suits the needs of the analysis. `numStop` refers to the minimum number of observations in a node to be divided and is directly related to the size of the tree. The higher the value of `numStop` the smaller the size of the tree. On the other hand, `fold` refers to the number of parts in which the data set is divided to apply the cross-validation technique, although, in this case, its variation is not so directly related to size. The function returns an `EAT` object.
+The `EAT` function is the centerpiece of the `eat` library. `EAT` performs a regression tree based on CART methodology under a new approach that guarantees obtaining a frontier as estimator that fulfills the property of free disposability. This new technique has been baptized as Efficiency Analysis Trees. The development of the functions contained in the `EAT` library has been thought so that even true R novices can easily use the library. The minimum arguments of the function are the data (`data`) containing the study variables, the indexes of the predictor variables or inputs (`x`) and the indexes of the predicted variables or outputs (`y`). Additionally, the `numStop` and `fold` arguments are included for those more experienced users in the fields of machine learning or tree-based models. Modifying these two allows obtaining different frontiers and therefore selecting the one that best suits the needs of the analysis. `numStop` refers to the minimum number of observations in a node to be divided and is directly related to the size of the tree. The higher the value of `numStop` the smaller the size of the tree. On the other hand, `fold` refers to the number of parts in which the data set is divided to apply the cross-validation technique, although, in this case, its variation is not so directly related to size of the tree. The function returns an `EAT` object.
 
 ```{r EAT, eval = F}
 EAT(data, x, y, 
@@ -92,10 +148,86 @@ EAT(data, x, y,
     na.rm = TRUE)
 ```
 
-The `frontier` function displays the frontier estimated by `EAT`. Training DMUs can be showed by a scatterplot if `train.data = TRUE` and its color, shape and size can be modified with `train.color`, `pch` and `size` respectively. Finally, rownames can be included with `rwn = TRUE`.
+* Example 1: `M_PISA ~ PFC`
+
+```{r single.output, collapse = FALSE}
+single_model <- EAT(data = PISAindex, 
+                    x = 15, # input 
+                    y = 3) # output
+```
+
+`print()` returns the tree structure where:
+
+* `y` : vector of predictions.
+* `MSE` : mean square error at the node.
+* `n(t)` : number of DMUs at the node.
+* `input name < / >= s` represents the division of the space.
+* `<*>` indicates a leaf node.
+
+```{r print.single.output, collapse = FALSE}
+print(single_model)
+```
+
+`summary()` returns the following information:
+
+* `Formula` : outputs ~ inputs
+
+* `Summary for leaf nodes` where:
+  * `id` : leaf node index.
+  * `n(t)` : number of DMUs at the leaf node.
+  * `%` : proportion of DMUs at the leaf node.
+  * `output names` as many columns as outputs with the corresponding predictions in the leaf node.
+  * `MSE` : mean square error at the leaf node.
+  
+* `Tree` where:
+  * `Inner nodes` : number of inner nodes.
+  * `Leaf nodes` : number of leaf nodes.
+  * `Total nodes` : total number of nodes (inner nodes + leaf nodes).
+  * `Total MSE` : mean square error at the tree.
+  * `numStop` : numStop hyperparameter value.
+  * `fold` : fold hyperparameter value.
+  
+* `Primary & surrogate splits` where:
+  * `Node A --> {B, C}` indicates that node A has split into left child node B and right child node C.
+  * `variable --> {MSE: , s: }` represents the division of the space with its mean square error.
+  * `Surrogate splits` indicates the best possible split for each variable that has not been used to divide the node as `variable --> {tL_R: , tR_R: , s: }` where `tL_R and tR_R` represent the error for each child node and `s` the threshold. In the case of a single input, the surrogate splits do not appear.
+
+```{r summary.single.output, collapse = FALSE}
+summary(single_model)
+```
+
+`size()` returns the number of leaf nodes:
+
+```{r size.single.output, collapse = FALSE}
+size(single_model)
+```
+
+Additionally, `EAT_object[["tree"]][[id_node]]` or `EAT_object$tree[[id_node]]` returns a `list` that allows to know in greater detail the characteristics of a given node. The elements that define a node are the following:
+
+* `id` : node index.
+* `F` : father node index. 
+* `SL` : left child node index.
+* `SR` : right child node index.
+* `index` : set of indexes corresponding to the observations in a node.
+* `varInfo` : MSE in the left node, MSE in the right node and threshold for each variable.
+* `R` : mean square error in a node.
+* `xi` : index of the variable that produces the split in a node.
+* `s` : threshold of the variable `xi` by which the split takes place.
+* `y` : value(s) of the predicted variable(s) in a node.
+* `a` : first Pareto-dominance coordinate to ensure the property of free disposability in the frontier.
+* `b` : second Pareto-dominance coordinate to ensure the property of free disposability in the frontier.
+
+```{r node.charac, collapse = FALSE}
+single_model[["tree"]][[5]]
+```
+
+### frontier()
+
+The `frontier` function displays the frontier estimated by the `EAT` function. The FDH estimated frontier can be plotted too if `FDH = TRUE`. Training DMUs can be showed by a scatterplot if `train.data = TRUE` and its color, shape and size can be modified with `train.color`, `pch` and `size` respectively. Finally, rownames can be included with `rwn = TRUE`.
 
 ```{r frontier, eval = F}
 frontier(object,
+         FDH = FALSE,
          train.data = FALSE,
          train.color = "black",
          pch = 19,
@@ -103,89 +235,30 @@ frontier(object,
          size = 1.5)
 ```
 
-```{r single_scenario, collapse = FALSE}
-# Input indexes
-input <- 6
+To continue, the frontier of the previous model is displayed. It can be seen how the frontier obtained by the `EAT` function generalizes the results of the frontier obtained through FDH, thus avoiding overfitting. The boundary estimated through Efficiency Analysis Trees generates 3 steps corresponding to the 3 leaf nodes (nodes 3, 4 and 5) obtained with the `EAT` function. For each of these steps, a level of efficiency in terms of the output is given with respect to the amount of input used (in this case level of `PFC`). In addition, we can appreciate 5 DMUs in the frontier: MDA (Moldova), SRB (Serbia), RUS (Russia), HUN (Hungary) and SGP (Singapur). These DMUs are efficient and the rest of the DMUs below its specific step should increase the amount of output obtained or reduce the amount of input utilized until reaching the boundary to be efficient. 
 
-# Output indexes
-output <- 3
-
-# Modeling
-single_model <- EAT(data = training, 
-                    x = input, 
-                    y = output)
-
-print(single_model)
-```
-
-The printed output of `EAT` clearly shows the number of groups formed with its error, size, proportion and the efficient levels of said groups regarding its outputs. Additionally, `EAT[["tree"]]` returns a `list` with the following elements for each node:
-
-* **id**: node index.
-* **F**: father node index.
-* **SL**: left son index.
-* **SR**: right son index.
-* **index**: observation indexes in a node.
-* **R**: mean square error in a node.
-* **xi**: index of the variable that produces the split in a node.
-* **s**: threshold of the variable xi by which the split takes place.
-* **y**: values(s) of the pedicted variable(s) in a node.
-* **a**: first Pareto-dominance coordinate to ensure free disposability.
-* **b**: second Pareto-dominance coordinate to ensure free disposability.
-
-To continue, the frontier of the previous model is displayed:
-
-```{r single_scenario_frontier, fig.width = 10.5, fig.height = 6, fig.align = 'center'}
+```{r single.output.frontier, fig.width = 7.2, fig.height = 6}
 frontier <- frontier(object = single_model,
+                     FDH = TRUE, 
                      train.data = TRUE,
-                     train.color = "#F8766D",
-                     rwn = TRUE,
-                     size = 1.5)
+                     rwn = TRUE)
 
 plot(frontier)
 ```
 
-We can observe how the frontier has 4 steps corresponding to the 4 leaf nodes obtained in the `EAT` model. For each of these steps, a level of efficiency in terms of the output is given with respect to the amount of inputs (in this case level of `NBMC`) used by the observations contained in the step. In addition, we can appreciate 4 DMUs in the horizontal plane of the frontier: IDN (Indonesia), MYS (Malaysia), LTV (Latvia) and SGP (Singapur). These are efficient and the rest of observations below its specifical step should obtain the same level of output to them to be efficient.
+## Modeling a multioutput scenario. Feature selection.
 
-Additionally, we could include more layers by `ggplot2`. In this case, we add the observations belonging to the test set.
+* Example 2: `S_PISA + R_PISA + M_PISA ~ NBMC + WS + S + PS + ABK + AIC + HW + EO + PR + PFC + I + AAE + GDP_PPP`
 
-```{r single_scenario_frontier_test, fig.width = 10.5, fig.height = 6, fig.align = 'center'}
-frontier +
-  ggplot2::geom_point(data = test, ggplot2::aes(x = NBMC, y = S_PISA))
+```{r multioutput.scenario, collapse = FALSE, eval = FALSE}
+multioutput_model <- EAT(data = PISAindex, 
+                         x = 6:18, # input 
+                         y = 3:5) # output
 ```
 
-## Singe output scenario & feature selection
+### rankingEAT()
 
-Next, we are going to model the response variable `S_PISA` based on all the available inputs.
-
-```{r science_model, collapse = FALSE}
-input <- 6:18
-
-output <- 3
-
-science_model <- EAT(data = training, x = input, y = output)
-
-print(science_model)
-```
-
-Now, `frontier` cannot be used since we are in a multivariate scenario. `frontier` allows us to see the regions of the input space originated with `EAT` in a very clearly way, however, this is impossible with more than 1 input and 1 output. In this case, it is provided the typical tree structure in which the relations between the predicted variable(s) and the predictive variable(s) are showed. `plotEAT` performs a tree plot in the same line of simplicity for the user, since only the `EAT` object have to be introduced. 
-
-```{r plotEAT, fig.width = 10.5, fig.height = 9, fig.align = 'center', eval = FALSE}
-plotEAT(object)
-```
-
-```{r science_plot, fig.width = 10.5, fig.height = 9, fig.align = 'center'}
-plotEAT(object = science_model)
-```
-
-In each node, we can obtain the following information:
-
-* **id**: node index.
-* **R**: mean square error in a node.
-* **Samples**: number of observations in a node.
-* **Variable**: name of the variable that produces the split.
-* **y**: vector corresponding to the output prediction.
-
-In this example, we have used 13 inputs for modeling. `EAT` allows a feature selection by `rankingEAT` or `rankingRFEAT` (more details later). `rankingEAT` calculates variable importance for an `EAT` object. The user can specify the number of decimal units (`r`), include a barplot with the scores of importance (`barplot`) and a broken line to display in the graph (`threshold`).
+The second example presents a multiple output scenario where 13 inputs are used to model the 3 available outputs. In these situations, a selection of the most contributing variables may be recommended in order to reduce overfitting, improve precision and reduce future training times. `rankingEAT` allows a selection of variables by calculating a score of importance through Efficiency Analysis Trees technique. The user can specify the number of decimal units (`r`), include a barplot with the scores of importance (`barplot`) and display a horizontal line in the graph to facilitate the cut-off point between important and not relevant variables (`threshold`).
 
 ```{r ranking, eval = F}
 rankingEAT(object,
@@ -194,149 +267,198 @@ rankingEAT(object,
            threshold = 70)
 ```
 
-```{r science_importance, fig.width = 10.5, fig.height = 6, fig.align = 'center'}
-rankingEAT(object = science_model,
+The importance score represents how influential the variable is in the model. In this case, the cut-off point is set at 70 and therefore important variables are considered: **AAE** (Acess to Advance Education), **WS** (Water and Sanitation), **NBMC** (Nutrition and Basic Medical Care), **HW** (Health and Wellness) and **S** (Shelter). 
+
+```{r multioutput.importance, fig.width = 7.2, fig.height = 6, eval = FALSE}
+rankingEAT(object = multioutput_model,
            r = 2,
            barplot = TRUE,
            threshold = 70)
 ```
 
-Now, we carry out a feature selection by the score obtained in `rankingEAT`. We set `threshold` in 70 and we select those features whose importance is greater than this value, that is, **S**, **GDP_PPP**, **NBMC**, **HW** and **I**. We repeat the analysis:
+## Graphical representation by a tree structure
 
-```{r science_var_reduced_model, collapse = FALSE}
-# Input indexes
-input <- c(6, 8, 12, 16, 18)
+### plotEAT()
 
-# Output index
-output <- 3
+Now, `frontier` cannot be used since we are in a multivariate scenario. `frontier` allows us to see the regions of the input space originated with `EAT` in a very clear way, however, this is impossible with more than two variables. In this case, it is provided the typical tree-structure in which the relations between the predicted variable(s) and the predictive variable(s) are showed.
 
-science_var_reduced_model <- EAT(data = training, x = input, y = output)
+In each node, we can obtain the following information:
 
-print(science_var_reduced_model)
+* `id`: node index.
+* `MSE`: mean square error in a node.
+* `n(t)`: number of DMUs in a node.
+* `input name` by which the split take place.
+* `y` : vector of predictions.
+
+```{r plotEAT, eval = FALSE}
+plotEAT(object)
 ```
 
+* Example 3: `S_PISA + R_PISA + M_PISA ~ NBMC + WS + S + HW + AAE`
 
-```{r compare_models, collapse = FALSE}
-cat("Science model --> RMSE: ", science_model[["model"]][["RMSE"]], "| length: ", science_model[["model"]][["nodes"]])
-
-cat("Science variables model reduced --> RMSE: ", science_var_reduced_model[["model"]][["RMSE"]], "| length: ", science_var_reduced_model[["model"]][["nodes"]])
+```{r model.graph1, collapse = FALSE, eval = FALSE}
+best_multioutput <- EAT(data = PISAindex, 
+                        x = c(6, 7, 8, 12, 17), # input
+                        y = 3:5, # output
+                        numStop = 8,
+                        fold = 6)
 ```
 
-In this way we can, on the one hand, know which are the most important variables for obtaining maximum levels of our output(s) and, on the other hand, repeat the analysis with fewer variables and then, reducing computation time.
-
-```{r science_reduced_plot, fig.width = 10.5, fig.height = 9, fig.align = 'center'}
-plotEAT(object = science_var_reduced_model)
+```{r graph1, fig.dim = c(8.4, 7.5), eval = FALSE}
+plotEAT(object = best_multioutput)
 ```
 
-In this section, we also deal with `fold` and `numStop` arguments (by default both are 5). This last modeling, with `fold = 5` and `numStop = 5`, results in the tree shown above with 23 nodes. The tree size is highly dependent on the `numStop` argument, which indicates how much the minimum number of observations must be in a node to be considered a leaf node. So, higher values in `numStop` smaller size of the tree. About the `fold` argument, it is related to the cross-validation technique for pruning and indicates how many parts the data set has been divided into to select the training and test parts. Although it is not directly related to the size of the tree, its modification can lead to different frontiers. So now, we introduce `numStop = 8` expecting a smaller tree.
+* Example 4: `S_PISA ~ NBMC + S + I + GDP_PPP`
 
-```{r science_reduced_model_second, collapse = FALSE}
-# Input indexes
-input <- c(6, 8, 12, 16, 18)
-
-# Output index
-output <- 3
-
-science_var_reduced_numStop <- EAT(data = training, 
-                                   x = input, 
-                                   y = output,
-                                   numStop = 8)
-
-print(science_var_reduced_numStop)
+```{r model.graph2, collapse = FALSE, eval = FALSE}
+best_multioutput2 <- EAT(data = PISAindex, 
+                        x = c(6, 8, 12, 16, 18), # input
+                        y = 3) # output
 ```
 
-```{r compare_models2, collapse = FALSE}
-cat("Science model --> RMSE: ", science_model[["model"]][["RMSE"]], "| length: ", science_model[["model"]][["nodes"]])
-
-cat("Science variables model reduced --> RMSE: ", science_var_reduced_model[["model"]][["RMSE"]], "| length: ", science_var_reduced_model[["model"]][["nodes"]])
-
-cat("Science variable model reduced NumStop --> RMSE: ", science_var_reduced_numStop[["model"]][["RMSE"]], "| length: ", science_var_reduced_numStop[["model"]][["nodes"]])
+```{r graph2, fig.dim = c(8.4, 7.5), eval = FALSE}
+plotEAT(object = best_multioutput2)
 ```
 
-This new model, with 8 fewer variables than the first model and specifying `numStop = 8`, achieves a great balance between the error and the size of the tree compared to the two previous models.
+## EAT tuning
 
-```{r science_reduced_model_second_plot, fig.width = 10.5, fig.height = 8, fig.align = 'center'}
-plotEAT(object = science_var_reduced_numStop)
+In this section, `PISAindex` is divided into a training subset with 70% of the DMUs and a test set with the other 30% of the DMUs. Next, the `bestEAT` function will be applied to find the value of the hyperparameters `numStop` and `fold` that minimize the mean square error calculated on the test sample from a Efficiency Analysis Tree trained with the training sample.
+
+```{r training_test}
+n <- nrow(PISAindex) # Observations in the dataset
+t_index <- sample(1:n, n * 0.7) # Training indexes
+training <- PISAindex[t_index, ] # Training set
+test <- PISAindex[-t_index, ] # Test set
 ```
 
-## Example 2: the multioutput scenario
+The `bestEAT` function requires a training set (`training`) on which to model an Efficiency Analysis Tree and a test set (`test`) on which to calculate the mean square error. The number of trees built is given by the number of different combinations that can be given by the `numStop` and `fold` arguments. `bestEAT` returns a data frame with the following columns:
 
-A very engaging point of the `EAT` algorithm is the possibility of modeling multi-output scenarios in a natural way. It should be noted that this does not result in more complex syntax or interpretations. In the following example, all the available inputs are used to obtain a vector of maximum output level corresponding to the grades of Science, Reading and Mathematics.
+* `numStop` : numStop hyperparameter value.
+* `fold` : fold hyperparameter value.
+* `MSE`: mean square error calculated on the test sample with the tree built with the training sample, numStop and fold values.
+* `leaf`: number of leaf nodes of the tree.
 
-```{r smr_model, collapse = FALSE}
-# Input indexes
-input <- 6:18
-
-# Output indexes
-output <- 3:5
-
-smr_model <- EAT(data = training, 
-                 x = input, 
-                 y = output,
-                 numStop = 7)
-
-print(smr_model)
+```{r bestEAT, eval = F}
+bestEAT(training, test,
+        x, y,
+        numStop,
+        fold,
+        na.rm)
 ```
 
-```{r smr_model_plot, fig.width = 10.5, fig.height = 8, fig.align = 'center'}
-plotEAT(object = smr_model)
+Tuning for: 
+
+`S_PISA + R_PISA + M_PISA ~ NBMC + WS + S + PS + ABK + AIC + HW + EO + PR + PFC + I + AAE + GDP_PPP`
+
+`numStop = {3, 5, 7, 10}` and `fold = {5, 7}`
+
+```{r eat.tuning1, collapse = FALSE, eval = FALSE}
+bestEAT(training = training, 
+        test = test,
+        x = 6:18,
+        y = 3:5,
+        numStop = c(3, 5, 7, 10),
+        fold = c(5, 7))
 ```
 
-As any other Machine Learning algorithm, `EAT` performs predictions by `predictEAT` function. `predictEAT` returns a `data.frame` with the data and the expected output(s) for a set of observations. The arguments to the `predictEAT` function are `object` (an `EAT` object) and `newdata` (dataframe with input variables). 
+Tuning for: 
 
-```{r predict, eval = F}
-predictEAT(object, newdata)
+`S_PISA + R_PISA + M_PISA ~ NBMC + WS + S + HW + AAE`.
+
+`numStop = {3, 5, 7, 10}` and `fold = {5, 7}`
+
+```{r eat.tuning2, collapse = FALSE, eval = FALSE}
+bestEAT(training = training, 
+        test = test,
+        x = c(6, 7, 8, 12, 17),
+        y = 3:5,
+        numStop = c(3, 5, 7, 10),
+        fold = c(5, 7))
 ```
 
-```{r prediction, collapse = F}
-predictions_EAT <- predictEAT(object = smr_model,
-                             newdata = test[, input])
+The best trees are given by the hyperparameters `{numStop = 5, fold = 5}` and `{numStop = 5, fold = 7}` in both cases and the difference in error between the all-variable model and the reduced model is only 4.6 units.
+
+```{r bestmodel, collapse = FALSE, eval = FALSE}
+bestmodel <- EAT(data = PISAindex,
+                 x = c(6, 7, 8, 12, 17),
+                 y = 3:5,
+                 numStop = 5,
+                 fold = 5)
 ```
 
-## Efficiency scores
+```{r summary.bestmodel, collapse = FALSE, eval = FALSE}
+summary(bestmodel)
+```
 
-Efficiency scores are numerical values that indicate the degree of efficiency of a set of DMUs displayed in `data` with `x` and `y` the indexes for inputs and outputs respectively. Both `efficiencyEAT` and `efficiencyFDH` require entering the used distance by the `score_model` argument. In case of `efficiencyEAT`, the `EAT` object is necessary. 
+## Efficiency scores. Graphical representation.
 
-```{r efficiency, eval = FALSE}
+### Non-convex model: efficiencyEAT()
+
+The efficiency scores are numerical values that indicate the degree of efficiency of a set of DMUs. It must be entered a dataset (`data`) and the corresponding indexes of input(s) (`x`) and output(s) (`y`). It is recommended that the dataset whose efficiency is to be calculated coincide with those used to estimate the frontier. However, it is also possible to calculate the efficiency scores for a new data set. The efficiency scores will be calculated using the mathematical programming model included in the argument `score_model`. The following models are available:
+
+* `BCC_out`: Banker Charnes and Cooper output-oriented radial model with efficiency level at 1.
+* `BCC_in`: Banker Charnes and Cooper input-oriented radial model with efficiency level at 1.
+* `DDF`: Directional Distance Function with efficiency level at 0.
+* `RSL_out`: output-oriented Rusell Model with efficiency level at 1.
+* `RSL_in`: input-oriented Rusell Model with efficiency level at 1.
+* `WAM`: Weighted Additive Model with efficiency level at 0.
+
+If `FDH = TRUE` scores are also calculated through a FDH model.
+
+```{r efficiencyEAT, eval = FALSE}
 efficiencyEAT(data, x, y, 
               object,
               score_model,
-              r = 4)
-
-efficiencyFDH(data, x, y, 
-              score_model,
-              r = 4)
+              r = 4,
+              FDH = TRUE,
+              na.rm = TRUE)
 ```
 
-The following models are available:
-
-* `EAT_BCC_out` or `FDH_BCC_out`: Banker Charnes and Cooper distance with output orientation.
-* `EAT_BCC_in` or `FDH_BCC_in`: Banker Charnes and Cooper distance with input orientation.
-* `EAT_DDF` or `FDH_DDF`: Directional Distance Function.
-* `EAT_RSL_out` or `FDH_RSL_out`: Rusell Model distance with output orientation.
-* `EAT_RSL_in` or `FDH_RSL_in`: Rusell Model distance with input orientation.
-* `EAT_WAM` or `FDH_WAM`: Weighted Additive Model distance.
-
-In addition, a number of decimal units (`r`) can be added for calculating scores. We calculate the scores for EAT and FDH by the single_model. 
-
-```{r scores, collapse = FALSE}
-scores_EAT <- efficiencyEAT(data = training,
-                            x = 6, 
+```{r scoresEAT, collapse = FALSE}
+scores_EAT <- efficiencyEAT(data = PISAindex,
+                            x = 15, 
                             y = 3,
                             object = single_model, 
-                            scores_model = "EAT_BCC_out",
-                            r = 4)
+                            scores_model = "BCC_out",
+                            r = 4,
+                            FDH = TRUE)
+```
 
-scores_FDH <- efficiencyFDH(data = training,
-                            x = 6, 
+```{r scoresEAT2, collapse = FALSE}
+scores_EAT2 <- efficiencyEAT(data = PISAindex,
+                            x = 15, 
                             y = 3,
-                            scores_model = "FDH_BCC_out",
+                            object = single_model, 
+                            scores_model = "BCC_in",
                             r = 4)
 ```
 
-Two graphic representations are available:
+### Convex model: efficiencyCEAT()
 
-* A jitter plot from `ggplot2` is provided. DMUs are grouped in nodes (same input paradigm) and its score are showed. A black point represents the score mean in a group and the line the standard deviation. Finally, the user can specify an upper bound (`upb`) and a lower bound (`lwb`) in order to show only the labels which efficiency score is between them. 
+`efficiencyCEAT` returns the efficiency scores for the convexified frontier obtained through Efficiency Analysis Trees. In this case, If `DEA = TRUE` scores are also calculated through a DEA model.
+
+```{r efficiencyCEAT, eval = FALSE}
+efficiencyCEAT(data, x, y, 
+               object,
+               score_model,
+               r = 4,
+               DEA = TRUE,
+               na.rm = TRUE)
+```
+
+```{r scoresCEAT, collapse = FALSE}
+efficiencyCEAT(data = PISAindex,
+               x = 15, 
+               y = 3,
+               object = single_model, 
+               scores_model = "BCC_out",
+               r = 4,
+               DEA = TRUE)
+```
+
+### efficiencyJitter()
+
+`efficiencyJitter` returns a jitter plot from `ggplot2`. This graphic shows how DMUs are grouped into leaf nodes in a model built using the `EAT` function. Each leaf node groups DMUs with the same level of resources. The dot and the black line represent, respectively, the mean value and the standard deviation of the scores of its node. Additionally, efficient DMU labels will always be displayed based on the model entered in the `score_model` argument. Finally, the user can specify an upper bound (`upb`) and a lower bound (`lwb`) in order to show, in addition, the labels which efficiency score is between them. 
 
 ```{r efficiency_jitter, eval = FALSE}
 efficiencyJitter(object, scores_EAT,
@@ -344,43 +466,61 @@ efficiencyJitter(object, scores_EAT,
                  lwb = NULL, upb = NULL)
 ```
 
-```{r jitter_single, collapse = FALSE, fig.width = 10.5, fig.height = 8, fig.align = 'center'}
+```{r jitter_single, collapse = FALSE, fig.width = 7.2, fig.height = 5}
 efficiencyJitter(object = single_model,
                  scores_EAT = scores_EAT$EAT_BCC_out,
-                 scores_model = "EAT_BCC_out",
+                 scores_model = "BCC_out",
                  lwb = 1.2)
 ```
 
-We verify that, indeed, those DMUs with an efficiency level equal to or less than 1 (shown with the label) are those that are arranged in the horizontal steps of the frontier.
+```{r jitter_single2, collapse = FALSE, fig.width = 7.2, fig.height = 5}
+efficiencyJitter(object = single_model,
+                 scores_EAT = scores_EAT2$EAT_BCC_in,
+                 scores_model = "BCC_in",
+                 upb = 0.65)
+```
 
-```{r frontier_comparar, fig.width = 10.5, fig.height = 6, fig.align = 'center'}
+Graphically, it is observed that if the BCC models are used to obtain the efficiency scores:
+
+* Under output orientation, those DMUs that are arranged in the horizontal plane will be efficient.
+
+* Under input orientation those DMUs that are arranged in the vertical plane will be efficient.
+
+* If any DMU is located in a corner of the border, it will be efficient under both orientations.
+
+```{r frontier_comparar, fig.width = 7.2, fig.height = 6, fig.align = 'center'}
 plot(frontier)
 ```
 
-* A density plot from `ggplot2` is available too. `scores_EAT` is necessary while `scores_FDH` is optional. The result is a plot with one or both scores distributions in red for EAT and in blue for FDH.
+### efficiencyDensity()
+
+`efficiencyDensity` returns a density plot from `ggplot2`. In this way, the similarity between the scores obtained by the different available methodologies can be verified. 
 
 ```{r efficiency_density, eval = F}
 efficiencyDensity(scores_EAT,
-                  scores_FDH = NULL)
+                  scores_FDH = NULL,
+                  scores_RFEAT = NULL)
 
 ```
 
-```{r density_single, collapse = FALSE, fig.width = 10.5, fig.height = 8, fig.align = 'center'}
+```{r density_single, collapse = FALSE, fig.width = 7.2, fig.height = 6, fig.align = 'center'}
 efficiencyDensity(scores_EAT = scores_EAT$EAT_BCC_out,
-                  scores_FDH = scores_FDH$FDH_BCC_out)
+                  scores_FDH = scores_EAT$FDH_BCC_out,
+                  scores_RFEAT = NULL)
 
 ```
 
 ## Random Forest
 
-Random Forest EAT (`RFEAT`) has also been developed with the aim of providing a greater stability to the results obtained by `EAT`. The function requires the `data` containing the variables for the analysis, `x` and `y` corresponding to the inputs and outputs indexes respectively, the minimun number of observation in a node for a split to be attempted (`numStop`) and `na.rm` to ignore observations with `NA` cells. All these arguments are used for the construction of the `m` individual Efficiency Analysis Trees that make up the random forest. Finally, the argument `s_mtry` indicates the number of inputs that can be selected in each split. It can be set as any integer although there are also certain predefined values. Being, $n_{x}$ the number of inputs, $n_{y}$ the number of outputs and $n(t)$ the number of observations in a node, the available options in `s_mtry` are: 
+### RFEAT()
+
+Random Forest + Efficiency Analysis Trees (`RFEAT`) has also been developed with the aim of providing a greater stability to the results obtained by the `EAT` function. `RFEAT` function requires the `data` containing the variables for the analysis, `x` and `y` corresponding to the inputs and outputs indexes respectively, the minimun number of observation in a node for a split to be attempted (`numStop`) and `na.rm` to ignore observations with `NA` cells. All these arguments are used for the construction of the `m` individual Efficiency Analysis Trees that make up the random forest. Finally, the argument `s_mtry` indicates the number of inputs that can be randomly selected in each split. It can be set as any integer although there are also certain predefined values. Being, $n_{x}$ the number of inputs, $n_{y}$ the number of outputs and $n(t)$ the number of observations in a node, the available options in `s_mtry` are: 
 
 * `Breiman` = $\frac{n_{x}}{3}$
 * `DEA1` = $\frac{n(t)}{2} - n_{y}$
 * `DEA2` = $\frac{n(t)}{3} - n_{y}$
 * `DEA3` = $n(t) - 2 \cdot n_{y}$
 * `DEA4` = $min(\frac{n(t)}{n_{y}}, \frac{n(t)}{3} - n_{y})$
-
 
 ```{r RF, eval = FALSE}
 RFEAT(data, x, y,
@@ -389,15 +529,27 @@ RFEAT(data, x, y,
       na.rm = TRUE)
 ```
 
-```{r RF_data}
-input <- 6:18
-output <- 3:5
-
-forest <- RFEAT(data = training, 
-                x = input, y = output,
-                numStop = 7, m = 5,
+```{r RFmodel, eval = FALSE}
+forest <- RFEAT(data = PISAindex, 
+                x = 6:18, # input 
+                y = 3:5, # output
+                numStop = 5, 
+                m = 5,
                 s_mtry = "Breiman",
                 na.rm = TRUE)
+```
+
+## Predictions
+
+As any other Machine Learning algorithm, `EAT` performs predictions by `predictEAT` function. `predictEAT` returns a `data.frame` with the data and the expected output(s) for a set of observations. The arguments to the `predictEAT` function are `object` (an `EAT` object) and `newdata` (dataframe with input variables). 
+
+```{r predict, eval = F}
+predictEAT(object, newdata)
+```
+
+```{r prediction, collapse = F, eval = FALSE}
+predictions_EAT <- predictEAT(object = smr_model,
+                             newdata = test[, input])
 ```
 
 Predictions for the `RFEAT` model are made using the `predictRFEAT` function. To do this, the output is predicted by each of the `m` individual trees trained and subsequently the mean value of all the predictions is obtained. `predictRFEAT` requires a `RFEAT` object (from `RFEAT` function) and a set of input variables to predict on (`newdata`) returning then, a dataframe with the inputs and predicted variables.
@@ -406,11 +558,11 @@ Predictions for the `RFEAT` model are made using the `predictRFEAT` function. To
 predictRFEAT(object, newdata)
 ```
 
-```{r predict_EAT_ex}
+```{r predict_EAT_ex, eval = FALSE}
 predictions_RFEAT <- predictRFEAT(forest, test[, input])
 ```
 
-```{r EAT_vs_RFEAT}
+```{r EAT_vs_RFEAT, eval = FALSE}
 names(predictions_EAT)[14:16] <- c("S_EAT", "R_EAT", "M_EAT")
 names(predictions_RFEAT)[14:16] <- c("S_RFEAT", "R_RFEAT", "M_RFEAT")
 
@@ -428,7 +580,7 @@ efficiencyRFEAT(data = training,
                 object = forest)
 ```
 
-```{r scores_RF}
+```{r scores_RF, eval = FALSE}
 scoresRF <- efficiencyRFEAT(data = training,
                             x = input,
                             y = output,
@@ -442,7 +594,7 @@ rankingRFEAT(object, r = 2,
               barplot = TRUE)
 ```
 
-```{r ranking_RFEAT_ex, fig.width = 10.5, fig.height = 8, fig.align = 'center'}
+```{r ranking_RFEAT_ex, fig.width = 10.5, fig.height = 8, fig.align = 'center', eval = FALSE}
 rankingRFEAT(object = forest, r = 2,
              barplot = TRUE)
 ```

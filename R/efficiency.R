@@ -1,6 +1,6 @@
-#' @title Banker, Charnes and Cooper programming model with output orientation.
+#' @title Banker, Charnes and Cooper programming model with output orientation for an EAT model
 #'
-#' @description Banker, Charnes and Cooper programming model with output orientation.
+#' @description Banker, Charnes and Cooper programming model with output orientation for an EAT model.
 #'
 #' @param j Integer. Number of DMUs.
 #' @param scores Matrix. Empty matrix for scores.
@@ -49,9 +49,9 @@ EAT_BCC_out <- function(j, scores, x_k, y_k, atreeTk, ytreeTk, nX, nY, N_leaves)
   return(scores)
 }
 
-#' @title Banker, Charnes and Cooper programming model with input orientation.
+#' @title Banker, Charnes and Cooper programming model with input orientation for an EAT model
 #'
-#' @description Banker, Charnes and Cooper programming model with input orientation.
+#' @description Banker, Charnes and Cooper programming model with input orientation for an EAT model.
 #'
 #' @param j Integer. Number of DMUs.
 #' @param scores Matrix. Empty matrix for scores.
@@ -101,9 +101,9 @@ EAT_BCC_in <- function(j, scores, x_k, y_k, atreeTk, ytreeTk, nX, nY, N_leaves) 
   
 }
 
-#' @title Directional Distance Function mathematical programming model
+#' @title Directional Distance Function mathematical programming model for an EAT model
 #'
-#' @description Directional Distance Function.
+#' @description Directional Distance Function for an EAT model.
 #'
 #' @param j Integer. Number of DMUs.
 #' @param scores Matrix. Empty matrix for scores.
@@ -152,9 +152,9 @@ EAT_DDF <- function(j, scores, x_k, y_k, atreeTk, ytreeTk, nX, nY, N_leaves) {
   return(scores)
 }
 
-#' @title Rusell model with input orientation
+#' @title Rusell Model with input orientation for an EAT model
 #'
-#' @description Rusell model with input orientation.
+#' @description Rusell Model with input orientation for an EAT model.
 #'
 #' @param j Integer. Number of DMUs.
 #' @param scores Matrix. Empty matrix for scores.
@@ -210,9 +210,9 @@ EAT_RSL_in <- function(j, scores, x_k, y_k, atreeTk, ytreeTk, nX, nY, N_leaves) 
   
 }
 
-#' @title Rusell model with output orientation.
+#' @title Rusell Model with output orientation for an EAT model
 #'
-#' @description Rusell model with output orientation.
+#' @description Rusell Model with output orientation for an EAT model.
 #'
 #' @param j Integer. Number of DMUs.
 #' @param scores Matrix. Empty matrix for scores.
@@ -268,9 +268,9 @@ EAT_RSL_out <- function(j, scores, x_k, y_k, atreeTk, ytreeTk, nX, nY, N_leaves)
   
 }
 
-#' @title Weighted Additive mathematical programming model
+#' @title Weighted Additive Model for an EAT model
 #'
-#' @description Weighted Additive mathematical programming model.
+#' @description Weighted Additive Model for an EAT model.
 #'
 #' @param j Integer. Number of DMUs.
 #' @param scores Matrix. Empty matrix for scores.
@@ -357,7 +357,6 @@ EAT_WAM <- function(j, scores, x_k, y_k, atreeTk, ytreeTk, nX, nY, N_leaves) {
 #'  
 #' @importFrom dplyr summarise %>%
 #' @importFrom stats median quantile sd
-#' @importFrom knitr kable
 #' 
 #' @export
 #' 
@@ -515,8 +514,10 @@ efficiencyEAT <- function(data, x, y, object,
     scores_df <- cbind(data, round(scores, r), round(scores_FDH, r))
     print(scores_df[, c(ncol(scores_df) - 1, ncol(scores_df))])
     
-    print(kable(descriptive), "pipe")
-    print(kable(descriptive_FDH), "pipe")
+    cat("\n")
+    print(descriptive, row.names = FALSE)
+    cat("\n")
+    print(descriptive_FDH, row.names = FALSE)
     
     invisible(scores_df)
     
@@ -525,7 +526,9 @@ efficiencyEAT <- function(data, x, y, object,
     scores_df <- cbind(data, round(scores, r))
     print(round(scores_df[, ncol(scores_df)], r))
     
-    print(kable(descriptive), "pipe")
+    cat("\n") 
+    print(descriptive, row.names = FALSE)
+        
     
     invisible(scores_df)
     

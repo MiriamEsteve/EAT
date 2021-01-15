@@ -37,7 +37,7 @@ plotEAT <- function(object) {
   }
   
   tree <- object[["tree"]]
-  data <- single_[["data"]][["df"]]
+  data <- object[["data"]][["df"]]
   y <- object[["data"]][["y"]]
   
   N <- nrow(data)
@@ -118,12 +118,12 @@ plotEAT <- function(object) {
 
     geom_node_label(aes(col = splitvar),
       line_list = list(
-        aes(label = paste("Id: ", Id)),
-        aes(label = paste("R: ", R)),
-        aes(label = paste("n(t): ", n1)),
+        aes(label = paste("Id:", Id)),
+        aes(label = paste("MSE:", R)),
+        aes(label = paste("n(t):", n1)),
         aes(label = paste(splitvar)),
         aes(label = paste("y: [", do.call(paste, c(lapply(ynames, as.name),
-                                                    list(sep = ","))), "]"))
+                                                    list(sep = ","))), "]", sep = ""))
       ),
 
       line_gpar = list(
@@ -140,10 +140,10 @@ plotEAT <- function(object) {
    geom_node_label(
      line_list = list(
        aes(label = paste("Id:", Id)),
-       aes(label = paste("R:", R)),
+       aes(label = paste("MSE:", R)),
        aes(label = paste("n(t):", n1)),
-       aes(label = paste("y: [", do.call(paste, c(lapply(ynames, as.name),
-                                                   list(sep = ","))), "]"))
+       aes(label = paste("y:[", do.call(paste, c(lapply(ynames, as.name),
+                                                   list(sep = ","))), "]", sep = ""))
      ),
 
      line_gpar = list(

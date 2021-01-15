@@ -304,6 +304,18 @@ summary.EAT <- function(object, ...) {
   
   names(results)[2:3] <- c("n(t)", "%")
   
+  tree <- object[["tree"]]
+  input_names <- object[["data"]][["input_names"]]
+  output_names <- object[["data"]][["output_names"]]
+  
+  cat("\n",
+      paste(" Formula: "),
+      do.call(paste, c(as.list(output_names), sep = " + ")), 
+      "~",
+      do.call(paste, c(as.list(input_names), sep = " + ")),
+      "\n"
+      )
+  
   cat(
     "\n",
     "# ========================== #", "\n",
@@ -340,9 +352,6 @@ summary.EAT <- function(object, ...) {
     "# ========================== #", rep("\n", 2) 
   )
   
-  tree <- object[["tree"]]
-  input_names <- object[["data"]][["input_names"]]
-  
   inp <- 1:length(input_names)
   
   for (t in 1:length(tree)) {
@@ -350,12 +359,18 @@ summary.EAT <- function(object, ...) {
       
       cat(
         paste(" Node ", tree[[t]][["id"]], " --> {",
-            tree[[t]][["SL"]], ",", tree[[t]][["SR"]], "}", sep = ""),
-        "||", input_names[tree[[t]][["xi"]]], "--> {R:", round(tree[[t]][["R"]], 2),
-        "s:", round(tree[[t]][["s"]], 2), "}", "\n",
-        paste("   Surrogate splits"), "\n"
-        )
+              tree[[t]][["SL"]], ",", tree[[t]][["SR"]], "}",
+              " || ", input_names[tree[[t]][["xi"]]], 
+              " --> {MSE: ", round(tree[[t]][["R"]], 2),
+              ", s: ", round(tree[[t]][["s"]], 2), "}", 
+              "\n", 
+              sep = "")
+       )
       
+      if (length(inp) > 1) {
+      
+      cat(paste("   Surrogate splits"), "\n")
+        
       vec <- inp[- tree[[t]][["xi"]]]
       
       for (j in vec){
@@ -364,14 +379,12 @@ summary.EAT <- function(object, ...) {
         
         cat(
           paste("    ", input_names[j], " --> ", "{tL_R: ", values[1], ",", 
-                " tR_R: ", values[2], ",", " s: ", values[3], "}", sep = ""), "\n" 
-        )
-
+                " tR_R: ", values[2], ",", " s: ", values[3], "}", sep = ""), 
+          "\n" 
+          )
+        }
       }
-        
-      cat(
-        rep("\n", 2)
-      )
+      cat("\n")
     }
   }
 }
@@ -445,7 +458,7 @@ bestEAT <- function(training, test, x, y, numStop, fold, na.rm = TRUE) {
     MSE <- sqrt(sum((test[, y.t] - predictions[, y.t]) ^ 2) / nrow(test))
     
     hp[i, "MSE"] <- round(MSE, 2)
-    hp[i, "length"] <- EATmodel[["model"]][["leaf_nodes"]]
+    hp[i, "leaf"] <- EATmodel[["model"]][["leaf_nodes"]]
     
   }
   

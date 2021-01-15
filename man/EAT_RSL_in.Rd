@@ -2,7 +2,7 @@
 % Please edit documentation in R/efficiency.R
 \name{EAT_RSL_in}
 \alias{EAT_RSL_in}
-\title{Rusell model with input orientation}
+\title{Rusell Model with input orientation for an EAT model}
 \usage{
 EAT_RSL_in(j, scores, x_k, y_k, atreeTk, ytreeTk, nX, nY, N_leaves)
 }
@@ -29,5 +29,5 @@ EAT_RSL_in(j, scores, x_k, y_k, atreeTk, ytreeTk, nX, nY, N_leaves)
 A numerical vector with scores.
 }
 \description{
-Rusell model with input orientation.
+Rusell Model with input orientation for an EAT model.
 }

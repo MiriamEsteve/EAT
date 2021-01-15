@@ -6,18 +6,18 @@
 #' @param scores_EAT Dataframe with scores.
 #' @param scores_model Mathematic programming model of scores_EAT. 
 #' \itemize{
-#' \item{\code{EAT_BCC_out}} BBC model. Output orientation.
-#' \item{\code{EAT_BCC_in}}  BBC model. Input orientation.
-#' \item{\code{EAT_DDF}}     Directional distance model.
-#' \item{\code{EAT_RSL_out}} Rusell model. Output orientation
-#' \item{\code{EAT_RSL_in}}  Rusell model. Input orientation.
-#' \item{\code{EAT_WAM}}     Weighted Additive model.
+#' \item{\code{BCC_out}} BBC model. Output orientation.
+#' \item{\code{BCC_in}}  BBC model. Input orientation.
+#' \item{\code{DDF}}     Directional distance model.
+#' \item{\code{RSL_out}} Rusell model. Output orientation
+#' \item{\code{RSL_in}}  Rusell model. Input orientation.
+#' \item{\code{WAM}}     Weighted Additive model.
 #' } 
 #' @param upb Numeric. Upper bound for labeling.
 #' @param lwb Numeric. Lower bound for labeling.
 #'
-#' @importFrom ggplot2 ggplot aes geom_jitter stat_summary position_jitter
-#' @importFrom dplyr %>% select
+#' @importFrom ggplot2 ggplot aes geom_jitter stat_summary position_jitter labs
+#' @importFrom dplyr %>% select filter
 #' @importFrom ggrepel geom_text_repel
 #'
 #' @export
@@ -34,9 +34,9 @@
 #' EAT_model <- EAT(data = simulated, x = c(1,2), y = c(3, 4), numStop = 5, fold = 5)
 #' 
 #' EAT_scores <- efficiencyEAT(data = simulated, x = c(1, 2), y = c(3, 4), object = EAT_model,
-#'                             scores_model = "EAT_BCC_out", r = 2, na.rm = TRUE)
+#'                             scores_model = "BCC_out", r = 2, na.rm = TRUE)
 #' 
-#' efficiencyJitter(object = EAT_model, scores_EAT = EAT_scores, scores_model = "EAT_BCC_out")
+#' efficiencyJitter(object = EAT_model, scores_EAT = EAT_scores, scores_model = "BCC_out")
 #'
 #' @return Jitter plot with DMUs and scores.
 efficiencyJitter <- function(object, scores_EAT, scores_model, upb = NULL, lwb = NULL) {
@@ -44,12 +44,13 @@ efficiencyJitter <- function(object, scores_EAT, scores_model, upb = NULL, lwb =
     stop("object must be an EAT object")
   }
   
-  if (!scores_model %in% c("EAT_BCC_out", "EAT_BCC_in", "EAT_DDF", 
-                           "EAT_RSL_out", "EAT_RSL_in", "EAT_WAM")){
+  if (!scores_model %in% c("BCC_out", "BCC_in", "DDF", 
+                           "RSL_out", "RSL_in", "WAM")){
     stop(paste(scores_model, "is not available. Please, check help(efficiencyEAT)"))
   }
   
-  groups <- object[["nodes_df"]][["leafnodes_df"]] %>%
+  groups <- object[["nodes_df"]] %>%
+    filter(SL == -1) %>%
     select(id, index)
   
   scores_df <- data.frame(Score = scores_EAT,
@@ -74,9 +75,10 @@ efficiencyJitter <- function(object, scores_EAT, scores_model, upb = NULL, lwb =
   
   jitter_plot <- ggplot(scores_df, aes(x = Group, y = Score, color = Group)) + 
     geom_jitter(position = position_jitter(0.2), size = 2) +
-    stat_summary(fun.data = data_summary, color = "black")
+    stat_summary(fun.data = data_summary, color = "black") +
+    labs(color = "Leaf node index")
   
-  if (scores_model %in% c("EAT_BCC_out", "EAT_BCC_in", "EAT_RSL_out", "EAT_RSL_in")){
+  if (scores_model %in% c("BCC_out", "BCC_in", "RSL_out", "RSL_in")){
     jitter_plot <- jitter_plot +
     geom_text_repel(aes(label = ifelse(Score == 1, 
                                          rownames(scores_df), "")))
@@ -109,6 +111,7 @@ efficiencyJitter <- function(object, scores_EAT, scores_model, upb = NULL, lwb =
 #'
 #' @param scores_EAT Dataframe with EAT scores.
 #' @param scores_FDH Optional. Dataframe with FDH scores.
+#' @param scores_RFEAT Optional. Dataframe with RFEAT scores.
 #'
 #' @importFrom ggplot2 ggplot geom_density
 #'
@@ -125,18 +128,16 @@ efficiencyJitter <- function(object, scores_EAT, scores_model, upb = NULL, lwb =
 #' 
 #' EAT_model <- EAT(data = simulated, x = c(1,2), y = c(3, 4), numStop = 5, fold = 5)
 #'
-#' EAT_scores <- efficiencyEAT(data = simulated, x = c(1, 2), y = c(3, 4), object = EAT_model, 
-#'                             scores_model = "EAT_BCC_out", r = 2, na.rm = TRUE)
+#' scores <- efficiencyEAT(data = simulated, x = c(1, 2), y = c(3, 4), object = EAT_model, 
+#'                         scores_model = "BCC_out", r = 2, FDH = TRUE, na.rm = TRUE)
 #' 
-#' FDH_scores <- efficiencyFDH(data = simulated, x = c(1, 2), y = c(3, 4), 
-#'                             scores_model = "FDH_BCC_out", r = 2, na.rm = TRUE)
-#' 
-#' efficiencyDensity(scores_EAT = EAT_scores$EAT_BCC_out, scores_FDH = FDH_scores$FDH_BCC_out)
+#' efficiencyDensity(scores_EAT = scores$EAT_BCC_out, scores_FDH = scores$FDH_BCC_out,
+#'                   scores_RFEAT = NULL)
 #'
 #' @return Density plot for scores and data.frame with numeric results.
-efficiencyDensity <- function(scores_EAT, scores_FDH = NULL) {
+efficiencyDensity <- function(scores_EAT, scores_FDH = NULL, scores_RFEAT = NULL) {
   
-  if (is.null(scores_FDH)) {
+  if (is.null(scores_FDH) && is.null(scores_RFEAT)){
     
     scores_EAT <- as.data.frame(scores_EAT)
     scores_EAT$Model <- factor("EAT") 
@@ -147,7 +148,7 @@ efficiencyDensity <- function(scores_EAT, scores_FDH = NULL) {
       xlab("Score") +
       ylab("Density")
     
-  } else {
+  } else if (is.null(scores_RFEAT)) {
     
     scores_EAT <- as.data.frame(scores_EAT)
     scores_EAT$Model <- factor("EAT")
@@ -164,6 +165,43 @@ efficiencyDensity <- function(scores_EAT, scores_FDH = NULL) {
       xlab("Score") +
       ylab("Density") 
     
+  } else if (is.null(scores_FDH)) {
+    
+    scores_EAT <- as.data.frame(scores_EAT)
+    scores_EAT$Model <- factor("EAT")
+    names(scores_EAT)[1] <- "score"
+    
+    scores_RFEAT <- as.data.frame(scores_RFEAT)
+    scores_RFEAT$Model <- factor("RFEAT")
+    names(scores_RFEAT)[1] <- "score"
+    
+    scores_df <- rbind(scores_EAT, scores_RFEAT)
+    
+    efficiencyDensity <- ggplot(scores_df, aes(x = score, fill = Model, colour = Model)) +
+      geom_density(alpha = .2) +
+      xlab("Score") +
+      ylab("Density") 
+    
+  } else {
+    
+    scores_EAT <- as.data.frame(scores_EAT)
+    scores_EAT$Model <- factor("EAT")
+    names(scores_EAT)[1] <- "score"
+    
+    scores_FDH <- as.data.frame(scores_FDH)
+    scores_FDH$Model <- factor("FDH")
+    names(scores_FDH)[1] <- "score"
+    
+    scores_RFEAT <- as.data.frame(scores_RFEAT)
+    scores_RFEAT$Model <- factor("RFEAT")
+    names(scores_RFEAT)[1] <- "score"
+    
+    scores_df <- rbind(scores_EAT, scores_FDH, scores_RFEAT)
+    
+    efficiencyDensity <- ggplot(scores_df, aes(x = score, fill = Model, colour = Model)) +
+      geom_density(alpha = .2) +
+      xlab("Score") +
+      ylab("Density") 
   }
   
   return(efficiencyDensity)

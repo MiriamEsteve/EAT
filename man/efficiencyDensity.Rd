@@ -4,12 +4,14 @@
 \alias{efficiencyDensity}
 \title{Efficiency Scores Density Plot}
 \usage{
-efficiencyDensity(scores_EAT, scores_FDH = NULL)
+efficiencyDensity(scores_EAT, scores_FDH = NULL, scores_RFEAT = NULL)
 }
 \arguments{
 \item{scores_EAT}{Dataframe with EAT scores.}
 
 \item{scores_FDH}{Optional. Dataframe with FDH scores.}
+
+\item{scores_RFEAT}{Optional. Dataframe with RFEAT scores.}
 }
 \value{
 Density plot for scores and data.frame with numeric results.
@@ -28,12 +30,10 @@ simulated <- data.frame(x1 = X1, x2 = X2, y1 = Y1, y2 = Y2)
 
 EAT_model <- EAT(data = simulated, x = c(1,2), y = c(3, 4), numStop = 5, fold = 5)
 
-EAT_scores <- efficiencyEAT(data = simulated, x = c(1, 2), y = c(3, 4), object = EAT_model, 
-                            scores_model = "EAT_BCC_out", r = 2, na.rm = TRUE)
+scores <- efficiencyEAT(data = simulated, x = c(1, 2), y = c(3, 4), object = EAT_model, 
+                        scores_model = "BCC_out", r = 2, FDH = TRUE, na.rm = TRUE)
 
-FDH_scores <- efficiencyFDH(data = simulated, x = c(1, 2), y = c(3, 4), 
-                            scores_model = "FDH_BCC_out", r = 2, na.rm = TRUE)
-
-efficiencyDensity(scores_EAT = EAT_scores$EAT_BCC_out, scores_FDH = FDH_scores$FDH_BCC_out)
+efficiencyDensity(scores_EAT = scores$EAT_BCC_out, scores_FDH = scores$FDH_BCC_out,
+                  scores_RFEAT = NULL)
 
 }

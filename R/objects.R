@@ -118,7 +118,7 @@ RFEAT_object <- function(data, x, y, register_names, numStop, m, s_mtry, na.rm, 
   output_names <- names(data)[y]
   input_names <- names(data)[x]
   
-  RFEAT_object <- list("data" = list(data = data %>% select(-id),
+  RFEAT_object <- list("data" = list(df = data %>% select(-id),
                                      x = x,
                                      y = y,
                                      input_names = input_names,
@@ -129,7 +129,7 @@ RFEAT_object <- function(data, x, y, register_names, numStop, m, s_mtry, na.rm, 
                                         s_mtry = s_mtry,
                                         na.rm = na.rm),
                        "forest" = forest,
-                       "error" = error)
+                       "MSE" = sqrt(error))
   
   class(RFEAT_object) <- "RFEAT"
   

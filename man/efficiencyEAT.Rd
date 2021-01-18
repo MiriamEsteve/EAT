@@ -10,7 +10,7 @@ efficiencyEAT(
   y,
   object,
   scores_model,
-  r = 4,
+  r = 2,
   FDH = TRUE,
   na.rm = TRUE
 )

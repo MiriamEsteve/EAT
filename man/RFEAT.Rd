@@ -29,7 +29,7 @@ RFEAT(data, x, y, numStop = 5, m = 50, s_mtry = "Breiman", na.rm = TRUE)
 \item{na.rm}{Logical. If \code{TRUE}, NA rows are omitted.}
 }
 \value{
-List of m trees in forest and the error that will be used in the ranking of the importance of the variables.
+A RFEAT object.
 }
 \description{
 This function build \code{m} individual Efficiency Analysis Trees in a forest structure.

@@ -1,0 +1,173 @@
+#' @title Tuning an EAT model
+#'
+#' @description This funcion calculates the mean square error for a Efficiency Analysis Tree built with a set of given hyperparameters. 
+#'
+#' @param training Training dataframe or matrix containing the variables in the model for model construction.
+#' @param test Test dataframe or matrix containing the variables in the model for model assessment.
+#' @param x Vector. Column input indexes in data.
+#' @param y Vector. Column output indexes in data.
+#' @param numStop Vector. Set of minimun number of observations in a node for a split to be attempted.
+#' @param fold Vector. Set of number of folds in which is divided the dataset to apply cross-validation during the pruning.
+#' @param na.rm Logical. If \code{TRUE}, \code{NA} rows are omitted.
+#' 
+#' @importFrom dplyr arrange %>%
+#' 
+#' @export
+#' 
+#' @examples
+#' 
+#' data("PISAindex")
+#' 
+#' n <- nrow(PISAindex) # Observations in the dataset
+#' t_index <- sample(1:n, n * 0.7) # Training indexes
+#' training <- PISAindex[t_index, ] # Training set
+#' test <- PISAindex[-t_index, ] # Test set
+#' 
+#' bestEAT(training = training, 
+#'         test = test,
+#'         x = 6:9,
+#'         y = 3,
+#'         numStop = c(3, 5, 7, 10),
+#'         fold = c(5, 7, 10))
+#'
+#' @return Dataframe in which each row corresponds to a given set of hyperparameters with its corresponding mean square error.
+bestEAT <- function(training, test, x, y, numStop, fold, na.rm = TRUE) {
+
+  train_names <- names(training[, c(x, y)])
+  test_names <- names(test[, c(x, y)])
+  
+  if (length(train_names) != length(test_names)){
+    stop("Training and test data must have the same number of variables")
+  } else if (!all(train_names == test_names)){
+    stop(paste("Variable name: ", test_names[1], "not found in taining data"))
+  }
+  
+  test <- preProcess(test, x, y, na.rm = na.rm)[[2]]
+  
+  hp <- expand.grid(numStop = numStop,
+                    fold = fold)
+  
+  hp$MSE <- NA
+  
+  for (i in 1:nrow(hp)) {
+    
+    EATmodel <- EAT(data = training, x = x, y = y, numStop = hp[i, "numStop"],
+                    fold = hp[i, "fold"], na.rm = TRUE)
+    
+    x.t <- EATmodel[["data"]][["x"]]
+    y.t <- EATmodel[["data"]][["y"]]
+    
+    # RMSE
+    
+    data.p <- as.data.frame(test[, x.t])
+    pred <- data.frame()
+    for (j in 1:nrow(data.p)){
+      pred <- rbind(pred, predictor(EATmodel[["tree"]], data.p[j, ]))
+    }
+    
+    predictions <- cbind(data.p, pred)
+
+    MSE <- sqrt(sum((test[, y.t] - predictions[, y.t]) ^ 2) / nrow(test))
+    
+    hp[i, "MSE"] <- round(MSE, 2)
+    hp[i, "leaves"] <- EATmodel[["model"]][["leaf_nodes"]]
+    
+  }
+  
+  hp <- hp %>% arrange(desc(MSE))
+  
+  print(hp)
+  
+}
+
+#' @title Tuning an RFEAT model
+#'
+#' @description This funcion calculates the mean square error for a Random Forest of Efficiency Analysis Tree built with a set of given hyperparameters. 
+#'
+#' @param training Training dataframe or matrix containing the variables in the model for model construction.
+#' @param test Test dataframe or matrix containing the variables in the model for model assessment.
+#' @param x Vector. Column input indexes in data.
+#' @param y Vector. Column output indexes in data.
+#' @param numStop Vector. Set of minimun number of observations in a node for a split to be attempted.
+#' @param m Vector. Set of number of trees to be build.
+#' @param s_mtry. Character vector. Set of options for selecting number of inputs to be selected in each split.
+#' @param na.rm Logical. If \code{TRUE}, \code{NA} rows are omitted.
+#' 
+#' @examples
+#' 
+#' data("PISAindex")
+#' 
+#' n <- nrow(PISAindex) # Observations in the dataset
+#' t_index <- sample(1:n, n * 0.7) # Training indexes
+#' training <- PISAindex[t_index, ] # Training set
+#' test <- PISAindex[-t_index, ] # Test set
+#' 
+#' bestRFEAT(training = training, 
+#'           test = test,
+#'           x = 6:9,
+#'           y = 3,
+#'           numStop = c(3, 5, 7, 10),
+#'           m = c(20, 40, 60),
+#'           s_mtry = c("Breiman", "1", "2"))
+#' 
+#' @export
+#'
+#' @return Dataframe in which each row corresponds to a given set of hyperparameters with its corresponding mean square error.
+bestRFEAT <- function(training, test, x, y, numStop, m, s_mtry, na.rm = TRUE) {
+  
+  train_names <- names(training[, c(x, y)])
+  test_names <- names(test[, c(x, y)])
+  
+  if (length(train_names) != length(test_names)){
+    stop("Training and test data must have the same number of variables")
+  } else if (!all(train_names == test_names)){
+    stop(paste("Variable name: ", test_names[1], "not found in taining data"))
+  }
+  
+  test <- preProcess(test, x, y, na.rm = na.rm)[[2]]
+  
+  hp <- expand.grid(numStop = numStop,
+                    m = m,
+                    s_mtry = s_mtry)
+  
+  hp$MSE <- NA
+  
+  s_mtry_opt <- c("Breiman", "DEA1", "DEA2", "DEA3", "DEA4")
+  
+  for (i in 1:nrow(hp)) {
+    
+    if (hp[i, "s_mtry"] %in% s_mtry_opt){
+      input_select <- as.character(hp[i, "s_mtry"])
+      
+    } else {
+      input_select <- as.numeric(hp[i, "s_mtry"])
+      
+    }
+    
+    RFEATmodel <- RFEAT(data = training, x = x, y = y, numStop = hp[i, "numStop"],
+                        m = hp[i, "m"], s_mtry = input_select, na.rm = TRUE)
+    
+    x.t <- RFEATmodel[["data"]][["x"]]
+    y.t <- RFEATmodel[["data"]][["y"]]
+    
+    # RMSE
+    
+    data.p <- as.data.frame(test[, x.t])
+    pred <- data.frame()
+    for (j in 1:nrow(data.p)){
+      pred <- rbind(pred, RF_predictor(RFEATmodel[["forest"]], data.p[j, ]))
+    }
+    
+    predictions <- cbind(data.p, pred)
+    
+    MSE <- sqrt(sum((test[, y.t] - predictions[, y.t]) ^ 2) / nrow(test))
+    
+    hp[i, "MSE"] <- round(MSE, 2)
+    
+  }
+  
+  hp <- hp %>% arrange(desc(hp))
+  
+  print(hp)
+  
+}

@@ -297,6 +297,10 @@ RFEAT <- function(data, x, y, numStop = 5, m = 50,
     forest[[i]] <- tree
   }
   
+  # arr_test is a list with m elements.
+  # each element of arr_test is a list with N elements.
+  # each element of the sublist is a binary value that indicates if the DMU is in the sample
+  
   # TEST
   for(i in 1:N){
     reg_i <- data[i, ]
@@ -305,7 +309,7 @@ RFEAT <- function(data, x, y, numStop = 5, m = 50,
     
     # Cardinal Ki
     Ki <- 1
-    
+
     for(k in 1:m){ #k in Ki
       if(forestArray[[k]][[i]]){
         Ki <- Ki + 1
@@ -322,7 +326,7 @@ RFEAT <- function(data, x, y, numStop = 5, m = 50,
   
   RFEAT <- RFEAT_object(data, x, y, rwn, numStop, m, s_mtry, na.rm, forest, err / N)
   
-  invisible(RFEAT)
+  return(RFEAT)
 }
 
 #' @title Random Forest EAT predictions
@@ -354,9 +358,13 @@ RF_predictor <- function(forest, xn){
 #' @param data Dataframe for which the efficiency score is calculated.
 #' @param x Vector. Column input indexes in data.
 #' @param y Vector. Column output indexes in data.
-#' @param object A RFEAT object
+#' @param object A RFEAT object.
+#' @param r Integer. Decimal units for scores.
+#' @param FDH. Logical. If \code{TRUE}, FDH scores are calculated with the programming model selected in \code{scores_model}.
+#' @param na.rm Logical. If \code{TRUE}, \code{NA} rows are omitted.
 #'
-#' @importFrom dplyr %>% mutate
+#' @importFrom dplyr %>% mutate summarise
+#' @importFrom stats median quantile sd
 #' 
 #' @export
 #' 
@@ -375,11 +383,11 @@ RF_predictor <- function(forest, xn){
 #' efficiencyRFEAT(data = simulated, x = c(1, 2), y = c(3, 4), object = RFEAT_model)
 #'
 #' @return Dataframe with input variables and efficiency scores by a RFEAT model.
-efficiencyRFEAT <- function(data, x, y, object){
+efficiencyRFEAT <- function(data, x, y, object, r = 2, FDH = TRUE, na.rm = TRUE){
   
   train_names <- c(object[["data"]][["input_names"]], object[["data"]][["output_names"]])
   
-  rwn_data <- preProcess(data, x, y, na.rm = T)
+  rwn_data <- preProcess(data, x, y, na.rm = na.rm)
   
   rwn <- rwn_data[[1]]
   data <- rwn_data[[2]]
@@ -419,14 +427,74 @@ efficiencyRFEAT <- function(data, x, y, object){
     }
     data$scoreRF[xn] <- min(y_result[xn, ])
   }
-  
+
   scoreRF <- as.data.frame(data$scoreRF)
-  names(scoreRF) <- "scoreRF"
+  names(scoreRF) <- "RFEAT_BCC_out"
   rownames(scoreRF) <- rwn
   
-  print(scoreRF)
+  descriptive <- scoreRF %>%
+    summarise("Model" = "RFEAT",
+              "Mean" = round(mean(scoreRF[, 1]), 2),
+              "Std. Dev." = round(sd(scoreRF[, 1]), 2),
+              "Min" = round(min(scoreRF[, 1]), 2),
+              "Q1" = round(quantile(scoreRF[, 1])[[2]], 2),
+              "Median" = round(median(scoreRF[, 1]), 2),
+              "Q3" = round(quantile(scoreRF[, 1])[[3]], 2),
+              "Max" = round(max(scoreRF[, 1]), 2)
+    )
   
-  invisible(data)
+  if (FDH == TRUE) {
+    
+    j <- nrow(data)
+    scores <- matrix(nrow = j, ncol = 1)
+    x_k <- as.matrix(data[, x])
+    y_k <- as.matrix(data[, y])
+    nX <- length(x)
+    nY <- length(y)
+    
+    scores_FDH <- EAT_BCC_out(j, scores, x_k, y_k, x_k, y_k, nX, nY, j)
+    FDH_model <- "FDH_BCC_out"
+    
+    scores_FDH <- as.data.frame(scores_FDH)
+    names(scores_FDH) <- FDH_model
+    rownames(scores_FDH) <- rwn
+    
+    descriptive_FDH <- scores_FDH %>%
+      summarise("Model" = "FDH",
+                "Mean" = round(mean(scores_FDH[, 1]), 2),
+                "Std. Dev." = round(sd(scores_FDH[, 1]), 2),
+                "Min" = round(min(scores_FDH[, 1]), 2),
+                "Q1" = round(quantile(scores_FDH[, 1])[[2]], 2),
+                "Median" = round(median(scores_FDH[, 1]), 2),
+                "Q3" = round(quantile(scores_FDH[, 1])[[3]], 2),
+                "Max" = round(max(scores_FDH[, 1]), 2)
+      )
+    
+    scores_df <- cbind(data, round(scoreRF, r), round(scores_FDH, r))
+    print(scores_df[, c(ncol(scores_df) - 1, ncol(scores_df))])
+    
+    cat("\n")
+    print(descriptive, row.names = FALSE)
+    cat("\n")
+    print(descriptive_FDH, row.names = FALSE)
+    
+    invisible(scores_df)
+
+  } else {
+    
+    scores_df <- cbind(data, round(scoreRF, r))
+    
+    print(paste("BCC output orientation programming model"))
+    cat("\n")
+    print(round(scores_df[, ncol(scores_df)], r))
+    
+    cat("\n") 
+    print(descriptive, row.names = FALSE)
+    
+    
+    invisible(scores_df)
+    
+  }
 }
 
 #' @title Model prediction for RFEAT
@@ -439,6 +507,13 @@ efficiencyRFEAT <- function(data, x, y, object){
 #' @importFrom dplyr %>%
 #'
 #' @return Data frame with the original data and the predicted values.
+#' 
+#' @export
+#' 
+#' simulated <- eat:::X2Y2.sim(N = 50, border = 0.2)
+#' RFEAT_model <- EAT(data = simulated, x = c(1,2), y = c(3, 4))
+#' 
+#' predictRFEAT(object = RFEAT_model, newdata = simulated[, 1:2])
 #' 
 #' @export
 predictRFEAT <- function(object, newdata) {
@@ -497,6 +572,15 @@ predictRFEAT <- function(object, newdata) {
 #'
 #' @return Dataframe with scores or list with scores and barplot.
 #' 
+#' @examples 
+#' 
+#' simulated <- eat:::X2Y2.sim(N = 50, border = 0.2)
+#' RFEAT_model <- RFEAT(data = simulated, x = c(1,2), y = c(3, 4))
+#' 
+#' rankingRFEAT(object = RFEAT_model,
+#'              r = 2,
+#'              barplot = TRUE)
+#' 
 #' @export   
 rankingRFEAT <- function(object, r = 2, barplot = TRUE) {
   
@@ -513,17 +597,11 @@ rankingRFEAT <- function(object, r = 2, barplot = TRUE) {
   
   if (barplot == T){
     barplot <- barplot_importance(scores, threshold = NULL)
-    return(list(scores, barplot))
+    return(list(scores = scores, barplot = barplot))
     
   } else {
     return(scores)
   }
-  
-  # EAT_ranking.default <- function(x) "Hola"
-  # RFEAT_ranking.default <- function(x) "Adios"
-  # g <- function(x) {
-  # UseMethod("RFEAT_ranking")
-  # }
   
 }
 
@@ -538,7 +616,7 @@ rankingRFEAT <- function(object, r = 2, barplot = TRUE) {
 #' @return List of importance of inputs xj
 imp_var_RFEAT <- function(object, r = 2){
   
-  err <- object[["error"]]
+  err <- object[["MSE"]]
   data <- object[["data"]][["df"]]
   x <- object[["data"]][["x"]]
   y <- object[["data"]][["y"]]
@@ -552,7 +630,7 @@ imp_var_RFEAT <- function(object, r = 2){
     # Barajar xi
     df_xi <- data[sample(nrow(data), nrow(data), replace = TRUE), ]
     rf_err_xi <- RFEAT(df_xi, x, y, numStop, m, s_mtry)
-    err_xi <- rf_err_xi[["error"]]
+    err_xi <- rf_err_xi[["MSE"]]
     imp <- rbind(imp, (100 * ((err_xi - err)/err)))
   }
   
@@ -565,79 +643,7 @@ imp_var_RFEAT <- function(object, r = 2){
   return(imp)
 }
 
-#' @title Tuning an RFEAT model
-#'
-#' @description This funcion calculates the mean square error for a Random Forest of Efficiency Analysis Tree built with a set of given hyperparameters. 
-#'
-#' @param training Training dataframe or matrix containing the variables in the model for model construction.
-#' @param test Test dataframe or matrix containing the variables in the model for model assessment.
-#' @param x Vector. Column input indexes in data.
-#' @param y Vector. Column output indexes in data.
-#' @param numStop Vector. Set of minimun number of observations in a node for a split to be attempted.
-#' @param m Vector. Set of number of trees to be build.
-#' @param s_mtry. Vector. Set of options for selecting number of inputs to be selected in each split.
-#' @param na.rm Logical. If \code{TRUE}, \code{NA} rows are omitted.
-#' 
 #' @export
-#'
-#' @return Dataframe in which each row corresponds to a given set of hyperparameters with its corresponding mean square error.
-bestRFEAT <- function(training, test, x, y, numStop, m, s_mtry, na.rm = TRUE) {
-  
-  train_names <- names(training[, c(x, y)])
-  test_names <- names(test[, c(x, y)])
-  
-  if (length(train_names) != length(test_names)){
-    stop("Training and test data must have the same number of variables")
-  } else if (!all(train_names == test_names)){
-    stop(paste("Variable name: ", test_names[1], "not found in taining data"))
-  }
-  
-  test <- preProcess(test, x, y, na.rm = na.rm)[[2]]
-  
-  hp <- expand.grid(numStop = numStop,
-                    m = m,
-                    s_mtry = s_mtry)
-  
-  hp$MSE <- NA
-  
-  s_mtry_opt <- c("Breiman", "DEA1", "DEA2", "DEA3", "DEA4")
-  
-  for (i in 1:nrow(hp)) {
-    
-    if (hp[i, "s_mtry"] %in% s_mtry_opt){
-      input_select <- as.character(hp[i, "s_mtry"])
-    
-    } else {
-      input_select <- as.numeric(hp[i, "s_mtry"])
-      
-    }
-    
-    RFEATmodel <- RFEAT(data = training, x = x, y = y, numStop = hp[i, "numStop"],
-                        m = hp[i, "m"], s_mtry = input_select, na.rm = TRUE)
-    
-    x.t <- RFEATmodel[["data"]][["x"]]
-    y.t <- RFEATmodel[["data"]][["y"]]
-    
-    # RMSE
-    
-    data.p <- as.data.frame(test[, x.t])
-    pred <- data.frame()
-    for (j in 1:nrow(data.p)){
-      pred <- rbind(pred, RF_predictor(RFEATmodel[["forest"]], data.p[j, ]))
-    }
-    
-    predictions <- cbind(data.p, pred)
-    
-    MSE <- sqrt(sum((test[, y.t] - predictions[, y.t]) ^ 2) / nrow(test))
-    
-    hp[i, "MSE"] <- round(MSE, 2)
-    
-  }
-  
-  print(hp)
-  
-}
-
 print.RFEAT <- function(x, ...) {
   
   input_names <- x[["data"]][["input_names"]]
@@ -659,7 +665,7 @@ print.RFEAT <- function(x, ...) {
     rep("\n", 2) 
   )
   
-  cat(" Total MSE: ", round(x[["MSE"]], 2), "\n",
+  cat(" Total MSE: ", round(sqrt(x[["MSE"]]), 2), "\n",
       " numStop: ", x[["control"]][["numStop"]],  "\n",
       " No. of trees (m): ", x[["control"]][["m"]], "\n",
       " No. of inputs tried (s_mtry): ", x[["control"]][["s_mtry"]],

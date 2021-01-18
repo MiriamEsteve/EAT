@@ -31,31 +31,21 @@
 #' # Single output scenario #
 #' # ====================== #
 #'
-#' X1 <- runif(50, 1, 10)
-#' X2 <- runif(50, 2, 10)
-#' Y1 <- log(X1) + 3 - abs(rnorm(50, mean = 0, sd = 0.4))
-#'
-#' simulated <- data.frame(x1 = X1, x2 = X2, y1 = Y1)
-#'
-#' EAT(data = simulated, x = c(1,2), y = 3, numStop = 5, fold = 5)
+#' simulated <- eat:::Y1.sim(N = 50, nX = 3)
+#' EAT(data = simulated, x = c(1, 2, 3), y = 4, numStop = 5, fold = 5)
 #' 
 #' # ====================== #
 #' #  Multi output scenario #
 #' # ====================== #
 #'
-#' X1 <- runif(50, 1, 10)
-#' X2 <- runif(50, 2, 10)
-#' Y1 <- log(X1) + 3 - abs(rnorm(50, mean = 0, sd = 0.4))
-#' Y2 <- log(X1) + 2 - abs(rnorm(50, mean = 0, sd = 0.7))
-#'
-#' simulated <- data.frame(x1 = X1, x2 = X2, y1 = Y1, y2 = Y2)
-#'
+#' simulated <- eat:::X2Y2.sim(N = 50, border = 0.1)
 #' EAT(data = simulated, x = c(1,2), y = c(3, 4), numStop = 3, fold = 7)
-#'
+#' 
 #' @export
 EAT <- function(data, x, y, numStop = 5, fold = 5, na.rm = T) {
   conflict_prefer("filter", "dplyr")
   
+  # Data in data[x, y] format and rownames
   data <- preProcess(data, x, y, na.rm = na.rm)
   
   rwn <- data[[1]]
@@ -113,7 +103,7 @@ EAT <- function(data, x, y, numStop = 5, fold = 5, na.rm = T) {
 
   # print_results(EAT)
   
-  invisible(EAT)
+  return(EAT)
 }
 
 #' @title Deep Efficiency Analysis Trees
@@ -221,8 +211,6 @@ deepEAT <- function(data, x, y, numStop) {
   }
 
   leaves <- NULL
-  
-  # sys.calls()[[sys.nframe()-1]] == "treesForRCV(notLv, x, y, fold, numStop)" / enter == 1
 
   if (enter == 1) {
     return(tree_alpha_list)
@@ -401,67 +389,5 @@ summary.EAT <- function(object, ...) {
 size <- function(object) {
   
   return(object[["model"]][["leaf_nodes"]])
-  
-}
-
-#' @title Tuning an EAT model
-#'
-#' @description This funcion calculates the mean square error for a Efficiency Analysis Tree built with a set of given hyperparameters. 
-#'
-#' @param training Training dataframe or matrix containing the variables in the model for model construction.
-#' @param test Test dataframe or matrix containing the variables in the model for model assessment.
-#' @param x Vector. Column input indexes in data.
-#' @param y Vector. Column output indexes in data.
-#' @param numStop Vector. Set of minimun number of observations in a node for a split to be attempted.
-#' @param fold Vector. Set of number of folds in which is divided the dataset to apply cross-validation during the pruning.
-#' @param na.rm Logical. If \code{TRUE}, \code{NA} rows are omitted.
-#' 
-#' @export
-#'
-#' @return Dataframe in which each row corresponds to a given set of hyperparameters with its corresponding mean square error.
-bestEAT <- function(training, test, x, y, numStop, fold, na.rm = TRUE) {
-
-  train_names <- names(training[, c(x, y)])
-  test_names <- names(test[, c(x, y)])
-  
-  if (length(train_names) != length(test_names)){
-    stop("Training and test data must have the same number of variables")
-  } else if (!all(train_names == test_names)){
-    stop(paste("Variable name: ", test_names[1], "not found in taining data"))
-  }
-  
-  test <- preProcess(test, x, y, na.rm = na.rm)[[2]]
-  
-  hp <- expand.grid(numStop = numStop,
-                    fold = fold)
-  
-  hp$MSE <- NA
-  
-  for (i in 1:nrow(hp)) {
-    
-    EATmodel <- EAT(data = training, x = x, y = y, numStop = hp[i, "numStop"],
-                    fold = hp[i, "fold"], na.rm = TRUE)
-    
-    x.t <- EATmodel[["data"]][["x"]]
-    y.t <- EATmodel[["data"]][["y"]]
-    
-    # RMSE
-    
-    data.p <- as.data.frame(test[, x.t])
-    pred <- data.frame()
-    for (j in 1:nrow(data.p)){
-      pred <- rbind(pred, predictor(EATmodel[["tree"]], data.p[j, ]))
-    }
-    
-    predictions <- cbind(data.p, pred)
-
-    MSE <- sqrt(sum((test[, y.t] - predictions[, y.t]) ^ 2) / nrow(test))
-    
-    hp[i, "MSE"] <- round(MSE, 2)
-    hp[i, "leaf"] <- EATmodel[["model"]][["leaf_nodes"]]
-    
-  }
-  
-  print(hp)
   
 }

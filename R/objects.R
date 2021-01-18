@@ -129,7 +129,7 @@ RFEAT_object <- function(data, x, y, register_names, numStop, m, s_mtry, na.rm, 
                                         s_mtry = s_mtry,
                                         na.rm = na.rm),
                        "forest" = forest,
-                       "MSE" = sqrt(error))
+                       "MSE" = error)
   
   class(RFEAT_object) <- "RFEAT"
   

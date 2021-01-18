@@ -12,21 +12,15 @@
 #' \itemize{
 #' \item{id}: node index .
 #' \item{R}: mean square error in the node.
-#' \item{Samples}: number of observations in the node.
-#' \item{Variables}: splitting variable.
+#' \item{n(t)}: number of observations in the node.
+#' \item{an input name}: splitting variable.
 #' \item{y}: output prediction.
 #' }
 #' 
 #' @examples 
 #' 
-#' X1 <- runif(50, 1, 10)
-#' X2 <- runif(50, 2, 10)
-#' Y1 <- log(X1) + 3 - abs(rnorm(50, mean = 0, sd = 0.4))
-#' Y2 <- log(X1) + 2 - abs(rnorm(50, mean = 0, sd = 0.7))
-#'
-#' simulated <- data.frame(x1 = X1, x2 = X2, y1 = Y1, y2 = Y2)
-#'
-#' EAT_model <- EAT(data = simulated, x = c(1,2), y = c(3, 4), numStop = 5, fold = 5)
+#' simulated <- eat:::X2Y2.sim(N = 50, border = 0.2)
+#' EAT_model <- EAT(data = simulated, x = c(1,2), y = c(3, 4))
 #' 
 #' plotEAT(EAT_model)
 #' 

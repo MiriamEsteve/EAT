@@ -4,7 +4,7 @@
 \alias{efficiencyRFEAT}
 \title{RFEAT Efficiency Scores}
 \usage{
-efficiencyRFEAT(data, x, y, object)
+efficiencyRFEAT(data, x, y, object, r = 2, FDH = TRUE, na.rm = TRUE)
 }
 \arguments{
 \item{data}{Dataframe for which the efficiency score is calculated.}
@@ -13,7 +13,13 @@ efficiencyRFEAT(data, x, y, object)
 
 \item{y}{Vector. Column output indexes in data.}
 
-\item{object}{A RFEAT object}
+\item{object}{A RFEAT object.}
+
+\item{r}{Integer. Decimal units for scores.}
+
+\item{na.rm}{Logical. If \code{TRUE}, \code{NA} rows are omitted.}
+
+\item{FDH.}{Logical. If \code{TRUE}, FDH scores are calculated with the programming model selected in \code{scores_model}.}
 }
 \value{
 Dataframe with input variables and efficiency scores by a RFEAT model.
@@ -30,16 +36,9 @@ Y2 <- log(X1) + 2 - abs(rnorm(50, mean = 0, sd = 0.7))
 
 simulated <- data.frame(x1 = X1, x2 = X2, y1 = Y1, y2 = Y2)
 
-n <- nrow(simulated)
-t_index <- sample(1:n, n * 0.8)
-training <- simulated[t_index, ]
-test <- simulated[-t_index, ]
-
-RFEAT_model <- RFEAT(data = training, x = c(1,2), y = c(3, 4), numStop = 5,
+RFEAT_model <- RFEAT(data = simulated, x = c(1,2), y = c(3, 4), numStop = 5,
                      m = 50, s_mtry = "Breiman", na.rm = TRUE)
 
-efficiencyRFEAT(data = training, x = c(1, 2), y = c(3, 4), object = RFEAT_model)
-
-efficiencyRFEAT(data = test, x = c(1, 2), y = c(3, 4), object = RFEAT_model)
+efficiencyRFEAT(data = simulated, x = c(1, 2), y = c(3, 4), object = RFEAT_model)
 
 }

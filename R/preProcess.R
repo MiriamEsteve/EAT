@@ -33,7 +33,7 @@ preProcess <- function(data, x, y, na.rm = T) {
 
   if (any(is.na(data[, c(x, y)]))){
     if (na.rm == T){
-      if (sys.calls()[[sys.nframe()-1]] == "predict(tree, data, x, y)"){
+      if (sys.calls()[[sys.nframe() - 1]] == "predict(tree, data, x, y)"){
         data <- data
       } else {
         data <- na.omit(data)

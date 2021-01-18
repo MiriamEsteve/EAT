@@ -21,16 +21,15 @@
 #' @examples
 #' 
 #' data("PISAindex")
-#' n <- nrow(PISAindex)
-#' t_index <- sample(1:n, n * 0.8)
-#' training <- PISAindex[t_index, ]
-#' test <- PISAindex[-t_index, ]
 #' 
-#' single_model <- EAT(data = training, x = 6, y = 3)
+#' single_model <- EAT(data = PISAindex,
+#'                     x = 15, # input 
+#'                     y = 3) # output
 #' 
-#' frontier <- frontier(object = single_model, train.data = TRUE, train.color = "#F8766D",
-#'                      rwn = TRUE, size = 1.5)
-#' 
+#' frontier <- frontier(object = single_model,
+#'                      FDH = TRUE, 
+#'                      train.data = TRUE,
+#'                      rwn = TRUE)
 #' plot(frontier)
 #' 
 #' @export
@@ -69,11 +68,15 @@ frontier <- function(object, FDH = FALSE, train.data = FALSE, train.color = "bla
     names(pred) <- c("x1", "y", "estimEAT")
     
     if (FDH == TRUE){
+      t_data <- append(t_data, -1, 0)
+      
       # FDH prediction
       predictFDH <- predictFDH(t_data, 1, 2)
       
+      t_data <- as.data.frame(t_data[-1]) 
+      
       # Rename to estimFDH
-      names(predictFDH)[3] <- "estimFDH"
+      names(predictFDH)[2] <- "estimFDH"
       
       # Data to ggplot2
       ggdata <- data.frame(x1 = pred$x1, y = pred$y,

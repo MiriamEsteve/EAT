@@ -3,7 +3,7 @@
 #' @description This function generates a barplot with the importance of each predictor.
 #'
 #' @param m Dataframe with the importance of each predictor.
-#' @param threshold Importance score value in which a broken line should be graphed.
+#' @param threshold Importance score value in which a line should be graphed.
 #'
 #' @importFrom ggplot2 ggplot geom_col xlab aes geom_hline
 #' @importFrom stats reorder
@@ -200,6 +200,16 @@ M_Breiman <- function(object, r) {
 #'
 #' @return Dataframe with scores or list with scores and barplot.
 #' 
+#' @examples
+#' 
+#' simulated <- eat:::X2Y2.sim(N = 50, border = 0.2)
+#' EAT_model <- EAT(data = simulated, x = c(1,2), y = c(3, 4))
+#' 
+#' rankingEAT(object = EAT_model,
+#'            r = 2,
+#'            threshold = 70,
+#'            barplot = TRUE)
+#' 
 #' @export   
 rankingEAT <- function(object, r = 2, threshold = 70, barplot = TRUE) {
   
@@ -221,11 +231,5 @@ rankingEAT <- function(object, r = 2, threshold = 70, barplot = TRUE) {
   } else {
     return(scores)
   }
-  
-  # EAT_ranking.default <- function(x) "Hola"
-  # RFEAT_ranking.default <- function(x) "Adios"
-  # g <- function(x) {
-    # UseMethod("RFEAT_ranking")
-  # }
 
 }

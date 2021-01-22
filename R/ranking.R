@@ -189,16 +189,16 @@ M_Breiman <- function(object, r) {
   return(m)
 }
 
-#' @title Ranking of variables by EAT
+#' @title Ranking of variables by Efficiency Analysis Trees
 #'
-#' @description This function calculates variable importance for an EAT object.
+#' @description This function calculates variable importance through an Efficiency Analysis Trees model.
 #'
 #' @param object An EAT object.
 #' @param r Integer. Decimal units.
-#' @param barplot Logical. If \code{TRUE}, a barplot with importance scores is displayed.
+#' @param barplot Logical. If \code{TRUE}, a barplot with the importance scores is displayed.
 #' @param threshold Numeric. Importance score value in which a line is graphed.
 #'
-#' @return Dataframe with scores or list with scores and barplot.
+#' @return Dataframe with the importance scores. If \code{barplot = TRUE}, it is returned a list with the scores and the barplot.
 #' 
 #' @examples
 #' 

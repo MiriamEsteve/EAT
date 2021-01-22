@@ -2,7 +2,7 @@
 % Please edit documentation in R/efficiency.R
 \name{efficiencyEAT}
 \alias{efficiencyEAT}
-\title{EAT Efficiency Scores}
+\title{Efficiency Analysis Tree Efficiency Scores}
 \usage{
 efficiencyEAT(
   data,
@@ -44,28 +44,14 @@ efficiencyEAT(
 Dataframe with input variables and efficiency scores by an EAT model.
 }
 \description{
-This function calculates the efficiency scores for each DMU by an EAT model.
+This function calculates the efficiency scores for each DMU by an Efficiency Analysis Tree model.
 }
 \examples{
 
-X1 <- runif(50, 1, 10)
-X2 <- runif(50, 2, 10)
-Y1 <- log(X1) + 3 - abs(rnorm(50, mean = 0, sd = 0.4))
-Y2 <- log(X1) + 2 - abs(rnorm(50, mean = 0, sd = 0.7))
+simulated <- eat:::X2Y2.sim(N = 50, border = 0.2)
+EAT_model <- EAT(data = simulated, x = c(1,2), y = c(3, 4))
 
-simulated <- data.frame(x1 = X1, x2 = X2, y1 = Y1, y2 = Y2)
-
-n <- nrow(simulated)
-t_index <- sample(1:n, n * 0.8)
-training <- simulated[t_index, ]
-test <- simulated[-t_index, ]
-
-EAT_model <- EAT(data = training, x = c(1,2), y = c(3, 4), numStop = 3, fold = 7)
-
-efficiencyEAT(data = training, x = c(1, 2), y = c(3, 4), object = EAT_model, 
-              scores_model = "BCC_out", r = 2, na.rm = TRUE)
-
-efficiencyEAT(data = test, x = c(1, 2), y = c(3, 4), object = EAT_model, 
-              scores_model = "BCC_out", r = 2, na.rm = TRUE)
+efficiencyEAT(data = simulated, x = c(1, 2), y = c(3, 4), object = EAT_model, 
+              scores_model = "BCC_out", r = 2, FDH = TRUE, na.rm = TRUE)
 
 }

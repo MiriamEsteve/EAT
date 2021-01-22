@@ -19,3 +19,9 @@ Data frame with the original data and the predicted values by and FDH model.
 \description{
 This function predicts the expected output by an FDH model.
 }
+\examples{
+ 
+simulated <- eat:::X2Y2.sim(N = 50, border = 0.2)
+predictFDH(simulated, x = c(1, 2), y = c(3, 4))
+
+}

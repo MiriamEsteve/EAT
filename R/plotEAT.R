@@ -1,6 +1,6 @@
 #' @title Efficiency Analysis Trees Plot
 #'
-#' @description Plot an EAT model. 
+#' @description Plot a tree-structure for a Efficiency Analysis Tree model. 
 #'
 #' @param object An EAT object.
 #'
@@ -11,7 +11,7 @@
 #' @return Plot object with the following elements for each node:
 #' \itemize{
 #' \item{id}: node index .
-#' \item{R}: mean square error in the node.
+#' \item{R}: impurity at the node.
 #' \item{n(t)}: number of observations in the node.
 #' \item{an input name}: splitting variable.
 #' \item{y}: output prediction.
@@ -43,7 +43,7 @@ plotEAT <- function(object) {
         "id" = as.integer(i),
         "info" = list(
           "Y" = lapply(tree[[i]][["y"]], round, 1),
-          "R" = round(sqrt(tree[[i]][["R"]]), 2),
+          "R" = round(tree[[i]][["R"]], 2),
           "Id" = i,
           "n1" = length(tree[[i]][["index"]]),
           "n2" = round(length(tree[[i]][["index"]]) * 100 / N, 1)
@@ -63,7 +63,7 @@ plotEAT <- function(object) {
         "kids" = c(tree[[i]][["SL"]], tree[[i]][["SR"]]),
         "info" = list(
           "Y" = lapply(tree[[i]][["y"]], round, 1),
-          "R" = round(sqrt(tree[[i]][["R"]]), 2),
+          "R" = round(tree[[i]][["R"]], 2),
           "Id" = i,
           "n1" = length(tree[[i]][["index"]]),
           "n2" = round(length(tree[[i]][["index"]]) * 100 / N, 1)
@@ -113,7 +113,7 @@ plotEAT <- function(object) {
     geom_node_label(aes(col = splitvar),
       line_list = list(
         aes(label = paste("Id:", Id)),
-        aes(label = paste("MSE:", R)),
+        aes(label = paste("R:", R)),
         aes(label = paste("n(t):", n1)),
         aes(label = paste(splitvar)),
         aes(label = paste("y: [", do.call(paste, c(lapply(ynames, as.name),
@@ -134,7 +134,7 @@ plotEAT <- function(object) {
    geom_node_label(
      line_list = list(
        aes(label = paste("Id:", Id)),
-       aes(label = paste("MSE:", R)),
+       aes(label = paste("R:", R)),
        aes(label = paste("n(t):", n1)),
        aes(label = paste("y:[", do.call(paste, c(lapply(ynames, as.name),
                                                    list(sep = ","))), "]", sep = ""))

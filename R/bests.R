@@ -8,6 +8,7 @@
 #' @param y Vector. Column output indexes in data.
 #' @param numStop Vector. Set of minimun number of observations in a node for a split to be attempted.
 #' @param fold Vector. Set of number of folds in which is divided the dataset to apply cross-validation during the pruning.
+#' @param max.depth Vector. Integer. Maximum number of leaf nodes.
 #' @param na.rm Logical. If \code{TRUE}, \code{NA} rows are omitted.
 #' 
 #' @importFrom dplyr arrange %>%
@@ -30,8 +31,8 @@
 #'         numStop = c(3, 5, 7, 10),
 #'         fold = c(5, 7, 10))
 #'
-#' @return Dataframe in which each row corresponds to a given set of hyperparameters with its corresponding mean square error.
-bestEAT <- function(training, test, x, y, numStop, fold, na.rm = TRUE) {
+#' @return Dataframe in which each row corresponds to a given set of hyperparameters with its corresponding root mean square error.
+bestEAT <- function(training, test, x, y, numStop = NULL, fold = NULL, max.depth = NULL, na.rm = TRUE) {
 
   train_names <- names(training[, c(x, y)])
   test_names <- names(test[, c(x, y)])
@@ -44,15 +45,35 @@ bestEAT <- function(training, test, x, y, numStop, fold, na.rm = TRUE) {
   
   test <- preProcess(test, x, y, na.rm = na.rm)[[2]]
   
-  hp <- expand.grid(numStop = numStop,
-                    fold = fold)
+  if (is.null(numStop)) {
+    numStop <- 5
+  }
   
-  hp$MSE <- NA
+  if (is.null(fold)) {
+    fold <- 5
+  }
+  
+  if (is.null(max.depth)) {
+    hp <- expand.grid(numStop = numStop,
+                      fold = fold)
+  } else {
+    hp <- expand.grid(numStop = numStop,
+                      fold = fold,
+                      max.depth = max.depth)
+  }
+  
+  hp$RMSE <- NA
   
   for (i in 1:nrow(hp)) {
     
+    if (is.null(max.depth)){
+      max.depth <- NULL
+    } else {
+      max.depth <- hp[i, "max.depth"]
+    }
+    
     EATmodel <- EAT(data = training, x = x, y = y, numStop = hp[i, "numStop"],
-                    fold = hp[i, "fold"], na.rm = TRUE)
+                    fold = hp[i, "fold"], max.depth = max.depth, na.rm = TRUE)
     
     x.t <- EATmodel[["data"]][["x"]]
     y.t <- EATmodel[["data"]][["y"]]
@@ -67,14 +88,14 @@ bestEAT <- function(training, test, x, y, numStop, fold, na.rm = TRUE) {
     
     predictions <- cbind(data.p, pred)
 
-    MSE <- sqrt(sum((test[, y.t] - predictions[, y.t]) ^ 2) / nrow(test))
+    RMSE <- sqrt(sum((test[, y.t] - predictions[, y.t]) ^ 2) / nrow(test))
     
-    hp[i, "MSE"] <- round(MSE, 2)
+    hp[i, "RMSE"] <- round(RMSE, 2)
     hp[i, "leaves"] <- EATmodel[["model"]][["leaf_nodes"]]
     
   }
   
-  hp <- hp %>% arrange(desc(MSE))
+  hp <- hp %>% arrange(desc(RMSE))
   
   print(hp)
   
@@ -130,7 +151,7 @@ bestRFEAT <- function(training, test, x, y, numStop, m, s_mtry, na.rm = TRUE) {
                     m = m,
                     s_mtry = s_mtry)
   
-  hp$MSE <- NA
+  hp$RMSE <- NA
   
   s_mtry_opt <- c("Breiman", "DEA1", "DEA2", "DEA3", "DEA4")
   
@@ -160,9 +181,9 @@ bestRFEAT <- function(training, test, x, y, numStop, m, s_mtry, na.rm = TRUE) {
     
     predictions <- cbind(data.p, pred)
     
-    MSE <- sqrt(sum((test[, y.t] - predictions[, y.t]) ^ 2) / nrow(test))
+    RMSE <- sqrt(sum((test[, y.t] - predictions[, y.t]) ^ 2) / nrow(test))
     
-    hp[i, "MSE"] <- round(MSE, 2)
+    hp[i, "RMSE"] <- round(RMSE, 2)
     
   }
   

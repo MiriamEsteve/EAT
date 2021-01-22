@@ -9,7 +9,7 @@ barplot_importance(m, threshold)
 \arguments{
 \item{m}{Dataframe with the importance of each predictor.}
 
-\item{threshold}{Importance score value in which a broken line should be graphed.}
+\item{threshold}{Importance score value in which a line should be graphed.}
 }
 \value{
 Barplot representing each variable in the x-axis and its importance in the y-axis.

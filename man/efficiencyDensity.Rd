@@ -4,31 +4,24 @@
 \alias{efficiencyDensity}
 \title{Efficiency Scores Density Plot}
 \usage{
-efficiencyDensity(scores_EAT, scores_FDH = NULL, scores_RFEAT = NULL)
+efficiencyDensity(scores, model)
 }
 \arguments{
-\item{scores_EAT}{Dataframe with EAT scores.}
+\item{scores}{Dataframe with efficiency scores.}
 
-\item{scores_FDH}{Optional. Dataframe with FDH scores.}
-
-\item{scores_RFEAT}{Optional. Dataframe with RFEAT scores.}
+\item{model}{String vector. Scoring models in the order shown in "scores" by columns. The available models are: \code{"EAT"}, \code{"FDH"}, \code{"CEAT"}, \code{"DEA"} and \code{"RFEAT"}.}
 }
 \value{
 Density plot for scores and data.frame with numeric results.
 }
 \description{
-Density plot for scores. EAT scores in red and FDH scores in blue.
+Density plot for scores.
 }
 \examples{
 
-X1 <- runif(50, 1, 10)
-X2 <- runif(50, 2, 10)
-Y1 <- log(X1) + 3 - abs(rnorm(50, mean = 0, sd = 0.4))
-Y2 <- log(X1) + 2 - abs(rnorm(50, mean = 0, sd = 0.7))
+simulated <- eat:::X2Y2.sim(N = 50, border = 0.2)
 
-simulated <- data.frame(x1 = X1, x2 = X2, y1 = Y1, y2 = Y2)
-
-EAT_model <- EAT(data = simulated, x = c(1,2), y = c(3, 4), numStop = 5, fold = 5)
+EAT_model <- EAT(data = simulated, x = c(1,2), y = c(3, 4))
 
 scores <- efficiencyEAT(data = simulated, x = c(1, 2), y = c(3, 4), object = EAT_model, 
                         scores_model = "BCC_out", r = 2, FDH = TRUE, na.rm = TRUE)

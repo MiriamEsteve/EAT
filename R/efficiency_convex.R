@@ -1,6 +1,6 @@
-#' @title Banker, Charnes and Cooper programming model with output orientation for a non-convex EAT model
+#' @title Banker, Charnes and Cooper programming model with output orientation for a convex Efficiency Analysis Tree model
 #'
-#' @description Banker, Charnes and Cooper programming model with output orientation for a non-convex EAT model.
+#' @description Banker, Charnes and Cooper programming model with output orientation for a convex Efficiency Analysis Tree model.
 #'
 #' @param j Integer. Number of DMUs.
 #' @param scores Matrix. Empty matrix for scores.
@@ -46,9 +46,9 @@ CEAT_BCC_out <- function(j, scores, x_k, y_k, atreeTk, ytreeTk, nX, nY, N_leaves
   return(scores)
 }
 
-#' @title Banker, Charnes and Cooper programming model with input orientation for a non-convex EAT model
+#' @title Banker, Charnes and Cooper programming model with input orientation for a convex Efficiency Analysis Tree model
 #'
-#' @description Banker, Charnes and Cooper programming model with input orientation for a non-convex EAT model.
+#' @description Banker, Charnes and Cooper programming model with input orientation for a convex Efficiency Analysis Tree model.
 #'
 #' @param j Integer. Number of DMUs.
 #' @param scores Matrix. Empty matrix for scores.
@@ -95,9 +95,9 @@ CEAT_BCC_in <- function(j, scores, x_k, y_k, atreeTk, ytreeTk, nX, nY, N_leaves)
   
 }
 
-#' @title Directional Distance Function mathematical programming model for a non-convex EAT model
+#' @title Directional Distance Function mathematical programming model for a convex Efficiency Analysis Tree model
 #'
-#' @description Directional Distance Function for a non-convex EAT model.
+#' @description Directional Distance Function for a convex Efficiency Analysis Tree model.
 #'
 #' @param j Integer. Number of DMUs.
 #' @param scores Matrix. Empty matrix for scores.
@@ -143,9 +143,9 @@ CEAT_DDF <- function(j, scores, x_k, y_k, atreeTk, ytreeTk, nX, nY, N_leaves) {
   return(scores)
 }
 
-#' @title Rusell Model with input orientation for a non-convex EAT model
+#' @title Rusell Model with input orientation for a convex Efficiency Analysis Tree model
 #'
-#' @description Rusell Model with input orientation for a non-convex EAT model.
+#' @description Rusell Model with input orientation for a convex Efficiency Analysis Tree model.
 #'
 #' @param j Integer. Number of DMUs.
 #' @param scores Matrix. Empty matrix for scores.
@@ -198,9 +198,9 @@ CEAT_RSL_in <- function(j, scores, x_k, y_k, atreeTk, ytreeTk, nX, nY, N_leaves)
   
 }
 
-#' @title Rusell Model with output orientation for a non-convex EAT model
+#' @title Rusell Model with output orientation for a convex Efficiency Analysis Tree model
 #'
-#' @description Rusell Model with output orientation for a non-convex EAT model.
+#' @description Rusell Model with output orientation for a convex Efficiency Analysis Tree model.
 #'
 #' @param j Integer. Number of DMUs.
 #' @param scores Matrix. Empty matrix for scores.
@@ -253,9 +253,9 @@ CEAT_RSL_out <- function(j, scores, x_k, y_k, atreeTk, ytreeTk, nX, nY, N_leaves
   
 }
 
-#' @title Weighted Additive Model for a non-convex EAT model
+#' @title Weighted Additive Model for a convex Efficiency Analysis Tree model
 #'
-#' @description Weighted Additive Model for a non-convex EAT model.
+#' @description Weighted Additive Model for a convex Efficiency Analysis Tree model.
 #'
 #' @param j Integer. Number of DMUs.
 #' @param scores Matrix. Empty matrix for scores.
@@ -316,9 +316,9 @@ CEAT_WAM <- function(j, scores, x_k, y_k, atreeTk, ytreeTk, nX, nY, N_leaves) {
   
 }
 
-#' @title CEAT Efficiency Scores
+#' @title Convex Efficiency Analysis Tree Efficiency Scores
 #'
-#' @description This function calculates the efficiency scores for each DMU by a convex EAT model.
+#' @description This function calculates the efficiency scores for each DMU by a convex Efficiency Analysis Tree model.
 #' 
 #' @param data Dataframe for which the efficiency score is calculated.
 #' @param x Vector. Column input indexes in data.

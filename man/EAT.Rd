@@ -4,7 +4,7 @@
 \alias{EAT}
 \title{Efficiency Analysis Trees}
 \usage{
-EAT(data, x, y, numStop = 5, fold = 5, na.rm = T)
+EAT(data, x, y, numStop = 5, fold = 5, max.depth = NULL, na.rm = T)
 }
 \arguments{
 \item{data}{Dataframe or matrix containing the variables in the model.}
@@ -17,42 +17,33 @@ EAT(data, x, y, numStop = 5, fold = 5, na.rm = T)
 
 \item{fold}{Integer. Number of folds in which is divided the dataset to apply cross-validation during the pruning.}
 
+\item{max.depth}{Integer. Maximum number of leaf nodes.}
+
 \item{na.rm}{Logical. If \code{TRUE}, \code{NA} rows are omitted.}
 }
 \value{
-A list of class EAT is returned containing data, control parmeters and the Efficiency Analysis Trees model.
+An EAT object.
 }
 \description{
 This function generates a stepped production frontier through regression trees.
 }
 \details{
-The EAT function generates a regression tree model based on CART \insertCite{breiman1984}{eat} under a new approach that guarantees the obtaining of a stepped production frontier that fulfills the property of free disposability. This frontier shares the aforementioned aspects with the FDH frontier \insertCite{deprins1984}{eat} but enhances some of its disadvantages such as the overfitting problem or the underestimation of technical inefficiency. More details in \insertCite{esteve2020}{eat}
+The EAT function generates a regression tree model based on CART \insertCite{breiman1984}{eat} under a new approach that guarantees the obtaining of a stepped production frontier that fulfills the property of free disposability. This frontier shares the aforementioned aspects with the FDH frontier \insertCite{deprins1984}{eat} but enhances some of its disadvantages such as the overfitting problem or the underestimation of technical inefficiency. More details in \insertCite{esteve2020;textual}{eat}.
 }
 \examples{
 # ====================== #
 # Single output scenario #
 # ====================== #
 
-X1 <- runif(50, 1, 10)
-X2 <- runif(50, 2, 10)
-Y1 <- log(X1) + 3 - abs(rnorm(50, mean = 0, sd = 0.4))
-
-simulated <- data.frame(x1 = X1, x2 = X2, y1 = Y1)
-
-EAT(data = simulated, x = c(1,2), y = 3, numStop = 5, fold = 5)
+simulated <- eat:::Y1.sim(N = 50, nX = 3)
+EAT(data = simulated, x = c(1, 2, 3), y = 4, numStop = 10, fold = 5)
 
 # ====================== #
 #  Multi output scenario #
 # ====================== #
 
-X1 <- runif(50, 1, 10)
-X2 <- runif(50, 2, 10)
-Y1 <- log(X1) + 3 - abs(rnorm(50, mean = 0, sd = 0.4))
-Y2 <- log(X1) + 2 - abs(rnorm(50, mean = 0, sd = 0.7))
-
-simulated <- data.frame(x1 = X1, x2 = X2, y1 = Y1, y2 = Y2)
-
-EAT(data = simulated, x = c(1,2), y = c(3, 4), numStop = 3, fold = 7)
+simulated <- eat:::X2Y2.sim(N = 50, border = 0.1)
+EAT(data = simulated, x = c(1,2), y = c(3, 4), numStop = 10, fold = 7)
 
 }
 \references{

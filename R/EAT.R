@@ -9,9 +9,10 @@
 #' @param y Vector. Column output indexes in data.
 #' @param numStop Integer. Minimun number of observations in a node for a split to be attempted.
 #' @param fold Integer. Number of folds in which is divided the dataset to apply cross-validation during the pruning.
+#' @param max.depth Integer. Maximum number of leaf nodes.
 #' @param na.rm Logical. If \code{TRUE}, \code{NA} rows are omitted.
 #'
-#' @details The EAT function generates a regression tree model based on CART \insertCite{breiman1984}{eat} under a new approach that guarantees the obtaining of a stepped production frontier that fulfills the property of free disposability. This frontier shares the aforementioned aspects with the FDH frontier \insertCite{deprins1984}{eat} but enhances some of its disadvantages such as the overfitting problem or the underestimation of technical inefficiency. More details in \insertCite{esteve2020}{eat}
+#' @details The EAT function generates a regression tree model based on CART \insertCite{breiman1984}{eat} under a new approach that guarantees the obtaining of a stepped production frontier that fulfills the property of free disposability. This frontier shares the aforementioned aspects with the FDH frontier \insertCite{deprins1984}{eat} but enhances some of its disadvantages such as the overfitting problem or the underestimation of technical inefficiency. More details in \insertCite{esteve2020;textual}{eat}.
 #'
 #' @references
 #' \insertRef{breiman1984}{eat} \cr
@@ -24,7 +25,7 @@
 #' @importFrom conflicted conflict_prefer
 #' @importFrom Rdpack reprompt
 #' 
-#' @return A list of class EAT is returned containing data, control parmeters and the Efficiency Analysis Trees model.
+#' @return An EAT object.
 #'
 #' @examples
 #' # ====================== #
@@ -32,17 +33,17 @@
 #' # ====================== #
 #'
 #' simulated <- eat:::Y1.sim(N = 50, nX = 3)
-#' EAT(data = simulated, x = c(1, 2, 3), y = 4, numStop = 5, fold = 5)
+#' EAT(data = simulated, x = c(1, 2, 3), y = 4, numStop = 10, fold = 5)
 #' 
 #' # ====================== #
 #' #  Multi output scenario #
 #' # ====================== #
 #'
 #' simulated <- eat:::X2Y2.sim(N = 50, border = 0.1)
-#' EAT(data = simulated, x = c(1,2), y = c(3, 4), numStop = 3, fold = 7)
+#' EAT(data = simulated, x = c(1,2), y = c(3, 4), numStop = 10, fold = 7)
 #' 
 #' @export
-EAT <- function(data, x, y, numStop = 5, fold = 5, na.rm = T) {
+EAT <- function(data, x, y, numStop = 5, fold = 5, max.depth = NULL, na.rm = T) {
   conflict_prefer("filter", "dplyr")
   
   # Data in data[x, y] format and rownames
@@ -64,11 +65,19 @@ EAT <- function(data, x, y, numStop = 5, fold = 5, na.rm = T) {
   nX <- length(x)
   nY <- length(y)
   
-  # Deep tree
+  # Insert row to know deepEAT is called by this one
   data <- append(data, -1, 0)
   
-  # Insert row to know deepEAT is called by this one
-  tree_alpha_list <- deepEAT(data, x, y, numStop)
+  # Deep tree and pruning or tree with the size indicated in max.depth
+  tree_alpha_list <- deepEAT(data, x, y, numStop, max.depth)
+  
+  if (!is.null(max.depth)) {
+    data <- data[-1] %>% 
+      as.data.frame()
+    EAT <- EAT_object(data, x, y, rwn, fold, numStop, max.depth, na.rm, tree_alpha_list)
+    
+    return(EAT)
+  }
 
   data <- data[-1] %>% 
     as.data.frame()
@@ -99,10 +108,8 @@ EAT <- function(data, x, y, numStop = 5, fold = 5, na.rm = T) {
     }
   }
   
-  EAT <- EAT_object(data, x, y, rwn, fold, numStop, na.rm, Tk[["tree"]])
+  EAT <- EAT_object(data, x, y, rwn, fold, numStop, max.depth, na.rm, Tk[["tree"]])
 
-  # print_results(EAT)
-  
   return(EAT)
 }
 
@@ -114,12 +121,13 @@ EAT <- function(data, x, y, numStop = 5, fold = 5, na.rm = T) {
 #' @param x Vector. Column input indexes in data.
 #' @param y Vector. Column output indexes in data.
 #' @param numStop Integer. Minimun number of observations in a node for a split to be attempted.
+#' @param max.depth Integer. Maximum number of leaf nodes.
 #'
 #' @importFrom dplyr filter mutate %>% row_number
 #' @importFrom conflicted conflict_prefer
 #'
 #' @return List containing each possible pruning for the deep tree and its alpha associated.
-deepEAT <- function(data, x, y, numStop) {
+deepEAT <- function(data, x, y, numStop, max.depth = NULL) {
   
   # Check if deepEAT is called by EAT
   
@@ -138,8 +146,6 @@ deepEAT <- function(data, x, y, numStop) {
       x <- 1:((ncol(data) - 1) - length(y))
       y <- (length(x) + 1):(ncol(data) - 1)
    }
-  
-  # if (sys.calls()[[sys.nframe()-1]] == "treesForRCV(notLv, x, y, fold, numStop)") {
   
   # Size data
   N <- nrow(data)
@@ -190,11 +196,20 @@ deepEAT <- function(data, x, y, numStop) {
     t <- leaves[[N_leaves]]
     leaves[[N_leaves]] <- NULL # Drop t selected
 
+    # If is final Node --> do not divide
     if (isFinalNode(t[["index"]], data[, x], numStop)) break
 
+    # Divide the node
     tree_leaves <- split(data, tree, leaves, t, x, y, numStop)
 
+    # Add the leaf to the node
     tree <- tree_leaves[[1]]
+    
+    # If number of leaves nodes is bigger than max.depth --> break
+    if (!is.null(max.depth) && sum(lapply(tree, "[[", "SL") == -1) >= max.depth) {
+      return(tree)
+    }
+
     leaves <- tree_leaves[[2]]
     N_leaves <- length(leaves)
 
@@ -231,6 +246,7 @@ print.EAT <- function(x, ...) {
   # Reference vector to delete positions
   ref <- c(tree[[1]][["SR"]], tree[[1]][["SL"]])
   
+  # Same procedure as in leaves during EAT
   while(length(ref) != 0){
     
     t <- ref[length(ref)]
@@ -266,13 +282,13 @@ print.EAT <- function(x, ...) {
       if (tree[[t]][["id"]] != 1) paste("-->"),
       
       "y: [", do.call(paste, c(lapply(tree[[t]][["y"]], round, 1),
-                                      list(sep = ","))),"]",
+                                      list(sep = ", "))),"]",
       
       if (tree[[t]][["SL"]] == - 1) paste("<*>"),
       
       "||",
       
-      "MSE:", round(sqrt(tree[[t]][["R"]]), 2),
+      "R:", round(tree[[t]][["R"]], 2),
       
       "n(t):", length(tree[[t]][["index"]]),
       
@@ -290,7 +306,7 @@ summary.EAT <- function(object, ...) {
     filter(SL == - 1) %>%
     select(- index, - SL)
   
-  names(results)[2:3] <- c("n(t)", "%")
+  names(results)[c(2:3, 5)] <- c("n(t)", "%", "R(t)")
   
   tree <- object[["tree"]]
   input_names <- object[["data"]][["input_names"]]
@@ -328,9 +344,10 @@ summary.EAT <- function(object, ...) {
     rep("\n", 2)
   )
   
-  cat("   Total MSE: ", sum(results$MSE), "\n",
-      "    numStop: ", object[["control"]][["numStop"]], "\n",
-      "       fold: ", object[["control"]][["fold"]]
+  cat("       R(T):", sum(results$R), "\n",
+      "    numStop:", object[["control"]][["numStop"]], "\n",
+      "       fold:", object[["control"]][["fold"]], "\n",
+      "  max.depth:", object[["control"]][["max.depth"]]
       )
   
   cat(
@@ -349,7 +366,9 @@ summary.EAT <- function(object, ...) {
         paste(" Node ", tree[[t]][["id"]], " --> {",
               tree[[t]][["SL"]], ",", tree[[t]][["SR"]], "}",
               " || ", input_names[tree[[t]][["xi"]]], 
-              " --> {MSE: ", round(tree[[t]][["R"]], 2),
+              " --> {R: ", round(unlist(tree[[t]][["varInfo"]][[tree[[t]][["xi"]]]][[1]]) + 
+                                 unlist(tree[[t]][["varInfo"]][[tree[[t]][["xi"]]]][[2]]), 
+                                 2),
               ", s: ", round(tree[[t]][["s"]], 2), "}", 
               "\n", 
               sep = "")
@@ -358,17 +377,29 @@ summary.EAT <- function(object, ...) {
       if (length(inp) > 1) {
       
       cat(paste("   Surrogate splits"), "\n")
-        
+      
+      # Index of variables except the variable that takes the split    
       vec <- inp[- tree[[t]][["xi"]]]
       
-      for (j in vec){
-        
-        values <- unlist(lapply(tree[[t]][["varInfo"]][[j]], round, 2))
-        
+      # Select varInfo
+      varInfo <- lapply(tree, "[[", "varInfo")
+      
+      # Rename varInfo elements with input names
+      varInfo <- lapply(varInfo, function(x) {names(x) <- input_names;  return(x)})
+      
+      # Select only varInfo variables that do not take the split
+      varInfo <- varInfo[[t]][vec]
+      
+      # Sort element by its error (sum of first and second element)
+      varInfo <- varInfo[order(sapply(varInfo, function(x) x[[1]] + x[[2]]))]
+      
+      for (j in 1:length(varInfo)) {
         cat(
-          paste("    ", input_names[j], " --> ", "{tL_R: ", values[1], ",", 
-                " tR_R: ", values[2], ",", " s: ", values[3], "}", sep = ""), 
-          "\n" 
+          paste("    ", names(varInfo)[j],  " --> ", "{R: ", round(unlist(varInfo[[j]][1]) + 
+                                                                     unlist(varInfo[[j]][2]), 
+                                                                   2),
+                ", s: ", round(unlist(varInfo[[j]][3]), 2), "}", sep = ""),
+          "\n"
           )
         }
       }
@@ -377,17 +408,179 @@ summary.EAT <- function(object, ...) {
   }
 }
 
-#' @title EAT size
-#'
-#' @description This function calculates the number of leaf nodes in the tree.
+#' @title Efficiency Analysis Tree size
+#' 
+#' @description  This function returns the number of leaf nodes at the tree.
 #'
 #' @param object An EAT object.
 #' 
-#' @return Number of leaf nodes in the tree
+#' @return Number of leaf nodes at the tree.
+#' 
+#' @examples
+#' 
+#' simulated <- eat:::Y1.sim(N = 50, nX = 3)
+#' model <- EAT(data = simulated, x = c(1, 2, 3), y = 4, numStop = 10, fold = 5)
+#' size(model)
 #' 
 #' @export
 size <- function(object) {
-  
   return(object[["model"]][["leaf_nodes"]])
+  
+}
+
+#' @title Efficiency Analysis Tree output efficiency levels
+#'
+#' @description This function returns the output efficiency levels of an Efficiency Analysis Tree model.
+#'
+#' @param object An EAT object.
+#' 
+#' @return Data frame with output efficiency levels.
+#' 
+#' @examples
+#' 
+#' simulated <- eat:::Y1.sim(N = 50, nX = 3)
+#' model <- EAT(data = simulated, x = c(1, 2, 3), y = 4, numStop = 10, fold = 5)
+#' eff.levels(model)
+#' 
+#' @export
+eff.levels <- function(object) {
+  
+  eff.levels <- as.data.frame(unique(object[["model"]][["y"]]))
+  colnames(eff.levels) <- object[["data"]][["output_names"]]
+  
+  return(eff.levels)
+  
+}
+
+#' @title Performance of Efficiency Analysis Trees model
+#'
+#' @description This function returns a set of common metrics for regression trees for the model as a whole and disaggregated for the leaf nodes.
+#' 
+#' @param object An EAT object.
+#' 
+#' @return List with the mean square error (MSE), the root mean square error (RMSE), the mean absolute error (MAE) and the bias (Bias). Additionally, for each leaf node, centralization and dispersion measures and the RMSE are computed.
+#' 
+#' @importFrom stats median sd
+#' 
+#' @examples
+#' simulated <- eat:::Y1.sim(N = 50, nX = 3)
+#' model <- EAT(data = simulated, x = c(1, 2, 3), y = 4, numStop = 10, fold = 5)
+#' performance(model)
+#' 
+#' @export
+performance <- function(object) {
+  
+  data <- object[["data"]][["df"]]
+  x <- object[["data"]][["x"]]
+  y <- object[["data"]][["y"]]
+  tree <- object[["tree"]]
+  output_names <- object[["data"]][["output_names"]]
+  
+  # Actual values
+  actual <- data.matrix(data[, y])
+  colnames(actual) <- output_names
+  
+  # Predicted values
+  predicted <- data.frame()
+  
+  # Predictions for EAT
+  for (i in 1:nrow(data)){
+    predicted <- rbind(predicted, predictor(tree, data[i, x]))
+  }
+  
+  predicted <- data.matrix(predicted)
+  colnames(predicted) <- paste(output_names, "_pred", sep = "")
+  
+  N <- nrow(data)
+  
+  # MSE
+  MSE <- sum(sapply((actual - predicted) ^ 2, sum)) / N
+  
+  # RMSE
+  RMSE <- sqrt(MSE)
+  
+  # MAE
+  MAE <- sum(sapply(abs(actual - predicted), sum)) / N
+  
+  # Bias
+  Bias <- sum(sapply(actual - predicted, sum))
+  
+  cat(
+    "\n",
+    "# ========================== #", "\n",
+    "#           Metrics          #", "\n",
+    "# ========================== #", rep("\n", 2) 
+  )
+  
+  cat(
+      " RMSE:", round(RMSE, 2), "\n",
+      "  MAE:", round(MAE, 2), "\n",
+      " Bias:", round(Bias, 2)
+      )
+  
+  nodes_df <- object[["nodes_df"]]
+  nY <- length(y)
+  nX <- length(x)
+  indx <- nodes_df[, "index"]
+  
+  descriptive <- vector("list", nrow(nodes_df))
+  
+  for (i in 1:nrow(nodes_df)){
+    
+    subset <- as.matrix(data[unlist(indx[[i]]), (nX + 1):ncol(data)])
+    
+    # Node
+    Node <- i
+    
+    # N
+    N <- length(unlist(indx[[i]]))
+    
+    # Prop
+    Proportion <- round(N / nrow(data), 2) * 100
+    
+    # Means
+    mean <- round(apply(subset, 2, mean), 2)
+    
+    # Var
+    var <- round(apply(subset, 2, var), 2)
+    
+    # Sd
+    sd <- round(apply(subset, 2, sd), 2)
+    
+    # Min
+    min <- round(apply(subset, 2, min), 2)
+    
+    # Q1
+    Q1 <- round(apply(subset, 2, quantile)[2, ], 2)
+    
+    # Median
+    median <- round(apply(subset, 2, median), 2)
+    
+    # Q3
+    Q3 <- round(apply(subset, 2, quantile)[4, ], 2)
+    
+    # Max
+    max <- round(apply(subset, 2, max), 2)
+    
+    # MSE
+    MSE <- sum(sapply((subset - nodes_df[i, output_names]) ^ 2, sum)) / N
+    MSE <- round(MSE, 2)
+    
+    # RMSE
+    RMSE <- round(sqrt(MSE), 2)
+    
+    descr <- cbind(Node, N, Proportion, mean, var, sd, min, Q1, median, Q3, max, RMSE)
+    colnames(descr)[2:3] <- c("n(t)", "%")
+    rownames(descr) <- output_names
+    
+    descriptive[[i]] <- descr
+    
+  }
+  
+  invisible(list(MSE = MSE,
+                 RMSE = RMSE,
+                 MAE = MAE,
+                 Bias = Bias,
+                 descriptive = descriptive))
   
 }

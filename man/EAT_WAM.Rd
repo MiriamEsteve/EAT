@@ -2,7 +2,7 @@
 % Please edit documentation in R/efficiency.R
 \name{EAT_WAM}
 \alias{EAT_WAM}
-\title{Weighted Additive Model for an EAT model}
+\title{Weighted Additive Model for an Efficiency Analysis Tree model}
 \usage{
 EAT_WAM(j, scores, x_k, y_k, atreeTk, ytreeTk, nX, nY, N_leaves)
 }
@@ -29,5 +29,5 @@ EAT_WAM(j, scores, x_k, y_k, atreeTk, ytreeTk, nX, nY, N_leaves)
 A numerical vector with scores.
 }
 \description{
-Weighted Additive Model for an EAT model.
+Weighted Additive Model for an Efficiency Analysis Tree model.
 }

@@ -2,7 +2,7 @@
 % Please edit documentation in R/efficiency_convex.R
 \name{CEAT_DDF}
 \alias{CEAT_DDF}
-\title{Directional Distance Function mathematical programming model for a non-convex EAT model}
+\title{Directional Distance Function mathematical programming model for a convex Efficiency Analysis Tree model}
 \usage{
 CEAT_DDF(j, scores, x_k, y_k, atreeTk, ytreeTk, nX, nY, N_leaves)
 }
@@ -29,5 +29,5 @@ CEAT_DDF(j, scores, x_k, y_k, atreeTk, ytreeTk, nX, nY, N_leaves)
 A numerical vector with scores.
 }
 \description{
-Directional Distance Function for a non-convex EAT model.
+Directional Distance Function for a convex Efficiency Analysis Tree model.
 }

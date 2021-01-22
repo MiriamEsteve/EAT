@@ -243,8 +243,6 @@ RandomEAT <- function(data, x, y, numStop, s_mtry){
 #' @param na.rm Logical. If \code{TRUE}, NA rows are omitted.
 #'
 #' @importFrom dplyr %>% row_number
-#'
-#' @export
 #' 
 #' @examples 
 #' 
@@ -259,6 +257,8 @@ RandomEAT <- function(data, x, y, numStop, s_mtry){
 #'                   m = 100, s_mtry = "Breiman", na.rm = TRUE)
 #' 
 #' @return A RFEAT object.
+#' 
+#' @export
 RFEAT <- function(data, x, y, numStop = 5, m = 50, 
                   s_mtry = "Breiman", na.rm = TRUE){
   conflict_prefer("filter", "dplyr")
@@ -508,7 +508,7 @@ efficiencyRFEAT <- function(data, x, y, object, r = 2, FDH = TRUE, na.rm = TRUE)
 #'
 #' @return Data frame with the original data and the predicted values.
 #' 
-#' @export
+#' @examples 
 #' 
 #' simulated <- eat:::X2Y2.sim(N = 50, border = 0.2)
 #' RFEAT_model <- EAT(data = simulated, x = c(1,2), y = c(3, 4))

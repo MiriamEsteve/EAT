@@ -2,7 +2,7 @@
 % Please edit documentation in R/efficiency.R
 \name{EAT_BCC_in}
 \alias{EAT_BCC_in}
-\title{Banker, Charnes and Cooper programming model with input orientation for an EAT model}
+\title{Banker, Charnes and Cooper programming model with input orientation for an Efficiency Analysis Tree model}
 \usage{
 EAT_BCC_in(j, scores, x_k, y_k, atreeTk, ytreeTk, nX, nY, N_leaves)
 }
@@ -29,5 +29,5 @@ EAT_BCC_in(j, scores, x_k, y_k, atreeTk, ytreeTk, nX, nY, N_leaves)
 A numerical vector with scores.
 }
 \description{
-Banker, Charnes and Cooper programming model with input orientation for an EAT model.
+Banker, Charnes and Cooper programming model with input orientation for an Efficiency Analysis Tree model.
 }

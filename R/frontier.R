@@ -1,6 +1,6 @@
 #' @title EAT frontier graph for a single input and output scenario
 #'
-#' @description This function displays a plot with the frontier estimated by EAT for a scenario corresponding to one input and one output.
+#' @description This function displays a plot with the frontier estimated by Efficiency Analysis Trees in a scenario of one input and one output.
 #' 
 #' @name frontier
 #'
@@ -20,13 +20,13 @@
 #' 
 #' @examples
 #' 
-#' data("PISAindex")
+#' simulated <- eat:::Y1.sim(N = 50, nX = 1)
 #' 
-#' single_model <- EAT(data = PISAindex,
-#'                     x = 15, # input 
-#'                     y = 3) # output
+#' model <- EAT(data = simulated,
+#'              x = 1,
+#'              y = 2)
 #' 
-#' frontier <- frontier(object = single_model,
+#' frontier <- frontier(object = model,
 #'                      FDH = TRUE, 
 #'                      train.data = TRUE,
 #'                      rwn = TRUE)
@@ -41,7 +41,6 @@ frontier <- function(object, FDH = FALSE, train.data = FALSE, train.color = "bla
   }
 
   t_data <- object[["data"]][["df"]]
-  rownames(t_data) <- object[["data"]][["row_names"]]
   x <- object[["data"]][["x"]]
   y <- object[["data"]][["y"]]
   tree <- object[["tree"]]
@@ -73,7 +72,8 @@ frontier <- function(object, FDH = FALSE, train.data = FALSE, train.color = "bla
       # FDH prediction
       predictFDH <- predictFDH(t_data, 1, 2)
       
-      t_data <- as.data.frame(t_data[-1]) 
+      t_data <- as.data.frame(t_data[-1])
+      rownames(t_data) <- object[["data"]][["row_names"]]
       
       # Rename to estimFDH
       names(predictFDH)[2] <- "estimFDH"

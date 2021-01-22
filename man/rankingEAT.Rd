@@ -2,7 +2,7 @@
 % Please edit documentation in R/ranking.R
 \name{rankingEAT}
 \alias{rankingEAT}
-\title{Ranking of variables by EAT}
+\title{Ranking of variables by Efficiency Analysis Trees}
 \usage{
 rankingEAT(object, r = 2, threshold = 70, barplot = TRUE)
 }
@@ -13,11 +13,22 @@ rankingEAT(object, r = 2, threshold = 70, barplot = TRUE)
 
 \item{threshold}{Numeric. Importance score value in which a line is graphed.}
 
-\item{barplot}{Logical. If \code{TRUE}, a barplot with importance scores is displayed.}
+\item{barplot}{Logical. If \code{TRUE}, a barplot with the importance scores is displayed.}
 }
 \value{
-Dataframe with scores or list with scores and barplot.
+Dataframe with the importance scores. If \code{barplot = TRUE}, it is returned a list with the scores and the barplot.
 }
 \description{
-This function calculates variable importance for an EAT object.
+This function calculates variable importance through an Efficiency Analysis Trees model.
+}
+\examples{
+
+simulated <- eat:::X2Y2.sim(N = 50, border = 0.2)
+EAT_model <- EAT(data = simulated, x = c(1,2), y = c(3, 4))
+
+rankingEAT(object = EAT_model,
+           r = 2,
+           threshold = 70,
+           barplot = TRUE)
+
 }

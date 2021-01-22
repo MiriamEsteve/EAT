@@ -2,7 +2,7 @@
 % Please edit documentation in R/efficiency.R
 \name{EAT_DDF}
 \alias{EAT_DDF}
-\title{Directional Distance Function mathematical programming model for an EAT model}
+\title{Directional Distance Function mathematical programming model for an Efficiency Analysis Tree model}
 \usage{
 EAT_DDF(j, scores, x_k, y_k, atreeTk, ytreeTk, nX, nY, N_leaves)
 }
@@ -29,5 +29,5 @@ EAT_DDF(j, scores, x_k, y_k, atreeTk, ytreeTk, nX, nY, N_leaves)
 A numerical vector with scores.
 }
 \description{
-Directional Distance Function for an EAT model.
+Directional Distance Function for an Efficiency Analysis Tree model.
 }

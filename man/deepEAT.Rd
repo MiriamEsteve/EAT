@@ -4,7 +4,7 @@
 \alias{deepEAT}
 \title{Deep Efficiency Analysis Trees}
 \usage{
-deepEAT(data, x, y, numStop)
+deepEAT(data, x, y, numStop, max.depth = NULL)
 }
 \arguments{
 \item{data}{Dataframe or matrix containing the variables in the model.}
@@ -14,6 +14,8 @@ deepEAT(data, x, y, numStop)
 \item{y}{Vector. Column output indexes in data.}
 
 \item{numStop}{Integer. Minimun number of observations in a node for a split to be attempted.}
+
+\item{max.depth}{Integer. Maximum number of leaf nodes.}
 }
 \value{
 List containing each possible pruning for the deep tree and its alpha associated.

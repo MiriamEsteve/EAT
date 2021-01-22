@@ -8,13 +8,14 @@
 #' @param register_names String vector. Data rownames.
 #' @param numStop Integer. Minimun number of observations in a node for a split to be attempted.
 #' @param fold Integer. Number of folds in which is divided the dataset to apply cross-validation during the pruning.
+#' @param max.depth Integer. Maximum number of leaf nodes.
 #' @param na.rm Logical. If True, NA rows are omitted. If False, an error occurs in case of NA rows.
 #' @param tree A list containing the nodes of the EAT pruned tree.
 #'
 #' @importFrom dplyr %>% select filter
 #'
 #' @return An EAT object
-EAT_object <- function(data, x, y, register_names, numStop, fold, na.rm, tree) {
+EAT_object <- function(data, x, y, register_names, numStop, fold, max.depth, na.rm, tree) {
   
   # Output and input names
   output_names <- names(data)[y]
@@ -56,13 +57,13 @@ EAT_object <- function(data, x, y, register_names, numStop, fold, na.rm, tree) {
   # Nodes frame for results
   nodes_frame <- nodes_frame %>%
     mutate(N = sapply(nodes_frame$index, length),
-           MSE = round(sqrt(unlist(R)), 2),
+           R = round(unlist(R), 2),
            Proportion = round((N / N[1]) * 100), 2)
   
   nodes_frame[, output_names] <- effcy_levels
   
   nodes_frame <- nodes_frame %>%
-    select(id, SL, N, Proportion, output_names, MSE, index)
+    select(id, SL, N, Proportion, output_names, R, index)
   
   EAT_object <- list("data" = list(df = data %>% 
                                      select(-id),
@@ -72,7 +73,8 @@ EAT_object <- function(data, x, y, register_names, numStop, fold, na.rm, tree) {
                                    output_names = output_names,
                                    row_names = register_names),
                      "control" = list(fold = fold, 
-                                      numStop = numStop, 
+                                      numStop = numStop,
+                                      max.depth = max.depth,
                                       na.rm = na.rm),
                      "tree" = tree,
                      "nodes_df" = nodes_frame,

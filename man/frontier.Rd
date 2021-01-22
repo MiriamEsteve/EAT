@@ -33,21 +33,20 @@ frontier(
 Plot with estimated production frontier
 }
 \description{
-This function displays a plot with the frontier estimated by EAT for a scenario corresponding to one input and one output.
+This function displays a plot with the frontier estimated by Efficiency Analysis Trees in a scenario of one input and one output.
 }
 \examples{
 
-data("PISAindex")
-n <- nrow(PISAindex)
-t_index <- sample(1:n, n * 0.8)
-training <- PISAindex[t_index, ]
-test <- PISAindex[-t_index, ]
+simulated <- eat:::Y1.sim(N = 50, nX = 1)
 
-single_model <- EAT(data = training, x = 6, y = 3)
+model <- EAT(data = simulated,
+             x = 1,
+             y = 2)
 
-frontier <- frontier(object = single_model, train.data = TRUE, train.color = "#F8766D",
-                     rwn = TRUE, size = 1.5)
-
+frontier <- frontier(object = model,
+                     FDH = TRUE, 
+                     train.data = TRUE,
+                     rwn = TRUE)
 plot(frontier)
 
 }

@@ -2,7 +2,7 @@
 % Please edit documentation in R/efficiency_convex.R
 \name{CEAT_WAM}
 \alias{CEAT_WAM}
-\title{Weighted Additive Model for a non-convex EAT model}
+\title{Weighted Additive Model for a convex Efficiency Analysis Tree model}
 \usage{
 CEAT_WAM(j, scores, x_k, y_k, atreeTk, ytreeTk, nX, nY, N_leaves)
 }
@@ -29,5 +29,5 @@ CEAT_WAM(j, scores, x_k, y_k, atreeTk, ytreeTk, nX, nY, N_leaves)
 A numerical vector with scores.
 }
 \description{
-Weighted Additive Model for a non-convex EAT model.
+Weighted Additive Model for a convex Efficiency Analysis Tree model.
 }

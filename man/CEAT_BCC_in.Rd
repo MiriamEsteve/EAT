@@ -2,7 +2,7 @@
 % Please edit documentation in R/efficiency_convex.R
 \name{CEAT_BCC_in}
 \alias{CEAT_BCC_in}
-\title{Banker, Charnes and Cooper programming model with input orientation for a non-convex EAT model}
+\title{Banker, Charnes and Cooper programming model with input orientation for a convex Efficiency Analysis Tree model}
 \usage{
 CEAT_BCC_in(j, scores, x_k, y_k, atreeTk, ytreeTk, nX, nY, N_leaves)
 }
@@ -29,5 +29,5 @@ CEAT_BCC_in(j, scores, x_k, y_k, atreeTk, ytreeTk, nX, nY, N_leaves)
 A numerical vector with scores.
 }
 \description{
-Banker, Charnes and Cooper programming model with input orientation for a non-convex EAT model.
+Banker, Charnes and Cooper programming model with input orientation for a convex Efficiency Analysis Tree model.
 }

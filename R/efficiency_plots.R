@@ -101,26 +101,21 @@ efficiencyJitter <- function(object, scores_EAT, scores_model, upb = NULL, lwb =
 
 #' @title Efficiency Scores Density Plot
 #'
-#' @description Density plot for scores. EAT scores in red and FDH scores in blue.
+#' @description Density plot for efficiency scores.
 #'
-#' @param scores_EAT Dataframe with EAT scores.
-#' @param scores_FDH Optional. Dataframe with FDH scores.
-#' @param scores_RFEAT Optional. Dataframe with RFEAT scores.
+#' @param scores Dataframe with efficiency scores.
+#' @param model String vector. Scoring models in the order shown in \code{scores} by columns. The available models are: \code{"EAT"}, \code{"FDH"}, \code{"CEAT"}, \code{"DEA"} and \code{"RFEAT"}.
 #'
 #' @importFrom ggplot2 ggplot geom_density
+#' @importFrom reshape2 melt
 #'
 #' @export
 #' 
 #' @examples 
 #' 
-#' X1 <- runif(50, 1, 10)
-#' X2 <- runif(50, 2, 10)
-#' Y1 <- log(X1) + 3 - abs(rnorm(50, mean = 0, sd = 0.4))
-#' Y2 <- log(X1) + 2 - abs(rnorm(50, mean = 0, sd = 0.7))
-#'
-#' simulated <- data.frame(x1 = X1, x2 = X2, y1 = Y1, y2 = Y2)
+#' simulated <- eat:::X2Y2.sim(N = 50, border = 0.2)
 #' 
-#' EAT_model <- EAT(data = simulated, x = c(1,2), y = c(3, 4), numStop = 5, fold = 5)
+#' EAT_model <- EAT(data = simulated, x = c(1,2), y = c(3, 4))
 #'
 #' scores <- efficiencyEAT(data = simulated, x = c(1, 2), y = c(3, 4), object = EAT_model, 
 #'                         scores_model = "BCC_out", r = 2, FDH = TRUE, na.rm = TRUE)
@@ -129,76 +124,20 @@ efficiencyJitter <- function(object, scores_EAT, scores_model, upb = NULL, lwb =
 #'                   scores_RFEAT = NULL)
 #'
 #' @return Density plot for scores and data.frame with numeric results.
-efficiencyDensity <- function(scores_EAT, scores_FDH = NULL, scores_RFEAT = NULL) {
+efficiencyDensity <- function(scores, model = c("EAT", "FDH")) {
   
-  if (is.null(scores_FDH) && is.null(scores_RFEAT)){
-    
-    scores_EAT <- as.data.frame(scores_EAT)
-    scores_EAT$Model <- factor("EAT") 
-    names(scores_EAT) <- c("EAT", "Model")
-    
-    efficiencyDensity <- ggplot(scores_EAT, aes(x = EAT, fill = Model, colour = Model)) +
-      geom_density(alpha = .2) +
-      xlab("Score") +
-      ylab("Density")
-    
-  } else if (is.null(scores_RFEAT)) {
-    
-    scores_EAT <- as.data.frame(scores_EAT)
-    scores_EAT$Model <- factor("EAT")
-    names(scores_EAT)[1] <- "score"
-    
-    scores_FDH <- as.data.frame(scores_FDH)
-    scores_FDH$Model <- factor("FDH")
-    names(scores_FDH)[1] <- "score"
-    
-    scores_df <- rbind(scores_EAT, scores_FDH)
-    
-    efficiencyDensity <- ggplot(scores_df, aes(x = score, fill = Model, colour = Model)) +
-      geom_density(alpha = .2) +
-      xlab("Score") +
-      ylab("Density") 
-    
-  } else if (is.null(scores_FDH)) {
-    
-    scores_EAT <- as.data.frame(scores_EAT)
-    scores_EAT$Model <- factor("EAT")
-    names(scores_EAT)[1] <- "score"
-    
-    scores_RFEAT <- as.data.frame(scores_RFEAT)
-    scores_RFEAT$Model <- factor("RFEAT")
-    names(scores_RFEAT)[1] <- "score"
-    
-    scores_df <- rbind(scores_EAT, scores_RFEAT)
-    
-    efficiencyDensity <- ggplot(scores_df, aes(x = score, fill = Model, colour = Model)) +
-      geom_density(alpha = .2) +
-      xlab("Score") +
-      ylab("Density") 
-    
-  } else {
-    
-    scores_EAT <- as.data.frame(scores_EAT)
-    scores_EAT$Model <- factor("EAT")
-    names(scores_EAT)[1] <- "score"
-    
-    scores_FDH <- as.data.frame(scores_FDH)
-    scores_FDH$Model <- factor("FDH")
-    names(scores_FDH)[1] <- "score"
-    
-    scores_RFEAT <- as.data.frame(scores_RFEAT)
-    scores_RFEAT$Model <- factor("RFEAT")
-    names(scores_RFEAT)[1] <- "score"
-    
-    scores_df <- rbind(scores_EAT, scores_FDH, scores_RFEAT)
-    
-    efficiencyDensity <- ggplot(scores_df, aes(x = score, fill = Model, colour = Model)) +
-      geom_density(alpha = .2) +
-      xlab("Score") +
-      ylab("Density") 
-  }
+  names(scores) <- model
+  
+  scores <- melt(scores, id.vars = NULL)
+  names(scores)[1] <- "Model"
+  
+  efficiencyDensity <- ggplot(scores, aes(x = value, fill = Model, colour = Model)) +
+    geom_density(alpha = .2) +
+    xlab("Score") +
+    ylab("Density")
   
   return(efficiencyDensity)
+  
 }
 
 

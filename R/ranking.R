@@ -198,7 +198,7 @@ M_Breiman <- function(object, r) {
 #' @param barplot Logical. If \code{TRUE}, a barplot with the importance scores is displayed.
 #' @param threshold Numeric. Importance score value in which a line is graphed.
 #'
-#' @return Dataframe with the importance scores. If \code{barplot = TRUE}, it is returned a list with the scores and the barplot.
+#' @return Dataframe with the importance scores. If \code{barplot = TRUE}, it is returned a list containing the scores and the barplot.
 #' 
 #' @examples
 #' 
@@ -214,7 +214,7 @@ M_Breiman <- function(object, r) {
 rankingEAT <- function(object, r = 2, threshold = 70, barplot = TRUE) {
   
   if (class(object) != "EAT"){
-    stop(paste(object, "must be an EAT object"))
+    stop(paste(deparse(substitute(object)), "must be an EAT object"))
     
   } 
   

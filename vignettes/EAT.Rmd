@@ -481,11 +481,12 @@ test <- PISAindex[-t_index, ] # Test set
 
 ### bestEAT()
 
-The `bestEAT` function requires a training set (`training`) on which to model an Efficiency Analysis Tree and a test set (`test`) on which to calculate the impurity. The number of trees built is given by the number of different combinations that can be given by the `numStop` and `fold` arguments. `bestEAT()` returns a data frame with the following columns:
+The `bestEAT` function requires a training set (`training`) on which to model an Efficiency Analysis Tree and a test set (`test`) on which to calculate the impurity. The number of trees built is given by the number of different combinations that can be given by the `numStop`, `fold` and `max.depth` arguments. `bestEAT()` returns a data frame with the following columns:
   
   * `numStop` : numStop hyperparameter value.
   * `fold` : fold hyperparameter value.
-  * `RMSE`: root mean square error calculated on the test sample with the tree built with the training sample, numStop and fold values.
+  * `max.depth` : max.depth hyperparameter value if it does not set to `NULL`.
+  * `RMSE`: root mean square error calculated on the test sample with the tree built with the training sample, numStop, fold and max.depth (if not `NULL`) values.
   * `leaf`: number of leaf nodes of the tree.
 
 ```{r bestEAT, eval = FALSE}
@@ -527,13 +528,13 @@ bestEAT(training = training,
         fold = c(5, 7))
 ```
 
-The best tree is given by the hyperparameters `{numStop = 7, fold = 7}` in the reduced model with `RMSE = 53.55` and 10 leaf nodes.
+The best Efficiency Analysis Trees is given by the hyperparameters `{numStop = 3, fold = 7}` in the reduced model with `RMSE = 46.17` and 24 leaf nodes. However, this model is too complex. Therefore, we select the model with parameters `{numStop = 7, fold = 5}` with `RMSE = 51.88` but with only 12 leaf nodes.
 
 ```{r bestmodel, collapse = FALSE}
 bestmodel <- EAT(data = PISAindex,
                  x = c(6, 7, 8, 12, 17),
                  y = 3:5,
-                 numStop = 3,
+                 numStop = 7,
                  fold = 5)
 ```
 
@@ -553,9 +554,9 @@ The efficiency scores are numerical values that indicate the degree of efficienc
   * `RSL_out`: output-oriented Rusell Model with efficiency level at 1.
   * `RSL_in`: input-oriented Rusell Model with efficiency level at 1.
   * `WAM`: Weighted Additive Model with efficiency level at 0.
-  
-If `FDH = TRUE` scores are also calculated through a FDH model.
 
+If `FDH = TRUE` scores are also calculated through a FDH model. Finally, a brief summary of the distribution of the scores calculated for each model is also included.
+  
 ```{r efficiencyEAT, eval = FALSE}
 efficiencyEAT(data, x, y, 
               object,
@@ -588,7 +589,7 @@ scores_EAT2 <- efficiencyEAT(data = PISAindex,
 
 ### Convex Efficiency Analysis Trees model: efficiencyCEAT()
 
-`efficiencyCEAT()` returns the efficiency scores for the convexified frontier obtained through Efficiency Analysis Trees. In this case, If `DEA = TRUE` scores are also calculated through a DEA model.
+`efficiencyCEAT()` returns the efficiency scores for the convex frontier obtained through Efficiency Analysis Trees. In this case, If `DEA = TRUE` scores are also calculated through a DEA model.
 
 ```{r efficiencyCEAT, eval = FALSE}
 efficiencyCEAT(data, x, y, 
@@ -611,7 +612,7 @@ scores_CEAT <- efficiencyCEAT(data = PISAindex,
 
 ### efficiencyJitter()
 
-`efficiencyJitter` returns a jitter plot from `ggplot2`. This graphic shows how DMUs are grouped into leaf nodes in a model built using the `EAT` function. Each leaf node groups DMUs with the same level of resources. The dot and the black line represent, respectively, the mean value and the standard deviation of the scores of its node. Additionally, efficient DMU labels always are displayed based on the model entered in the `score_model` argument. Finally, the user can specify an upper bound (`upb`) and a lower bound (`lwb`) in order to show, in addition, the labels which efficiency score is between them. Scores from a convexified Efficiency Analysis Tree (`CEAT`) model can also be used.
+`efficiencyJitter` returns a jitter plot from `ggplot2`. This graphic shows how DMUs are grouped into leaf nodes in a model built using the `EAT` function. Each leaf node groups DMUs with the same level of resources. The dot and the black line represent, respectively, the mean value and the standard deviation of the scores of its node. Additionally, efficient DMU labels always are displayed based on the model entered in the `score_model` argument. Finally, the user can specify an upper bound (`upb`) and a lower bound (`lwb`) in order to show, in addition, the labels which efficiency score is between them. Scores from a convex Efficiency Analysis Tree (`CEAT`) model can also be used.
 
 ```{r efficiency_jitter, eval = FALSE}
 efficiencyJitter(object, scores_EAT,
@@ -688,7 +689,7 @@ efficiencyDensity(scores = cursed_scores[, 17:18],
 
 ### RFEAT()
 
-Random Forest + Efficiency Analysis Trees (`RFEAT`) has also been developed with the aim of providing a greater stability to the results obtained by the `EAT` function. `RFEAT` function requires the `data` containing the variables for the analysis, `x` and `y` corresponding to the inputs and outputs indexes respectively, the minimun number of observation in a node for a split to be attempted (`numStop`) and `na.rm` to ignore observations with `NA` cells. All these arguments are used for the construction of the `m` individual Efficiency Analysis Trees that make up the random forest. Finally, the argument `s_mtry` indicates the number of inputs that can be randomly selected in each split. It can be set as any integer although there are also certain predefined values. Being, $n_{x}$ the number of inputs, $n_{y}$ the number of outputs and $n(t)$ the number of observations in a node, the available options in `s_mtry` are: 
+Random Forest + Efficiency Analysis Trees (`RFEAT`) has also been developed with the aim of providing a greater stability to the results obtained by the `EAT` function. The `RFEAT` function requires the `data` containing the variables for the analysis, `x` and `y` corresponding to the inputs and outputs indexes respectively, the minimun number of observation in a node for a split to be attempted (`numStop`) and `na.rm` to ignore observations with `NA` cells. All these arguments are used for the construction of the `m` individual Efficiency Analysis Trees that make up the random forest. Finally, the argument `s_mtry` indicates the number of inputs that can be randomly selected in each split. It can be set as any integer although there are also certain predefined values. Being, $n_{x}$ the number of inputs, $n_{y}$ the number of outputs and $n(t)$ the number of observations in a node, the available options in `s_mtry` are: 
   
   * `Breiman` = $\frac{n_{x}}{3}$
   * `DEA1` = $\frac{n(t)}{2} - n_{y}$
@@ -736,13 +737,13 @@ rankingRFEAT(object = forest, r = 2,
 
   * A positive importance score means that including the input in the model improves the performance.
 
-  * A negative imporance score means that removing the input from the model imrpoves the performance.
+  * A negative imporance score means that removing the input from the model improves the performance.
 
 Note the peculiarity of the results shown where only *AAE* (Access to Advance Education) has a positive importance score.
 
 ## bestRFEAT()
 
-As in `bestEAT()`, the `bestRFEAT` function is applied to find the optimal hyperparameters that minimize the root mean square error calculated on the test sample. In this case, the available hyperparameters are `numStop`, `m` and `s_mtry`. Note that `s_mtry` is a character vector even if integer values are introduced.
+As in `bestEAT()`, the `bestRFEAT` function is applied to find the optimal hyperparameters that minimize the root mean square error (RMSE) calculated on the test sample. In this case, the available hyperparameters are `numStop`, `m` and `s_mtry`. Note that `s_mtry` is a character vector even if integer values are introduced.
 
 ```{r bestRFEAT, eval = FALSE}
 bestRFEAT(training, test,
@@ -763,7 +764,7 @@ bestRFEAT(training = training,
           s_mtry = c("Breiman", "2", "5"))
 ```
 
-The best forest is given by the hyperparameters `{numStop = 3, m = 30, s_mtry = "Breiman"}` with `RMSE = 44.60`.
+The best Random Forest + Efficiency Analysis Trees model is given by the hyperparameters `{numStop = 3, m = 30, s_mtry = "Breiman"}` with `RMSE = 44.60`.
 
 ## efficiencyRFEAT()
 
@@ -786,7 +787,7 @@ scoresRF <- efficiencyRFEAT(data = PISAindex,
 
 ## Predictions
 
-`predictEAT()` and `predictRFEAT()` return a data frame with the data and the expected output for a set of observations using Efficiency Analysis Trees and Random Forest + Efficiency Analysis Trees techniques respectively. In both cases, `newdata` refers to a data frame with the input variables. Regarding the `object` argument, in the first case it corresponds to an `EAT` object and in the second case to an `RFEAT` object.
+`predictEAT()` and `predictRFEAT()` return a data frame with the data and the expected output for a set of observations using Efficiency Analysis Trees and Random Forest + Efficiency Analysis Trees techniques respectively. In both cases, `newdata` refers to a data frame with the input variables. Regarding the `object` argument, in the first case it corresponds to an `EAT` object and in the second case to a `RFEAT` object.
 
 In predictions using an `EAT` object, only one Efficiency Analysis Tree is used. However, for the `RFEAT` model, the output is predicted by each of the `m` individual trees trained and subsequently the mean value of all predictions is obtained.
 

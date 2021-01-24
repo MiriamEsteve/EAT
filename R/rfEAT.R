@@ -235,10 +235,10 @@ RandomEAT <- function(data, x, y, numStop, s_mtry){
 #' @param s_mtry Select number of inputs in each split. It can be an integer or any of the following options:
 #' \itemize{
 #' \item{\code{"Breiman"}}: \code{in / 3}
-#' \item{\code{"DEA1"}}: \code{(obs / 2) - out}  
-#' \item{\code{"DEA2"}}: \code{(obs / 3) - out}
-#' \item{\code{"DEA3"}}: \code{obs - 2 * out}
-#' \item{\code{"DEA4"}}: \code{min(obs / out, (obs / 3) - out)}
+#' \item{\code{"DEA1"}}: \code{(t.obs / 2) - out}  
+#' \item{\code{"DEA2"}}: \code{(t.obs / 3) - out}
+#' \item{\code{"DEA3"}}: \code{t.obs - 2 * out}
+#' \item{\code{"DEA4"}}: \code{min(t.obs / out, (t.obs / 3) - out)}
 #' }
 #' @param na.rm Logical. If \code{TRUE}, NA rows are omitted.
 #'
@@ -246,15 +246,10 @@ RandomEAT <- function(data, x, y, numStop, s_mtry){
 #' 
 #' @examples 
 #' 
-#' X1 <- runif(50, 1, 10)
-#' X2 <- runif(50, 2, 10)
-#' Y1 <- log(X1) + 3 - abs(rnorm(50, mean = 0, sd = 0.4))
-#' Y2 <- log(X1) + 2 - abs(rnorm(50, mean = 0, sd = 0.7))
+#' simulated <- eat:::X2Y2.sim(N = 50, border = 0.1)
 #'
-#' simulated <- data.frame(x1 = X1, x2 = X2, y1 = Y1, y2 = Y2)
-#'
-#' Rf_model <- RFEAT(data = simulated, x = c(1,2), y = c(3, 4), numStop = 5,
-#'                   m = 100, s_mtry = "Breiman", na.rm = TRUE)
+#' RFmodel <- RFEAT(data = simulated, x = c(1,2), y = c(3, 4), numStop = 5,
+#'                   m = 50, s_mtry = "Breiman", na.rm = TRUE)
 #' 
 #' @return A RFEAT object.
 #' 
@@ -351,16 +346,16 @@ RF_predictor <- function(forest, xn){
   return(y_result)
 }
 
-#' @title RFEAT Efficiency Scores
+#' @title Random Forest + Efficiency Analysis Trees Efficiency Scores
 #'
-#' @description This function calculates the efficiency scores for each DMU by an RFEAT model.
+#' @description This function calculates the efficiency scores for each DMU through a Random Forest + Efficiency Analysis Trees model and the Banker Charnes and Cooper mathematical programing model with output orientation.
 #'
 #' @param data Dataframe for which the efficiency score is calculated.
 #' @param x Vector. Column input indexes in data.
 #' @param y Vector. Column output indexes in data.
 #' @param object A RFEAT object.
 #' @param r Integer. Decimal units for scores.
-#' @param FDH. Logical. If \code{TRUE}, FDH scores are calculated with the programming model selected in \code{scores_model}.
+#' @param FDH. Logical. If \code{TRUE}, FDH scores are computed.
 #' @param na.rm Logical. If \code{TRUE}, \code{NA} rows are omitted.
 #'
 #' @importFrom dplyr %>% mutate summarise
@@ -370,20 +365,19 @@ RF_predictor <- function(forest, xn){
 #' 
 #' @examples
 #' 
-#' X1 <- runif(50, 1, 10)
-#' X2 <- runif(50, 2, 10)
-#' Y1 <- log(X1) + 3 - abs(rnorm(50, mean = 0, sd = 0.4))
-#' Y2 <- log(X1) + 2 - abs(rnorm(50, mean = 0, sd = 0.7))
+#' simulated <- eat:::X2Y2.sim(N = 50, border = 0.2)
+#' RFEAT_model <- RFEAT(data = simulated, x = c(1,2), y = c(3, 4))
 #'
-#' simulated <- data.frame(x1 = X1, x2 = X2, y1 = Y1, y2 = Y2)
-#' 
-#' RFEAT_model <- RFEAT(data = simulated, x = c(1,2), y = c(3, 4), numStop = 5,
-#'                      m = 50, s_mtry = "Breiman", na.rm = TRUE)
+#' efficiencyEAT(data = simulated, x = c(1, 2), y = c(3, 4), object = RFEAT_model, 
+#'               scores_model = "BCC_out", r = 2, FDH = TRUE, na.rm = TRUE)
 #'
-#' efficiencyRFEAT(data = simulated, x = c(1, 2), y = c(3, 4), object = RFEAT_model)
-#'
-#' @return Dataframe with input variables and efficiency scores by a RFEAT model.
+#' @return Dataframe with input variables and efficiency scores through a Random Forest + Efficiency Analysis Trees model.
 efficiencyRFEAT <- function(data, x, y, object, r = 2, FDH = TRUE, na.rm = TRUE){
+  
+  if (class(object) != "RFEAT"){
+    stop(paste(deparse(substitute(object)), "must be an RFEAT object"))
+    
+  } 
   
   train_names <- c(object[["data"]][["input_names"]], object[["data"]][["output_names"]])
   
@@ -497,9 +491,9 @@ efficiencyRFEAT <- function(data, x, y, object, r = 2, FDH = TRUE, na.rm = TRUE)
   }
 }
 
-#' @title Model prediction for RFEAT
+#' @title Model prediction for Random Forest + Efficiency Analysis Trees model.
 #'
-#' @description This function predicts the expected output by an RFEAT object.
+#' @description This function predicts the expected output by a RFEAT object.
 #'
 #' @param object A RFEAT object.
 #' @param newdata Dataframe. Set of input variables to predict on.
@@ -518,15 +512,16 @@ efficiencyRFEAT <- function(data, x, y, object, r = 2, FDH = TRUE, na.rm = TRUE)
 #' @export
 predictRFEAT <- function(object, newdata) {
   
-  train_names <- object[["data"]][["input_names"]]
-  test_names <- names(newdata)
-  
   if (class(object) != "RFEAT"){
-    stop(paste(object, "must be an RFEAT object"))
+    stop(paste(deparse(substitute(object)), "must be an RFEAT object"))
+    
   }
   
+  train_names <- object[["data"]][["input_names"]]
+  test_names <- names(newdata)
+
   if (!is.data.frame(newdata)){
-    stop("newdata must be a data.frame")
+    stop(paste(deparse(substitute(newdata)), "must be a data frame."))
   } else if (length(train_names) != length(test_names)){
     stop("Training and prediction data must have the same number of variables")
   } else if (!all(train_names == test_names)){
@@ -562,15 +557,15 @@ predictRFEAT <- function(object, newdata) {
   invisible(predictions)
 }
 
-#' @title Ranking of variables by RFEAT
+#' @title Ranking of variables by Random Forest + Efficiency Analysis Trees.
 #'
-#' @description This function calculates variable importance for an RFEAT object.
+#' @description This function calculates variable importance through a Random Forest + Efficiency Analysis Trees model.
 #'
-#' @param object An RFEAT object.
+#' @param object A RFEAT object.
 #' @param r Integer. Decimal units.
 #' @param barplot Logical. If \code{TRUE}, a barplot with importance scores is displayed.
 #'
-#' @return Dataframe with scores or list with scores and barplot.
+#' @return Dataframe with the importance scores. If \code{barplot = TRUE}, it is returned a list containing the scores and the barplot.
 #' 
 #' @examples 
 #' 
@@ -585,7 +580,7 @@ predictRFEAT <- function(object, newdata) {
 rankingRFEAT <- function(object, r = 2, barplot = TRUE) {
   
   if (class(object) != "RFEAT"){
-    stop(paste(object, "must be an RFEAT object"))
+    stop(paste(deparse(substitute(object)), "must be an RFEAT object"))
     
   } 
   

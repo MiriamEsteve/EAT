@@ -454,11 +454,11 @@ eff.levels <- function(object) {
 
 #' @title Performance of Efficiency Analysis Trees model
 #'
-#' @description This function returns a set of common metrics for regression trees for the model as a whole and disaggregated for the leaf nodes.
+#' @description This function returns a set of common metrics for regression trees for the EAT model as a whole and disaggregated for the leaf nodes.
 #' 
 #' @param object An EAT object.
 #' 
-#' @return List with the mean square error (MSE), the root mean square error (RMSE), the mean absolute error (MAE) and the bias (Bias). Additionally, for each leaf node, centralization and dispersion measures and the RMSE are computed.
+#' @return List with the root mean square error (RMSE), the mean absolute error (MAE) and the bias (Bias). Additionally, for each leaf node, centralization and dispersion measures and the RMSE are computed.
 #' 
 #' @importFrom stats median sd
 #' 

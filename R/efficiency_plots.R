@@ -1,14 +1,14 @@
 #' @title Efficiency Scores Jitter Plot
 #'
-#' @description This function returns a jitter plot. DMUs are grouped in nodes (same input paradigm) and its scores are showed. A black point represents the mean score in a group and the line the standard deviation. Finally, efficient DMUs are labeled and the user can specify an upper bound (upb) and a lower bound (lwb) in order to show extra labels.
+#' @description This function returns a jitter plot from \code{ggplot2}. This graphic shows how DMUs are grouped into leaf nodes in a model built using the \code{EAT} function. Each leaf node groups DMUs with the same level of resources. The dot and the black line represent, respectively, the mean value and the standard deviation of the scores of its node. Additionally, efficient DMU labels always are displayed based on the model entered in the \code{scores_model} argument. Finally, the user can specify an upper bound \code{upn} and a lower bound \code{lwb} in order to show, in addition, the labels which efficiency score is between them.
 #'
 #' @param object An EAT object.
-#' @param scores_EAT Dataframe with scores.
+#' @param scores_EAT Dataframe with scores (from \code{efficiencyEAT} or \code{efficiencyCEAT}).
 #' @param scores_model Mathematic programming model of scores_EAT. 
 #' \itemize{
-#' \item{\code{BCC_out}} BBC model. Output orientation.
-#' \item{\code{BCC_in}}  BBC model. Input orientation.
-#' \item{\code{DDF}}     Directional distance model.
+#' \item{\code{BCC_out}} BCC model. Output orientation.
+#' \item{\code{BCC_in}}  BCC model. Input orientation.
+#' \item{\code{DDF}}     Directional Distance Model.
 #' \item{\code{RSL_out}} Rusell model. Output orientation
 #' \item{\code{RSL_in}}  Rusell model. Input orientation.
 #' \item{\code{WAM}}     Weighted Additive model.
@@ -114,16 +114,15 @@ efficiencyJitter <- function(object, scores_EAT, scores_model, upb = NULL, lwb =
 #' @examples 
 #' 
 #' simulated <- eat:::X2Y2.sim(N = 50, border = 0.2)
-#' 
 #' EAT_model <- EAT(data = simulated, x = c(1,2), y = c(3, 4))
 #'
 #' scores <- efficiencyEAT(data = simulated, x = c(1, 2), y = c(3, 4), object = EAT_model, 
 #'                         scores_model = "BCC_out", r = 2, FDH = TRUE, na.rm = TRUE)
 #' 
-#' efficiencyDensity(scores_EAT = scores$EAT_BCC_out, scores_FDH = scores$FDH_BCC_out,
-#'                   scores_RFEAT = NULL)
+#' efficiencyDensity(scores = scores[, 5:6],
+#'                   model = c("EAT", "FDH"))
 #'
-#' @return Density plot for scores and data.frame with numeric results.
+#' @return Density plot for efficiency scores.
 efficiencyDensity <- function(scores, model = c("EAT", "FDH")) {
   
   names(scores) <- model

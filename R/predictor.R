@@ -38,7 +38,7 @@ posIdNode <- function(tree, idNode) {
   return(-1)
 }
 
-#' @title Model prediction for EAT
+#' @title Model prediction for Efficiency Analysis Trees.
 #'
 #' @description This function predicts the expected output by an EAT object.
 #'
@@ -59,15 +59,16 @@ posIdNode <- function(tree, idNode) {
 #' @export
 predictEAT <- function(object, newdata) {
   
+  if (class(object) != "EAT"){
+    stop(paste(deparse(substitute(object)), "must be an EAT object"))
+    
+  }
+  
   train_names <- object[["data"]][["input_names"]]
   test_names <- names(newdata)
   
-  if (class(object) != "EAT"){
-    stop(paste(object, "must be an EAT object"))
-  }
-  
   if (!is.data.frame(newdata)){
-    stop("newdata must be a data.frame")
+    stop(paste(deparse(substitute(newdata)), "must be a data frame"))
   } else if (length(train_names) != length(test_names)){
     stop("Training and prediction data must have the same number of variables")
   } else if (!all(train_names == test_names)){

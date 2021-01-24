@@ -1,6 +1,6 @@
-#' @title Tuning an EAT model
+#' @title Tuning an Efficiency Analysis Trees model
 #'
-#' @description This funcion calculates the mean square error for a Efficiency Analysis Tree built with a set of given hyperparameters. 
+#' @description This funcion calculates the root mean square error (RMSE) for a Efficiency Analysis Trees model built with a set of given hyperparameters. 
 #'
 #' @param training Training dataframe or matrix containing the variables in the model for model construction.
 #' @param test Test dataframe or matrix containing the variables in the model for model assessment.
@@ -8,7 +8,7 @@
 #' @param y Vector. Column output indexes in data.
 #' @param numStop Vector. Set of minimun number of observations in a node for a split to be attempted.
 #' @param fold Vector. Set of number of folds in which is divided the dataset to apply cross-validation during the pruning.
-#' @param max.depth Vector. Integer. Maximum number of leaf nodes.
+#' @param max.depth Vector. Maximum number of leaf nodes.
 #' @param na.rm Logical. If \code{TRUE}, \code{NA} rows are omitted.
 #' 
 #' @importFrom dplyr arrange %>%
@@ -31,7 +31,7 @@
 #'         numStop = c(3, 5, 7, 10),
 #'         fold = c(5, 7, 10))
 #'
-#' @return Dataframe in which each row corresponds to a given set of hyperparameters with its corresponding root mean square error.
+#' @return Dataframe in which each row corresponds to a given set of hyperparameters with its corresponding root mean square error (RMSE).
 bestEAT <- function(training, test, x, y, numStop = NULL, fold = NULL, max.depth = NULL, na.rm = TRUE) {
 
   train_names <- names(training[, c(x, y)])
@@ -73,7 +73,7 @@ bestEAT <- function(training, test, x, y, numStop = NULL, fold = NULL, max.depth
     }
     
     EATmodel <- EAT(data = training, x = x, y = y, numStop = hp[i, "numStop"],
-                    fold = hp[i, "fold"], max.depth = max.depth, na.rm = TRUE)
+                    fold = hp[i, "fold"], max.depth = max.depth, na.rm = na.rm)
     
     x.t <- EATmodel[["data"]][["x"]]
     y.t <- EATmodel[["data"]][["y"]]
@@ -95,7 +95,7 @@ bestEAT <- function(training, test, x, y, numStop = NULL, fold = NULL, max.depth
     
   }
   
-  hp <- hp %>% arrange(desc(RMSE))
+  hp <- hp %>% arrange(RMSE)
   
   print(hp)
   
@@ -187,7 +187,7 @@ bestRFEAT <- function(training, test, x, y, numStop, m, s_mtry, na.rm = TRUE) {
     
   }
   
-  hp <- hp %>% arrange(desc(RMSE))
+  hp <- hp %>% arrange(RMSE)
   
   print(hp)
   

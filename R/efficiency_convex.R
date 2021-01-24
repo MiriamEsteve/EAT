@@ -326,15 +326,15 @@ CEAT_WAM <- function(j, scores, x_k, y_k, atreeTk, ytreeTk, nX, nY, N_leaves) {
 #' @param object An EAT object.
 #' @param scores_model Mathematic programming model to calculate scores. 
 #' \itemize{
-#' \item{\code{BCC_out}} BBC model. Output-oriented.
-#' \item{\code{BCC_in}}  BBC model. Input-oriented.
+#' \item{\code{BCC_out}} BCC model. Output-oriented.
+#' \item{\code{BCC_in}}  BCC model. Input-oriented.
 #' \item{\code{DDF}}     Directional Distance Function.
 #' \item{\code{RSL_out}} Rusell model. Output-oriented.
 #' \item{\code{RSL_in}}  Rusell model. Input-oriented.
 #' \item{\code{WAM}}     Weighted Additive Model.
 #' }
 #' @param r Integer. Decimal units for scores.
-#' @param DEA. Logical. If \code{TRUE}, DEA scores are calculated with the programming model selected in \code{scores_model}
+#' @param DEA Logical. If \code{TRUE}, DEA scores are calculated with the programming model selected in \code{scores_model}
 #' @param na.rm Logical. If \code{TRUE}, \code{NA} rows are omitted.
 #'  
 #' @importFrom dplyr summarise %>%
@@ -354,6 +354,11 @@ CEAT_WAM <- function(j, scores, x_k, y_k, atreeTk, ytreeTk, nX, nY, N_leaves) {
 efficiencyCEAT <- function(data, x, y, object, 
                           scores_model, r = 3, DEA = TRUE,
                           na.rm = TRUE) {
+  
+  if (class(object) != "EAT"){
+    stop(paste(deparse(substitute(object)), "must be an EAT object"))
+    
+  } 
   
   if (!scores_model %in% c("BCC_out", "BCC_in", "DDF", 
                            "RSL_out", "RSL_in", "WAM")){

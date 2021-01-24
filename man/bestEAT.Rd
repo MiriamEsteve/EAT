@@ -4,7 +4,16 @@
 \alias{bestEAT}
 \title{Tuning an EAT model}
 \usage{
-bestEAT(training, test, x, y, numStop, fold, max.depth, na.rm = TRUE)
+bestEAT(
+  training,
+  test,
+  x,
+  y,
+  numStop = NULL,
+  fold = NULL,
+  max.depth = NULL,
+  na.rm = TRUE
+)
 }
 \arguments{
 \item{training}{Training dataframe or matrix containing the variables in the model for model construction.}

@@ -41,7 +41,7 @@ This vignette is intended to known the main functions of the `EAT` package. [Eff
 
 The Efficiency Analysis Trees modeling is aimed at capturing the maximum trends of a set of outputs. For this purpose, DMUs under the same resource paradigm are grouped into nodes and subsequently the maximum expected output is predicted for each node. The Efficiency Analysis Trees estimator results in a monotonic increasing frontier with a stepped form where each of these steps corresponds to a node of the tree containing homogeneus DMUs with efficient and non-efficient output levels.
 
-In this section, an **EAT** model, an **RFEAT** model, a **FDH** model and a **DEA** model refer to a modeling carried out using Efficiency Analysis Trees technique, Random Forest + Efficiency Analysis Trees technique, Free Disposal Hull method and Data Envelopment Analysis method respectively. The functions developed in the `EAT` library are always oriented to one of the four previous models (EAT, RFEAT, FDH or DEA) and can be divided into seven categories depending on its purpose:
+In this section, an **EAT** model, an **RFEAT** model, a **FDH** model and a **DEA** model refer to a modeling carried out using Efficiency Analysis Trees technique, Random Forest + Efficiency Analysis Trees technique, Free Disposal Hull method and Data Envelopment Analysis method respectively. Additionally, a **CEAT** model refers to convex **EAT** model. The functions developed in the `EAT` library are always oriented to one of the four previous models (EAT, RFEAT, FDH or DEA) and can be divided into seven categories depending on its purpose:
 
 ```{r table, echo = FALSE}
 library(dplyr)
@@ -64,13 +64,13 @@ functions <- data.frame("Purpose" = c(rep("Modeling", 2),
                                             "rankingEAT", "rankingRFEAT"), 
                         "Usage" = c("Apply Efficiency Analysis Trees technique to a data frame.",
                                     "Apply Random Forest + Efficiency Analysis technique to a data frame.",
-                                    "Print the tree structure of an EAT model. Print a brief summary of an RFEAT model.",
+                                    "Print the tree structure of an EAT model or print a brief summary of an RFEAT model.",
                                     "Return a brief summary of the leaf nodes, general information about the model and the error and the threshold 
-                                    for the splits and the surrogate splits.",
+                                    for the splits and the surrogate splits for an EAT model.",
                                     "Return the number of leaf nodes for an EAT model.",
                                     "Return the efficiency output levels for an EAT model.",
-                                    "Return evaluation metrics for an EAT model and measures of centralization and 
-                                    dispersion with respect to the outputs for the leaf nodes.",
+                                    "Return evaluation metrics and measures of centralization and dispersion with respect to the outputs for the 
+                                    leaf nodes for an EAT model.",
                                     "Tune an EAT model.",
                                     "Tune a RFEAT model.",
                                     "Plot the estimated frontier through an EAT model in a low dimensional scenario
@@ -279,6 +279,10 @@ Additionally, `EAT_object[["tree"]][[id_node]]` or `EAT_object$tree[[id_node]]` 
 * `a` : lower bound of the given node.
 * `b` : upper bound of the given node.
 
+Note that:
+* Node 1 has a value of -1 in `F` since it has no parent node.
+* A leaf node has a value of -1 in `SL`, `SR`, `s` and `xi` since it is not divided.
+
 ```{r node.charac, collapse = FALSE}
 single_model[["tree"]][[5]]
 ```
@@ -289,13 +293,12 @@ The types of variables accepted by the `EAT` function are the following:
   
 ```{r table2, echo = FALSE}
 types <- data.frame("Variable" = c("Independent variables (inputs)", "Dependent variables (outputs)"),
-                    "Integer" = c("x", "x"),
-                    "Double" = c("x", "x"),
+                    "Integer / double" = c("x", "x"),
                     "Numeric" = c("x", "x"),
                     "Factor" = c("", ""),
                     "Ordered factor" = c("x", ""))
 
-kableExtra::kable(types, align = rep("c", 6)) %>%
+kableExtra::kable(types, align = rep("c", 5)) %>%
   kableExtra::kable_styling("striped", full_width = F)
 ```
 

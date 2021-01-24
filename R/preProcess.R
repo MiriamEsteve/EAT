@@ -40,7 +40,7 @@ preProcess <- function(data, x, y, na.rm = T) {
         warning("Rows with NA values have been omitted \n")
       }
     } else {
-      stop("Presence of NA values. Please, detele or impute NA registers or set na.rm = TRUE to omit them. \n")
+      stop("Please, detele or impute NA registers or set na.rm = TRUE to omit them. \n")
     }
   }
 

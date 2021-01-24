@@ -14,20 +14,20 @@ preProcess <- function(data, x, y, na.rm = T) {
   data <- as.data.frame(data)
   
   for (i in y) {
-    if (is.numeric(data[, i]) || is.integer(data[, i]) || is.double(data[, i])) {
+    if (is.numeric(data[, i]) || is.integer(data[, i])) {
       next
     } else {
-      stop(paste("The variable", names(data[i]), "must be numeric, integer or double \n"))
+      stop(paste(names(data[i]), "is not a numeric or integer vector. \n"))
     }
   }
-  
+
   for (i in x) {
     if(is.ordered(data[, i])){
       data[, i] <- as.numeric(data[, i])
-    } else if (is.numeric(data[, i]) || is.integer(data[, i]) || is.double(data[, i])){
+    } else if (is.numeric(data[, i]) || is.integer(data[, i])){
       next
     } else {
-      stop(paste("The variable", names(data[i]), "must be numeric, integer or double. In case of an ordinal variable, order = T is necessary. \n"))
+      stop(paste(names(data[i]), "is not a numeric, integer or ordered factor.\n"))
     }
   }
 
@@ -40,7 +40,7 @@ preProcess <- function(data, x, y, na.rm = T) {
         warning("Rows with NA values have been omitted \n")
       }
     } else {
-      stop("Presence of NA values. Please, detele or impute those registers or set na.rm = TRUE to omit them. \n")
+      stop("Presence of NA values. Please, detele or impute NA registers or set na.rm = TRUE to omit them. \n")
     }
   }
 

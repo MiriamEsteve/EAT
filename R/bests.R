@@ -187,7 +187,7 @@ bestRFEAT <- function(training, test, x, y, numStop, m, s_mtry, na.rm = TRUE) {
     
   }
   
-  hp <- hp %>% arrange(desc(hp))
+  hp <- hp %>% arrange(desc(RMSE))
   
   print(hp)
   

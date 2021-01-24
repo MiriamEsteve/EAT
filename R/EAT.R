@@ -513,7 +513,7 @@ performance <- function(object) {
   )
   
   cat(
-      " RMSE:", round(RMSE, 2), "\n",
+      "  RMSE:", round(RMSE, 2), "\n",
       "  MAE:", round(MAE, 2), "\n",
       " Bias:", round(Bias, 2)
       )

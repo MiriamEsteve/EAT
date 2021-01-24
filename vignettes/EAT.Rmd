@@ -735,7 +735,7 @@ rankingRFEAT(object = forest, r = 2,
 
   * A negative imporance score means that removing the input from the model imrpoves the performance.
 
-Note the peculiarity of the results shown where all importance scores are negative.
+Note the peculiarity of the results shown where only *AAE* (Access to Advance Education) has a positive importance score.
 
 ## bestRFEAT()
 
@@ -760,7 +760,7 @@ bestRFEAT(training = training,
           s_mtry = c("Breiman", "2", "5"))
 ```
 
-The best forest is given by the hyperparameters `{numStop = 5, m = 50, s_mtry = "Breiman"}` with `MSE = 47.66`.
+The best forest is given by the hyperparameters `{numStop = 3, m = 30, s_mtry = "Breiman"}` with `RMSE = 44.60`.
 
 ## efficiencyRFEAT()
 
@@ -837,34 +837,22 @@ predictions_FDH <- predictFDH(data = PISAindex[- 32, ],
 ```
 
 ```{r EAT_vs_RFEAT_vs_FDH, collapse = FALSE}
-names(predictions_EAT)[6:8] <- c("S_EAT", "R_EAT", "M_EAT")
-names(predictions_RFEAT)[6:8] <- c("S_RFEAT", "R_RFEAT", "M_RFEAT")
-names(predictions_FDH)[6:8] <- c("S_FDH", "R_FDH", "M_FDH")
+predictions <- cbind(PISAindex[- 32, 3], PISAindex[- 32, 4], PISAindex[- 32, 5], 
+                     predictions_EAT[, 6], predictions_EAT[, 7], predictions_EAT[, 8],
+                     predictions_RFEAT[, 6], predictions_RFEAT[, 7], predictions_RFEAT[, 8],
+                     predictions_FDH[, 6], predictions_FDH[, 7], predictions_FDH[, 8]) %>%
+  as.data.frame()
 
-predictionsEAT <- cbind(PISAindex[- 32, 3], predictions_EAT[, 6],
-                        PISAindex[- 32, 4], predictions_EAT[, 7],
-                        PISAindex[- 32, 5], predictions_EAT[, 8])
+names(predictions) = c("S_PISA", "R_PISA", "M_PISA",
+                       "S_EAT", "R_EAT", "M_EAT",
+                       "S_RFEAT", "R_RFEAT", "M_RFEAT",
+                       "S_FDH", "R_FDH", "M_FDH")
 
-predictionsRFEAT <- cbind(PISAindex[- 32, 3], predictions_RFEAT[, 6],
-                          PISAindex[- 32, 4], predictions_RFEAT[, 7],
-                          PISAindex[- 32, 5], predictions_RFEAT[, 8])
-
-predictionsFDH <- cbind(PISAindex[- 32, 3], predictions_FDH[, 6],
-                        PISAindex[- 32, 4], predictions_FDH[, 7],
-                        PISAindex[- 32, 5], predictions_FDH[, 8])
-
-kableExtra::kable(predictionsEAT) %>%
+kableExtra::kable(predictions) %>%
   kableExtra::kable_styling("striped", full_width = F) %>%
-  kableExtra::column_spec(c(1, 3, 5), background = "#DBFFD6") %>%
-  kableExtra::column_spec(c(2, 4, 6), background = "#FFFFD1")
-
-kableExtra::kable(predictionsRFEAT) %>%
-  kableExtra::kable_styling("striped", full_width = F) %>%
-  kableExtra::column_spec(c(1, 3, 5), background = "#DBFFD6") %>%
-  kableExtra::column_spec(c(2, 4, 6), background = "#FFFFD1") 
-
-kableExtra::kable(predictionsFDH) %>%
-  kableExtra::kable_styling("striped", full_width = F) %>%
-  kableExtra::column_spec(c(1, 3, 5), background = "#DBFFD6") %>%
-  kableExtra::column_spec(c(2, 4, 6), background = "#FFFFD1") 
+  kableExtra::column_spec(c(1, 2, 3), background = "#DBFFD6") %>%
+  kableExtra::column_spec(c(4, 5, 6), background = "#FFFFD1") %>%
+  kableExtra::column_spec(c(7, 8, 9), background = "#FFCCF9") %>%
+  kableExtra::column_spec(c(10, 11, 12), background = "#F4F1BB")
+  
 ```

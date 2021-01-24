@@ -616,7 +616,7 @@ rankingRFEAT <- function(object, r = 2, barplot = TRUE) {
 #' @return List of importance of inputs xj
 imp_var_RFEAT <- function(object, r = 2){
   
-  err <- object[["MSE"]]
+  err <- object[["error"]]
   data <- object[["data"]][["df"]]
   x <- object[["data"]][["x"]]
   y <- object[["data"]][["y"]]
@@ -630,7 +630,7 @@ imp_var_RFEAT <- function(object, r = 2){
     # Barajar xi
     df_xi <- data[sample(nrow(data), nrow(data), replace = TRUE), ]
     rf_err_xi <- RFEAT(df_xi, x, y, numStop, m, s_mtry)
-    err_xi <- rf_err_xi[["MSE"]]
+    err_xi <- rf_err_xi[["error"]]
     imp <- rbind(imp, (100 * ((err_xi - err)/err)))
   }
   
@@ -665,7 +665,7 @@ print.RFEAT <- function(x, ...) {
     rep("\n", 2) 
   )
   
-  cat(" Total MSE: ", round(sqrt(x[["MSE"]]), 2), "\n",
+  cat(" Error: ", round(x[["error"]], 2), "\n",
       " numStop: ", x[["control"]][["numStop"]],  "\n",
       " No. of trees (m): ", x[["control"]][["m"]], "\n",
       " No. of inputs tried (s_mtry): ", x[["control"]][["s_mtry"]],

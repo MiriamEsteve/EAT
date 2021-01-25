@@ -27,13 +27,13 @@ functions <- data.frame("Purpose" = c(rep("Modeling", 2),
                                             "rankingEAT", "rankingRFEAT"), 
                         "Usage" = c("Apply Efficiency Analysis Trees technique to a data frame.",
                                     "Apply Random Forest + Efficiency Analysis technique to a data frame.",
-                                    "Print the tree structure of an EAT model. Print a brief summary of an RFEAT model.",
+                                    "Print the tree structure of an EAT model or print a brief summary of an RFEAT model.",
                                     "Return a brief summary of the leaf nodes, general information about the model and the error and the threshold 
-                                    for the splits and the surrogate splits.",
+                                    for the splits and the surrogate splits for an EAT model.",
                                     "Return the number of leaf nodes for an EAT model.",
                                     "Return the efficiency output levels for an EAT model.",
-                                    "Return evaluation metrics for an EAT model and measures of centralization and 
-                                    dispersion with respect to the outputs for the leaf nodes.",
+                                    "Return evaluation metrics and measures of centralization and dispersion with respect to the outputs for the 
+                                    leaf nodes for an EAT model.",
                                     "Tune an EAT model.",
                                     "Tune a RFEAT model.",
                                     "Plot the estimated frontier through an EAT model in a low dimensional scenario
@@ -101,13 +101,12 @@ single_model[["tree"]][[5]]
 
 ## ----table2, echo = FALSE-----------------------------------------------------
 types <- data.frame("Variable" = c("Independent variables (inputs)", "Dependent variables (outputs)"),
-                    "Integer" = c("x", "x"),
-                    "Double" = c("x", "x"),
+                    "Integer / double" = c("x", "x"),
                     "Numeric" = c("x", "x"),
                     "Factor" = c("", ""),
                     "Ordered factor" = c("x", ""))
 
-kableExtra::kable(types, align = rep("c", 6)) %>%
+kableExtra::kable(types, align = rep("c", 5)) %>%
   kableExtra::kable_styling("striped", full_width = F)
 
 ## ----continent----------------------------------------------------------------
@@ -248,7 +247,7 @@ bestEAT(training = training,
 bestmodel <- EAT(data = PISAindex,
                  x = c(6, 7, 8, 12, 17),
                  y = 3:5,
-                 numStop = 3,
+                 numStop = 7,
                  fold = 5)
 
 ## ----summary.bestmodel, collapse = FALSE--------------------------------------
@@ -410,8 +409,6 @@ scoresRF <- efficiencyRFEAT(data = PISAindex,
 #  predictFDH(data, x, y)
 
 ## ----models, collapse = FALSE-------------------------------------------------
-library(eat)
-library(dplyr)
 input <- c(6, 7, 8, 12, 17)
 output <- 3:5
 

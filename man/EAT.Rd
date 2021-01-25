@@ -25,7 +25,7 @@ EAT(data, x, y, numStop = 5, fold = 5, max.depth = NULL, na.rm = T)
 An EAT object.
 }
 \description{
-This function generates a stepped production frontier through regression trees.
+This function estimates a stepped production frontier through regression trees.
 }
 \details{
 The EAT function generates a regression tree model based on CART \insertCite{breiman1984}{eat} under a new approach that guarantees the obtaining of a stepped production frontier that fulfills the property of free disposability. This frontier shares the aforementioned aspects with the FDH frontier \insertCite{deprins1984}{eat} but enhances some of its disadvantages such as the overfitting problem or the underestimation of technical inefficiency. More details in \insertCite{esteve2020;textual}{eat}.

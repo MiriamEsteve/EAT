@@ -101,9 +101,9 @@ bestEAT <- function(training, test, x, y, numStop = NULL, fold = NULL, max.depth
   
 }
 
-#' @title Tuning an RFEAT model
+#' @title Tuning a RFEAT model
 #'
-#' @description This funcion calculates the mean square error for a Random Forest of Efficiency Analysis Tree built with a set of given hyperparameters. 
+#' @description This funcion calculates the root mean square error (RMSE) for a Random Forest + Efficiency Analysis Tree model built with a set of given hyperparameters. 
 #'
 #' @param training Training dataframe or matrix containing the variables in the model for model construction.
 #' @param test Test dataframe or matrix containing the variables in the model for model assessment.
@@ -133,7 +133,7 @@ bestEAT <- function(training, test, x, y, numStop = NULL, fold = NULL, max.depth
 #' 
 #' @export
 #'
-#' @return Dataframe in which each row corresponds to a given set of hyperparameters with its corresponding mean square error.
+#' @return Dataframe in which each row corresponds to a given set of hyperparameters with its corresponding root mean square error (RMSE).
 bestRFEAT <- function(training, test, x, y, numStop, m, s_mtry, na.rm = TRUE) {
   
   train_names <- names(training[, c(x, y)])
@@ -166,7 +166,7 @@ bestRFEAT <- function(training, test, x, y, numStop, m, s_mtry, na.rm = TRUE) {
     }
     
     RFEATmodel <- RFEAT(data = training, x = x, y = y, numStop = hp[i, "numStop"],
-                        m = hp[i, "m"], s_mtry = input_select, na.rm = TRUE)
+                        m = hp[i, "m"], s_mtry = input_select, na.rm = na.rm)
     
     x.t <- RFEATmodel[["data"]][["x"]]
     y.t <- RFEATmodel[["data"]][["y"]]

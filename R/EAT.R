@@ -1,6 +1,6 @@
 #' @title Efficiency Analysis Trees
 #'
-#' @description This function generates a stepped production frontier through regression trees. 
+#' @description This function estimates a stepped production frontier through regression trees. 
 #' 
 #' @name EAT
 #'

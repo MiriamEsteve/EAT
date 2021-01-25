@@ -9,13 +9,13 @@ efficiencyJitter(object, scores_EAT, scores_model, upb = NULL, lwb = NULL)
 \arguments{
 \item{object}{An EAT object.}
 
-\item{scores_EAT}{Dataframe with scores.}
+\item{scores_EAT}{Dataframe with scores (from \code{efficiencyEAT} or \code{efficiencyCEAT}).}
 
 \item{scores_model}{Mathematic programming model of scores_EAT. 
 \itemize{
-\item{\code{BCC_out}} BBC model. Output orientation.
-\item{\code{BCC_in}}  BBC model. Input orientation.
-\item{\code{DDF}}     Directional distance model.
+\item{\code{BCC_out}} BCC model. Output orientation.
+\item{\code{BCC_in}}  BCC model. Input orientation.
+\item{\code{DDF}}     Directional Distance Model.
 \item{\code{RSL_out}} Rusell model. Output orientation
 \item{\code{RSL_in}}  Rusell model. Input orientation.
 \item{\code{WAM}}     Weighted Additive model.
@@ -29,7 +29,7 @@ efficiencyJitter(object, scores_EAT, scores_model, upb = NULL, lwb = NULL)
 Jitter plot with DMUs and scores.
 }
 \description{
-This function returns a jitter plot. DMUs are grouped in nodes (same input paradigm) and its scores are showed. A black point represents the mean score in a group and the line the standard deviation. Finally, efficient DMUs are labeled and the user can specify an upper bound (upb) and a lower bound (lwb) in order to show extra labels.
+This function returns a jitter plot from \code{ggplot2}. This graphic shows how DMUs are grouped into leaf nodes in a model built using the \code{EAT} function. Each leaf node groups DMUs with the same level of resources. The dot and the black line represent, respectively, the mean value and the standard deviation of the scores of its node. Additionally, efficient DMU labels always are displayed based on the model entered in the \code{scores_model} argument. Finally, the user can specify an upper bound \code{upn} and a lower bound \code{lwb} in order to show, in addition, the labels which efficiency score is between them.
 }
 \examples{
 

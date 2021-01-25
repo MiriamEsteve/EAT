@@ -20,10 +20,10 @@ RFEAT(data, x, y, numStop = 5, m = 50, s_mtry = "Breiman", na.rm = TRUE)
 \item{s_mtry}{Select number of inputs in each split. It can be an integer or any of the following options:
 \itemize{
 \item{\code{"Breiman"}}: \code{in / 3}
-\item{\code{"DEA1"}}: \code{(obs / 2) - out}  
-\item{\code{"DEA2"}}: \code{(obs / 3) - out}
-\item{\code{"DEA3"}}: \code{obs - 2 * out}
-\item{\code{"DEA4"}}: \code{min(obs / out, (obs / 3) - out)}
+\item{\code{"DEA1"}}: \code{(t.obs / 2) - out}  
+\item{\code{"DEA2"}}: \code{(t.obs / 3) - out}
+\item{\code{"DEA3"}}: \code{t.obs - 2 * out}
+\item{\code{"DEA4"}}: \code{min(t.obs / out, (t.obs / 3) - out)}
 }}
 
 \item{na.rm}{Logical. If \code{TRUE}, NA rows are omitted.}
@@ -36,14 +36,9 @@ This function build \code{m} individual Efficiency Analysis Trees in a forest st
 }
 \examples{
 
-X1 <- runif(50, 1, 10)
-X2 <- runif(50, 2, 10)
-Y1 <- log(X1) + 3 - abs(rnorm(50, mean = 0, sd = 0.4))
-Y2 <- log(X1) + 2 - abs(rnorm(50, mean = 0, sd = 0.7))
+simulated <- eat:::X2Y2.sim(N = 50, border = 0.1)
 
-simulated <- data.frame(x1 = X1, x2 = X2, y1 = Y1, y2 = Y2)
-
-Rf_model <- RFEAT(data = simulated, x = c(1,2), y = c(3, 4), numStop = 5,
-                  m = 100, s_mtry = "Breiman", na.rm = TRUE)
+RFmodel <- RFEAT(data = simulated, x = c(1,2), y = c(3, 4), numStop = 5,
+                  m = 50, s_mtry = "Breiman", na.rm = TRUE)
 
 }

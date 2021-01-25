@@ -102,10 +102,10 @@ EAT_object <- function(data, x, y, register_names, numStop, fold, max.depth, na.
 #' @param s_mtry Select number of inputs in each split.
 #' \itemize{
 #' \item{\code{"Breiman"}}: \code{in / 3}
-#' \item{\code{"DEA1"}}: \code{(obs / 2) - out}  
-#' \item{\code{"DEA2"}}: \code{(obs / 3) - out}
-#' \item{\code{"DEA3"}}: \code{obs - 2 * out}
-#' \item{\code{"DEA4"}}: \code{min(obs / out, (obs / 3) - out)}
+#' \item{\code{"DEA1"}}: \code{(t.obs / 2) - out}  
+#' \item{\code{"DEA2"}}: \code{(t.obs / 3) - out}
+#' \item{\code{"DEA3"}}: \code{t.obs - 2 * out}
+#' \item{\code{"DEA4"}}: \code{min(t.obs / out, (t.obs / 3) - out)}
 #' }
 #' @param na.rm Logical. If \code{TRUE}, NA rows are omitted.
 #' @param forest A list containing the individual EAT trees.
@@ -113,7 +113,7 @@ EAT_object <- function(data, x, y, register_names, numStop, fold, max.depth, na.
 #'
 #' @importFrom dplyr %>% select filter
 #'
-#' @return An RFEAT object
+#' @return A RFEAT object
 RFEAT_object <- function(data, x, y, register_names, numStop, m, s_mtry, na.rm, forest, error) {
   
   # Output and input names

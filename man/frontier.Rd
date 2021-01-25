@@ -27,7 +27,7 @@ frontier(
 
 \item{size}{Integer. Point size.}
 
-\item{rwn}{Logical. If \code{TRUE}, rownames are displayed instead of points.}
+\item{rwn}{Logical. If \code{TRUE}, rownames are displayed.}
 }
 \value{
 Plot with estimated production frontier

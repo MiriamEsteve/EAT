@@ -2,7 +2,7 @@
 % Please edit documentation in R/FDH.R
 \name{predictFDH}
 \alias{predictFDH}
-\title{Model prediction for FDH}
+\title{Model prediction for Free Disposal Hull}
 \usage{
 predictFDH(data, x, y)
 }
@@ -14,10 +14,10 @@ predictFDH(data, x, y)
 \item{y}{Vector. Column output indexes in data.}
 }
 \value{
-Data frame with the original data and the predicted values by and FDH model.
+Data frame with the original data and the predicted values through a Free Disposal Hull model.
 }
 \description{
-This function predicts the expected output by an FDH model.
+This function predicts the expected output by a Free Disposal Hull model.
 }
 \examples{
  

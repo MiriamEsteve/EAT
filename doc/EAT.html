@@ -12,7 +12,7 @@
 
 <meta name="author" content="Miguel Hernández University" />
 
-<meta name="date" content="2021-01-22" />
+<meta name="date" content="2021-01-25" />
 
 <title>EAT: Efficiency Analysis Trees</title>
 
@@ -603,7 +603,7 @@ code > span.er { color: #a61717; background-color: #e3d2d2; }
 
 <h1 class="title toc-ignore">EAT: Efficiency Analysis Trees</h1>
 <h4 class="author">Miguel Hernández University</h4>
-<h4 class="date">2021-01-22</h4>
+<h4 class="date">2021-01-25</h4>
 
 
 
@@ -623,7 +623,7 @@ code > span.er { color: #a61717; background-color: #e3d2d2; }
 </ul></li>
 </ul>
 <p>The Efficiency Analysis Trees modeling is aimed at capturing the maximum trends of a set of outputs. For this purpose, DMUs under the same resource paradigm are grouped into nodes and subsequently the maximum expected output is predicted for each node. The Efficiency Analysis Trees estimator results in a monotonic increasing frontier with a stepped form where each of these steps corresponds to a node of the tree containing homogeneus DMUs with efficient and non-efficient output levels.</p>
-<p>In this section, an <strong>EAT</strong> model, an <strong>RFEAT</strong> model, a <strong>FDH</strong> model and a <strong>DEA</strong> model refer to a modeling carried out using Efficiency Analysis Trees technique, Random Forest + Efficiency Analysis Trees technique, Free Disposal Hull method and Data Envelopment Analysis method respectively. The functions developed in the <code>EAT</code> library are always oriented to one of the four previous models (EAT, RFEAT, FDH or DEA) and can be divided into seven categories depending on its purpose:</p>
+<p>In this section, an <strong>EAT</strong> model, an <strong>RFEAT</strong> model, a <strong>FDH</strong> model and a <strong>DEA</strong> model refer to a modeling carried out using Efficiency Analysis Trees technique, Random Forest + Efficiency Analysis Trees technique, Free Disposal Hull method and Data Envelopment Analysis method respectively. Additionally, a <strong>CEAT</strong> model refers to convex <strong>EAT</strong> model. The functions developed in the <code>EAT</code> library are always oriented to one of the four previous models (EAT, RFEAT, FDH or DEA) and can be divided into seven categories depending on its purpose:</p>
 <table class="table table-striped" style="width: auto !important; margin-left: auto; margin-right: auto;">
 <thead>
 <tr>
@@ -666,7 +666,7 @@ Summarise
 print
 </td>
 <td style="text-align:left;background-color: #FFFFD1 !important;">
-Print the tree structure of an EAT model. Print a brief summary of an RFEAT model.
+Print the tree structure of an EAT model or print a brief summary of an RFEAT model.
 </td>
 </tr>
 <tr>
@@ -674,7 +674,7 @@ Print the tree structure of an EAT model. Print a brief summary of an RFEAT mode
 summary
 </td>
 <td style="text-align:left;background-color: #FFFFD1 !important;">
-Return a brief summary of the leaf nodes, general information about the model and the error and the threshold for the splits and the surrogate splits.
+Return a brief summary of the leaf nodes, general information about the model and the error and the threshold for the splits and the surrogate splits for an EAT model.
 </td>
 </tr>
 <tr>
@@ -698,7 +698,7 @@ Return the efficiency output levels for an EAT model.
 performance
 </td>
 <td style="text-align:left;background-color: #FFFFD1 !important;">
-Return evaluation metrics for an EAT model and measures of centralization and dispersion with respect to the outputs for the leaf nodes.
+Return evaluation metrics and measures of centralization and dispersion with respect to the outputs for the leaf nodes for an EAT model.
 </td>
 </tr>
 <tr>
@@ -1049,6 +1049,7 @@ S_PISA    3   38 53 489.21 851.95 29.19 419 478    494 504.5 551 68.17</code></p
 <li><code>a</code> : lower bound of the given node.</li>
 <li><code>b</code> : upper bound of the given node.</li>
 </ul>
+<p>Note that: * Node 1 has a value of -1 in <code>F</code> since it has no parent node. * A leaf node has a value of -1 in <code>SL</code>, <code>SR</code>, <code>s</code> and <code>xi</code> since it is not divided.</p>
 <div class="sourceCode" id="cb17"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb17-1"><a href="#cb17-1"></a>single_model[[<span class="st">&quot;tree&quot;</span>]][[<span class="dv">5</span>]]</span></code></pre></div>
 <pre><code>$id
 [1] 5
@@ -1108,10 +1109,7 @@ $b
 Variable
 </th>
 <th style="text-align:center;">
-Integer
-</th>
-<th style="text-align:center;">
-Double
+Integer…double
 </th>
 <th style="text-align:center;">
 Numeric
@@ -1136,9 +1134,6 @@ x
 x
 </td>
 <td style="text-align:center;">
-x
-</td>
-<td style="text-align:center;">
 </td>
 <td style="text-align:center;">
 x
@@ -1147,9 +1142,6 @@ x
 <tr>
 <td style="text-align:center;">
 Dependent variables (outputs)
-</td>
-<td style="text-align:center;">
-x
 </td>
 <td style="text-align:center;">
 x
@@ -1318,11 +1310,12 @@ x
 <span id="cb43-4"><a href="#cb43-4"></a>test &lt;-<span class="st"> </span>PISAindex[<span class="op">-</span>t_index, ] <span class="co"># Test set</span></span></code></pre></div>
 <div id="besteat" class="section level3">
 <h3>bestEAT()</h3>
-<p>The <code>bestEAT</code> function requires a training set (<code>training</code>) on which to model an Efficiency Analysis Tree and a test set (<code>test</code>) on which to calculate the impurity. The number of trees built is given by the number of different combinations that can be given by the <code>numStop</code> and <code>fold</code> arguments. <code>bestEAT()</code> returns a data frame with the following columns:</p>
+<p>The <code>bestEAT</code> function requires a training set (<code>training</code>) on which to model an Efficiency Analysis Tree and a test set (<code>test</code>) on which to calculate the impurity. The number of trees built is given by the number of different combinations that can be given by the <code>numStop</code>, <code>fold</code> and <code>max.depth</code> arguments. <code>bestEAT()</code> returns a data frame with the following columns:</p>
 <ul>
 <li><code>numStop</code> : numStop hyperparameter value.</li>
 <li><code>fold</code> : fold hyperparameter value.</li>
-<li><code>RMSE</code>: root mean square error calculated on the test sample with the tree built with the training sample, numStop and fold values.</li>
+<li><code>max.depth</code> : max.depth hyperparameter value if it does not set to <code>NULL</code>.</li>
+<li><code>RMSE</code>: root mean square error calculated on the test sample with the tree built with the training sample, numStop, fold and max.depth (if not <code>NULL</code>) values.</li>
 <li><code>leaf</code>: number of leaf nodes of the tree.</li>
 </ul>
 <div class="sourceCode" id="cb44"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb44-1"><a href="#cb44-1"></a><span class="kw">bestEAT</span>(training, test,</span>
@@ -1341,14 +1334,14 @@ x
 <span id="cb45-5"><a href="#cb45-5"></a>        <span class="dt">numStop =</span> <span class="kw">c</span>(<span class="dv">3</span>, <span class="dv">5</span>, <span class="dv">7</span>, <span class="dv">10</span>),</span>
 <span id="cb45-6"><a href="#cb45-6"></a>        <span class="dt">fold =</span> <span class="kw">c</span>(<span class="dv">5</span>, <span class="dv">7</span>))</span></code></pre></div>
 <pre><code>  numStop fold  RMSE leaves
-1      10    7 73.62      6
-2       3    5 73.09     12
-3       5    5 73.09      9
-4      10    5 70.69      7
-5       5    7 70.66     11
-6       3    7 70.23     13
-7       7    5 64.11      8
-8       7    7 64.11      8</code></pre>
+1       7    5 64.11      8
+2       7    7 64.11      8
+3       3    7 70.23     13
+4       5    7 70.66     11
+5      10    5 70.69      7
+6       3    5 73.09     12
+7       5    5 73.09      9
+8      10    7 73.62      6</code></pre>
 <p>Tuning for:</p>
 <p><code>S_PISA + R_PISA + M_PISA ~ NBMC + WS + S + HW + AAE</code>.</p>
 <p><code>numStop = {3, 5, 7, 10}</code> and <code>fold = {5, 7}</code></p>
@@ -1359,19 +1352,19 @@ x
 <span id="cb47-5"><a href="#cb47-5"></a>        <span class="dt">numStop =</span> <span class="kw">c</span>(<span class="dv">3</span>, <span class="dv">5</span>, <span class="dv">7</span>, <span class="dv">10</span>),</span>
 <span id="cb47-6"><a href="#cb47-6"></a>        <span class="dt">fold =</span> <span class="kw">c</span>(<span class="dv">5</span>, <span class="dv">7</span>))</span></code></pre></div>
 <pre><code>  numStop fold  RMSE leaves
-1      10    7 76.86      6
-2       5    5 76.50      7
-3       5    7 76.50      7
-4      10    5 71.71      9
-5       3    5 56.82     16
-6       7    7 53.55     10
-7       7    5 51.88     12
-8       3    7 46.17     24</code></pre>
-<p>The best tree is given by the hyperparameters <code>{numStop = 7, fold = 7}</code> in the reduced model with <code>RMSE = 53.55</code> and 10 leaf nodes.</p>
+1       3    7 46.17     24
+2       7    5 51.88     12
+3       7    7 53.55     10
+4       3    5 56.82     16
+5      10    5 71.71      9
+6       5    5 76.50      7
+7       5    7 76.50      7
+8      10    7 76.86      6</code></pre>
+<p>The best Efficiency Analysis Trees is given by the hyperparameters <code>{numStop = 3, fold = 7}</code> in the reduced model with <code>RMSE = 46.17</code> and 24 leaf nodes. However, this model is too complex. Therefore, we select the model with parameters <code>{numStop = 7, fold = 5}</code> with <code>RMSE = 51.88</code> but with only 12 leaf nodes.</p>
 <div class="sourceCode" id="cb49"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb49-1"><a href="#cb49-1"></a>bestmodel &lt;-<span class="st"> </span><span class="kw">EAT</span>(<span class="dt">data =</span> PISAindex,</span>
 <span id="cb49-2"><a href="#cb49-2"></a>                 <span class="dt">x =</span> <span class="kw">c</span>(<span class="dv">6</span>, <span class="dv">7</span>, <span class="dv">8</span>, <span class="dv">12</span>, <span class="dv">17</span>),</span>
 <span id="cb49-3"><a href="#cb49-3"></a>                 <span class="dt">y =</span> <span class="dv">3</span><span class="op">:</span><span class="dv">5</span>,</span>
-<span id="cb49-4"><a href="#cb49-4"></a>                 <span class="dt">numStop =</span> <span class="dv">3</span>,</span>
+<span id="cb49-4"><a href="#cb49-4"></a>                 <span class="dt">numStop =</span> <span class="dv">7</span>,</span>
 <span id="cb49-5"><a href="#cb49-5"></a>                 <span class="dt">fold =</span> <span class="dv">5</span>)</span></code></pre></div>
 <div class="sourceCode" id="cb50"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb50-1"><a href="#cb50-1"></a><span class="kw">summary</span>(bestmodel)</span></code></pre></div>
 <pre><code>
@@ -1384,31 +1377,24 @@ x
  id n(t)  % S_PISA R(t) M_PISA       R
   3   32 45    551  549    569 1811.66
   5   11 15    487  479    496  259.20
-  8    1  1    336  342    325    0.00
- 10    1  1    357  342    353    0.02
- 11    3  4    396  377    379   11.64
- 14    3  4    404  401    420    9.14
- 17    3  4    428  424    437   29.33
- 18    2  3    404  401    423   18.07
- 19    2  3    426  405    437    2.58
- 20    3  4    415  421    430   15.37
- 24    1  1    426  421    437    3.63
- 26    2  3    429  424    437   10.77
- 27    2  3    429  427    437    8.29
- 28    4  6    434  432    437   36.93
- 29    1  1    438  432    440    1.36
+  6    5  7    396  377    379   64.72
+ 10    3  4    404  401    420    9.14
+ 11    7 10    428  424    437   91.35
+ 12    3  4    415  421    430   15.37
+ 14    5  7    429  427    437   24.23
+ 15    5  7    438  432    440   43.32
 
  # ========================== # 
  #            Tree            # 
  # ========================== # 
  
- Inner nodes: 14 
-  Leaf nodes: 15 
- Total nodes: 29 
+ Inner nodes: 7 
+  Leaf nodes: 8 
+ Total nodes: 15 
  
-       R(T): 2217.99 
+       R(T): 2318.99 
      numStop: 5 
-        fold: 3 
+        fold: 7 
    max.depth:
  
  # ========================== # 
@@ -1436,82 +1422,33 @@ x
     WS --&gt; {R: 581.11, s: 90.02} 
     S --&gt; {R: 639.65, s: 83.49} 
 
- Node 6 --&gt; {8,9} || WS --&gt; {R: 28.38, s: 74.06}
-   Surrogate splits 
-    AAE --&gt; {R: 28.38, s: 49.35} 
-    NBMC --&gt; {R: 47.98, s: 79.64} 
-    S --&gt; {R: 47.98, s: 83.39} 
-    HW --&gt; {R: 47.98, s: 52.52} 
-
- Node 7 --&gt; {12,13} || WS --&gt; {R: 259.43, s: 92.19}
+ Node 7 --&gt; {8,9} || WS --&gt; {R: 259.43, s: 92.19}
    Surrogate splits 
     S --&gt; {R: 275.31, s: 87.87} 
     AAE --&gt; {R: 278.71, s: 60.78} 
     NBMC --&gt; {R: 282.77, s: 94.49} 
     HW --&gt; {R: 299.96, s: 59.25} 
 
- Node 9 --&gt; {10,11} || NBMC --&gt; {R: 11.66, s: 79.64}
-   Surrogate splits 
-    S --&gt; {R: 11.66, s: 83.39} 
-    HW --&gt; {R: 11.66, s: 52.52} 
-    AAE --&gt; {R: 12.48, s: 56.16} 
-    WS --&gt; {R: 25.45, s: 87} 
-
- Node 12 --&gt; {14,15} || S --&gt; {R: 100.48, s: 89.52}
+ Node 8 --&gt; {10,11} || S --&gt; {R: 100.48, s: 89.52}
    Surrogate splits 
     NBMC --&gt; {R: 115.66, s: 94.6} 
     WS --&gt; {R: 120.97, s: 90.02} 
     HW --&gt; {R: 121.5, s: 72.35} 
     AAE --&gt; {R: 128.7, s: 54.17} 
 
- Node 13 --&gt; {20,21} || S --&gt; {R: 94.35, s: 87.87}
+ Node 9 --&gt; {12,13} || S --&gt; {R: 94.35, s: 87.87}
    Surrogate splits 
     AAE --&gt; {R: 98.11, s: 60.78} 
     HW --&gt; {R: 114.28, s: 67.69} 
     NBMC --&gt; {R: 114.97, s: 94.49} 
     WS --&gt; {R: 115.91, s: 94.63} 
 
- Node 15 --&gt; {16,17} || S --&gt; {R: 68.36, s: 92.59}
-   Surrogate splits 
-    NBMC --&gt; {R: 77.61, s: 94.6} 
-    HW --&gt; {R: 78.33, s: 72.35} 
-    WS --&gt; {R: 81.75, s: 90.02} 
-    AAE --&gt; {R: 89.08, s: 55.88} 
-
- Node 16 --&gt; {18,19} || HW --&gt; {R: 20.65, s: 72.35}
-   Surrogate splits 
-    S --&gt; {R: 35.48, s: 90.61} 
-    WS --&gt; {R: 35.69, s: 90.02} 
-    NBMC --&gt; {R: 37.14, s: 92.38} 
-    AAE --&gt; {R: 38.65, s: 63.11} 
-
- Node 21 --&gt; {22,23} || AAE --&gt; {R: 67.55, s: 60.78}
+ Node 13 --&gt; {14,15} || AAE --&gt; {R: 67.55, s: 60.78}
    Surrogate splits 
     S --&gt; {R: 71.15, s: 92.12} 
     NBMC --&gt; {R: 74.55, s: 94.49} 
     WS --&gt; {R: 75.49, s: 94.63} 
-    HW --&gt; {R: 76.2, s: 67.69} 
-
- Node 22 --&gt; {24,25} || S --&gt; {R: 23.03, s: 90.74}
-   Surrogate splits 
-    NBMC --&gt; {R: 23.37, s: 95.44} 
-    WS --&gt; {R: 23.37, s: 97.02} 
-    AAE --&gt; {R: 23.62, s: 57.19} 
-    HW --&gt; {R: 23.98, s: 73.81} 
-
- Node 23 --&gt; {28,29} || S --&gt; {R: 38.29, s: 92.12}
-   Surrogate splits 
-    NBMC --&gt; {R: 40.17, s: 94.49} 
-    HW --&gt; {R: 42.01, s: 67.69} 
-    WS --&gt; {R: 42.38, s: 94.63} 
-    AAE --&gt; {R: 43.15, s: 64.88} 
-
- Node 25 --&gt; {26,27} || NBMC --&gt; {R: 19.06, s: 95.44}
-   Surrogate splits 
-    WS --&gt; {R: 19.06, s: 97.02} 
-    S --&gt; {R: 19.06, s: 96.5} 
-    AAE --&gt; {R: 19.12, s: 57.95} 
-    HW --&gt; {R: 19.15, s: 73.81} </code></pre>
+    HW --&gt; {R: 76.2, s: 67.69} </code></pre>
 </div>
 </div>
 <div id="efficiency-scores.-graphical-representation." class="section level2">
@@ -1527,7 +1464,7 @@ x
 <li><code>RSL_in</code>: input-oriented Rusell Model with efficiency level at 1.</li>
 <li><code>WAM</code>: Weighted Additive Model with efficiency level at 0.</li>
 </ul>
-<p>If <code>FDH = TRUE</code> scores are also calculated through a FDH model.</p>
+<p>If <code>FDH = TRUE</code> scores are also calculated through a FDH model. Finally, a brief summary of the distribution of the scores calculated for each model is also included.</p>
 <div class="sourceCode" id="cb52"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb52-1"><a href="#cb52-1"></a><span class="kw">efficiencyEAT</span>(data, x, y, </span>
 <span id="cb52-2"><a href="#cb52-2"></a>              object,</span>
 <span id="cb52-3"><a href="#cb52-3"></a>              score_model,</span>
@@ -1709,7 +1646,7 @@ DOM      0.804      0.804
 </div>
 <div id="convex-efficiency-analysis-trees-model-efficiencyceat" class="section level3">
 <h3>Convex Efficiency Analysis Trees model: efficiencyCEAT()</h3>
-<p><code>efficiencyCEAT()</code> returns the efficiency scores for the convexified frontier obtained through Efficiency Analysis Trees. In this case, If <code>DEA = TRUE</code> scores are also calculated through a DEA model.</p>
+<p><code>efficiencyCEAT()</code> returns the efficiency scores for the convex frontier obtained through Efficiency Analysis Trees. In this case, If <code>DEA = TRUE</code> scores are also calculated through a DEA model.</p>
 <div class="sourceCode" id="cb57"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb57-1"><a href="#cb57-1"></a><span class="kw">efficiencyCEAT</span>(data, x, y, </span>
 <span id="cb57-2"><a href="#cb57-2"></a>               object,</span>
 <span id="cb57-3"><a href="#cb57-3"></a>               score_model,</span>
@@ -1805,7 +1742,7 @@ DOM        1.415       1.354
 </div>
 <div id="efficiencyjitter" class="section level3">
 <h3>efficiencyJitter()</h3>
-<p><code>efficiencyJitter</code> returns a jitter plot from <code>ggplot2</code>. This graphic shows how DMUs are grouped into leaf nodes in a model built using the <code>EAT</code> function. Each leaf node groups DMUs with the same level of resources. The dot and the black line represent, respectively, the mean value and the standard deviation of the scores of its node. Additionally, efficient DMU labels always are displayed based on the model entered in the <code>score_model</code> argument. Finally, the user can specify an upper bound (<code>upb</code>) and a lower bound (<code>lwb</code>) in order to show, in addition, the labels which efficiency score is between them. Scores from a convexified Efficiency Analysis Tree (<code>CEAT</code>) model can also be used.</p>
+<p><code>efficiencyJitter</code> returns a jitter plot from <code>ggplot2</code>. This graphic shows how DMUs are grouped into leaf nodes in a model built using the <code>EAT</code> function. Each leaf node groups DMUs with the same level of resources. The dot and the black line represent, respectively, the mean value and the standard deviation of the scores of its node. Additionally, efficient DMU labels always are displayed based on the model entered in the <code>score_model</code> argument. Finally, the user can specify an upper bound (<code>upb</code>) and a lower bound (<code>lwb</code>) in order to show, in addition, the labels which efficiency score is between them. Scores from a convex Efficiency Analysis Tree (<code>CEAT</code>) model can also be used.</p>
 <div class="sourceCode" id="cb60"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb60-1"><a href="#cb60-1"></a><span class="kw">efficiencyJitter</span>(object, scores_EAT,</span>
 <span id="cb60-2"><a href="#cb60-2"></a>                 scores_model,</span>
 <span id="cb60-3"><a href="#cb60-3"></a>                 <span class="dt">lwb =</span> <span class="ot">NULL</span>, <span class="dt">upb =</span> <span class="ot">NULL</span>)</span></code></pre></div>
@@ -1937,7 +1874,7 @@ DOM       1.102       1.000
 <h2>Random Forest</h2>
 <div id="rfeat" class="section level3">
 <h3>RFEAT()</h3>
-<p>Random Forest + Efficiency Analysis Trees (<code>RFEAT</code>) has also been developed with the aim of providing a greater stability to the results obtained by the <code>EAT</code> function. <code>RFEAT</code> function requires the <code>data</code> containing the variables for the analysis, <code>x</code> and <code>y</code> corresponding to the inputs and outputs indexes respectively, the minimun number of observation in a node for a split to be attempted (<code>numStop</code>) and <code>na.rm</code> to ignore observations with <code>NA</code> cells. All these arguments are used for the construction of the <code>m</code> individual Efficiency Analysis Trees that make up the random forest. Finally, the argument <code>s_mtry</code> indicates the number of inputs that can be randomly selected in each split. It can be set as any integer although there are also certain predefined values. Being, <span class="math inline">\(n_{x}\)</span> the number of inputs, <span class="math inline">\(n_{y}\)</span> the number of outputs and <span class="math inline">\(n(t)\)</span> the number of observations in a node, the available options in <code>s_mtry</code> are:</p>
+<p>Random Forest + Efficiency Analysis Trees (<code>RFEAT</code>) has also been developed with the aim of providing a greater stability to the results obtained by the <code>EAT</code> function. The <code>RFEAT</code> function requires the <code>data</code> containing the variables for the analysis, <code>x</code> and <code>y</code> corresponding to the inputs and outputs indexes respectively, the minimun number of observation in a node for a split to be attempted (<code>numStop</code>) and <code>na.rm</code> to ignore observations with <code>NA</code> cells. All these arguments are used for the construction of the <code>m</code> individual Efficiency Analysis Trees that make up the random forest. Finally, the argument <code>s_mtry</code> indicates the number of inputs that can be randomly selected in each split. It can be set as any integer although there are also certain predefined values. Being, <span class="math inline">\(n_{x}\)</span> the number of inputs, <span class="math inline">\(n_{y}\)</span> the number of outputs and <span class="math inline">\(n(t)\)</span> the number of observations in a node, the available options in <code>s_mtry</code> are:</p>
 <ul>
 <li><code>Breiman</code> = <span class="math inline">\(\frac{n_{x}}{3}\)</span></li>
 <li><code>DEA1</code> = <span class="math inline">\(\frac{n(t)}{2} - n_{y}\)</span></li>
@@ -1998,13 +1935,13 @@ DOM       1.102       1.000
 <p><img src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAArMAAAJACAMAAACpPx6eAAAA9lBMVEUAAAAAADoAAGYAOpAAZrYzMzM6AAA6ADo6AGY6Ojo6kNtNTU1NTW5NTY5NbqtNjshZWVlmAABmADpmtv9uTU1uTW5uTY5ubk1ubo5ubqtujqtujshuq+SOTU2OTW6OTY6Obm6ObquOjm6Ojo6OjsiOyP+QOgCQkDqQkGaQtpCQ27aQ2/+rbk2rbm6rbo6rjqurq46ryKur5Mir5P+2ZgC225C2///Ijk3Ijm7IyI7I5KvI/+TI///bkDrb/7bb/9vb///kq27kq47k/8jk/+Tk///r6+v/tmb/yI7/yKv/25D/29v/5Kv//7b//8j//9v//+T////Y+G0sAAAACXBIWXMAAA7DAAAOwwHHb6hkAAASjElEQVR4nO3dDVvb1hmHcee1HS6wFJItKyTtOmfdQrplZKUvZq23MTzmONb3/zI7R7IkY6yX40ry86/u5+qFQ/qzkH1uhKyQMIgYRmsGu94BhgkcmmXUhmYZtaFZRm1ollEbmmXUZotm/1M25f8XL+53ujs0i9/C0yxezdMsXs3TLF7N0yxezdMsXs3TLF7N0yxezdMsXs3TLF7N0yxezdMsXs3TLF7N0yxezdMsXs3TLF7N0yxezdMsXs3TLF7N0yxezdMsXs3TLF7N0yxezYs3++v609WDwtMszeI73TzN4hv3NNv0g8LTLM3iO908zeIb9zTb9IPC0yzN4jvdPM3iG/c02/SDwtMszeI73TzN4hv3NNv0g8LTLM3iO908zeIb9zTb9IPC0yzN4jvdPM3iG/c02/SDwtMszeI73TzN4hv3NNv0g8LTLM3iO918k83OT4cHVzSL12l2cTaKJoc0i9dpdv5yHM2ejWm2916n2dnzq2j+4tz96pGbOvfYMAGN4/F3fD61mp0epM362fITJWAf8fg7fuvjLM3id+SbOJ+lWXyXPvi6wcnd6wY0i+/SN3F9lmbxXfom/hyMZvFdeprFq3maxat5msWreZrFq3maxat5msWreZrFq3maxat5msWreZrFq3maxat5msWreZrFq3maxat5msWreZrFq3maxat5msWreZrFq3maxat5msWreZrFq3maxat5msWreZrFq3maxat5msWreZrFq3maxat5msWreZrFq3maxat5msWreZrF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" style="display: block; margin: auto;" /></p>
 <ul>
 <li><p>A positive importance score means that including the input in the model improves the performance.</p></li>
-<li><p>A negative imporance score means that removing the input from the model imrpoves the performance.</p></li>
+<li><p>A negative imporance score means that removing the input from the model improves the performance.</p></li>
 </ul>
 <p>Note the peculiarity of the results shown where only <em>AAE</em> (Access to Advance Education) has a positive importance score.</p>
 </div>
 <div id="bestrfeat" class="section level2">
 <h2>bestRFEAT()</h2>
-<p>As in <code>bestEAT()</code>, the <code>bestRFEAT</code> function is applied to find the optimal hyperparameters that minimize the root mean square error calculated on the test sample. In this case, the available hyperparameters are <code>numStop</code>, <code>m</code> and <code>s_mtry</code>. Note that <code>s_mtry</code> is a character vector even if integer values are introduced.</p>
+<p>As in <code>bestEAT()</code>, the <code>bestRFEAT</code> function is applied to find the optimal hyperparameters that minimize the root mean square error (RMSE) calculated on the test sample. In this case, the available hyperparameters are <code>numStop</code>, <code>m</code> and <code>s_mtry</code>. Note that <code>s_mtry</code> is a character vector even if integer values are introduced.</p>
 <div class="sourceCode" id="cb76"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb76-1"><a href="#cb76-1"></a><span class="kw">bestRFEAT</span>(training, test,</span>
 <span id="cb76-2"><a href="#cb76-2"></a>          x, y,</span>
 <span id="cb76-3"><a href="#cb76-3"></a>          numStop,</span>
@@ -2019,43 +1956,43 @@ DOM       1.102       1.000
 <span id="cb77-6"><a href="#cb77-6"></a>          <span class="dt">m =</span> <span class="kw">c</span>(<span class="dv">30</span>, <span class="dv">40</span>, <span class="dv">50</span>, <span class="dv">60</span>),</span>
 <span id="cb77-7"><a href="#cb77-7"></a>          <span class="dt">s_mtry =</span> <span class="kw">c</span>(<span class="st">&quot;Breiman&quot;</span>, <span class="st">&quot;2&quot;</span>, <span class="st">&quot;5&quot;</span>))</span></code></pre></div>
 <pre><code>   numStop  m  s_mtry  RMSE
-1       10 60       2 62.69
-2       10 40       2 61.85
-3       10 50       2 60.34
-4       10 30       2 60.02
-5       10 60       5 59.22
-6       10 30       5 59.00
-7       10 50       5 58.30
-8       10 40       5 55.55
-9        5 60       2 54.80
-10       5 40       2 54.51
-11       5 50       5 53.04
-12      10 40 Breiman 52.81
-13       5 50       2 52.61
-14       5 30       5 52.25
-15      10 30 Breiman 51.99
-16      10 60 Breiman 51.87
-17       5 30       2 51.85
-18      10 50 Breiman 51.39
-19       3 50       2 50.45
-20       3 30       2 50.38
-21       3 40       2 50.12
-22       5 60       5 50.05
-23       5 40       5 49.88
-24       3 60       2 49.67
-25       5 50 Breiman 48.44
-26       3 40 Breiman 47.99
-27       3 30       5 47.83
-28       5 60 Breiman 47.04
-29       3 40       5 46.79
-30       5 30 Breiman 46.60
-31       5 40 Breiman 46.47
-32       3 50       5 46.43
-33       3 60 Breiman 45.95
-34       3 60       5 45.88
-35       3 50 Breiman 44.79
-36       3 30 Breiman 44.60</code></pre>
-<p>The best forest is given by the hyperparameters <code>{numStop = 3, m = 30, s_mtry = &quot;Breiman&quot;}</code> with <code>RMSE = 44.60</code>.</p>
+1        3 30 Breiman 44.60
+2        3 50 Breiman 44.79
+3        3 60       5 45.88
+4        3 60 Breiman 45.95
+5        3 50       5 46.43
+6        5 40 Breiman 46.47
+7        5 30 Breiman 46.60
+8        3 40       5 46.79
+9        5 60 Breiman 47.04
+10       3 30       5 47.83
+11       3 40 Breiman 47.99
+12       5 50 Breiman 48.44
+13       3 60       2 49.67
+14       5 40       5 49.88
+15       5 60       5 50.05
+16       3 40       2 50.12
+17       3 30       2 50.38
+18       3 50       2 50.45
+19      10 50 Breiman 51.39
+20       5 30       2 51.85
+21      10 60 Breiman 51.87
+22      10 30 Breiman 51.99
+23       5 30       5 52.25
+24       5 50       2 52.61
+25      10 40 Breiman 52.81
+26       5 50       5 53.04
+27       5 40       2 54.51
+28       5 60       2 54.80
+29      10 40       5 55.55
+30      10 50       5 58.30
+31      10 30       5 59.00
+32      10 60       5 59.22
+33      10 30       2 60.02
+34      10 50       2 60.34
+35      10 40       2 61.85
+36      10 60       2 62.69</code></pre>
+<p>The best Random Forest + Efficiency Analysis Trees model is given by the hyperparameters <code>{numStop = 3, m = 30, s_mtry = &quot;Breiman&quot;}</code> with <code>RMSE = 44.60</code>.</p>
 </div>
 <div id="efficiencyrfeat" class="section level2">
 <h2>efficiencyRFEAT()</h2>
@@ -2151,7 +2088,7 @@ DOM       1.102       1.000
 </div>
 <div id="predictions" class="section level2">
 <h2>Predictions</h2>
-<p><code>predictEAT()</code> and <code>predictRFEAT()</code> return a data frame with the data and the expected output for a set of observations using Efficiency Analysis Trees and Random Forest + Efficiency Analysis Trees techniques respectively. In both cases, <code>newdata</code> refers to a data frame with the input variables. Regarding the <code>object</code> argument, in the first case it corresponds to an <code>EAT</code> object and in the second case to an <code>RFEAT</code> object.</p>
+<p><code>predictEAT()</code> and <code>predictRFEAT()</code> return a data frame with the data and the expected output for a set of observations using Efficiency Analysis Trees and Random Forest + Efficiency Analysis Trees techniques respectively. In both cases, <code>newdata</code> refers to a data frame with the input variables. Regarding the <code>object</code> argument, in the first case it corresponds to an <code>EAT</code> object and in the second case to a <code>RFEAT</code> object.</p>
 <p>In predictions using an <code>EAT</code> object, only one Efficiency Analysis Tree is used. However, for the <code>RFEAT</code> model, the output is predicted by each of the <code>m</code> individual trees trained and subsequently the mean value of all predictions is obtained.</p>
 <div id="predicteat" class="section level3">
 <h3>predictEAT()</h3>
@@ -2165,12 +2102,10 @@ DOM       1.102       1.000
 <h3>predictFDH()</h3>
 <p><code>predictFDH()</code> returns a data frame with the data and the expected output for a set of observations using the Free Disposal Hull mathematical programming model. In this case, it is necessary to enter the data set (<code>data</code>) with the study variables, the indexes of the inputs (<code>x</code>) and the indixes of the outputs (<code>y</code>).</p>
 <div class="sourceCode" id="cb83"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb83-1"><a href="#cb83-1"></a><span class="kw">predictFDH</span>(data, x, y)</span></code></pre></div>
-<div class="sourceCode" id="cb84"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb84-1"><a href="#cb84-1"></a><span class="kw">library</span>(eat)</span>
-<span id="cb84-2"><a href="#cb84-2"></a><span class="kw">library</span>(dplyr)</span>
-<span id="cb84-3"><a href="#cb84-3"></a>input &lt;-<span class="st"> </span><span class="kw">c</span>(<span class="dv">6</span>, <span class="dv">7</span>, <span class="dv">8</span>, <span class="dv">12</span>, <span class="dv">17</span>)</span>
-<span id="cb84-4"><a href="#cb84-4"></a>output &lt;-<span class="st"> </span><span class="dv">3</span><span class="op">:</span><span class="dv">5</span></span>
-<span id="cb84-5"><a href="#cb84-5"></a></span>
-<span id="cb84-6"><a href="#cb84-6"></a><span class="kw">which</span>(<span class="kw">is.na</span>(PISAindex), <span class="dt">arr.ind =</span> <span class="ot">TRUE</span>)</span></code></pre></div>
+<div class="sourceCode" id="cb84"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb84-1"><a href="#cb84-1"></a>input &lt;-<span class="st"> </span><span class="kw">c</span>(<span class="dv">6</span>, <span class="dv">7</span>, <span class="dv">8</span>, <span class="dv">12</span>, <span class="dv">17</span>)</span>
+<span id="cb84-2"><a href="#cb84-2"></a>output &lt;-<span class="st"> </span><span class="dv">3</span><span class="op">:</span><span class="dv">5</span></span>
+<span id="cb84-3"><a href="#cb84-3"></a></span>
+<span id="cb84-4"><a href="#cb84-4"></a><span class="kw">which</span>(<span class="kw">is.na</span>(PISAindex), <span class="dt">arr.ind =</span> <span class="ot">TRUE</span>)</span></code></pre></div>
 <pre><code>    row col
 ESP  32   4</code></pre>
 <div class="sourceCode" id="cb86"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb86-1"><a href="#cb86-1"></a><span class="co"># FDH does not accept NA rows, so we exclude ESP</span></span>

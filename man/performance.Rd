@@ -10,10 +10,10 @@ performance(object)
 \item{object}{An EAT object.}
 }
 \value{
-List with the mean square error (MSE), the root mean square error (RMSE), the mean absolute error (MAE) and the bias (Bias). Additionally, for each leaf node, centralization and dispersion measures and the RMSE are computed.
+List with the root mean square error (RMSE), the mean absolute error (MAE) and the bias (Bias). Additionally, for each leaf node, centralization and dispersion measures and the RMSE are computed.
 }
 \description{
-This function returns a set of common metrics for regression trees for the model as a whole and disaggregated for the leaf nodes.
+This function returns a set of common metrics for regression trees for the EAT model as a whole and disaggregated for the leaf nodes.
 }
 \examples{
 simulated <- eat:::Y1.sim(N = 50, nX = 3)

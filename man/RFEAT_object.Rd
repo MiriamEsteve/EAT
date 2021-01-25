@@ -33,10 +33,10 @@ RFEAT_object(
 \item{s_mtry}{Select number of inputs in each split.
 \itemize{
 \item{\code{"Breiman"}}: \code{in / 3}
-\item{\code{"DEA1"}}: \code{(obs / 2) - out}  
-\item{\code{"DEA2"}}: \code{(obs / 3) - out}
-\item{\code{"DEA3"}}: \code{obs - 2 * out}
-\item{\code{"DEA4"}}: \code{min(obs / out, (obs / 3) - out)}
+\item{\code{"DEA1"}}: \code{(t.obs / 2) - out}  
+\item{\code{"DEA2"}}: \code{(t.obs / 3) - out}
+\item{\code{"DEA3"}}: \code{t.obs - 2 * out}
+\item{\code{"DEA4"}}: \code{min(t.obs / out, (t.obs / 3) - out)}
 }}
 
 \item{na.rm}{Logical. If \code{TRUE}, NA rows are omitted.}
@@ -46,7 +46,7 @@ RFEAT_object(
 \item{error}{Error in forest.}
 }
 \value{
-An RFEAT object
+A RFEAT object
 }
 \description{
 This function saves information about the RFEAT model

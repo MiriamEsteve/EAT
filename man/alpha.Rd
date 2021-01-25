@@ -13,7 +13,7 @@ alpha(tree)
 Numeric value corresponfing to the minimun alpha associated with a suitable node to be pruned.
 }
 \description{
-This function gets the minimun alpha for each subtree evaluated during the pruning procedure of EAT.
+This function gets the minimun alpha for each subtree evaluated during the pruning procedure of Efficiency Analysis Trees.
 }
 \references{
 \insertRef{breiman1984}{eat}

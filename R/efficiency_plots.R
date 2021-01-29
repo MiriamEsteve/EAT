@@ -126,6 +126,10 @@ efficiencyJitter <- function(object, scores_EAT, scores_model, upb = NULL, lwb =
 #' @return Density plot for efficiency scores.
 efficiencyDensity <- function(scores, model = c("EAT", "FDH")) {
   
+  if (!all(model %in% c("EAT", "FDH", "RFEAT", "CEAT", "DEA"))){
+    stop(paste("Some model in", model, "is not allowed. Please, check help(\"efficiencyDensity\")"))
+  }
+  
   names(scores) <- model
   
   scores <- melt(scores, id.vars = NULL)

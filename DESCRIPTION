@@ -40,7 +40,8 @@ Imports:
     ggrepel,
     Rdpack,
     lpSolveAPI,
-    utils
+    utils,
+    reshape2
 Suggests: 
     rmarkdown,
     testthat

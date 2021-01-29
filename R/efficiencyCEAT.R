@@ -362,7 +362,7 @@ efficiencyCEAT <- function(data, x, y, object,
   
   if (!scores_model %in% c("BCC_out", "BCC_in", "DDF", 
                            "RSL_out", "RSL_in", "WAM")){
-    stop(paste(scores_model, "is not available. Please, check help(efficiencyCEAT)"))
+    stop(paste(scores_model, "is not an available scores model. Please, check help(\"efficiencyCEAT\")"))
   }
   
   train_names <- c(object[["data"]][["input_names"]], object[["data"]][["output_names"]])
@@ -381,7 +381,7 @@ efficiencyCEAT <- function(data, x, y, object,
   } else if (length(train_names) != length(data_names)){
     stop("Training and prediction data must have the same number of variables")
   } else if (!all(train_names == data_names)){
-    stop(paste("Variable name: ", data_names[1], "not found in taining data"))
+    stop(paste("Variable name: ", data_names[1], "not found in training data"))
   }
 
   j <- nrow(data)

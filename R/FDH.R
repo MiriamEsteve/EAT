@@ -10,8 +10,8 @@
 #' 
 #' @examples
 #'  
-#' simulated <- eat:::X2Y2.sim(N = 50, border = 0.2)
-#' predictFDH(simulated, x = c(1, 2), y = c(3, 4))
+#' simulated <- eat:::Y1.sim(N = 50, nX = 1)
+#' predictFDH(simulated, x = 1, y = 2)
 #' 
 #' @return Data frame with the original data and the predicted values through a Free Disposal Hull model.
 predictFDH <- function(data, x, y) {

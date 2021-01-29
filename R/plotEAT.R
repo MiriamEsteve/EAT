@@ -27,8 +27,9 @@
 #' @export
 plotEAT <- function(object) {
   if (class(object) != "EAT"){
-    stop(paste(object, "must be an EAT object"))
-  }
+    stop(paste(deparse(substitute(object)), "must be an EAT object"))
+    
+  } 
   
   tree <- object[["tree"]]
   data <- object[["data"]][["df"]]
@@ -153,15 +154,15 @@ plotEAT <- function(object) {
     theme(legend.position = "none")
 }
 
-#' @title Layout for nodes in EAT_plot
+#' @title Layout for nodes in plotEAT
 #'
-#' @description This function modifies the coordinates of the nodes in the EAT_plot function to overcome overlapping.
+#' @description This function modifies the coordinates of the nodes in the plotEAT function to overcome overlapping.
 #'
-#' @param py party object.
+#' @param py a party object.
 #'
 #' @importFrom ggparty ggparty
 #'
-#' @return Suitable modification of layout dataframe.
+#' @return Dataframe with suitable modifications of the nodes layout.
 layout <- function(py) {
 
   layout <- ggparty(py)$data[, 1:4]

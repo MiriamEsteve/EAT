@@ -33,17 +33,18 @@
 #' 
 "_PACKAGE"
 
-utils::globalVariables(c("x1", "x_values",
-                         "index",
-                         "SL", "a", "R", "N", "id", "Prop", "MSE", "index",
-                         "splitvar", "Id", "R", "nodesize", "Y", "n1", "n2",
-                         "V1",
-                         "id", "index", "Group", "Score",
-                         "xi", "desc", "Importance", "id",
-                         "Importance",
-                         "id", "X1", "X2", "X3", "X4", "X5", "X6", "X7",
-                         "RF", 
-                         "Model", "score")) 
+utils::globalVariables(c("SL", "a", "R", "N", "id", "Proportion", "index", # EAT_object
+                         "xi", "desc", "Importance", # M_Breiman + id
+                         "value", "Model", # efficiencyDensity
+                         "Group", "Score", # efficiencyJitter + SL, id, index
+                         "RF", # efficiencyRFEAT 
+                         "x1", "Frontier", # frontier + Model
+                         "X1", "X2", "X3", "X4", "X5", "X6", "X7", # imp_var_EAT + id
+                         "splitvar", "Id", "n1" # plotEAT + R
+                         ))
 
-# frontier - print_results - EAT_object - EAT_plot - efficiency_scores - efficiency_jitter - M_Breiman - barplot_importance - imp_var_Breiman - efficiency_RFEAT - efficiency_density
+# RFEAT_object : id
+# baplot_importance: Importance
+# imp_var_RFEAT: desc + Importance
+# summary.EAT: SL + index
 

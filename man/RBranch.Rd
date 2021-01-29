@@ -2,7 +2,7 @@
 % Please edit documentation in R/alpha.R
 \name{RBranch}
 \alias{RBranch}
-\title{Branch pruning}
+\title{Branch Pruning}
 \usage{
 RBranch(t, tree)
 }
@@ -12,8 +12,8 @@ RBranch(t, tree)
 \item{tree}{A list containing EAT nodes.}
 }
 \value{
-List with the sum of the errors of the child nodes of the given node and the total number of leaf nodes that come from it.
+List containing the sum of the errors of the child nodes of the pruned node and the total number of leaf nodes that come from it.
 }
 \description{
-This function computes the error of a branch as the sum of the errors of its child nodes and the total number of leaf nodes that come from it.
+This function computes the error of a branch as the sum of the errors of its child nodes.
 }

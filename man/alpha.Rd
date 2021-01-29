@@ -2,7 +2,7 @@
 % Please edit documentation in R/alpha.R
 \name{alpha}
 \alias{alpha}
-\title{Calculation of alpha for pruning procedure}
+\title{Alpha Calculation for Pruning Procedure}
 \usage{
 alpha(tree)
 }
@@ -10,11 +10,8 @@ alpha(tree)
 \item{tree}{A list containing EAT nodes.}
 }
 \value{
-Numeric value corresponfing to the minimun alpha associated with a suitable node to be pruned.
+Numeric value corresponding to the minimun alpha associated with a suitable node to be pruned.
 }
 \description{
 This function gets the minimun alpha for each subtree evaluated during the pruning procedure of Efficiency Analysis Trees.
-}
-\references{
-\insertRef{breiman1984}{eat}
 }

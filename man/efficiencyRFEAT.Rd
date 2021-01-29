@@ -17,9 +17,9 @@ efficiencyRFEAT(data, x, y, object, r = 2, FDH = TRUE, na.rm = TRUE)
 
 \item{r}{Integer. Decimal units for scores.}
 
-\item{na.rm}{Logical. If \code{TRUE}, \code{NA} rows are omitted.}
+\item{FDH}{Logical. If \code{TRUE}, FDH scores are computed.}
 
-\item{FDH.}{Logical. If \code{TRUE}, FDH scores are computed.}
+\item{na.rm}{Logical. If \code{TRUE}, \code{NA} rows are omitted.}
 }
 \value{
 Dataframe with input variables and efficiency scores through a Random Forest + Efficiency Analysis Trees model.
@@ -32,7 +32,7 @@ This function calculates the efficiency scores for each DMU through a Random For
 simulated <- eat:::X2Y2.sim(N = 50, border = 0.2)
 RFEAT_model <- RFEAT(data = simulated, x = c(1,2), y = c(3, 4))
 
-efficiencyEAT(data = simulated, x = c(1, 2), y = c(3, 4), object = RFEAT_model, 
-              scores_model = "BCC_out", r = 2, FDH = TRUE, na.rm = TRUE)
+efficiencyRFEAT(data = simulated, x = c(1, 2), y = c(3, 4), object = RFEAT_model, 
+                r = 2, FDH = TRUE, na.rm = TRUE)
 
 }

@@ -140,8 +140,8 @@ RFEAT <- function(data, x, y, numStop = 5, m = 50,
   
   # arr_test is a list with m elements.
   # each element of arr_test is a list with N elements.
-  # each element of the sublist is a binary value that indicates if the DMU is in the sample
-  
+  # each element of the sublist is a binary value that indicates if the DMU is in the training sample.
+
   # TEST
   for(i in 1:N){
     reg_i <- data[i, ]
@@ -165,7 +165,8 @@ RFEAT <- function(data, x, y, numStop = 5, m = 50,
     err <- err + sum((reg_i[y] - (y_EstimArr / Ki)) ^ 2)
   }
   
-  RFEAT <- RFEAT_object(data, x, y, rwn, numStop, m, s_mtry, na.rm, forest, err / N)
+  RFEAT <- RFEAT_object(data, x, y, rwn, numStop, m, s_mtry, na.rm, forest, err / N,
+                        forestArray)
   
   return(RFEAT)
 }

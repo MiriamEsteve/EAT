@@ -428,96 +428,54 @@ size <- function(object) {
   
 }
 
-#' @title Efficiency Analysis Tree output efficiency levels
+#' @title Efficiency Analysis Tree Frontier Output Levels
 #'
-#' @description This function returns the output efficiency levels of an Efficiency Analysis Tree model.
+#' @description This function returns the frontier output levels of an Efficiency Analysis Tree model.
 #'
 #' @param object An EAT object.
 #' 
-#' @return Data frame with output efficiency levels.
+#' @return Data frame with frontier output levels.
 #' 
 #' @examples
 #' 
 #' simulated <- eat:::Y1.sim(N = 50, nX = 3)
 #' model <- EAT(data = simulated, x = c(1, 2, 3), y = 4, numStop = 10, fold = 5)
-#' eff.levels(model)
+#' frontier.levels(model)
 #' 
 #' @export
-eff.levels <- function(object) {
+frontier.levels <- function(object) {
   
-  eff.levels <- as.data.frame(unique(object[["model"]][["y"]]))
-  colnames(eff.levels) <- object[["data"]][["output_names"]]
+  frontier.levels <- as.data.frame(unique(object[["model"]][["y"]]))
+  colnames(frontier.levels) <- object[["data"]][["output_names"]]
   
-  return(eff.levels)
+  return(frontier.levels)
   
 }
 
-#' @title Performance of Efficiency Analysis Trees model
+#' @title Leaf Nodes Descriptive
 #'
-#' @description This function returns a set of common metrics for regression trees for the EAT model as a whole and disaggregated for the leaf nodes.
+#' @description This function returns a set of common measures for the leaf nodes of an Efficiency Analysis Trees model. 
 #' 
 #' @param object An EAT object.
 #' 
-#' @return List with the root mean square error (RMSE), the mean absolute error (MAE) and the bias (Bias). Additionally, for each leaf node, centralization and dispersion measures and the RMSE are computed.
+#' @return List with centralization and dispersion measures and the root mean square error (RMSE) for each leaf node.
+#' 
 #' 
 #' @importFrom stats median sd
 #' 
 #' @examples
 #' simulated <- eat:::Y1.sim(N = 50, nX = 3)
 #' model <- EAT(data = simulated, x = c(1, 2, 3), y = 4, numStop = 10, fold = 5)
-#' performance(model)
+#' descrEAT(model)
 #' 
 #' @export
-performance <- function(object) {
+descrEAT <- function(object) {
   
   data <- object[["data"]][["df"]]
   x <- object[["data"]][["x"]]
   y <- object[["data"]][["y"]]
   tree <- object[["tree"]]
   output_names <- object[["data"]][["output_names"]]
-  
-  # Actual values
-  actual <- data.matrix(data[, y])
-  colnames(actual) <- output_names
-  
-  # Predicted values
-  predicted <- data.frame()
-  
-  # Predictions for EAT
-  for (i in 1:nrow(data)){
-    predicted <- rbind(predicted, predictor(tree, data[i, x]))
-  }
-  
-  predicted <- data.matrix(predicted)
-  colnames(predicted) <- paste(output_names, "_pred", sep = "")
-  
-  N <- nrow(data)
-  
-  # MSE
-  MSE <- sum(sapply((actual - predicted) ^ 2, sum)) / N
-  
-  # RMSE
-  RMSE <- sqrt(MSE)
-  
-  # MAE
-  MAE <- sum(sapply(abs(actual - predicted), sum)) / N
-  
-  # Bias
-  Bias <- sum(sapply(actual - predicted, sum))
-  
-  cat(
-    "\n",
-    "# ========================== #", "\n",
-    "#           Metrics          #", "\n",
-    "# ========================== #", rep("\n", 2) 
-  )
-  
-  cat(
-      "  RMSE:", round(RMSE, 2), "\n",
-      "  MAE:", round(MAE, 2), "\n",
-      " Bias:", round(Bias, 2)
-      )
-  
   nodes_df <- object[["nodes_df"]]
   nY <- length(y)
   nX <- length(x)
@@ -577,10 +535,6 @@ performance <- function(object) {
     
   }
   
-  invisible(list(MSE = MSE,
-                 RMSE = RMSE,
-                 MAE = MAE,
-                 Bias = Bias,
-                 descriptive = descriptive))
+  return(descriptive)
   
 }

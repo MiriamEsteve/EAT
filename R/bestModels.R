@@ -32,7 +32,7 @@
 #'         fold = c(5, 7, 10))
 #'
 #' @return Dataframe in which each row corresponds to a given set of hyperparameters with its corresponding root mean square error (RMSE).
-bestEAT <- function(training, test, x, y, numStop = NULL, fold = NULL, max.depth = NULL, na.rm = TRUE) {
+bestEAT <- function(training, test, x, y, numStop = 5, fold = 5, max.depth = NULL, na.rm = TRUE) {
 
   train_names <- names(training[, c(x, y)])
   test_names <- names(test[, c(x, y)])
@@ -40,19 +40,11 @@ bestEAT <- function(training, test, x, y, numStop = NULL, fold = NULL, max.depth
   if (length(train_names) != length(test_names)){
     stop("Training and test data must have the same number of variables")
   } else if (!all(train_names == test_names)){
-    stop(paste("Variable name: ", test_names[1], "not found in taining data"))
+    stop(paste("Variable name: ", test_names[1], "not found in training data"))
   }
   
   test <- preProcess(test, x, y, na.rm = na.rm)[[2]]
-  
-  if (is.null(numStop)) {
-    numStop <- 5
-  }
-  
-  if (is.null(fold)) {
-    fold <- 5
-  }
-  
+
   if (is.null(max.depth)) {
     hp <- expand.grid(numStop = numStop,
                       fold = fold)
@@ -111,7 +103,7 @@ bestEAT <- function(training, test, x, y, numStop = NULL, fold = NULL, max.depth
 #' @param y Vector. Column output indexes in data.
 #' @param numStop Vector. Set of minimun number of observations in a node for a split to be attempted.
 #' @param m Vector. Set of number of trees to be build.
-#' @param s_mtry. Character vector. Set of options for selecting number of inputs to be selected in each split.
+#' @param s_mtry Character vector. Set of options for selecting number of inputs to be selected in each split.
 #' @param na.rm Logical. If \code{TRUE}, \code{NA} rows are omitted.
 #' 
 #' @examples

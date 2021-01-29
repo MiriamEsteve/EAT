@@ -9,8 +9,8 @@ bestEAT(
   test,
   x,
   y,
-  numStop = NULL,
-  fold = NULL,
+  numStop = 5,
+  fold = 5,
   max.depth = NULL,
   na.rm = TRUE
 )

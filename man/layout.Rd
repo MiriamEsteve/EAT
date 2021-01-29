@@ -2,16 +2,16 @@
 % Please edit documentation in R/plotEAT.R
 \name{layout}
 \alias{layout}
-\title{Layout for nodes in EAT_plot}
+\title{Layout for nodes in plotEAT}
 \usage{
 layout(py)
 }
 \arguments{
-\item{py}{party object.}
+\item{py}{a party object.}
 }
 \value{
-Suitable modification of layout dataframe.
+Dataframe with suitable modifications of the nodes layout.
 }
 \description{
-This function modifies the coordinates of the nodes in the EAT_plot function to overcome overlapping.
+This function modifies the coordinates of the nodes in the plotEAT function to overcome overlapping.
 }

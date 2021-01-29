@@ -110,11 +110,12 @@ EAT_object <- function(data, x, y, register_names, numStop, fold, max.depth, na.
 #' @param na.rm Logical. If \code{TRUE}, NA rows are omitted.
 #' @param forest A list containing the individual EAT trees.
 #' @param error Error in forest.
+#' @param OOB List containing the observations with which each tree has been trained.
 #'
 #' @importFrom dplyr %>% select filter
 #'
 #' @return A RFEAT object
-RFEAT_object <- function(data, x, y, register_names, numStop, m, s_mtry, na.rm, forest, error) {
+RFEAT_object <- function(data, x, y, register_names, numStop, m, s_mtry, na.rm, forest, error, OOB) {
   
   # Output and input names
   output_names <- names(data)[y]
@@ -131,7 +132,8 @@ RFEAT_object <- function(data, x, y, register_names, numStop, m, s_mtry, na.rm, 
                                         s_mtry = s_mtry,
                                         na.rm = na.rm),
                        "forest" = forest,
-                       "error" = error)
+                       "error" = error,
+                       "OOB" = OOB)
   
   class(RFEAT_object) <- "RFEAT"
   

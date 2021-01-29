@@ -19,9 +19,9 @@ bestRFEAT(training, test, x, y, numStop, m, s_mtry, na.rm = TRUE)
 
 \item{m}{Vector. Set of number of trees to be build.}
 
-\item{na.rm}{Logical. If \code{TRUE}, \code{NA} rows are omitted.}
+\item{s_mtry}{Character vector. Set of options for selecting number of inputs to be selected in each split.}
 
-\item{s_mtry.}{Character vector. Set of options for selecting number of inputs to be selected in each split.}
+\item{na.rm}{Logical. If \code{TRUE}, \code{NA} rows are omitted.}
 }
 \value{
 Dataframe in which each row corresponds to a given set of hyperparameters with its corresponding root mean square error (RMSE).

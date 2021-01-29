@@ -14,7 +14,8 @@ RFEAT_object(
   s_mtry,
   na.rm,
   forest,
-  error
+  error,
+  OOB
 )
 }
 \arguments{
@@ -44,6 +45,8 @@ RFEAT_object(
 \item{forest}{A list containing the individual EAT trees.}
 
 \item{error}{Error in forest.}
+
+\item{OOB}{List containing the observations with which each tree has been trained.}
 }
 \value{
 A RFEAT object

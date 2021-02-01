@@ -15,13 +15,13 @@ knitr::opts_chunk$set(
 
 # eat
 
-`EAT` is an alghoritm by which a production frontier is obtained through and adaptation of regression trees based on CART. The generation of production frontiers falls within the field of efficiency analysis, of which some concepts must be known:
-  
-  * A **production frontier** is a boundary defined for those feasible combinations of input and output that are efficient.
-* A **DMU** (**D**ecision **M**aking **U**nits) is an observation of the dataset whose efficiency is to be assessed.
-* A specific DMU is **efficient** when is located at the production frontier and it has room for improvement regarding its inputs or outputs when it is in the area below the frontier.
+The `EAT` algorithm performs a regression tree based on CART methodology under a new approach that guarantees obtaining a frontier as estimator that fulfills the property of free disposability. This new technique has been baptized as Efficiency Analysis Trees. Some of its main functions are:
 
-The `EAT` algorithm must be conceived as a modeling of the response variable (output) in order to know its most efficient levels for each of the different regions of the input space that are generated. Thus, subspaces with homogeneous DMUs (since they must share the characteristics of said subspace) are delimited and the maximun expected output for that subspace is provided. In this way, the `EAT` predictor results in a monotonic increasing frontier with a stepped form where each of these steps corresponds to a node of the tree which contains observations with efficient and non-efficient output levels.
+* To create homogeneous groups of DMUs in terms of their inputs and to know for each of these groups, what is the maximum output expected.
+
+* To know which DMUs exercise best practices and which of them do not obtain a performance according to their resources level.
+
+* To know what variables are more relevant in obtaining efficient levels of output.
 
 ## Installation
 
@@ -48,132 +48,214 @@ data("PISAindex")
 
 ```{r model1}
 single_model <- EAT(data = PISAindex, 
-                    x = 6,
-                    y = 4,
-                    numStop = 1,
-                    fold = 5,
-                    na.rm = TRUE)
+                    x = 15, # input 
+                    y = 3) # output
+```
+
+* Print an EAT object
+
+```{r print.model1, collapse = FALSE}
+print(single_model)
+```
+
+* Summary of an EAT object
+
+```{r summary.model1, collapse = FALSE}
+summary(single_model)
+```
+
+* Number of leaf nodes of an EAT object
+
+```{r size.model1, collapse = FALSE}
+size(single_model)
+```
+
+* Frontier levels of output for an EAT object
+
+```{r frt.model1, collapse = FALSE}
+frontier.levels(single_model)
+```
+
+* Descriptive analysis for an EAT object
+
+```{r perf.model1, collapse = FALSE}
+descriptiveEAT <- descrEAT(single_model)
+
+# Descriptive for the nodes 1-3
+descriptiveEAT[1:3]
 ```
 
 * Plot the frontier
 
-```{r frontier, fig.width = 10}
-frontier(single_model,
+```{r frontier, collapse = FALSE}
+frontier(object = single_model,
+         FDH = TRUE, 
          train.data = TRUE,
-         train.color = "black",
-         pch = 19,
-         size = 1,
          rwn = TRUE)
+
 ```
 
 * EAT model with 18 inputs and 3 outputs
 
-```{r model2}
+```{r model2, collapse = FALSE}
 multioutput <- EAT(data = PISAindex, 
                    x = 6:18,
-                   y = 3:5,
-                   numStop = 6,
-                   fold = 5,
-                   na.rm = TRUE)
+                   y = 3:5)
 ```
 
 * Ranking of importance of variables for EAT
 
-```{r ranking, fig.width = 10}
-ranking_EAT(object = multioutput,
-            r = 2,
-            threshold = 75,
-            barplot = TRUE)
+```{r ranking, collapse = FALSE}
+rankingEAT(object = multioutput,
+           r = 2,
+           barplot = TRUE,
+           threshold = 70)
 ```
 
 * Plot an EAT model
 
-```{r plot, fig.width = 10, fig.height = 10}
-EAT_plot(object = multioutput)
+```{r plot, collapse = FALSE}
+plotEAT(object = multioutput)
+```
+
+* Tuning an EAT model
+
+```{r training_test, collapse = FALSE}
+n <- nrow(PISAindex) # Observations in the dataset
+t_index <- sample(1:n, n * 0.7) # Training indexes
+training <- PISAindex[t_index, ] # Training set
+test <- PISAindex[-t_index, ] # Test set
+
+bestEAT(training = training, 
+        test = test,
+        x = 6:18,
+        y = 3:5,
+        numStop = c(5, 7, 10),
+        fold = c(5, 7))
 ```
 
 * Efficiency scores EAT
 
-```{r eff_EAT}
-scores_EAT <- efficiency_EAT(data = PISAindex,
-                             x = 6:18,
-                             y = 3:5,
-                             object = multioutput,
-                             scores_model = "EAT_BCC_out",
-                             r = 2,
-                             na.rm = TRUE)
+```{r eff_EAT, collapse = FALSE}
+scores_EAT <-  efficiencyEAT(data = PISAindex,
+                            x = 15, 
+                            y = 3,
+                            object = single_model, 
+                            scores_model = "BCC_out",
+                            r = 3,
+                            FDH = TRUE)
 ```
 
-* Efficiency scores FDH
+* Efficiency scores convex EAT
 
-```{r eff}
-scores_FDH <- efficiency_FDH(data = PISAindex,
-                             x = 6:18,
-                             y = 3:5,
-                             scores_model = "FDH_BCC_out",
-                             r = 4,
-                             na.rm = TRUE)
+```{r scoresCEAT, collapse = FALSE}
+scores_CEAT <- efficiencyCEAT(data = PISAindex,
+                              x = 15, 
+                              y = 3,
+                              object = single_model, 
+                              scores_model = "BCC_in",
+                              r = 3,
+                              DEA = TRUE)
 ```
 
 * Efficiency jitter plot
 
-```{r jitter, fig.width = 10, fig.height = 8}
-efficiency_jitter(object = multioutput,
-                  scores_EAT = scores_EAT$EAT_BCC_out,
-                  scores_model = "EAT_BCC_out",
-                  upb = NULL,
-                  lwb = NULL)
+```{r jitter, collapse = FALSE}
+efficiencyJitter(object = single_model,
+                 scores_EAT = scores_EAT$EAT_BCC_out,
+                 scores_model = "BCC_out",
+                 lwb = 1.2)
 ```
 
 * Efficiency density plot
 
-```{r density, fig.width = 10, fig.height = 8}
-efficiency_density(scores_EAT = scores_EAT$EAT_BCC_out,
-                   scores_FDH = scores_FDH$FDH_BCC_out)
-```
-
-* EAT predict 
-
-```{r predict}
-predict_EAT(object = multioutput,
-            newdata = PISAindex[, 6:18])
+```{r density, collapse = FALSE}
+efficiencyDensity(scores = scores_EAT[, 3:4],
+                  model = c("EAT", "FDH"))
 ```
 
 * RFEAT model
 
-```{r RFEAT_model}
-RFEAT_model <- RFEAT(data = PISAindex,
-                     x = 6:18,
-                     y = 3:5,
-                     numStop = 5,
-                     m = 5,
-                     s_mtry = "Breiman",
-                     na.rm = TRUE)
+```{r RFEAT_model, collapse = FALSE}
+forest <- RFEAT(data = PISAindex, 
+                x = 6:18, # input 
+                y = 5, # output
+                numStop = 5, 
+                m = 30,
+                s_mtry = "Breiman",
+                na.rm = TRUE)
+```
+
+* Print a RFEAT object
+
+```{r print.RFEAT, collapse = FALSE}
+print(forest)
+```
+
+* Plot the Out-of-Bag error for a forest of k trees
+
+```{r plot.RFEAT, collapse = FALSE}
+plotRFEAT(forest)
 ```
 
 * RFEAT ranking
 
-```{r RFEAT_ranking}
-ranking_RFEAT(object = RFEAT_model,
-              r = 4,
-              barplot = TRUE)
+```{r rankingRFEAT, collapse = FALSE}
+rankingRFEAT(object = forest, r = 2,
+             barplot = TRUE)
+```
+
+* Tuning a RFEAT model
+
+```{r tuning.bestRFEAT, collapse = FALSE}
+bestRFEAT(training = training, 
+          test = test,
+          x = 6:18,
+          y = 3:5,
+          numStop = c(5, 10),
+          m = c(30, 35, 40),
+          s_mtry = c("Breiman", "3"))
 ```
 
 * RFEAT scores
 
-```{r RFEAT_scores}
-efficiency_RFEAT(data = PISAindex,
-                 x = 6:18,
-                 y = 3:5,
-                 object = RFEAT_model)
+```{r RFEAT_scores, collapse = FALSE}
+efficiencyRFEAT(data = PISAindex,
+                x = 6:18, # input
+                y = 5, # output
+                object = forest,
+                FDH = TRUE)
 ```
 
-* RFEAT predict
+* EAT, RFEAT and FDH predictions 
 
-```{r RFEAT_predict}
-predict_RFEAT(object = RFEAT_model,
-              newdata = PISAindex[, 6:18])
-        
+```{r models, collapse = FALSE}
+input <- c(6, 7, 8, 12, 17)
+output <- 3:5
+
+which(is.na(PISAindex), arr.ind = TRUE)
+
+# FDH does not accept NA rows, so we exclude ESP
+
+EAT_model <- EAT(data = PISAindex[- 32, ],
+                 x = input,
+                 y = output)
+
+RFEAT_model <- RFEAT(data = PISAindex[- 32, ],
+                     x = input,
+                     y = output)
+
+# PREDICTIONS
+
+predictions_EAT <- predictEAT(object = EAT_model,
+                              newdata = PISAindex[- 32, input])
+
+predictions_RFEAT <- predictRFEAT(object = RFEAT_model,
+                                  newdata = PISAindex[- 32, input])
+
+predictions_FDH <- predictFDH(data = PISAindex[- 32, ],
+                              x = input,
+                              y = output)
 ```
 
 Please, check the vignette for more details.

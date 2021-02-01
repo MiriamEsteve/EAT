@@ -39,7 +39,7 @@ plotEAT <- function(object) {
   nodelist <- vector("list", length(tree))
   
   for (i in 1:length(nodelist)) {
-    if (tree[[i]][["s"]] == -1) {
+    if (tree[[i]][["SL"]] == -1) {
       nodelist[[i]] <- list(
         "id" = as.integer(i),
         "info" = list(

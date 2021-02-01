@@ -725,7 +725,7 @@ print(forest)
 
 `plotRFEAT()` returns the Out-Of-Bag error for the training dataset and a forest consisting of k trees.
 
-```{r plot.RFEAT, collapse = FALSE, fig.width = 7.2, fig.height = 6, fig.align = 'center'}
+```{r plot.RFEAT, collapse = FALSE, fig.width = 7.2, fig.height = 6}
 plotRFEAT(forest)
 ```
 
@@ -738,7 +738,7 @@ rankingRFEAT(object, r = 2,
              barplot = TRUE)
 ```
 
-```{r rankingRFEAT_forest, fig.width = 7.2, fig.height = 6, fig.align = 'center'}
+```{r rankingRFEAT_forest, fig.width = 7.2, fig.height = 6}
 rankingRFEAT(object = forest, r = 2,
              barplot = TRUE)
 ```

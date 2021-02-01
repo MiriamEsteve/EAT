@@ -21,7 +21,7 @@ imp_var_EAT <- function(data, tree, x, y, r) {
   nX <- length(x)
 
   for (t in 1:length(tree)) {
-    if (tree[[t]][["s"]] == -1) next
+    if (tree[[t]][["SL"]] == -1) next
 
     for (xi in 1:nX) {
       P <- list()
@@ -131,7 +131,7 @@ M_Breiman <- function(object, r) {
   
   for (var in 1:nX) {
     for (t in 1:length(tree)) {
-      if (tree[[t]][["s"]] == -1) next
+      if (tree[[t]][["SL"]] == -1) next
       
       errors <- resultado %>% filter(
         xi == var,

@@ -35,7 +35,7 @@ Let us consider $n$ Decision Making Units (DMUs) to be evaluated. $DMU_i$ consum
     \Psi = \{(\textbf{x, y}) \in R^{m+s}_{+}: \textbf{x} \text{ can produce } \textbf{y}\}
 \end{equation}
 
-Monotonicity (free disposability) of inputs and outputs is assumed, meaning that if $(\textbf{x, y}) \in \Psi$, then $(\textbf{x', y'}) \in \Psi$, as soon as $\textbf{x'} \geq \textbf{x}$ and $\textbf{y'} \leq \textbf{y}$. Often convexity of $\Psi$ is also assumed. The efficient frontier of $\Psi$ may be defined as $\partial(\boldsymbol{\Psi}) := \{(\boldsymbol{x,y}) \in \boldsymbol{\Psi}: \boldsymbol{\hat{x}} < \boldsymbol{x}, \boldsymbol{\hat{y}} > \boldsymbol{y} \Rightarrow (\boldsymbol{\hat{x},\hat{y}}) \notin \boldsymbol{\Psi} \}$. Technical inefficiency is defined as the distance from a point that belongs to $\Psi$ to the production frontier $\partial(\Psi)$. For a point located inside \Psi, it is evident that there are many possible paths tothe frontier, each associated with a different technical efficiency measure.
+Monotonicity (free disposability) of inputs and outputs is assumed, meaning that if $(\textbf{x, y}) \in \Psi$, then $(\textbf{x', y'}) \in \Psi$, as soon as $\textbf{x'} \geq \textbf{x}$ and $\textbf{y'} \leq \textbf{y}$. Often convexity of $\Psi$ is also assumed. The efficient frontier of $\Psi$ may be defined as $\partial(\boldsymbol{\Psi}) := \{(\boldsymbol{x,y}) \in \boldsymbol{\Psi}: \boldsymbol{\hat{x}} < \boldsymbol{x}, \boldsymbol{\hat{y}} > \boldsymbol{y} \Rightarrow (\boldsymbol{\hat{x},\hat{y}}) \notin \boldsymbol{\Psi} \}$. Technical inefficiency is defined as the distance from a point that belongs to $\Psi$ to the production frontier $\partial(\Psi)$. For a point located inside $\Psi$, it is evident that there are many possible paths to the frontier, each associated with a different technical inefficiency measure.
 
 In this section, an **EAT** model, an **RFEAT** model, a **FDH** model and a **DEA** model refer to a modeling carried out using Efficiency Analysis Trees technique, Random Forest + Efficiency Analysis Trees technique, Free Disposal Hull method and Data Envelopment Analysis method respectively. Additionally, a **CEAT** model refers to a convex **EAT** model. The functions developed in the `eat` library are always oriented to one of the four previous models (EAT, RFEAT, FDH or DEA) and can be divided into seven categories depending on its purpose:
   
@@ -45,7 +45,7 @@ library(dplyr)
 functions <- data.frame("Purpose" = c(rep("Modeling", 2),
                                       rep("Summarise", 5),
                                       rep("Tuning", 2), 
-                                      rep("Graph", 2),
+                                      rep("Graph", 3),
                                       rep("Calculating efficiency scores", 3), 
                                       rep("Graph efficiency scores", 2),
                                       rep("Predict", 3), 
@@ -53,13 +53,13 @@ functions <- data.frame("Purpose" = c(rep("Modeling", 2),
                         "Function name" = c("EAT", "RFEAT",
                                             "print", "summary", "size", "frontier.levels", "descrEAT",
                                             "bestEAT", "bestRFEAT", 
-                                            "frontier", "plotEAT", 
+                                            "frontier", "plotEAT", "plotRFEAT",
                                             "efficiencyEAT", "efficiencyCEAT", "efficiencyRFEAT",
                                             "efficiencyDensity", "efficiencyJitter",
                                             "predictEAT", "predictRFEAT", "predictFDH",
                                             "rankingEAT", "rankingRFEAT"), 
                         "Usage" = c("Apply Efficiency Analysis Trees technique to a data frame. Return an EAT object.",
-                                    "Apply Random Forest + Efficiency Analysis technique to a data frame. Return a RFEAT object.",
+                                    "Apply Random Forest + Efficiency Analysis Trees technique to a data frame. Return a RFEAT object.",
                                     "For an EAT object: print the tree structure of an EAT model. 
                                     For a RFEAT object: print a brief summary of a RFEAT model.",
                                     "For an EAT object: return a summary of the leaf nodes, general information about the model and the error and
@@ -73,6 +73,7 @@ functions <- data.frame("Purpose" = c(rep("Modeling", 2),
                                     "Plot the estimated frontier through an EAT model in a low dimensional scenario
                                     (FDH estimated frontier is optional).",
                                     "Plot the tree structure of an EAT model.",
+                                    "Shows a line graph with the OOB error on the y-axis calculated from a forest made up of k trees (x-axis).",
                                     "Calculate DMU efficiency scores through an EAT model (through a FDH model is optional).",
                                     "Calculate DMU efficiency scores through a convex EAT model (through a DEA model is optional).",
                                     "Calculate DMU efficiency scores through a RFEAT model (through a FDH model is optional).",
@@ -89,8 +90,8 @@ functions <- data.frame("Purpose" = c(rep("Modeling", 2),
 kableExtra::kable(functions) %>%
   kableExtra::kable_styling("striped", full_width = F) %>%
   kableExtra::collapse_rows(columns = 1, valign = "middle") %>%
-  kableExtra::row_spec(c(1:2, 8:9, 12:14, 17:19), background = "#DBFFD6") %>%
-  kableExtra::row_spec(c(3:7, 10:11, 15:16, 20:21), background = "#FFFFD1") 
+  kableExtra::row_spec(c(1:2, 8:9, 13:15, 18:20), background = "#DBFFD6") %>%
+  kableExtra::row_spec(c(3:7, 10:12, 16:17, 21:22), background = "#FFFFD1") 
 ```
 
 The `PISAindex` database is included as a data object in the `eat` library and is employed to exemplify the package functions. On the one hand, the inputs correspond to 13 variables that define the socioeconomic context of a country by means of a score in the range [1-100], except for the Gross Domestic Product by Purchasing Power Parity, which is measured in thousands of dollars. All of them have been obtained from the [Social Progress Index](https://www.socialprogress.org/). On the other hand, the performance of each country in the PISA exams is measured by the average score of its schools in the disciplines of Science, Reading and Mathematics and they have been collected from [PISA 2018 Results](https://www.oecd.org/pisa/Combined_Executive_Summaries_PISA_2018.pdf).
@@ -432,7 +433,7 @@ In each node, we can obtain the following information:
   
   * `id`: node index.
   * `R`: error at the node.
-  * `n(t)`: number of DMUs in a node.
+  * `n(t)`: number of DMUs at the node.
   * `input name` by which the split take place.
   * `y` : vector of predictions.
 
@@ -697,7 +698,7 @@ Random Forest + Efficiency Analysis Trees (`RFEAT`) has also been developed with
   * `DEA3` = $n(t) - 2 \cdot n_{y}$
   * `DEA4` = $min(\frac{n(t)}{n_{y}}, \frac{n(t)}{3} - n_{y})$
   
-The function returns an `RFEAT` object.
+The function returns a `RFEAT` object.
 
 ```{r RF, eval = FALSE}
 RFEAT(data, x, y,
@@ -722,7 +723,7 @@ print(forest)
 
 ## plotRFEAT()
 
-`plotRFEAT()` returns the root mean square error (RMSE) for the training data set for the number of trees given on the x-axis.
+`plotRFEAT()` returns the Out-Of-Bag error for the training dataset and a forest consisting of k trees.
 
 ```{r plot.RFEAT, collapse = FALSE, fig.width = 7.2, fig.height = 6, fig.align = 'center'}
 plotRFEAT(forest)
@@ -737,7 +738,7 @@ rankingRFEAT(object, r = 2,
              barplot = TRUE)
 ```
 
-```{r rankingRFEAT_ex, fig.width = 7.2, fig.height = 6, fig.align = 'center'}
+```{r rankingRFEAT_forest, fig.width = 7.2, fig.height = 6, fig.align = 'center'}
 rankingRFEAT(object = forest, r = 2,
              barplot = TRUE)
 ```

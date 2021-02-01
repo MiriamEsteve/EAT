@@ -10,10 +10,10 @@ plotRFEAT(object)
 \item{object}{A RFEAT object.}
 }
 \value{
-Line plot with the error and the number of trees in the forest.
+Line plot with the OOB error and the number of trees in the forest.
 }
 \description{
-Plot a graph with the calculated error on a data sample for a given number of trees.
+Plot a graph with the Out-of-Bag error for the training dataset and a forest consisting of k trees.
 }
 \examples{
 

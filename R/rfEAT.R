@@ -149,7 +149,7 @@ RFEAT <- function(data, x, y, numStop = 5, m = 50,
     y_EstimArr <- rep(list(0), nY)
     
     # Cardinal Ki
-    Ki <- 1
+    Ki <- 0
 
     for(k in 1:m){ #k in Ki
       if(forestArray[[k]][[i]]){
@@ -158,7 +158,8 @@ RFEAT <- function(data, x, y, numStop = 5, m = 50,
       }
     }
     
-    # y_EstimArr is the mean prediction for each output
+    # y_EstimArr is the mean prediction for each output. If all y_EstimArr = 0
+    # this observations is not used for prediction
     
     if(all(sapply(y_EstimArr, identical, 0)))
       next

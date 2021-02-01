@@ -1,12 +1,12 @@
 #' @title Random Forest + Efficiency Analysis Trees Plot
 #'
-#' @description Plot a graph with the calculated error on a data sample for a given number of trees.
+#' @description Plot a graph with the Out-of-Bag error for the training dataset and a forest consisting of k trees.
 #'
 #' @param object A RFEAT object.
 #'
-#' @importFrom ggplot2 aes geom_point geom_line xlab
+#' @importFrom ggplot2 aes geom_point geom_line xlab ylab
 #' 
-#' @return Line plot with the error and the number of trees in the forest.
+#' @return Line plot with the OOB error and the number of trees in the forest.
 #' 
 #' @examples 
 #' 
@@ -57,11 +57,8 @@ plotRFEAT <- function(object) {
   }
   
   # Each element of pred to a matrix
-  
-  for (j in 1:nY) {
-    pred[[j]] <- matrix(pred[[j]], nrow = N, ncol = m)
-  }
-  
+  pred <- lapply(pred, matrix, nrow = N, ncol = m)
+
   for (l in 1:m) {
     # predictions for each l
     predicted_k <- matrix(unlist(lapply(pred, function(x) rowMeans(x[, 1:l, drop = FALSE], 
@@ -71,7 +68,7 @@ plotRFEAT <- function(object) {
     # obs
     predicted_k <- cbind(predicted_k, 1:N)
 
-    # filter
+    # filter: !is.na for first row since NaN rows coincide
     predicted_k <- predicted_k[!is.na(predicted_k[, 1]), ]
     
     # actual
@@ -87,14 +84,14 @@ plotRFEAT <- function(object) {
     errors[l] <- sqrt(MSE)
   }
 
-  
   errors <- as.data.frame(errors)
   names(errors) <- "RMSE"
   
   ggplot(errors, aes(x = 1:m, y = RMSE)) +
     geom_point() +
     geom_line() +
-    xlab("k")
+    xlab("k") + 
+    ylab("Out-of-Bag error")
   
 }
 

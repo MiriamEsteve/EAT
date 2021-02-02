@@ -44,7 +44,8 @@ Imports:
     reshape2
 Suggests: 
     rmarkdown,
-    testthat
+    testthat,
+    kableExtra
 RdMacros: 
     Rdpack
 VignetteBuilder: knitr

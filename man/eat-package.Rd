@@ -20,7 +20,7 @@ Github: \url{https://github.com/MiriamEsteve/EAT} \cr
 } \cr
 Authors:
 \itemize{
-\item{Míriam Esteve Campello}
+\item{Miriam Esteve Campello}
 \item{Víctor Javier España Roch}
 \item{Juan Aparicio Baeza}
 \item{Jesús Javier Rodríguez Sala}

@@ -44,7 +44,7 @@ predictFDH <- function(data, x, y) {
           newMax <- FALSE
           break
         }
-        if (newMax && yMax < data[n, y]){
+        if (newMax && all(yMax < data[n, y])){
             yMax <- data[n, y]
         }
       }

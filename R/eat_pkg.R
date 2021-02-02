@@ -11,7 +11,7 @@
 #' } \cr
 #' Authors:
 #' \itemize{
-#' \item{Míriam Esteve Campello}
+#' \item{Miriam Esteve Campello}
 #' \item{Víctor Javier España Roch}
 #' \item{Juan Aparicio Baeza}
 #' \item{Jesús Javier Rodríguez Sala}
@@ -40,7 +40,8 @@ utils::globalVariables(c("SL", "a", "R", "N", "id", "Proportion", "index", # EAT
                          "RF", # efficiencyRFEAT 
                          "x1", "Frontier", # frontier + Model
                          "X1", "X2", "X3", "X4", "X5", "X6", "X7", # imp_var_EAT + id
-                         "splitvar", "Id", "n1" # plotEAT + R
+                         "splitvar", "Id", "n1", # plotEAT + R
+                         "RMSE" # plotRFEAT
                          ))
 
 # RFEAT_object : id

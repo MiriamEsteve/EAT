@@ -42,8 +42,8 @@ imp_var_EAT <- function(data, tree, x, y, r) {
         tR_p <- errLp_errRp_tLp_tRp[[2]]
         errL_p <- errLp_errRp_tLp_tRp[[1]][["R"]]
         errR_p <- errLp_errRp_tLp_tRp[[2]][["R"]]
-
-        if (tL_p[["y"]] == Inf || tR_p[["y"]] == Inf) next
+        
+        if (all(tL_p[["y"]] == Inf) || all(tR_p[["y"]] == Inf)) next
 
         tL_i <- tree[[tree[[t]][["SL"]]]][["index"]]
 

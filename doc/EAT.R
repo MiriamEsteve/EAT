@@ -12,36 +12,38 @@ library(dplyr)
 functions <- data.frame("Purpose" = c(rep("Modeling", 2),
                                       rep("Summarise", 5),
                                       rep("Tuning", 2), 
-                                      rep("Graph", 2),
+                                      rep("Graph", 3),
                                       rep("Calculating efficiency scores", 3), 
                                       rep("Graph efficiency scores", 2),
                                       rep("Predict", 3), 
                                       rep("Rank", 2)), 
                         "Function name" = c("EAT", "RFEAT",
-                                            "print", "summary", "size", "eff.levels", "performance",
+                                            "print", "summary", "size", "frontier.levels", "descrEAT",
                                             "bestEAT", "bestRFEAT", 
-                                            "frontier", "plotEAT", 
+                                            "frontier", "plotEAT", "plotRFEAT",
                                             "efficiencyEAT", "efficiencyCEAT", "efficiencyRFEAT",
                                             "efficiencyDensity", "efficiencyJitter",
                                             "predictEAT", "predictRFEAT", "predictFDH",
                                             "rankingEAT", "rankingRFEAT"), 
-                        "Usage" = c("Apply Efficiency Analysis Trees technique to a data frame.",
-                                    "Apply Random Forest + Efficiency Analysis technique to a data frame.",
-                                    "Print the tree structure of an EAT model or print a brief summary of an RFEAT model.",
-                                    "Return a brief summary of the leaf nodes, general information about the model and the error and the threshold 
-                                    for the splits and the surrogate splits for an EAT model.",
+                        "Usage" = c("Apply Efficiency Analysis Trees technique to a data frame. Return an EAT object.",
+                                    "Apply Random Forest + Efficiency Analysis Trees technique to a data frame. Return a RFEAT object.",
+                                    "For an EAT object: print the tree structure of an EAT model. 
+                                    For a RFEAT object: print a brief summary of a RFEAT model.",
+                                    "For an EAT object: return a summary of the leaf nodes, general information about the model and the error and
+                                    threshold for each split and surrogate split.",
                                     "Return the number of leaf nodes for an EAT model.",
-                                    "Return the efficiency output levels for an EAT model.",
-                                    "Return evaluation metrics and measures of centralization and dispersion with respect to the outputs for the 
-                                    leaf nodes for an EAT model.",
+                                    "Return the frontier output levels for an EAT model.",
+                                    "Return measures of centralization and dispersion with respect to the outputs for the leaf nodes 
+                                    for an EAT model.",
                                     "Tune an EAT model.",
                                     "Tune a RFEAT model.",
                                     "Plot the estimated frontier through an EAT model in a low dimensional scenario
                                     (FDH estimated frontier is optional).",
                                     "Plot the tree structure of an EAT model.",
+                                    "Shows a line graph with the OOB error on the y-axis calculated from a forest made up of k trees (x-axis).",
                                     "Calculate DMU efficiency scores through an EAT model (through a FDH model is optional).",
-                                    "Calculate DMU efficiency scores through a convexified EAT model (through a DEA model is optional).",
-                                    "Calculate DMU efficiency scores through an RFEAT model (through a FDH model is optional).",
+                                    "Calculate DMU efficiency scores through a convex EAT model (through a DEA model is optional).",
+                                    "Calculate DMU efficiency scores through a RFEAT model (through a FDH model is optional).",
                                     "Graph a density plot for a data frame of efficiency scores (EAT, FDH, CEAT, DEA and RFEAT are available).",
                                     "Graph a jitter plot for a vector of efficiency scores calculated through an EAT model 
                                     (EAT or CEAT scores are accepted).",
@@ -50,13 +52,13 @@ functions <- data.frame("Purpose" = c(rep("Modeling", 2),
                                     "Predict the output through a FDH model.",
                                     "Calculate variable importance scores through an EAT model.",
                                     "Calculate variable importance scores through a RFEAT model.")
-                        )
+)
 
 kableExtra::kable(functions) %>%
   kableExtra::kable_styling("striped", full_width = F) %>%
   kableExtra::collapse_rows(columns = 1, valign = "middle") %>%
-  kableExtra::row_spec(c(1:2, 8:9, 12:14, 17:19), background = "#DBFFD6") %>%
-  kableExtra::row_spec(c(3:7, 10:11, 15:16, 20:21), background = "#FFFFD1") 
+  kableExtra::row_spec(c(1:2, 8:9, 13:15, 18:20), background = "#DBFFD6") %>%
+  kableExtra::row_spec(c(3:7, 10:12, 16:17, 21:22), background = "#FFFFD1") 
 
 ## ----seed---------------------------------------------------------------------
 # We save the seed for reproducibility of the results
@@ -87,21 +89,22 @@ summary(single_model)
 ## ----size.single.output, collapse = FALSE-------------------------------------
 size(single_model)
 
-## ----effs.single.output, collapse = FALSE-------------------------------------
-eff.levels(single_model)
+## ----frt.single.output, collapse = FALSE--------------------------------------
+frontier.levels(single_model)
 
 ## ----perf.single.output, collapse = FALSE-------------------------------------
-perfEAT <- performance(single_model)
+descriptiveEAT <- descrEAT(single_model)
 
 # Descriptive for the nodes 1-3
-perfEAT[["descriptive"]][1:3]
+descriptiveEAT[1:3]
 
 ## ----node.charac, collapse = FALSE--------------------------------------------
 single_model[["tree"]][[5]]
 
 ## ----table2, echo = FALSE-----------------------------------------------------
-types <- data.frame("Variable" = c("Independent variables (inputs)", "Dependent variables (outputs)"),
-                    "Integer / double" = c("x", "x"),
+types <- data.frame("Variable" = c("Independent variables (inputs)", 
+                                   "Dependent variables (outputs)"),
+                    "Integer" = c("x", "x"),
                     "Numeric" = c("x", "x"),
                     "Factor" = c("", ""),
                     "Ordered factor" = c("x", ""))
@@ -222,8 +225,8 @@ test <- PISAindex[-t_index, ] # Test set
 ## ----bestEAT, eval = FALSE----------------------------------------------------
 #  bestEAT(training, test,
 #          x, y,
-#          numStop = NULL,
-#          fold = NULL,
+#          numStop = 5,
+#          fold = 5,
 #          max.depth = NULL,
 #          na.rm)
 
@@ -353,19 +356,21 @@ forest <- RFEAT(data = PISAindex,
                 x = 6:18, # input 
                 y = 5, # output
                 numStop = 5, 
-                m = 50,
+                m = 40,
                 s_mtry = "Breiman",
                 na.rm = TRUE)
 
-
 ## ----print.RFEAT, collapse = FALSE--------------------------------------------
 print(forest)
+
+## ----plot.RFEAT, collapse = FALSE, fig.width = 7.2, fig.height = 6------------
+plotRFEAT(forest)
 
 ## ----rankingRFEAT, eval = FALSE-----------------------------------------------
 #  rankingRFEAT(object, r = 2,
 #               barplot = TRUE)
 
-## ----rankingRFEAT_ex, fig.width = 7.2, fig.height = 6, fig.align = 'center'----
+## ----rankingRFEAT_forest, fig.width = 7.2, fig.height = 6---------------------
 rankingRFEAT(object = forest, r = 2,
              barplot = TRUE)
 
@@ -383,8 +388,8 @@ bestRFEAT(training = training,
           x = 6:18,
           y = 3:5,
           numStop = c(3, 5, 10),
-          m = c(30, 40, 50, 60),
-          s_mtry = c("Breiman", "2", "5"))
+          m = c(30, 40, 50),
+          s_mtry = c("Breiman", "3"))
 
 ## ----eff_scores, eval = FALSE-------------------------------------------------
 #  efficiencyRFEAT(data, x, y,
@@ -453,5 +458,5 @@ kableExtra::kable(predictions) %>%
   kableExtra::column_spec(c(4, 5, 6), background = "#FFFFD1") %>%
   kableExtra::column_spec(c(7, 8, 9), background = "#FFCCF9") %>%
   kableExtra::column_spec(c(10, 11, 12), background = "#F4F1BB")
-  
+
 

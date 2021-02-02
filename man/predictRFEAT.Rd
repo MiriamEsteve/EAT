@@ -20,7 +20,7 @@ This function predicts the expected output by a RFEAT object.
 \examples{
 
 simulated <- eat:::X2Y2.sim(N = 50, border = 0.2)
-RFEAT_model <- EAT(data = simulated, x = c(1,2), y = c(3, 4))
+RFEAT_model <- RFEAT(data = simulated, x = c(1,2), y = c(3, 4))
 
 predictRFEAT(object = RFEAT_model, newdata = simulated[, 1:2])
 

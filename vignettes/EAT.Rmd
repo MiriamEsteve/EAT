@@ -9,6 +9,7 @@ vignette: >
   %\VignetteIndexEntry{EAT: Efficiency Analysis Trees}
   %\VignetteEngine{knitr::rmarkdown}
   %\VignetteEncoding{UTF-8}
+  % \VignetteDepends{kableExtra}
 ---
 
 <style>
@@ -712,7 +713,7 @@ forest <- RFEAT(data = PISAindex,
                 x = 6:18, # input 
                 y = 5, # output
                 numStop = 5, 
-                m = 50,
+                m = 40,
                 s_mtry = "Breiman",
                 na.rm = TRUE)
 ```
@@ -728,6 +729,8 @@ print(forest)
 ```{r plot.RFEAT, collapse = FALSE, fig.width = 7.2, fig.height = 6}
 plotRFEAT(forest)
 ```
+
+Note that the OOB error of early forests suffers from great variability.
 
 ## rankingRFEAT()
 
@@ -747,7 +750,7 @@ rankingRFEAT(object = forest, r = 2,
 
 * A negative imporance score means that removing the input from the model improves the performance.
 
-Note the peculiarity of the results shown where only *AAE* (Access to Advance Education) has a positive importance score.
+Note the peculiarity of the results shown where no variable has a positive importance score.
 
 ## bestRFEAT()
 

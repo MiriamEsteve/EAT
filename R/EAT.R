@@ -165,15 +165,13 @@ deepEAT <- function(data, x, y, numStop, max.depth = NULL) {
     "R" = -1,
     "xi" = -1,
     "s" = -1,
-    "y" = -1,
+    "y" =   t[["y"]] <- apply(data[, y, drop = F], 2, max) %>%
+            unname() %>%
+            as.list(),
     "a" = apply(data[, x, drop = F], 2, min) %>% 
       unname(),
     "b" = rep(Inf, nX)
   )
-
-  t[["y"]] <- apply(data[, y, drop = F], 2, max) %>%
-    unname() %>%
-    as.list()
 
   t[["R"]] <- mse(data, t, y)
 

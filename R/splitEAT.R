@@ -206,6 +206,7 @@ split <- function(data, tree, leaves, t, x, y, numStop) {
 #' @param y Column output indexes in data.
 #'
 #' @return Mean Square Error on a node.
+#' @export
 mse <- function(data, t, y) {
   if (length(y) == 1) t[["y"]] <- unlist(t[["y"]])
 

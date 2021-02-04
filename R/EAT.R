@@ -131,7 +131,7 @@ deepEAT <- function(data, x, y, numStop, max.depth = NULL) {
   
   # Check if deepEAT is called by EAT
   
-   if (length(data[[1]]) == 1){
+  if (length(data[[1]]) == 1){
        enter <- 1
        data <- data[-1] %>% as.data.frame()
     } else {
@@ -145,7 +145,7 @@ deepEAT <- function(data, x, y, numStop, max.depth = NULL) {
     # Reorder index 'x' and 'y' in data
       x <- 1:((ncol(data) - 1) - length(y))
       y <- (length(x) + 1):(ncol(data) - 1)
-   }
+  }
   
   # Size data
   N <- nrow(data)
@@ -192,7 +192,7 @@ deepEAT <- function(data, x, y, numStop, max.depth = NULL) {
   numFinalLeaves <- 1
   
   # Build tree
-  while (N_leaves != 0 && !(is.null(max.depth)) && numFinalLeaves < max.depth) {
+  while (N_leaves != 0 && (!(is.null(max.depth)) && numFinalLeaves < max.depth)) {
     t <- leaves[[N_leaves]]
     leaves[[N_leaves]] <- NULL # Drop t selected
 

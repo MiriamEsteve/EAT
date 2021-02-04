@@ -219,7 +219,7 @@ deepEAT <- function(data, x, y, numStop = 5, max.depth = NULL) {
         "alpha" = alpha(tree),
         "score" = Inf,
         "tree" = tree
-      )), 0)
+      )),0)
   }
 
   leaves <- NULL

@@ -28,7 +28,6 @@
 #' \insertRef{esteve2020}{eat}
 #' 
 "_PACKAGE"
-
 utils::globalVariables(c("SL", "a", "R", "N", "id", "Proportion", "index", # EAT_object
                          "xi", "desc", "Importance", # M_Breiman + id
                          "value", "Model", # efficiencyDensity

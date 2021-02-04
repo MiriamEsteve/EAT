@@ -41,7 +41,7 @@ efficiencyJitter <- function(object, scores_EAT, scores_model, upb = NULL, lwb =
   
   if (!scores_model %in% c("BCC_out", "BCC_in", "DDF", 
                            "RSL_out", "RSL_in", "WAM")){
-    stop(paste(scores_model, "is not available. Please, check help(efficiencyEAT)"))
+    stop(paste(scores_model, "is not available. Please, check help(\"efficiencyEAT\")"))
   }
   
   groups <- object[["nodes_df"]] %>%
@@ -73,15 +73,13 @@ efficiencyJitter <- function(object, scores_EAT, scores_model, upb = NULL, lwb =
     stat_summary(fun.data = data_summary, color = "black") +
     labs(color = "Leaf node index")
   
-  if (scores_model %in% c("BCC_out", "BCC_in", "RSL_out", "RSL_in")){
-    jitter_plot <- jitter_plot +
-    geom_text_repel(aes(label = ifelse(Score == 1, 
-                                         rownames(scores_df), "")))
-  } else {
-    jitter_plot <- jitter_plot +
-      geom_text_repel(aes(label = ifelse(Score == 0, 
-                                         rownames(scores_df), "")))
-  }
+  ifelse(scores_model %in% c("BCC_out", "BCC_in", "RSL_out", "RSL_in"),
+         score <- 1,
+         score <- 0)
+  
+  jitter_plot <- jitter_plot + geom_text_repel(aes(label = ifelse(Score == score, 
+                                                                  rownames(scores_df), ""))
+                                               )
   
   if (!is.null(lwb) && !is.null(upb)){
     jitter_plot <- jitter_plot + 
@@ -127,7 +125,7 @@ efficiencyJitter <- function(object, scores_EAT, scores_model, upb = NULL, lwb =
 efficiencyDensity <- function(scores, model = c("EAT", "FDH")) {
   
   if (!all(model %in% c("EAT", "FDH", "RFEAT", "CEAT", "DEA"))){
-    stop(paste("Some model in", model, "is not allowed. Please, check help(\"efficiencyDensity\")"))
+    stop(paste("Some model is not allowed. Please, check help(\"efficiencyDensity\")"))
   }
   
   names(scores) <- model

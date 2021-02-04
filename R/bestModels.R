@@ -34,17 +34,13 @@
 #' @return Dataframe in which each row corresponds to a given set of hyperparameters with its corresponding root mean square error (RMSE).
 bestEAT <- function(training, test, x, y, numStop = 5, fold = 5, max.depth = NULL, na.rm = TRUE) {
 
-  train_names <- names(training[, c(x, y)])
-  test_names <- names(test[, c(x, y)])
+  training <- preProcess(training, x, y, na.rm = na.rm)[[2]]
+  test <- preProcess(test, x, y, na.rm = na.rm)[[2]]
   
-  if (length(train_names) != length(test_names)){
-    stop("Training and test data must have the same number of variables")
-  } else if (!all(train_names == test_names)){
-    stop(paste("Variable name: ", test_names[1], "not found in training data"))
+  if (!identical(sort(names(training)), sort(names(test)))) {
+    stop("Different variable names in training and test set")
   }
   
-  test <- preProcess(test, x, y, na.rm = na.rm)[[2]]
-
   if (is.null(max.depth)) {
     hp <- expand.grid(numStop = numStop,
                       fold = fold)
@@ -128,16 +124,12 @@ bestEAT <- function(training, test, x, y, numStop = 5, fold = 5, max.depth = NUL
 #' @return Dataframe in which each row corresponds to a given set of hyperparameters with its corresponding root mean square error (RMSE).
 bestRFEAT <- function(training, test, x, y, numStop, m, s_mtry, na.rm = TRUE) {
   
-  train_names <- names(training[, c(x, y)])
-  test_names <- names(test[, c(x, y)])
-  
-  if (length(train_names) != length(test_names)){
-    stop("Training and test data must have the same number of variables")
-  } else if (!all(train_names == test_names)){
-    stop(paste("Variable name: ", test_names[1], "not found in taining data"))
-  }
-  
+  training <- preProcess(training, x, y, na.rm = na.rm)[[2]]
   test <- preProcess(test, x, y, na.rm = na.rm)[[2]]
+  
+  if (!identical(sort(names(training)), sort(names(test)))) {
+    stop("Different variable names in training and test set")
+  }
   
   hp <- expand.grid(numStop = numStop,
                     m = m,

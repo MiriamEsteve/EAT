@@ -11,7 +11,34 @@
 #'
 #' @return List containing rownames and data processed in the [X, Y] format with only allowed classes.
 preProcess <- function(data, x, y, na.rm = T) {
-  data <- as.data.frame(data)
+  
+  # x and y well / bad introduced
+  
+  cols <- 1:length(data)
+  if (!(all(x %in% cols) && all(y %in% cols))) {
+    stop("x or y indexes are not in data")
+  }
+  
+  # Dataframe
+  # List with variables
+  # Matix
+  
+  if (is.list(data)){
+    
+    # Have data names?
+    
+    ifelse(is.null(names(data)), 
+           nms <- 1:length(data), # if not 1:x
+           nms <- names(data))
+    
+    data <- data.frame(matrix(unlist(data), ncol = length(nms), byrow = F))
+    names(data) <- nms
+    
+  } else if (is.matrix(data)) {
+    data <- data.frame(data)
+  }
+  
+  # Output types
   
   for (i in y) {
     if (is.numeric(data[, i]) || is.integer(data[, i])) {
@@ -20,6 +47,8 @@ preProcess <- function(data, x, y, na.rm = T) {
       stop(paste(names(data[i]), "is not a numeric or integer vector. \n"))
     }
   }
+  
+  # Input types
 
   for (i in x) {
     if(is.ordered(data[, i])){
@@ -30,6 +59,8 @@ preProcess <- function(data, x, y, na.rm = T) {
       stop(paste(names(data[i]), "is not a numeric, integer or ordered factor.\n"))
     }
   }
+  
+  # NA values
 
   if (any(is.na(data[, c(x, y)]))){
     if (na.rm == T){

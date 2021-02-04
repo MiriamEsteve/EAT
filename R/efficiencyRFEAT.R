@@ -27,7 +27,7 @@
 efficiencyRFEAT <- function(data, x, y, object, r = 2, FDH = TRUE, na.rm = TRUE){
   
   if (class(object) != "RFEAT"){
-    stop(paste(deparse(substitute(object)), "must be an RFEAT object"))
+    stop(paste(deparse(substitute(object)), "must be a RFEAT object"))
     
   } 
   
@@ -37,17 +37,12 @@ efficiencyRFEAT <- function(data, x, y, object, r = 2, FDH = TRUE, na.rm = TRUE)
   
   rwn <- rwn_data[[1]]
   data <- rwn_data[[2]]
+  
   x <- 1:(ncol(data) - length(y))
   y <- (length(x) + 1):ncol(data)
-  
-  data_names <- names(data)
-  
-  if (!is.data.frame(data)){
-    stop(paste(deparse(substitute(data)), "must be a data frame"))
-  } else if (length(train_names) != length(data_names)){
-    stop("Training and prediction data must have the same number of variables")
-  } else if (!all(train_names == data_names)){
-    stop(paste("Variable name: ", data_names[1], "not found in taining data"))
+
+  if (!identical(sort(train_names), sort(names(data)))) {
+    stop("Different variable names in training and data")
   }
   
   N <- nrow(data)

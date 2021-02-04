@@ -380,26 +380,21 @@ efficiencyEAT <- function(data, x, y, object,
   
   if (!scores_model %in% c("BCC_out", "BCC_in", "DDF", 
                            "RSL_out", "RSL_in", "WAM")){
-    stop(paste(scores_model, "is not an available scores model. Please, check help(\"efficiencyEAT\")"))
+    stop(paste(scores_model, "is not available. Please, check help(\"efficiencyEAT\")"))
   }
   
-  train_names <- c(object[["data"]][["input_names"]], object[["data"]][["output_names"]])
-  
-  rwn_data <- preProcess(data, x, y, na.rm = na.rm)
+  rwn_data <- preProcess(data, x, y, na.rm = T)
   
   rwn <- rwn_data[[1]]
   data <- rwn_data[[2]]
+  
   x <- 1:(ncol(data) - length(y))
   y <- (length(x) + 1):ncol(data)
   
-  data_names <- names(data)
+  train_names <- c(object[["data"]][["input_names"]], object[["data"]][["output_names"]])
   
-  if (!is.data.frame(data)){
-    stop("data must be a data.frame")
-  } else if (length(train_names) != length(data_names)){
-    stop("Training and prediction data must have the same number of variables")
-  } else if (!all(train_names == data_names)){
-    stop(paste("Variable name: ", data_names[1], "not found in training data"))
+  if (!identical(sort(train_names), sort(names(test)))) {
+    stop("Different variable names in training and test set")
   }
 
   j <- nrow(data)

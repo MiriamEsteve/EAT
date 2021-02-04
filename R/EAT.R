@@ -44,7 +44,8 @@
 #' EAT(data = simulated, x = c(1,2), y = c(3, 4), numStop = 10, fold = 7)
 #' 
 #' @export
-EAT <- function(data, x, y, numStop = 5, fold = 5, max.depth = NULL, na.rm = T) {
+EAT <- function(data, x, y, numStop = 5, fold = 5, max.depth = NULL, max.leaves = NULL, 
+                na.rm = T) {
   conflict_prefer("filter", "dplyr")
   
   # Data in data[x, y] format and rownames

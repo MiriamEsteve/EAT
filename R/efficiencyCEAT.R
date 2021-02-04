@@ -352,8 +352,8 @@ CEAT_WAM <- function(j, scores, x_k, y_k, atreeTk, ytreeTk, nX, nY, N_leaves) {
 #'
 #' @return Dataframe with input variables and efficiency scores by a convex EAT model.
 efficiencyCEAT <- function(data, x, y, object, 
-                          scores_model, r = 3, DEA = TRUE,
-                          na.rm = TRUE) {
+                           scores_model, r = 3, DEA = TRUE,
+                           na.rm = TRUE) {
   
   if (class(object) != "EAT"){
     stop(paste(deparse(substitute(object)), "must be an EAT object"))

@@ -17,7 +17,7 @@
 predictFDH <- function(data, x, y) {
   
   if(class(data) == "list") {
-    data <- as.data.frame(data[-1]) 
+    data <- as.data.frame(data[- 1]) 
     
     print_results <- FALSE
     

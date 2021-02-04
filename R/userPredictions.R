@@ -27,12 +27,8 @@ predictEAT <- function(object, newdata) {
   train_names <- object[["data"]][["input_names"]]
   test_names <- names(newdata)
   
-  if (!is.data.frame(newdata)){
-    stop(paste(deparse(substitute(newdata)), "must be a data frame"))
-  } else if (length(train_names) != length(test_names)){
-    stop("Training and prediction data must have the same number of variables")
-  } else if (!all(train_names == test_names)){
-    stop(paste("Variable name: ", test_names[1], "not found in taining data"))
+  if (!identical(sort(train_names), sort(test_names))) {
+    stop("Different variable names in training and test set")
   }
   
   y <- object[["data"]][["y"]] 
@@ -89,19 +85,15 @@ predictEAT <- function(object, newdata) {
 predictRFEAT <- function(object, newdata) {
   
   if (class(object) != "RFEAT"){
-    stop(paste(deparse(substitute(object)), "must be an RFEAT object"))
+    stop(paste(deparse(substitute(object)), "must be a RFEAT object"))
     
   }
   
   train_names <- object[["data"]][["input_names"]]
   test_names <- names(newdata)
   
-  if (!is.data.frame(newdata)){
-    stop(paste(deparse(substitute(newdata)), "must be a data frame."))
-  } else if (length(train_names) != length(test_names)){
-    stop("Training and prediction data must have the same number of variables")
-  } else if (!all(train_names == test_names)){
-    stop(paste("Variable name: ", test_names[1], "not found in taining data"))
+  if (!identical(sort(train_names), sort(test_names))) {
+    stop("Different variable names in training and test set")
   }
   
   y <- object[["data"]][["y"]] 

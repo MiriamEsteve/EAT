@@ -203,7 +203,7 @@ deepEAT <- function(data, x, y, numStop = 5, max.depth = NULL) {
     tree_leaves <- split(data, tree, leaves, t, x, y, numStop)
 
     # Num. final leaves (all)
-    numFinalLeaves <- numFinalLeaves + 2
+    numFinalLeaves <- numFinalLeaves + 1
     
     # Add the leaf to the node
     tree <- tree_leaves[[1]]

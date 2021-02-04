@@ -375,8 +375,8 @@ efficiencyCEAT <- function(data, x, y, object,
   
   train_names <- c(object[["data"]][["input_names"]], object[["data"]][["output_names"]])
   
-  if (!identical(sort(train_names), sort(names(test)))) {
-    stop("Different variable names in training and test set")
+  if (!identical(sort(train_names), sort(names(data)))) {
+    stop("Different variable names in training and data set")
   }
 
   j <- nrow(data)

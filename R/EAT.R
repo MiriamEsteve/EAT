@@ -192,9 +192,12 @@ deepEAT <- function(data, x, y, numStop = 5, max.depth = NULL, max.leaves = NULL
   ))
 
   numFinalLeaves <- 1
+  N_depth <- 0
   
   # Build tree
-  while ( ((is.null(max.leaves)) && N_leaves != 0) || (!(is.null(max.leaves)) && numFinalLeaves < max.leaves & N_leaves != 0)) {
+  while ( ((is.null(max.leaves)) && (is.null(max.depth)) && N_leaves != 0) 
+          || (!(is.null(max.leaves)) && numFinalLeaves < max.leaves & N_leaves != 0)
+          || (!(is.null(max.depth)) && N_depth < max.depth & N_leaves != 0)) {
     t <- leaves[[N_leaves]]
     leaves[[N_leaves]] <- NULL # Drop t selected
 
@@ -206,6 +209,8 @@ deepEAT <- function(data, x, y, numStop = 5, max.depth = NULL, max.leaves = NULL
 
     # Num. final leaves (all)
     numFinalLeaves <- numFinalLeaves + 1
+    #Num. depth of the tree
+    N_depth <- N_depth + 1
     
     # Add the leaf to the node
     tree <- tree_leaves[[1]]

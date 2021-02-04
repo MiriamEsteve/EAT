@@ -9,13 +9,14 @@
 #' @param numStop Integer. Minimun number of observations in a node for a split to be attempted.
 #' @param fold Integer. Number of folds in which is divided the dataset to apply cross-validation during the pruning.
 #' @param max.depth Integer. Maximum number of leaf nodes.
+#' @param max.leaves Integer. Depth of the tree.
 #' @param na.rm Logical. If True, NA rows are omitted. If False, an error occurs in case of NA rows.
 #' @param tree A list containing the nodes of the EAT pruned tree.
 #'
 #' @importFrom dplyr %>% select filter
 #'
 #' @return An EAT object
-EAT_object <- function(data, x, y, register_names, numStop, fold, max.depth, na.rm, tree) {
+EAT_object <- function(data, x, y, register_names, numStop, fold, max.depth, max.leaves, na.rm, tree) {
   
   # Output and input names
   output_names <- names(data)[y]
@@ -74,6 +75,7 @@ EAT_object <- function(data, x, y, register_names, numStop, fold, max.depth, na.
                                    row_names = register_names),
                      "control" = list(fold = fold, 
                                       numStop = numStop,
+                                      max.leaves = max.leaves,
                                       max.depth = max.depth,
                                       na.rm = na.rm),
                      "tree" = tree,

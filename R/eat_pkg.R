@@ -14,10 +14,6 @@
 #' \item{Miriam Esteve Campello}
 #' \item{Víctor Javier España Roch}
 #' \item{Juan Aparicio Baeza}
-#' \item{Jesús Javier Rodríguez Sala}
-#' }
-#' Contributors:
-#' \itemize{
 #' \item{Xavier Barber Vallés}
 #' }
 #' 

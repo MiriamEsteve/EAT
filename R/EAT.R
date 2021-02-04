@@ -165,11 +165,11 @@ deepEAT <- function(data, x, y, numStop, max.depth = NULL) {
     "R" = -1,
     "xi" = -1,
     "s" = -1,
-    "y" =   t[["y"]] <- apply(data[, y, drop = F], 2, max) %>%
+    "y" = apply(data[, y, drop = F], 2, max) %>%
             unname() %>%
             as.list(),
     "a" = apply(data[, x, drop = F], 2, min) %>% 
-      unname(),
+            unname(),
     "b" = rep(Inf, nX)
   )
 
@@ -189,8 +189,10 @@ deepEAT <- function(data, x, y, numStop, max.depth = NULL) {
     "tree" = tree
   ))
 
+  numFinalLeaves <- 1
+  
   # Build tree
-  while (N_leaves != 0) {
+  while (N_leaves != 0 && !(is.null(max.depth)) && numFinalLeaves < max.depth) {
     t <- leaves[[N_leaves]]
     leaves[[N_leaves]] <- NULL # Drop t selected
 
@@ -200,13 +202,12 @@ deepEAT <- function(data, x, y, numStop, max.depth = NULL) {
     # Divide the node
     tree_leaves <- split(data, tree, leaves, t, x, y, numStop)
 
+    # Num. final leaves (all)
+    numFinalLeaves <- numFinalLeaves + 1
+    
     # Add the leaf to the node
     tree <- tree_leaves[[1]]
-    
-    # If number of leaves nodes is bigger than max.depth --> break
-    if (!is.null(max.depth) && sum(lapply(tree, "[[", "SL") == -1) >= max.depth) {
-      return(tree)
-    }
+
 
     leaves <- tree_leaves[[2]]
     N_leaves <- length(leaves)
@@ -218,9 +219,7 @@ deepEAT <- function(data, x, y, numStop, max.depth = NULL) {
         "alpha" = alpha(tree),
         "score" = Inf,
         "tree" = tree
-      )),
-      0
-    )
+      )), 0)
   }
 
   leaves <- NULL

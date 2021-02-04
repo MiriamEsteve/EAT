@@ -27,9 +27,9 @@ RandomEAT <- function(data, x, y, numStop, s_mtry){
             "R" = -1,
             "xi" = -1,
             "s" = -1,
-            "y" = t[["y"]] <- apply(data[, y, drop = F], 2, max) %>%
-                  unname() %>%
-                  as.list(),
+            "y" = apply(data[, y, drop = F], 2, max) %>%
+                    unname() %>%
+                    as.list(),
             "a" = apply(data[, x, drop = F], 2, min) %>% 
               unname(),
             "b" = rep(Inf, nX)

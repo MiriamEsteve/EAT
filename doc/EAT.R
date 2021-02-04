@@ -24,7 +24,7 @@ functions <- data.frame("Purpose" = c(rep("Modeling", 2),
                                             "efficiencyEAT", "efficiencyCEAT", "efficiencyRFEAT",
                                             "efficiencyDensity", "efficiencyJitter",
                                             "predictEAT", "predictRFEAT", "predictFDH",
-                                            "rankingEAT", "rankingRFEAT"), 
+                                            "rankingEAT", "rankingRFEAT", "checkEAT"), 
                         "Usage" = c("Apply Efficiency Analysis Trees technique to a data frame. Return an EAT object.",
                                     "Apply Random Forest + Efficiency Analysis Trees technique to a data frame. Return a RFEAT object.",
                                     "For an EAT object: print the tree structure of an EAT model. 

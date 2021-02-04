@@ -127,7 +127,7 @@ EAT <- function(data, x, y, numStop = 5, fold = 5, max.depth = NULL, na.rm = T) 
 #' @importFrom conflicted conflict_prefer
 #'
 #' @return List containing each possible pruning for the deep tree and its alpha associated.
-deepEAT <- function(data, x, y, numStop, max.depth = NULL) {
+deepEAT <- function(data, x, y, numStop = 5, max.depth = NULL) {
   
   # Check if deepEAT is called by EAT
   
@@ -192,7 +192,7 @@ deepEAT <- function(data, x, y, numStop, max.depth = NULL) {
   numFinalLeaves <- 1
   
   # Build tree
-  while (N_leaves != 0 && (!(is.null(max.depth)) && numFinalLeaves < max.depth)) {
+  while ( ((is.null(max.depth)) && N_leaves != 0) || (!(is.null(max.depth)) && numFinalLeaves < max.depth & N_leaves != 0)) {
     t <- leaves[[N_leaves]]
     leaves[[N_leaves]] <- NULL # Drop t selected
 
@@ -203,7 +203,7 @@ deepEAT <- function(data, x, y, numStop, max.depth = NULL) {
     tree_leaves <- split(data, tree, leaves, t, x, y, numStop)
 
     # Num. final leaves (all)
-    numFinalLeaves <- numFinalLeaves + 1
+    numFinalLeaves <- numFinalLeaves + 2
     
     # Add the leaf to the node
     tree <- tree_leaves[[1]]

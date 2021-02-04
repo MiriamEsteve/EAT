@@ -9,7 +9,8 @@
 #' @param y Vector. Column output indexes in data.
 #' @param numStop Integer. Minimun number of observations in a node for a split to be attempted.
 #' @param fold Integer. Number of folds in which is divided the dataset to apply cross-validation during the pruning.
-#' @param max.depth Integer. Maximum number of leaf nodes.
+#' @param max.depth Integer. Depth of the tree.
+#' @param max.leaves Integer. Maximum number of leaf nodes.
 #' @param na.rm Logical. If \code{TRUE}, \code{NA} rows are omitted.
 #'
 #' @details The EAT function generates a regression tree model based on CART \insertCite{breiman1984}{eat} under a new approach that guarantees the obtaining of a stepped production frontier that fulfills the property of free disposability. This frontier shares the aforementioned aspects with the FDH frontier \insertCite{deprins1984}{eat} but enhances some of its disadvantages such as the overfitting problem or the underestimation of technical inefficiency. More details in \insertCite{esteve2020;textual}{eat}.
@@ -68,10 +69,10 @@ EAT <- function(data, x, y, numStop = 5, fold = 5, max.depth = NULL, na.rm = T) 
   # Insert row to know deepEAT is called by this one
   data <- append(data, -1, 0)
   
-  # Deep tree and pruning or tree with the size indicated in max.depth
-  tree_alpha_list <- deepEAT(data, x, y, numStop, max.depth)
+  # Deep tree and pruning or tree with the size indicated in max.depth or max.leaves
+  tree_alpha_list <- deepEAT(data, x, y, numStop, max.depth, max.leaves)
   
-  if (!is.null(max.depth)) {
+  if (!is.null(max.depth) || !is.null(max.leaves)) {
     data <- data[-1] %>% 
       as.data.frame()
     EAT <- EAT_object(data, x, y, rwn, fold, numStop, max.depth, na.rm, tree_alpha_list)
@@ -127,7 +128,7 @@ EAT <- function(data, x, y, numStop = 5, fold = 5, max.depth = NULL, na.rm = T) 
 #' @importFrom conflicted conflict_prefer
 #'
 #' @return List containing each possible pruning for the deep tree and its alpha associated.
-deepEAT <- function(data, x, y, numStop = 5, max.depth = NULL) {
+deepEAT <- function(data, x, y, numStop = 5, max.depth = NULL, max.leaves = NULL) {
   
   # Check if deepEAT is called by EAT
   
@@ -192,7 +193,7 @@ deepEAT <- function(data, x, y, numStop = 5, max.depth = NULL) {
   numFinalLeaves <- 1
   
   # Build tree
-  while ( ((is.null(max.depth)) && N_leaves != 0) || (!(is.null(max.depth)) && numFinalLeaves < max.depth & N_leaves != 0)) {
+  while ( ((is.null(max.leaves)) && N_leaves != 0) || (!(is.null(max.leaves)) && numFinalLeaves < max.leaves & N_leaves != 0)) {
     t <- leaves[[N_leaves]]
     leaves[[N_leaves]] <- NULL # Drop t selected
 
@@ -344,7 +345,8 @@ summary.EAT <- function(object, ...) {
   cat("       R(T):", sum(results$R), "\n",
       "    numStop:", object[["control"]][["numStop"]], "\n",
       "       fold:", object[["control"]][["fold"]], "\n",
-      "  max.depth:", object[["control"]][["max.depth"]]
+      "  max.depth:", object[["control"]][["max.depth"]],
+      "  max.leaves:", object[["control"]][["max.leaves"]]
       )
   
   cat(

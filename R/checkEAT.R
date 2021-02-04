@@ -6,7 +6,7 @@
 #'
 #' @return Message indicating if the tree is acceptable or warning in case of breaking any Pareto-dominance relationship.
 #' @export
-check <- function(tree) {
+checkEAT <- function(tree) {
   resComp <- NULL
   check <- 1
   nY <- length(tree[[1]][["y"]])

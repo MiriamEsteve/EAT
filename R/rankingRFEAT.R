@@ -64,7 +64,7 @@ imp_var_RFEAT <- function(object, r = 2){
   
   for(xi in x){
     # Barajar xi
-    df_xi <- data[sample(nrow(data), nrow(data), replace = TRUE), ]
+    df_xi <- data[sample(nrow(data), nrow(data), replace = FALSE), ]
     rf_err_xi <- RFEAT(df_xi, x, y, numStop, m, s_mtry)
     err_xi <- rf_err_xi[["error"]]
     imp <- rbind(imp, (100 * ((err_xi - err)/err)))

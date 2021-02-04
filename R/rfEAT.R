@@ -27,15 +27,13 @@ RandomEAT <- function(data, x, y, numStop, s_mtry){
             "R" = -1,
             "xi" = -1,
             "s" = -1,
-            "y" = -1,
+            "y" = t[["y"]] <- apply(data[, y, drop = F], 2, max) %>%
+                  unname() %>%
+                  as.list(),
             "a" = apply(data[, x, drop = F], 2, min) %>% 
               unname(),
             "b" = rep(Inf, nX)
   )
-  
-  t[["y"]] <- apply(data[, y, drop = F], 2, max) %>%
-    unname() %>%
-    as.list()
   
   t[["R"]] <- mse(data, t, y)
   
@@ -55,7 +53,7 @@ RandomEAT <- function(data, x, y, numStop, s_mtry){
     mtry <- select_mtry(s_mtry, t, nX, nY)
     # Randomly select k (<P) of the original predictors
     # Select random columns by index
-    arrayK <- sort(sample(x, mtry))
+    arrayK <- sort(sample(x, mtry, replace = FALSE))
     
     tree_leaves <- split_forest(data, tree, leaves, t, x, y, numStop, arrayK)
     
@@ -160,13 +158,13 @@ RFEAT <- function(data, x, y, numStop = 5, m = 50,
     
     # y_EstimArr is the mean prediction for each output. If all y_EstimArr = 0
     # this observations is not used for prediction
-    
     if(all(sapply(y_EstimArr, identical, 0)))
       next
     err <- err + sum((reg_i[y] - (y_EstimArr / Ki)) ^ 2)
   }
+  err <- err/N
   
-  RFEAT <- RFEAT_object(data, x, y, rwn, numStop, m, s_mtry, na.rm, forest, err / N,
+  RFEAT <- RFEAT_object(data, x, y, rwn, numStop, m, s_mtry, na.rm, forest, err,
                         forestArray)
   
   return(RFEAT)

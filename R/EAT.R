@@ -110,7 +110,7 @@ EAT <- function(data, x, y, numStop = 5, fold = 5, max.depth = NULL, max.leaves 
     }
   }
   
-  EAT <- EAT_object(data, x, y, rwn, fold, numStop, max.depth, na.rm, Tk[["tree"]])
+  EAT <- EAT_object(data, x, y, rwn, fold, numStop, max.depth, max.leaves, na.rm, Tk[["tree"]])
 
   return(EAT)
 }

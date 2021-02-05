@@ -47,7 +47,7 @@ A RFEAT object containing:
        }
   \item{\code{forest}: list structure containing the individual EAT.}
   \item{\code{error}: Out-of-Bag error at the forest.}   
-  \item{\code{OOB}: list containing Out-of-Bag samples for each tree.}
+  \item{\code{OOB}: list containing Out-of-Bag set for each tree.}
 }
 }
 \description{

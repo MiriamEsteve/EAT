@@ -23,9 +23,9 @@ preProcess <- function(data, x, y, na.rm = T) {
   # List with variables
   # Matix
   
-  if (is.list(data)){
+  if (is.list(data) && !is.data.frame(data)){
     
-    # Have data names?
+    # Data names?
     
     ifelse(is.null(names(data)), 
            nms <- 1:length(data), # if not 1:x
@@ -34,51 +34,53 @@ preProcess <- function(data, x, y, na.rm = T) {
     data <- data.frame(matrix(unlist(data), ncol = length(nms), byrow = F))
     names(data) <- nms
     
-  } else if (is.matrix(data)) {
+  } else if (is.matrix(data) || is.data.frame(data)) {
+    
     data <- data.frame(data)
   }
   
-  # Output types
+  # Classes
+  varClass <- unlist(sapply(data, class))
   
-  for (i in y) {
-    if (is.numeric(data[, i]) || is.integer(data[, i])) {
-      next
-    } else {
-      stop(paste(names(data[i]), "is not a numeric or integer vector. \n"))
-    }
+  # Output classes
+  outClass <- varClass[y] %in% c("numeric", "double", "integer")
+  
+  # Error
+  if (!all(outClass)){
+    stop(paste(names(data)[y][!outClass][1], "is not a numeric or integer vector"))
   }
   
-  # Input types
-
-  for (i in x) {
-    if(is.ordered(data[, i])){
+  # Input classes
+  # Ordered --> numeric
+  for (i in x){
+    if (is.ordered(data[, i])) {
       data[, i] <- as.numeric(data[, i])
-    } else if (is.numeric(data[, i]) || is.integer(data[, i])){
-      next
-    } else {
-      stop(paste(names(data[i]), "is not a numeric, integer or ordered factor.\n"))
     }
   }
+  
+  inpClass <- varClass[x] %in% c("numeric", "double", "integer")
+  
+  # Error
+  if (!all(inpClass)){
+    stop(paste(names(data)[x][!inpClass][1], "is not a numeric, integer or ordered vector"))
+  }
+  
+  data <- data[, c(x, y)]
   
   # NA values
 
-  if (any(is.na(data[, c(x, y)]))){
+  if (any(is.na(data))){
     if (na.rm == T){
-      if (sys.calls()[[sys.nframe() - 1]] == "predict(tree, data, x, y)"){
-        data <- data
+      data <- na.omit(data)
+      warning("Rows with NA values have been omitted .\n")
+      
       } else {
-        data <- na.omit(data)
-        warning("Rows with NA values have been omitted \n")
-      }
-    } else {
       stop("Please, detele or impute NA registers or set na.rm = TRUE to omit them. \n")
     }
   }
-
-  data <- data[, c(x, y)]
   
   rwn <- row.names(data)
-
+  
   return(list(rwn, data))
 }
 

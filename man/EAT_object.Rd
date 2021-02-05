@@ -4,7 +4,18 @@
 \alias{EAT_object}
 \title{EAT object}
 \usage{
-EAT_object(data, x, y, register_names, numStop, fold, max.depth, na.rm, tree)
+EAT_object(
+  data,
+  x,
+  y,
+  register_names,
+  numStop,
+  fold,
+  max.depth,
+  max.leaves,
+  na.rm,
+  tree
+)
 }
 \arguments{
 \item{data}{Dataframe or matrix containing the variables in the model.}
@@ -20,6 +31,8 @@ EAT_object(data, x, y, register_names, numStop, fold, max.depth, na.rm, tree)
 \item{fold}{Integer. Number of folds in which is divided the dataset to apply cross-validation during the pruning.}
 
 \item{max.depth}{Integer. Maximum number of leaf nodes.}
+
+\item{max.leaves}{Integer. Depth of the tree.}
 
 \item{na.rm}{Logical. If True, NA rows are omitted. If False, an error occurs in case of NA rows.}
 

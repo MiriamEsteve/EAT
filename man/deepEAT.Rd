@@ -4,7 +4,7 @@
 \alias{deepEAT}
 \title{Deep Efficiency Analysis Trees}
 \usage{
-deepEAT(data, x, y, numStop, max.depth = NULL)
+deepEAT(data, x, y, numStop = 5, max.depth = NULL, max.leaves = NULL)
 }
 \arguments{
 \item{data}{Dataframe or matrix containing the variables in the model.}

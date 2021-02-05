@@ -4,7 +4,16 @@
 \alias{EAT}
 \title{Efficiency Analysis Trees}
 \usage{
-EAT(data, x, y, numStop = 5, fold = 5, max.depth = NULL, na.rm = T)
+EAT(
+  data,
+  x,
+  y,
+  numStop = 5,
+  fold = 5,
+  max.depth = NULL,
+  max.leaves = NULL,
+  na.rm = T
+)
 }
 \arguments{
 \item{data}{Dataframe or matrix containing the variables in the model.}
@@ -17,7 +26,9 @@ EAT(data, x, y, numStop = 5, fold = 5, max.depth = NULL, na.rm = T)
 
 \item{fold}{Integer. Number of folds in which is divided the dataset to apply cross-validation during the pruning.}
 
-\item{max.depth}{Integer. Maximum number of leaf nodes.}
+\item{max.depth}{Integer. Depth of the tree.}
+
+\item{max.leaves}{Integer. Maximum number of leaf nodes.}
 
 \item{na.rm}{Logical. If \code{TRUE}, \code{NA} rows are omitted.}
 }

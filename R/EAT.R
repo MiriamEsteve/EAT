@@ -104,11 +104,8 @@ EAT <- function(data, x, y, numStop = 5, fold = 5, max.depth = NULL, max.leaves 
   # selectTk
   Tk <- selectTk(Tk, tree_alpha_list, SE)
   
-  for (i in 1:length(Tk[["tree"]])) {
-    if (Tk[["tree"]][[i]][["SL"]] == -1) {
-      Tk[["tree"]][[i]][["xi"]] <- Tk[["tree"]][[i]][["s"]] <- -1
-    }
-  }
+  # set s and xi to -1 for leaf nodes
+  Tk[["tree"]] <- lapply(tree, function(x) if(x["SL"] == -1) {x["s"] <- x["xi"] <- - 1; x} else {x})
   
   EAT <- EAT_object(data, x, y, rwn, fold, numStop, max.depth, max.leaves, na.rm, Tk[["tree"]])
 

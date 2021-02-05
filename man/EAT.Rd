@@ -16,7 +16,7 @@ EAT(
 )
 }
 \arguments{
-\item{data}{Dataframe or matrix containing the variables in the model.}
+\item{data}{Data frame or matrix containing the variables in the model.}
 
 \item{x}{Vector. Column input indexes in data.}
 
@@ -33,7 +33,40 @@ EAT(
 \item{na.rm}{Logical. If \code{TRUE}, \code{NA} rows are omitted.}
 }
 \value{
-An EAT object.
+An EAT object containing:
+\itemize{
+  \item{\code{data} \itemize{
+                      \item{\code{df}}: data frame containing the variables in the model.
+                      \item{\code{x}}: input indexes in data.
+                      \item{\code{y}}: output indexes in data.
+                      \item{\code{input_names}}: input variable names.
+                      \item{\code{output_names}}: output variable names.
+                      \item{\code{row_names}}: rownames in data.}
+       }
+  \item{\code{control} \itemize{
+                        \item{\code{fold}}: fold hyperparameter value.
+                        \item{\code{numStop}}: numStop hyperparameter value.
+                        \item{\code{max.leaves}}: max.leaves hyperparameter value.
+                        \item{\code{max.depth}}: max.depth hyperparameter value.
+                        \item{\code{na.rm}}: na.rm hyperparameter value.}
+       }
+  \item{\code{tree}: list structure containing the EAT nodes.}
+  \item{\code{nodes_df}: data frame containing the following information for each node. \itemize{
+       \item{\code{id}}: node index.  
+       \item{\code{SL}}: left child node index.
+       \item{\code{N}}: number of observations at the node. 
+       \item{\code{Proportion}}: proportion of observations at the node.
+       \item{the output predictions}.
+       \item{\code{R}}: the error at the node.  
+       \item{\code{index}}: observations indexes at the node.}
+       }   
+  \item{\code{model} \itemize{
+       \item{\code{nodes}}: total number of nodes at the tree.  
+       \item{\code{leaf_nodes}}: number of leaf nodes at the tree.
+       \item{\code{a}}: lower bound of the nodes. 
+       \item{\code{y}}: output predictions.}
+       }
+}
 }
 \description{
 This function estimates a stepped production frontier through regression trees.

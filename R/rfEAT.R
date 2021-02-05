@@ -95,7 +95,26 @@ RandomEAT <- function(data, x, y, numStop, s_mtry){
 #' RFmodel <- RFEAT(data = simulated, x = c(1,2), y = c(3, 4), numStop = 5,
 #'                   m = 50, s_mtry = "Breiman", na.rm = TRUE)
 #' 
-#' @return A RFEAT object.
+#' @return A RFEAT object containing:
+#' \itemize{
+#'   \item{\code{data} \itemize{
+#'                       \item{\code{df}}: data frame containing the variables in the model.
+#'                       \item{\code{x}}: input indexes in data.
+#'                       \item{\code{y}}: output indexes in data.
+#'                       \item{\code{input_names}}: input variable names.
+#'                       \item{\code{output_names}}: output variable names.
+#'                       \item{\code{row_names}}: rownames in data.}
+#'        }
+#'   \item{\code{control} \itemize{
+#'                         \item{\code{numStop}}: numStop hyperparameter value.
+#'                         \item{\code{m}}: m hyperparameter value.
+#'                         \item{\code{s_mtry}}: s_mtry hyperparameter value.
+#'                         \item{\code{na.rm}}: na.rm hyperparameter value.}
+#'        }
+#'   \item{\code{forest}: list structure containing the individual EAT.}
+#'   \item{\code{error}: Out-of-Bag error at the forest.}   
+#'   \item{\code{OOB}: list containing Out-of-Bag samples for each tree.}
+#' }
 #' 
 #' @export
 RFEAT <- function(data, x, y, numStop = 5, m = 50, 

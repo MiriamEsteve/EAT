@@ -4,7 +4,7 @@
 #' 
 #' @name EAT
 #'
-#' @param data Dataframe or matrix containing the variables in the model.
+#' @param data Data frame or matrix containing the variables in the model.
 #' @param x Vector. Column input indexes in data.
 #' @param y Vector. Column output indexes in data.
 #' @param numStop Integer. Minimun number of observations in a node for a split to be attempted.
@@ -26,7 +26,40 @@
 #' @importFrom conflicted conflict_prefer
 #' @importFrom Rdpack reprompt
 #' 
-#' @return An EAT object.
+#' @return An EAT object containing:
+#' \itemize{
+#'   \item{\code{data} \itemize{
+#'                       \item{\code{df}}: data frame containing the variables in the model.
+#'                       \item{\code{x}}: input indexes in data.
+#'                       \item{\code{y}}: output indexes in data.
+#'                       \item{\code{input_names}}: input variable names.
+#'                       \item{\code{output_names}}: output variable names.
+#'                       \item{\code{row_names}}: rownames in data.}
+#'        }
+#'   \item{\code{control} \itemize{
+#'                         \item{\code{fold}}: fold hyperparameter value.
+#'                         \item{\code{numStop}}: numStop hyperparameter value.
+#'                         \item{\code{max.leaves}}: max.leaves hyperparameter value.
+#'                         \item{\code{max.depth}}: max.depth hyperparameter value.
+#'                         \item{\code{na.rm}}: na.rm hyperparameter value.}
+#'        }
+#'   \item{\code{tree}: list structure containing the EAT nodes.}
+#'   \item{\code{nodes_df}: data frame containing the following information for each node. \itemize{
+#'        \item{\code{id}}: node index.  
+#'        \item{\code{SL}}: left child node index.
+#'        \item{\code{N}}: number of observations at the node. 
+#'        \item{\code{Proportion}}: proportion of observations at the node.
+#'        \item{the output predictions}.
+#'        \item{\code{R}}: the error at the node.  
+#'        \item{\code{index}}: observations indexes at the node.}
+#'        }   
+#'   \item{\code{model} \itemize{
+#'        \item{\code{nodes}}: total number of nodes at the tree.  
+#'        \item{\code{leaf_nodes}}: number of leaf nodes at the tree.
+#'        \item{\code{a}}: lower bound of the nodes. 
+#'        \item{\code{y}}: output predictions.}
+#'        }
+#' }
 #'
 #' @examples
 #' # ====================== #
@@ -105,7 +138,7 @@ EAT <- function(data, x, y, numStop = 5, fold = 5, max.depth = NULL, max.leaves 
   Tk <- selectTk(Tk, tree_alpha_list, SE)
   
   # set s and xi to -1 for leaf nodes
-  Tk[["tree"]] <- lapply(tree, function(x) if(x["SL"] == -1) {x["s"] <- x["xi"] <- - 1; x} else {x})
+  Tk[["tree"]] <- lapply(Tk[["tree"]] , function(x) if(x["SL"] == -1) {x["s"] <- x["xi"] <- - 1; x} else {x})
   
   EAT <- EAT_object(data, x, y, rwn, fold, numStop, max.depth, max.leaves, na.rm, Tk[["tree"]])
 

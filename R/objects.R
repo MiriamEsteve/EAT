@@ -55,7 +55,7 @@ EAT_object <- function(data, x, y, register_names, numStop, fold, max.depth, max
     unlist() %>%
     matrix(ncol = length(y), byrow = T)
   
-  # Nodes frame for results
+  # Nodes data frame for results
   nodes_frame <- nodes_frame %>%
     mutate(N = sapply(nodes_frame$index, length),
            R = round(unlist(R), 2),

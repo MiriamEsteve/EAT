@@ -5,7 +5,6 @@
 #' @param tree A list containing EAT nodes.
 #'
 #' @return Message indicating if the tree is acceptable or warning in case of breaking any Pareto-dominance relationship.
-#' @export
 checkEAT <- function(tree) {
   resComp <- NULL
   check <- 1
@@ -36,7 +35,7 @@ checkEAT <- function(tree) {
   }
 
   if (check == 0) {
-    warning("The tree doesn't fullfill the Pareto-Dominance conditions")
+    warning("The tree does not fullfill the Pareto-Dominance conditions")
   } else {
     return(TRUE)
   }

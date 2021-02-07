@@ -370,7 +370,7 @@ EAT_WAM <- function(j, scores, x_k, y_k, atreeTk, ytreeTk, nX, nY, N_leaves) {
 #' 
 #' @return Dataframe with input variables and efficiency scores by an EAT model.
 efficiencyEAT <- function(data, x, y, object, 
-                          scores_model, r = 2, FDH = TRUE,
+                          scores_model, r = 3, FDH = TRUE,
                           na.rm = TRUE) {
   
   if (class(object) != "EAT"){

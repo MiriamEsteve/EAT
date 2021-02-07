@@ -24,7 +24,7 @@
 #'                 r = 2, FDH = TRUE, na.rm = TRUE)
 #'
 #' @return Dataframe with input variables and efficiency scores through a Random Forest + Efficiency Analysis Trees model.
-efficiencyRFEAT <- function(data, x, y, object, r = 2, FDH = TRUE, na.rm = TRUE){
+efficiencyRFEAT <- function(data, x, y, object, r = 3, FDH = TRUE, na.rm = TRUE){
   
   if (class(object) != "RFEAT"){
     stop(paste(deparse(substitute(object)), "must be a RFEAT object"))

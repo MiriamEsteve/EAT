@@ -6,8 +6,6 @@
 #' @param x Vector. Column input indexes in data.
 #' @param y Vector. Column output indexes in data.
 #' 
-#' @export
-#' 
 #' @examples
 #'  
 #' simulated <- eat:::Y1.sim(N = 50, nX = 1)

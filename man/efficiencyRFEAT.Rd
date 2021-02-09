@@ -4,7 +4,7 @@
 \alias{efficiencyRFEAT}
 \title{Random Forest + Efficiency Analysis Trees Efficiency Scores}
 \usage{
-efficiencyRFEAT(data, x, y, object, r = 2, FDH = TRUE, na.rm = TRUE)
+efficiencyRFEAT(data, x, y, object, r = 3, FDH = TRUE, na.rm = TRUE)
 }
 \arguments{
 \item{data}{Dataframe for which the efficiency score is calculated.}

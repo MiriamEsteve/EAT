@@ -17,13 +17,14 @@ RFEAT(data, x, y, numStop = 5, m = 50, s_mtry = "Breiman", na.rm = TRUE)
 
 \item{m}{Integer. Number of trees to be build.}
 
-\item{s_mtry}{Select number of inputs in each split. It can be an integer or any of the following options:
+\item{s_mtry}{Number of variables randomly sampled as candidates at each split. The available options are:
 \itemize{
 \item{\code{"Breiman"}}: \code{in / 3}
 \item{\code{"DEA1"}}: \code{(t.obs / 2) - out}  
 \item{\code{"DEA2"}}: \code{(t.obs / 3) - out}
 \item{\code{"DEA3"}}: \code{t.obs - 2 * out}
 \item{\code{"DEA4"}}: \code{min(t.obs / out, (t.obs / 3) - out)}
+\item{integer}
 }}
 
 \item{na.rm}{Logical. If \code{TRUE}, NA rows are omitted.}

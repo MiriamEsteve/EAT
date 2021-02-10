@@ -4,14 +4,14 @@
 \alias{efficiencyJitter}
 \title{Efficiency Scores Jitter Plot}
 \usage{
-efficiencyJitter(object, scores_EAT, scores_model, upb = NULL, lwb = NULL)
+efficiencyJitter(object, df_scores, scores_model, upb = NULL, lwb = NULL)
 }
 \arguments{
 \item{object}{An EAT object.}
 
-\item{scores_EAT}{Dataframe with scores (from \code{efficiencyEAT} or \code{efficiencyCEAT}).}
+\item{df_scores}{Dataframe with efficiency scores (from \code{efficiencyEAT} or \code{efficiencyCEAT}).}
 
-\item{scores_model}{Mathematic programming model of scores_EAT. 
+\item{scores_model}{Mathematic programming model of \code{df_scores} 
 \itemize{
 \item{\code{BCC_out}} BCC model. Output orientation.
 \item{\code{BCC_in}}  BCC model. Input orientation.
@@ -39,6 +39,6 @@ EAT_model <- EAT(data = simulated, x = c(1,2), y = c(3, 4))
 EAT_scores <- efficiencyEAT(data = simulated, x = c(1, 2), y = c(3, 4), object = EAT_model,
                             scores_model = "BCC_out", r = 2, na.rm = TRUE)
 
-efficiencyJitter(object = EAT_model, scores_EAT = EAT_scores, scores_model = "BCC_out")
+efficiencyJitter(object = EAT_model, df_scores = EAT_scores, scores_model = "BCC_out")
 
 }

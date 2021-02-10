@@ -6,7 +6,7 @@
 #' @param x Vector. Column input indexes in data.
 #' @param y Vector. Column output indexes in data.
 #' @param numStop Integer. Minimun number of observations in a node for a split to be attempted.
-#' @param s_mtry  Select number of inputs. It could be: \code{"Breiman"}, \code{"DEA1"}, \code{"DEA2"}, \code{"DEA3"} or \code{"DEA4"} or any integer.
+#' @param s_mtry Number of variables randomly sampled as candidates at each split. The available options are: \code{"Breiman"}, \code{"DEA1"}, \code{"DEA2"}, \code{"DEA3"}, \code{"DEA4"} or any integer.
 #' 
 #' @return List of m trees in forest and the error that will be used in the ranking of the importance of the variables.
 RandomEAT <- function(data, x, y, numStop, s_mtry){
@@ -76,13 +76,14 @@ RandomEAT <- function(data, x, y, numStop, s_mtry){
 #' @param y Vector. Column output indexes in data.
 #' @param numStop Integer. Minimun number of observations in a node for a split to be attempted.
 #' @param m Integer. Number of trees to be build.
-#' @param s_mtry Select number of inputs in each split. It can be an integer or any of the following options:
+#' @param s_mtry Number of variables randomly sampled as candidates at each split. The available options are:
 #' \itemize{
 #' \item{\code{"Breiman"}}: \code{in / 3}
 #' \item{\code{"DEA1"}}: \code{(t.obs / 2) - out}  
 #' \item{\code{"DEA2"}}: \code{(t.obs / 3) - out}
 #' \item{\code{"DEA3"}}: \code{t.obs - 2 * out}
 #' \item{\code{"DEA4"}}: \code{min(t.obs / out, (t.obs / 3) - out)}
+#' \item{integer}
 #' }
 #' @param na.rm Logical. If \code{TRUE}, NA rows are omitted.
 #'

@@ -7,8 +7,8 @@
 frontier(
   object,
   FDH = FALSE,
-  train.data = FALSE,
-  train.color = "black",
+  observed.data = FALSE,
+  observed.color = "black",
   pch = 19,
   size = 1,
   rwn = FALSE
@@ -19,9 +19,9 @@ frontier(
 
 \item{FDH}{Logical. If \code{TRUE}, FDH frontier is displayed.}
 
-\item{train.data}{Logical. If \code{TRUE}, training DMUs are displayed.}
+\item{observed.data}{Logical. If \code{TRUE}, observed DMUs are displayed.}
 
-\item{train.color}{String. Color for training DMUs.}
+\item{observed.color}{String. Color for observed DMUs.}
 
 \item{pch}{Integer. Point shape.}
 
@@ -45,7 +45,7 @@ model <- EAT(data = simulated,
 
 frontier <- frontier(object = model,
                      FDH = TRUE, 
-                     train.data = TRUE,
+                     observed.data = TRUE,
                      rwn = TRUE)
 plot(frontier)
 

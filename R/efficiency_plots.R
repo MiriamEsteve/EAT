@@ -3,8 +3,8 @@
 #' @description This function returns a jitter plot from \code{ggplot2}. This graphic shows how DMUs are grouped into leaf nodes in a model built using the \code{EAT} function. Each leaf node groups DMUs with the same level of resources. The dot and the black line represent, respectively, the mean value and the standard deviation of the scores of its node. Additionally, efficient DMU labels always are displayed based on the model entered in the \code{scores_model} argument. Finally, the user can specify an upper bound \code{upn} and a lower bound \code{lwb} in order to show, in addition, the labels which efficiency score is between them.
 #'
 #' @param object An EAT object.
-#' @param scores_EAT Dataframe with scores (from \code{efficiencyEAT} or \code{efficiencyCEAT}).
-#' @param scores_model Mathematic programming model of scores_EAT. 
+#' @param df_scores Dataframe with efficiency scores (from \code{efficiencyEAT} or \code{efficiencyCEAT}).
+#' @param scores_model Mathematic programming model of \code{df_scores} 
 #' \itemize{
 #' \item{\code{BCC_out}} BCC model. Output orientation.
 #' \item{\code{BCC_in}}  BCC model. Input orientation.
@@ -30,10 +30,10 @@
 #' EAT_scores <- efficiencyEAT(data = simulated, x = c(1, 2), y = c(3, 4), object = EAT_model,
 #'                             scores_model = "BCC_out", r = 2, na.rm = TRUE)
 #' 
-#' efficiencyJitter(object = EAT_model, scores_EAT = EAT_scores, scores_model = "BCC_out")
+#' efficiencyJitter(object = EAT_model, df_scores = EAT_scores, scores_model = "BCC_out")
 #'
 #' @return Jitter plot with DMUs and scores.
-efficiencyJitter <- function(object, scores_EAT, scores_model, upb = NULL, lwb = NULL) {
+efficiencyJitter <- function(object, df_scores, scores_model, upb = NULL, lwb = NULL) {
   if (class(object) != "EAT"){
     stop(paste(deparse(substitute(object)), "must be an EAT object"))
     
@@ -48,7 +48,7 @@ efficiencyJitter <- function(object, scores_EAT, scores_model, upb = NULL, lwb =
     filter(SL == -1) %>%
     select(id, index)
   
-  scores_df <- data.frame(Score = scores_EAT,
+  scores_df <- data.frame(Score = df_scores,
                           Group = NA)
   
   names(scores_df) <- c("Score", "Group")
@@ -102,7 +102,7 @@ efficiencyJitter <- function(object, scores_EAT, scores_model, upb = NULL, lwb =
 #'
 #' @description Density plot for efficiency scores.
 #'
-#' @param scores Dataframe with efficiency scores.
+#' @param df_scores Dataframe with efficiency scores.
 #' @param model String vector. Scoring models in the order shown in \code{scores} by columns. The available models are: \code{"EAT"}, \code{"FDH"}, \code{"CEAT"}, \code{"DEA"} and \code{"RFEAT"}.
 #'
 #' @importFrom ggplot2 ggplot geom_density
@@ -118,22 +118,22 @@ efficiencyJitter <- function(object, scores_EAT, scores_model, upb = NULL, lwb =
 #' scores <- efficiencyEAT(data = simulated, x = c(1, 2), y = c(3, 4), object = EAT_model, 
 #'                         scores_model = "BCC_out", r = 2, FDH = TRUE, na.rm = TRUE)
 #' 
-#' efficiencyDensity(scores = scores[, 5:6],
+#' efficiencyDensity(df_scores = scores[, 5:6],
 #'                   model = c("EAT", "FDH"))
 #'
 #' @return Density plot for efficiency scores.
-efficiencyDensity <- function(scores, model = c("EAT", "FDH")) {
+efficiencyDensity <- function(df_scores, model = c("EAT", "FDH")) {
   
   if (!all(model %in% c("EAT", "FDH", "RFEAT", "CEAT", "DEA"))){
     stop(paste("Some model is not allowed. Please, check help(\"efficiencyDensity\")"))
   }
   
-  names(scores) <- model
+  names(df_scores) <- model
   
-  scores <- melt(scores, id.vars = NULL)
-  names(scores)[1] <- "Model"
+  df_scores <- melt(df_scores, id.vars = NULL)
+  names(df_scores)[1] <- "Model"
   
-  efficiencyDensity <- ggplot(scores, aes(x = value, fill = Model, colour = Model)) +
+  efficiencyDensity <- ggplot(df_scores, aes(x = value, fill = Model, colour = Model)) +
     geom_density(alpha = .2) +
     xlab("Score") +
     ylab("Density")

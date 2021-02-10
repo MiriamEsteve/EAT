@@ -6,8 +6,8 @@
 #'
 #' @param object An EAT object.
 #' @param FDH Logical. If \code{TRUE}, FDH frontier is displayed.
-#' @param train.data Logical. If \code{TRUE}, training DMUs are displayed.
-#' @param train.color String. Color for training DMUs.
+#' @param observed.data Logical. If \code{TRUE}, observed DMUs are displayed.
+#' @param observed.color String. Color for observed DMUs.
 #' @param pch Integer. Point shape.
 #' @param size Integer. Point size.
 #' @param rwn Logical. If \code{TRUE}, rownames are displayed.
@@ -28,17 +28,18 @@
 #' 
 #' frontier <- frontier(object = model,
 #'                      FDH = TRUE, 
-#'                      train.data = TRUE,
+#'                      observed.data = TRUE,
 #'                      rwn = TRUE)
 #' plot(frontier)
 #' 
 #' @export
-frontier <- function(object, FDH = FALSE, train.data = FALSE, train.color = "black", 
+frontier <- function(object, FDH = FALSE, observed.data = FALSE, observed.color = "black", 
                      pch = 19, size = 1, rwn = FALSE){
   
   if (class(object) != "EAT"){
-    stop(paste(object, "must be an EAT object"))
-  }
+    stop(paste(deparse(substitute(object)), "must be an EAT object"))
+    
+  } 
 
   t_data <- object[["data"]][["df"]]
   x <- object[["data"]][["x"]]
@@ -110,14 +111,14 @@ frontier <- function(object, FDH = FALSE, train.data = FALSE, train.color = "bla
         legend.title = element_blank()
       )
     
-    if (train.data == FALSE){
+    if (observed.data == FALSE){
       plot <- plot +
         xlim(c(min(ggdata$x1), max(ggdata$x1))) +
         ylim(c(min(ggdata$Frontier) - (min(ggdata$Frontier) / 10), max(ggdata$Frontier)))
     } else {
       plot <- plot + 
         geom_point(data = t_data, aes_string(x = x_names, y = y_names),
-                   color = train.color,
+                   color = observed.color,
                    pch = pch,
                    size = size)
       

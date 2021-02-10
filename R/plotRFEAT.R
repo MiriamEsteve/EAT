@@ -65,7 +65,7 @@ plotRFEAT <- function(object) {
                                                                    na.rm = TRUE))), 
                           ncol = nY)
     
-    # obs
+    # add obs index
     predicted_k <- cbind(predicted_k, 1:N)
 
     # filter: !is.na for first row since NaN rows coincide
@@ -74,8 +74,8 @@ plotRFEAT <- function(object) {
     # actual
     actual <- matrix(actual_original[predicted_k[, ncol(predicted_k)], ], ncol = nY)
     
-    # drop obs column
-    predicted_k <- matrix(predicted_k[, - ncol(predicted_k)])
+    # drop obs column and keep same actual columns
+    predicted_k <- matrix(predicted_k[, - ncol(predicted_k)], ncol = ncol(actual))
     
     # MSE between actual y predicted
     MSE <- sum(sapply((actual - predicted_k) ^ 2, sum)) / nrow(actual)

@@ -4,6 +4,7 @@
 #'
 #' @param object An EAT object.
 #' @param newdata Dataframe. Set of input variables to predict on.
+#' @param x Input index
 #'
 #' @importFrom dplyr %>%
 #'
@@ -14,21 +15,23 @@
 #' simulated <- eat:::X2Y2.sim(N = 50, border = 0.2)
 #' EAT_model <- EAT(data = simulated, x = c(1,2), y = c(3, 4))
 #' 
-#' predictEAT(object = EAT_model, newdata = simulated[, 1:2])
+#' predictEAT(object = EAT_model, newdata = simulated, x = c(1,2))
 #' 
 #' @export
-predictEAT <- function(object, newdata) {
+predictEAT <- function(object, newdata, x) {
   
   if (class(object) != "EAT"){
     stop(paste(deparse(substitute(object)), "must be an EAT object"))
     
   }
   
+  newdata <- newdata[, x]
+  
   train_names <- object[["data"]][["input_names"]]
   test_names <- names(newdata)
   
   if (!identical(sort(train_names), sort(test_names))) {
-    stop("Different variable names in training and test set")
+    stop("Different variable names in training and test set. Remove the output variables in newdata.")
   }
   
   y <- object[["data"]][["y"]] 

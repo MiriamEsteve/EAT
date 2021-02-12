@@ -4,7 +4,7 @@
 #'
 #' @param object An EAT object.
 #' @param newdata Dataframe. Set of input variables to predict on.
-#' @param x Input index
+#' @param x Inputs index
 #'
 #' @importFrom dplyr %>%
 #'
@@ -72,6 +72,7 @@ predictEAT <- function(object, newdata, x) {
 #'
 #' @param object A RFEAT object.
 #' @param newdata Dataframe. Set of input variables to predict on.
+#' @param x Inputs index
 #'
 #' @importFrom dplyr %>%
 #'
@@ -82,16 +83,17 @@ predictEAT <- function(object, newdata, x) {
 #' simulated <- eat:::X2Y2.sim(N = 50, border = 0.2)
 #' RFEAT_model <- RFEAT(data = simulated, x = c(1,2), y = c(3, 4))
 #' 
-#' predictRFEAT(object = RFEAT_model, newdata = simulated[, 1:2])
+#' predictRFEAT(object = RFEAT_model, newdata = simulated, x = c(1,2))
 #' 
 #' @export
-predictRFEAT <- function(object, newdata) {
+predictRFEAT <- function(object, newdata, x) {
   
   if (class(object) != "RFEAT"){
     stop(paste(deparse(substitute(object)), "must be a RFEAT object"))
     
   }
   
+  newdata <- newdata[,x]
   train_names <- object[["data"]][["input_names"]]
   test_names <- names(newdata)
   

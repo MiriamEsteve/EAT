@@ -105,20 +105,17 @@ EAT <- function(data, x, y, numStop = 5, fold = 5, max.depth = NULL, max.leaves 
   
   # Deep tree and pruning or tree with the size indicated in max.depth or max.leaves
   tree_alpha_list <- deepEAT(data, x, y, numStop, max.depth, max.leaves)
-  
-  if (!is.null(max.depth) || !is.null(max.leaves)) {
-    data <- data[-1] %>% 
-      as.data.frame()
-    EAT <- EAT_object(data, x, y, rwn, fold, numStop, max.depth, max.leaves, na.rm, tree_alpha_list)
-    
-    return(EAT)
-  }
 
   data <- data[-1] %>% 
     as.data.frame()
   
   # Best Tk for now
   Tk <- tree_alpha_list[[1]]
+  
+  if (!is.null(max.depth) || !is.null(max.leaves)) {
+    EAT <- EAT_object(data, x, y, rwn, numStop, fold, max.depth, max.leaves, na.rm, Tk[["tree"]])
+    return(EAT)
+  }
 
   # Generate Lv (test) and notLv (training)
   Lv_notLv <- generateLv(data, fold)
@@ -140,7 +137,7 @@ EAT <- function(data, x, y, numStop = 5, fold = 5, max.depth = NULL, max.leaves 
   # set s and xi to -1 for leaf nodes
   Tk[["tree"]] <- lapply(Tk[["tree"]] , function(x) if(x["SL"] == -1) {x["s"] <- x["xi"] <- - 1; x} else {x})
   
-  EAT <- EAT_object(data, x, y, rwn, fold, numStop, max.depth, max.leaves, na.rm, Tk[["tree"]])
+  EAT <- EAT_object(data, x, y, rwn, numStop, fold, max.depth, max.leaves, na.rm, Tk[["tree"]])
 
   return(EAT)
 }

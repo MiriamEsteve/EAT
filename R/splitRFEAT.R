@@ -61,7 +61,7 @@ select_mtry <- function(s_mtry, t, nX, nY){
     mtry = min(nt / nY, (nt / 3) - nY)
     
   }else {
-    mtry = s_mtry
+    stop(paste(s_mtry, "doesn't exist!"))
   }
   
   if(mtry < 1)

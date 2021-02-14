@@ -109,7 +109,7 @@ EAT <- function(data, x, y, numStop = 5, fold = 5, max.depth = NULL, max.leaves 
   if (!is.null(max.depth) || !is.null(max.leaves)) {
     data <- data[-1] %>% 
       as.data.frame()
-    EAT <- EAT_object(data, x, y, rwn, fold, numStop, max.depth, na.rm, tree_alpha_list)
+    EAT <- EAT_object(data, x, y, rwn, fold, numStop, max.depth, max.leaves, na.rm, tree_alpha_list)
     
     return(EAT)
   }

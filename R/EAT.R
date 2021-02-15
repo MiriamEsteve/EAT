@@ -67,19 +67,24 @@
 #' # ====================== #
 #'
 #' simulated <- eat:::Y1.sim(N = 50, nX = 3)
-#' EAT(data = simulated, x = c(1, 2, 3), y = 4, numStop = 10, fold = 5)
+#' EAT(data = simulated, x = c(1, 2, 3), y = 4, numStop = 10, fold = 5, max.leaves = 6)
 #' 
 #' # ====================== #
 #' #  Multi output scenario #
 #' # ====================== #
 #'
 #' simulated <- eat:::X2Y2.sim(N = 50, border = 0.1)
-#' EAT(data = simulated, x = c(1,2), y = c(3, 4), numStop = 10, fold = 7)
+#' EAT(data = simulated, x = c(1,2), y = c(3, 4), numStop = 10, fold = 7, max.depth = 7)
 #' 
 #' @export
-EAT <- function(data, x, y, numStop = 5, fold = 5, max.depth = NULL, max.leaves = NULL, 
-                na.rm = T) {
+EAT <- function(data, x, y, numStop = 5, fold = 5, max.depth = NULL, 
+                max.leaves = NULL, na.rm = T) {
   conflict_prefer("filter", "dplyr")
+  
+  # max.depth and max.leaves included
+  if(!is.null(max.depth) && !is.null(max.leaves)) {
+    warning(paste("If max.depth and max.leaves arguments are included, only max.depth is used"))
+  }
   
   # Data in data[x, y] format and rownames
   data <- preProcess(data, x, y, na.rm = na.rm)
@@ -150,7 +155,7 @@ EAT <- function(data, x, y, numStop = 5, fold = 5, max.depth = NULL, max.leaves 
 #' @param x Vector. Column input indexes in data.
 #' @param y Vector. Column output indexes in data.
 #' @param numStop Integer. Minimun number of observations in a node for a split to be attempted.
-#' @param max.depth Integer. Maximum number of leaf nodes.
+#' @param max.depth Integer. Depth of the tree.
 #'
 #' @importFrom dplyr filter mutate %>% row_number
 #' @importFrom conflicted conflict_prefer
@@ -369,17 +374,17 @@ summary.EAT <- function(object, ...) {
   )
   
   cat(
-    " Inner nodes:", paste(object[["model"]][["nodes"]] - object[["model"]][["leaf_nodes"]]), "\n",
-    " Leaf nodes:", paste(object[["model"]][["leaf_nodes"]]), "\n",
-    "Total nodes:", paste(object[["model"]][["nodes"]]),
+    " Interior nodes:", paste(object[["model"]][["nodes"]] - object[["model"]][["leaf_nodes"]]), "\n",
+    "    Leaf nodes:", paste(object[["model"]][["leaf_nodes"]]), "\n",
+    "   Total nodes:", paste(object[["model"]][["nodes"]]),
     rep("\n", 2)
   )
   
-  cat("       R(T):", sum(results$R), "\n",
-      "    numStop:", object[["control"]][["numStop"]], "\n",
-      "       fold:", object[["control"]][["fold"]], "\n",
-      "  max.depth:", object[["control"]][["max.depth"]],
-      "  max.leaves:", object[["control"]][["max.leaves"]]
+  cat("           R(T):", sum(results$R), "\n",
+      "       numStop:", object[["control"]][["numStop"]], "\n",
+      "          fold:", object[["control"]][["fold"]], "\n",
+      "     max.depth:", object[["control"]][["max.depth"]], "\n",
+      "    max.leaves:", object[["control"]][["max.leaves"]]
       )
   
   cat(
@@ -466,7 +471,7 @@ size <- function(object) {
 #'
 #' @param object An EAT object.
 #' 
-#' @return Data frame with frontier output levels.
+#' @return Data frame with the frontier output levels at the leaf nodes.
 #' 
 #' @examples
 #' 

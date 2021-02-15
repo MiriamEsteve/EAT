@@ -5,12 +5,12 @@
 #' @param data Dataframe or matrix containing the variables in the model.
 #' @param x Vector. Column input indexes in data.
 #' @param y Vector. Column output indexes in data.
-#' @param na.rm Logical. If True, NA rows are omitted. If False, an error occurs in case of NA rows.
+#' @param na.rm Logical. If \code{TRUE}, \code{NA} rows are omitted.
 #'
 #' @importFrom stats na.omit
 #'
 #' @return List containing rownames and data processed in the [X, Y] format with only allowed classes.
-preProcess <- function(data, x, y, na.rm = T) {
+preProcess <- function(data, x, y, na.rm = TRUE) {
   
   # x and y well / bad introduced
   
@@ -57,6 +57,9 @@ preProcess <- function(data, x, y, na.rm = T) {
       data[, i] <- as.numeric(data[, i])
     }
   }
+  
+  # Define classes again
+  varClass <- unlist(sapply(data, class))
   
   inpClass <- varClass[x] %in% c("numeric", "double", "integer")
   

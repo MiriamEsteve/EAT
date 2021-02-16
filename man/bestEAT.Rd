@@ -12,6 +12,7 @@ bestEAT(
   numStop = 5,
   fold = 5,
   max.depth = NULL,
+  max.leaves = NULL,
   na.rm = TRUE
 )
 }
@@ -28,7 +29,9 @@ bestEAT(
 
 \item{fold}{Vector. Set of number of folds in which is divided the dataset to apply cross-validation during the pruning.}
 
-\item{max.depth}{Vector. Maximum number of leaf nodes.}
+\item{max.depth}{Integer. Depth of the tree.}
+
+\item{max.leaves}{Integer. Maximum number of leaf nodes.}
 
 \item{na.rm}{Logical. If \code{TRUE}, \code{NA} rows are omitted.}
 }

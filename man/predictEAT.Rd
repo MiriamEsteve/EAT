@@ -4,12 +4,14 @@
 \alias{predictEAT}
 \title{Model prediction for Efficiency Analysis Trees.}
 \usage{
-predictEAT(object, newdata)
+predictEAT(object, newdata, x)
 }
 \arguments{
 \item{object}{An EAT object.}
 
 \item{newdata}{Dataframe. Set of input variables to predict on.}
+
+\item{x}{Inputs index}
 }
 \value{
 Data frame with the original data and the predicted values.
@@ -22,6 +24,6 @@ This function predicts the expected output by an EAT object.
 simulated <- eat:::X2Y2.sim(N = 50, border = 0.2)
 EAT_model <- EAT(data = simulated, x = c(1,2), y = c(3, 4))
 
-predictEAT(object = EAT_model, newdata = simulated[, 1:2])
+predictEAT(object = EAT_model, newdata = simulated, x = c(1,2))
 
 }

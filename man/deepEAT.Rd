@@ -15,7 +15,7 @@ deepEAT(data, x, y, numStop = 5, max.depth = NULL, max.leaves = NULL)
 
 \item{numStop}{Integer. Minimun number of observations in a node for a split to be attempted.}
 
-\item{max.depth}{Integer. Maximum number of leaf nodes.}
+\item{max.depth}{Integer. Depth of the tree.}
 }
 \value{
 List containing each possible pruning for the deep tree and its alpha associated.

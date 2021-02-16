@@ -4,7 +4,7 @@
 \alias{preProcess}
 \title{Data preprocessing}
 \usage{
-preProcess(data, x, y, na.rm = T)
+preProcess(data, x, y, na.rm = TRUE)
 }
 \arguments{
 \item{data}{Dataframe or matrix containing the variables in the model.}
@@ -13,7 +13,7 @@ preProcess(data, x, y, na.rm = T)
 
 \item{y}{Vector. Column output indexes in data.}
 
-\item{na.rm}{Logical. If True, NA rows are omitted. If False, an error occurs in case of NA rows.}
+\item{na.rm}{Logical. If \code{TRUE}, \code{NA} rows are omitted.}
 }
 \value{
 List containing rownames and data processed in the [X, Y] format with only allowed classes.

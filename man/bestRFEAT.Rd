@@ -4,7 +4,16 @@
 \alias{bestRFEAT}
 \title{Tuning a RFEAT model}
 \usage{
-bestRFEAT(training, test, x, y, numStop, m, s_mtry, na.rm = TRUE)
+bestRFEAT(
+  training,
+  test,
+  x,
+  y,
+  numStop = 5,
+  m = 50,
+  s_mtry = c("5", "Breiman"),
+  na.rm = TRUE
+)
 }
 \arguments{
 \item{training}{Training dataframe or matrix containing the variables in the model for model construction.}

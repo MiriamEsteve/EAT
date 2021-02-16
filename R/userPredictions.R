@@ -25,14 +25,14 @@ predictEAT <- function(object, newdata, x) {
     
   }
   
-  newdata <- newdata[, x]
-  
   train_names <- object[["data"]][["input_names"]]
-  test_names <- names(newdata)
+  test_names <- names(newdata)[x]
   
   if (!identical(sort(train_names), sort(test_names))) {
-    stop("Different variable names in training and test set. Remove the output variables in newdata.")
+   stop("Different variable names in training set and test set.")
   }
+  
+  newdata <- as.data.frame(newdata[, x])
   
   y <- object[["data"]][["y"]] 
   

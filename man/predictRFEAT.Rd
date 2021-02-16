@@ -4,12 +4,14 @@
 \alias{predictRFEAT}
 \title{Model prediction for Random Forest + Efficiency Analysis Trees model.}
 \usage{
-predictRFEAT(object, newdata)
+predictRFEAT(object, newdata, x)
 }
 \arguments{
 \item{object}{A RFEAT object.}
 
 \item{newdata}{Dataframe. Set of input variables to predict on.}
+
+\item{x}{Inputs index}
 }
 \value{
 Data frame with the original data and the predicted values.
@@ -22,6 +24,6 @@ This function predicts the expected output by a RFEAT object.
 simulated <- eat:::X2Y2.sim(N = 50, border = 0.2)
 RFEAT_model <- RFEAT(data = simulated, x = c(1,2), y = c(3, 4))
 
-predictRFEAT(object = RFEAT_model, newdata = simulated[, 1:2])
+predictRFEAT(object = RFEAT_model, newdata = simulated, x = c(1,2))
 
 }

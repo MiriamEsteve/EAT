@@ -10,7 +10,7 @@ frontier.levels(object)
 \item{object}{An EAT object.}
 }
 \value{
-Data frame with frontier output levels.
+Data frame with the frontier output levels at the leaf nodes.
 }
 \description{
 This function returns the frontier output levels of an Efficiency Analysis Tree model.

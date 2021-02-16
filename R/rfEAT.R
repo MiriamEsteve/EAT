@@ -122,6 +122,10 @@ RFEAT <- function(data, x, y, numStop = 5, m = 50,
                   s_mtry = "Breiman", na.rm = TRUE){
   conflict_prefer("filter", "dplyr")
   
+  if (!s_mtry %in% c("Breiman", "DEA1", "DEA2", "DEA3", "DEA4")) {
+    stop(paste(s_mtry, "is not available. Plase, cheack help(\"RFEAT\")"))
+  }
+  
   data <- preProcess(data, x, y, na.rm = na.rm)
   
   rwn <- data[[1]]

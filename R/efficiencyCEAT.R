@@ -451,13 +451,13 @@ efficiencyCEAT <- function(data, x, y, object,
   
   descriptive <- scores %>%
     summarise("Model" = "CEAT",
-              "Mean" = round(mean(scores[, 1]), 2),
-              "Std. Dev." = round(sd(scores[, 1]), 2),
-              "Min" = round(min(scores[, 1]), 2),
-              "Q1" = round(quantile(scores[, 1])[[2]], 2),
-              "Median" = round(median(scores[, 1]), 2),
-              "Q3" = round(quantile(scores[, 1])[[3]], 2),
-              "Max" = round(max(scores[, 1]), 2)
+              "Mean" = round(mean(scores[, 1]), r),
+              "Std. Dev." = round(sd(scores[, 1]), r),
+              "Min" = round(min(scores[, 1]), r),
+              "Q1" = round(quantile(scores[, 1])[[2]], r),
+              "Median" = round(median(scores[, 1]), r),
+              "Q3" = round(quantile(scores[, 1])[[3]], r),
+              "Max" = round(max(scores[, 1]), r)
               )
   
   if (DEA == TRUE){
@@ -467,13 +467,13 @@ efficiencyCEAT <- function(data, x, y, object,
     
     descriptive_DEA <- scores %>%
       summarise("Model" = "DEA",
-                "Mean" = round(mean(scores_DEA[, 1]), 2),
-                "Std. Dev." = round(sd(scores_DEA[, 1]), 2),
-                "Min" = round(min(scores_DEA[, 1]), 2),
-                "Q1" = round(quantile(scores_DEA[, 1])[[2]], 2),
-                "Median" = round(median(scores_DEA[, 1]), 2),
-                "Q3" = round(quantile(scores_DEA[, 1])[[3]], 2),
-                "Max" = round(max(scores_DEA[, 1]), 2)
+                "Mean" = round(mean(scores_DEA[, 1]), r),
+                "Std. Dev." = round(sd(scores_DEA[, 1]), r),
+                "Min" = round(min(scores_DEA[, 1]), r),
+                "Q1" = round(quantile(scores_DEA[, 1])[[2]], r),
+                "Median" = round(median(scores_DEA[, 1]), r),
+                "Q3" = round(quantile(scores_DEA[, 1])[[3]], r),
+                "Max" = round(max(scores_DEA[, 1]), r)
       )
   }
   

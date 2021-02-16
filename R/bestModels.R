@@ -112,7 +112,7 @@ bestEAT <- function(training, test, x, y, numStop = 5, fold = 5, max.depth = NUL
   
   hp <- hp %>% arrange(RMSE)
   
-  print(hp)
+  return(hp)
   
 }
 
@@ -168,20 +168,10 @@ bestRFEAT <- function(training, test, x, y, numStop = 5, m = 50,
                     s_mtry = s_mtry,
                     RMSE = NA)
   
-  s_mtry_opt <- c("BRM", "DEA1", "DEA2", "DEA3", "DEA4")
-  
   for (i in 1:nrow(hp)) {
     
-    if (hp[i, "s_mtry"] %in% s_mtry_opt){
-      input_select <- as.character(hp[i, "s_mtry"])
-      
-    } else {
-      input_select <- as.numeric(hp[i, "s_mtry"])
-      
-    }
-    
     RFEATmodel <- RFEAT(data = training, x = x, y = y, numStop = hp[i, "numStop"],
-                        m = hp[i, "m"], s_mtry = input_select, na.rm = na.rm)
+                        m = hp[i, "m"], s_mtry = hp[i, "s_mtry"], na.rm = na.rm)
     
     x.t <- RFEATmodel[["data"]][["x"]]
     y.t <- RFEATmodel[["data"]][["y"]]
@@ -204,6 +194,5 @@ bestRFEAT <- function(training, test, x, y, numStop = 5, m = 50,
   
   hp <- hp %>% arrange(RMSE)
   
-  print(hp)
-  
+  return(hp)
 }

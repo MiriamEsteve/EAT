@@ -122,8 +122,16 @@ RFEAT <- function(data, x, y, numStop = 5, m = 50,
                   s_mtry = "BRM", na.rm = TRUE){
   conflict_prefer("filter", "dplyr")
   
-  if (!s_mtry %in% c("BRM", "DEA1", "DEA2", "DEA3", "DEA4")) {
+  # Transform character to number (if it's possible)
+  # Numbers accepted
+  # If character, available option
+  
+  if (!is.na(suppressWarnings(as.numeric(s_mtry)))){
+    s_mtry <- as.numeric(s_mtry)
+    
+  } else if (!s_mtry %in% c("BRM", "DEA1", "DEA2", "DEA3", "DEA4")) {
     stop(paste(s_mtry, "is not available. Plase, cheack help(\"RFEAT\")"))
+    
   }
   
   data <- preProcess(data, x, y, na.rm = na.rm)

@@ -8,7 +8,8 @@
 #' @param y Vector. Column output indexes in data.
 #' @param numStop Vector. Set of minimun number of observations in a node for a split to be attempted.
 #' @param fold Vector. Set of number of folds in which is divided the dataset to apply cross-validation during the pruning.
-#' @param max.depth Vector. Maximum number of leaf nodes.
+#' @param max.depth Integer. Depth of the tree.
+#' @param max.leaves Integer. Maximum number of leaf nodes.
 #' @param na.rm Logical. If \code{TRUE}, \code{NA} rows are omitted.
 #' 
 #' @importFrom dplyr arrange %>%
@@ -32,7 +33,8 @@
 #'         fold = c(5, 7, 10))
 #'
 #' @return Dataframe in which each row corresponds to a given set of hyperparameters with its corresponding root mean square error (RMSE).
-bestEAT <- function(training, test, x, y, numStop = 5, fold = 5, max.depth = NULL, na.rm = TRUE) {
+bestEAT <- function(training, test, x, y, numStop = 5, fold = 5, max.depth = NULL, 
+                    max.leaves = NULL, na.rm = TRUE) {
 
   training <- preProcess(training, x, y, na.rm = na.rm)[[2]]
   test <- preProcess(test, x, y, na.rm = na.rm)[[2]]
@@ -41,27 +43,52 @@ bestEAT <- function(training, test, x, y, numStop = 5, fold = 5, max.depth = NUL
     stop("Different variable names in training and test set")
   }
   
-  if (is.null(max.depth)) {
+  # Reorder index 'x' and 'y' in data
+  x <- 1:((ncol(training) - 1) - length(y))
+  y <- (length(x) + 1):(ncol(training) - 1)
+  
+  # Grid of hyperparameters
+  
+  if (is.null(max.depth) && is.null(max.leaves)) {
     hp <- expand.grid(numStop = numStop,
-                      fold = fold)
+                      fold = fold,
+                      RMSE = NA)
+    
+  } else if(!is.null(max.depth)){
+    hp <- expand.grid(numStop = numStop,
+                      fold = fold,
+                      max.depth = max.depth,
+                      RMSE = NA)
   } else {
     hp <- expand.grid(numStop = numStop,
                       fold = fold,
-                      max.depth = max.depth)
+                      max.leaves = max.leaves,
+                      RMSE = NA)
   }
-  
-  hp$RMSE <- NA
   
   for (i in 1:nrow(hp)) {
     
-    if (is.null(max.depth)){
+    # max.depth & max.leaves
+    if (is.null(max.depth) && is.null(max.leaves)){
+      max.leaves <- NULL
       max.depth <- NULL
+      
+    } else if (!is.null(max.depth)) {
+      max.leaves <- NULL
+      max.depth <- hp[i, "max.depth"]
+    
+    } else if (!is.null(max.leaves)) {
+      max.leaves <- hp[i, "max.leaves"]
+      max.depth <- NULL 
+      
     } else {
+      max.leaves <- hp[i, "max.leaves"]
       max.depth <- hp[i, "max.depth"]
     }
     
     EATmodel <- EAT(data = training, x = x, y = y, numStop = hp[i, "numStop"],
-                    fold = hp[i, "fold"], max.depth = max.depth, na.rm = na.rm)
+                    fold = hp[i, "fold"], max.depth = max.depth, 
+                    max.leaves = max.leaves, na.rm = na.rm)
     
     x.t <- EATmodel[["data"]][["x"]]
     y.t <- EATmodel[["data"]][["y"]]
@@ -122,7 +149,8 @@ bestEAT <- function(training, test, x, y, numStop = 5, fold = 5, max.depth = NUL
 #' @export
 #'
 #' @return Dataframe in which each row corresponds to a given set of hyperparameters with its corresponding root mean square error (RMSE).
-bestRFEAT <- function(training, test, x, y, numStop, m, s_mtry, na.rm = TRUE) {
+bestRFEAT <- function(training, test, x, y, numStop = 5, m = 50, 
+                      s_mtry = c('5', 'Breiman'), na.rm = TRUE) {
   
   training <- preProcess(training, x, y, na.rm = na.rm)[[2]]
   test <- preProcess(test, x, y, na.rm = na.rm)[[2]]
@@ -131,11 +159,14 @@ bestRFEAT <- function(training, test, x, y, numStop, m, s_mtry, na.rm = TRUE) {
     stop("Different variable names in training and test set")
   }
   
+  # Reorder index 'x' and 'y' in data
+  x <- 1:((ncol(training) - 1) - length(y))
+  y <- (length(x) + 1):(ncol(training) - 1)
+  
   hp <- expand.grid(numStop = numStop,
                     m = m,
-                    s_mtry = s_mtry)
-  
-  hp$RMSE <- NA
+                    s_mtry = s_mtry,
+                    RMSE = NA)
   
   s_mtry_opt <- c("Breiman", "DEA1", "DEA2", "DEA3", "DEA4")
   

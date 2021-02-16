@@ -121,8 +121,8 @@ EAT_BCC_in <- function(j, scores, x_k, y_k, atreeTk, ytreeTk, nX, nY, N_leaves) 
 EAT_DDF <- function(j, scores, x_k, y_k, atreeTk, ytreeTk, nX, nY, N_leaves) {
   for(d in 1:j){
     
-    objVal <- matrix(ncol = N_leaves + 1, nrow = 1)
-    objVal[1] <- 1
+    objVal <- matrix(ncol = 1 + N_leaves, nrow = 1) # beta + lambdas
+    objVal[1] <- 1 # beta
     
     # structure for lpSolve
     lps <- make.lp(nrow = nX + nY, ncol = N_leaves + 1)
@@ -131,11 +131,11 @@ EAT_DDF <- function(j, scores, x_k, y_k, atreeTk, ytreeTk, nX, nY, N_leaves) {
     
     # constrain 2.1 and 2.2
     for(xi in 1:nX)
-    {
+    { # beta[g-], a, <=, x
       add.constraint(lps, xt = c(x_k[d, xi], atreeTk[, xi]), "<=",  rhs = x_k[d, xi])
     }
     for(yi in 1:nY)
-    {
+    { # - y, d(a), >=, beta[g+]
       add.constraint(lps, xt = c(- y_k[d, yi], ytreeTk[, yi]), ">=", rhs = y_k[d, yi])
     }
     
@@ -288,12 +288,12 @@ EAT_RSL_out <- function(j, scores, x_k, y_k, atreeTk, ytreeTk, nX, nY, N_leaves)
 EAT_WAM <- function(j, scores, x_k, y_k, atreeTk, ytreeTk, nX, nY, N_leaves) {
   for(d in 1:j){
     
-    objVal <- matrix(ncol = N_leaves + nY + nX, nrow = 1)
-    objVal[1:(nX + nY)] <- c(1 / x_k[d, ], 1 / y_k[d, ])
+    objVal <- matrix(ncol = nX + nY + N_leaves, nrow = 1)
+    objVal[1:(nX + nY)] <- c(1 / x_k[d, ], 1 / y_k[d, ]) # weights 
     
     
     # structure for lpSolve
-    lps <- make.lp(nrow = nX + nY, ncol = N_leaves + nY + nX)
+    lps <- make.lp(nrow = nX + nY, ncol = nX + nY + N_leaves)
     lp.control(lps, sense = 'max')
     set.objfn(lps, objVal)
     
@@ -383,7 +383,7 @@ efficiencyEAT <- function(data, x, y, object,
     stop(paste(scores_model, "is not available. Please, check help(\"efficiencyEAT\")"))
   }
   
-  rwn_data <- preProcess(data, x, y, na.rm = T)
+  rwn_data <- preProcess(data, x, y, na.rm = na.rm)
   
   rwn <- rwn_data[[1]]
   data <- rwn_data[[2]]
@@ -469,13 +469,13 @@ efficiencyEAT <- function(data, x, y, object,
   
   descriptive <- scores %>%
     summarise("Model" = "EAT",
-              "Mean" = round(mean(scores[, 1]), 2),
-              "Std. Dev." = round(sd(scores[, 1]), 2),
-              "Min" = round(min(scores[, 1]), 2),
-              "Q1" = round(quantile(scores[, 1])[[2]], 2),
-              "Median" = round(median(scores[, 1]), 2),
-              "Q3" = round(quantile(scores[, 1])[[3]], 2),
-              "Max" = round(max(scores[, 1]), 2)
+              "Mean" = round(mean(scores[, 1]), r),
+              "Std. Dev." = round(sd(scores[, 1]), r),
+              "Min" = round(min(scores[, 1]), r),
+              "Q1" = round(quantile(scores[, 1])[[2]], r),
+              "Median" = round(median(scores[, 1]), r),
+              "Q3" = round(quantile(scores[, 1])[[3]], r),
+              "Max" = round(max(scores[, 1]), r)
               )
   
   if (FDH == TRUE){
@@ -486,13 +486,13 @@ efficiencyEAT <- function(data, x, y, object,
     
     descriptive_FDH <- scores_FDH %>%
       summarise("Model" = "FDH",
-                "Mean" = round(mean(scores_FDH[, 1]), 2),
-                "Std. Dev." = round(sd(scores_FDH[, 1]), 2),
-                "Min" = round(min(scores_FDH[, 1]), 2),
-                "Q1" = round(quantile(scores_FDH[, 1])[[2]], 2),
-                "Median" = round(median(scores_FDH[, 1]), 2),
-                "Q3" = round(quantile(scores_FDH[, 1])[[3]], 2),
-                "Max" = round(max(scores_FDH[, 1]), 2)
+                "Mean" = round(mean(scores_FDH[, 1]), r),
+                "Std. Dev." = round(sd(scores_FDH[, 1]), r),
+                "Min" = round(min(scores_FDH[, 1]), r),
+                "Q1" = round(quantile(scores_FDH[, 1])[[2]], r),
+                "Median" = round(median(scores_FDH[, 1]), r),
+                "Q3" = round(quantile(scores_FDH[, 1])[[3]], r),
+                "Max" = round(max(scores_FDH[, 1]), r)
       )
     
     scores_df <- cbind(data, round(scores, r), round(scores_FDH, r))
@@ -513,7 +513,6 @@ efficiencyEAT <- function(data, x, y, object,
     cat("\n") 
     print(descriptive, row.names = FALSE)
         
-    
     invisible(scores_df)
     
   }

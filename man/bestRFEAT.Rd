@@ -11,7 +11,7 @@ bestRFEAT(
   y,
   numStop = 5,
   m = 50,
-  s_mtry = c("5", "Breiman"),
+  s_mtry = c("5", "BRM"),
   na.rm = TRUE
 )
 }
@@ -53,6 +53,6 @@ bestRFEAT(training = training,
           y = 3,
           numStop = c(3, 5, 7, 10),
           m = c(20, 40, 60),
-          s_mtry = c("Breiman", "1", "2"))
+          s_mtry = c("BRM", "1", "2"))
 
 }

@@ -144,13 +144,13 @@ bestEAT <- function(training, test, x, y, numStop = 5, fold = 5, max.depth = NUL
 #'           y = 3,
 #'           numStop = c(3, 5, 7, 10),
 #'           m = c(20, 40, 60),
-#'           s_mtry = c("Breiman", "1", "2"))
+#'           s_mtry = c("BRM", "1", "2"))
 #' 
 #' @export
 #'
 #' @return Dataframe in which each row corresponds to a given set of hyperparameters with its corresponding root mean square error (RMSE).
 bestRFEAT <- function(training, test, x, y, numStop = 5, m = 50, 
-                      s_mtry = c('5', 'Breiman'), na.rm = TRUE) {
+                      s_mtry = c('5', 'BRM'), na.rm = TRUE) {
   
   training <- preProcess(training, x, y, na.rm = na.rm)[[2]]
   test <- preProcess(test, x, y, na.rm = na.rm)[[2]]
@@ -168,7 +168,7 @@ bestRFEAT <- function(training, test, x, y, numStop = 5, m = 50,
                     s_mtry = s_mtry,
                     RMSE = NA)
   
-  s_mtry_opt <- c("Breiman", "DEA1", "DEA2", "DEA3", "DEA4")
+  s_mtry_opt <- c("BRM", "DEA1", "DEA2", "DEA3", "DEA4")
   
   for (i in 1:nrow(hp)) {
     

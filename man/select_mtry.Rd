@@ -7,7 +7,7 @@
 select_mtry(s_mtry, t, nX, nY)
 }
 \arguments{
-\item{s_mtry}{Select number of inputs. It could be: \code{"Breiman"}, \code{"DEA1"}, \code{"DEA2"}, \code{"DEA3"} or \code{"DEA4"} or any integer.}
+\item{s_mtry}{Select number of inputs. It could be: \code{"BRM"}, \code{"DEA1"}, \code{"DEA2"}, \code{"DEA3"} or \code{"DEA4"} or any integer.}
 
 \item{t}{Node which is being splitted.}
 

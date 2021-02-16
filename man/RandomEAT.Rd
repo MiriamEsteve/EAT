@@ -15,7 +15,7 @@ RandomEAT(data, x, y, numStop, s_mtry)
 
 \item{numStop}{Integer. Minimun number of observations in a node for a split to be attempted.}
 
-\item{s_mtry}{Number of variables randomly sampled as candidates at each split. The available options are: \code{"Breiman"}, \code{"DEA1"}, \code{"DEA2"}, \code{"DEA3"}, \code{"DEA4"} or any integer.}
+\item{s_mtry}{Number of variables randomly sampled as candidates at each split. The available options are: \code{"BRM"}, \code{"DEA1"}, \code{"DEA2"}, \code{"DEA3"}, \code{"DEA4"} or any integer.}
 }
 \value{
 List of m trees in forest and the error that will be used in the ranking of the importance of the variables.

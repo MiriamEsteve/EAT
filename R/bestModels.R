@@ -1,9 +1,9 @@
 #' @title Tuning an Efficiency Analysis Trees model
 #'
-#' @description This funcion calculates the root mean square error (RMSE) for a Efficiency Analysis Trees model built with a set of given hyperparameters. 
+#' @description This funcion calculates the root mean square error (RMSE) for an Efficiency Analysis Trees model built with a set of given hyperparameters. 
 #'
-#' @param training Training dataframe or matrix containing the variables in the model for model construction.
-#' @param test Test dataframe or matrix containing the variables in the model for model assessment.
+#' @param training Training dataframe or matrix containing the variables for model construction.
+#' @param test Test dataframe or matrix containing the variables for model assessment.
 #' @param x Vector. Column input indexes in data.
 #' @param y Vector. Column output indexes in data.
 #' @param numStop Vector. Set of minimun number of observations in a node for a split to be attempted.
@@ -29,10 +29,10 @@
 #'         test = test,
 #'         x = 6:9,
 #'         y = 3,
-#'         numStop = c(3, 5, 7, 10),
+#'         numStop = c(3, 5, 7),
 #'         fold = c(5, 7, 10))
 #'
-#' @return Dataframe in which each row corresponds to a given set of hyperparameters with its corresponding root mean square error (RMSE).
+#' @return Dataframe in which each row corresponds to a given set of hyperparameters and the root mean square error (RMSE).
 bestEAT <- function(training, test, x, y, numStop = 5, fold = 5, max.depth = NULL, 
                     max.leaves = NULL, na.rm = TRUE) {
 
@@ -116,17 +116,17 @@ bestEAT <- function(training, test, x, y, numStop = 5, fold = 5, max.depth = NUL
   
 }
 
-#' @title Tuning a RFEAT model
+#' @title Tuning a Random Forest + Efficiency Analysis Trees model
 #'
 #' @description This funcion calculates the root mean square error (RMSE) for a Random Forest + Efficiency Analysis Tree model built with a set of given hyperparameters. 
 #'
-#' @param training Training dataframe or matrix containing the variables in the model for model construction.
-#' @param test Test dataframe or matrix containing the variables in the model for model assessment.
+#' @param training Training dataframe or matrix containing the variables for model construction.
+#' @param test Test dataframe or matrix containing the variables for model assessment.
 #' @param x Vector. Column input indexes in data.
 #' @param y Vector. Column output indexes in data.
 #' @param numStop Vector. Set of minimun number of observations in a node for a split to be attempted.
 #' @param m Vector. Set of number of trees to be build.
-#' @param s_mtry Character vector. Set of options for selecting number of inputs to be selected in each split.
+#' @param s_mtry Character vector. Set of options for selecting the number of inputs to be selected in each split.
 #' @param na.rm Logical. If \code{TRUE}, \code{NA} rows are omitted.
 #' 
 #' @examples
@@ -136,7 +136,7 @@ bestEAT <- function(training, test, x, y, numStop = 5, fold = 5, max.depth = NUL
 #' n <- nrow(PISAindex) # Observations in the dataset
 #' t_index <- sample(1:n, n * 0.7) # Training indexes
 #' training <- PISAindex[t_index, ] # Training set
-#' test <- PISAindex[-t_index, ] # Test set
+#' test <- PISAindex[- t_index, ] # Test set
 #' 
 #' bestRFEAT(training = training, 
 #'           test = test,
@@ -148,9 +148,9 @@ bestEAT <- function(training, test, x, y, numStop = 5, fold = 5, max.depth = NUL
 #' 
 #' @export
 #'
-#' @return Dataframe in which each row corresponds to a given set of hyperparameters with its corresponding root mean square error (RMSE).
+#' @return Dataframe in which each row corresponds to a given set of hyperparameters and the root mean square error (RMSE).
 bestRFEAT <- function(training, test, x, y, numStop = 5, m = 50, 
-                      s_mtry = c('5', 'BRM'), na.rm = TRUE) {
+                      s_mtry = c("5", "BRM"), na.rm = TRUE) {
   
   training <- preProcess(training, x, y, na.rm = na.rm)[[2]]
   test <- preProcess(test, x, y, na.rm = na.rm)[[2]]

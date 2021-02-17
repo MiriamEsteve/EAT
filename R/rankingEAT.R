@@ -164,7 +164,7 @@ M_Breiman <- function(object, r) {
   return(m)
 }
 
-#' @title Ranking of variables by Efficiency Analysis Trees
+#' @title Ranking of Variables by Efficiency Analysis Trees
 #'
 #' @description This function calculates variable importance through an Efficiency Analysis Trees model.
 #'

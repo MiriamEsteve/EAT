@@ -1,4 +1,4 @@
-#' @title Banker, Charnes and Cooper programming model with output orientation for an Efficiency Analysis Tree model
+#' @title Banker, Charnes and Cooper Programming Model with Output Orientation for an Efficiency Analysis Trees model
 #'
 #' @description Banker, Charnes and Cooper programming model with output orientation for an Efficiency Analysis Tree model.
 #'
@@ -49,7 +49,7 @@ EAT_BCC_out <- function(j, scores, x_k, y_k, atreeTk, ytreeTk, nX, nY, N_leaves)
   return(scores)
 }
 
-#' @title Banker, Charnes and Cooper programming model with input orientation for an Efficiency Analysis Tree model
+#' @title Banker, Charnes and Cooper Programming Model with Input Orientation for an Efficiency Analysis Trees model
 #'
 #' @description Banker, Charnes and Cooper programming model with input orientation for an Efficiency Analysis Tree model.
 #'
@@ -65,7 +65,7 @@ EAT_BCC_out <- function(j, scores, x_k, y_k, atreeTk, ytreeTk, nX, nY, N_leaves)
 #'
 #' @importFrom lpSolveAPI make.lp lp.control set.objfn add.constraint set.type set.bounds get.objective
 #'
-#' @return A numerical vector with scores.
+#' @return A numerical vector with efficiency scores.
 EAT_BCC_in <- function(j, scores, x_k, y_k, atreeTk, ytreeTk, nX, nY, N_leaves) {
   for(d in 1:j){
     
@@ -101,7 +101,7 @@ EAT_BCC_in <- function(j, scores, x_k, y_k, atreeTk, ytreeTk, nX, nY, N_leaves) 
   
 }
 
-#' @title Directional Distance Function mathematical programming model for an Efficiency Analysis Tree model
+#' @title Directional Distance Function Programming Model for an Efficiency Analysis Trees model
 #'
 #' @description Directional Distance Function for an Efficiency Analysis Tree model.
 #'
@@ -117,7 +117,7 @@ EAT_BCC_in <- function(j, scores, x_k, y_k, atreeTk, ytreeTk, nX, nY, N_leaves) 
 #'
 #' @importFrom lpSolveAPI make.lp lp.control set.objfn add.constraint set.type set.bounds get.objective
 #'
-#' @return A numerical vector with scores.
+#' @return A numerical vector with efficiency scores.
 EAT_DDF <- function(j, scores, x_k, y_k, atreeTk, ytreeTk, nX, nY, N_leaves) {
   for(d in 1:j){
     
@@ -152,9 +152,9 @@ EAT_DDF <- function(j, scores, x_k, y_k, atreeTk, ytreeTk, nX, nY, N_leaves) {
   return(scores)
 }
 
-#' @title Rusell Model with input orientation for an Efficiency Analysis Tree model
+#' @title Rusell Model with Input Orientation for an Efficiency Analysis Trees model
 #'
-#' @description Rusell Model with input orientation for an Efficiency Analysis Tree model.
+#' @description Rusell Model with input orientation for an Efficiency Analysis Trees model.
 #'
 #' @param j Integer. Number of DMUs.
 #' @param scores Matrix. Empty matrix for scores.
@@ -168,7 +168,7 @@ EAT_DDF <- function(j, scores, x_k, y_k, atreeTk, ytreeTk, nX, nY, N_leaves) {
 #'
 #' @importFrom lpSolveAPI make.lp lp.control set.objfn add.constraint set.type set.bounds get.objective
 #'
-#' @return A numerical vector with scores.
+#' @return A numerical vector with efficiency scores.
 EAT_RSL_in <- function(j, scores, x_k, y_k, atreeTk, ytreeTk, nX, nY, N_leaves) {
   for(d in 1:j){
     
@@ -210,7 +210,7 @@ EAT_RSL_in <- function(j, scores, x_k, y_k, atreeTk, ytreeTk, nX, nY, N_leaves) 
   
 }
 
-#' @title Rusell Model with output orientation for an Efficiency Analysis Tree model
+#' @title Rusell Model with Output Orientation for an Efficiency Analysis Trees model
 #'
 #' @description Rusell Model with output orientation for an Efficiency Analysis Tree model.
 #'
@@ -226,7 +226,7 @@ EAT_RSL_in <- function(j, scores, x_k, y_k, atreeTk, ytreeTk, nX, nY, N_leaves) 
 #'
 #' @importFrom lpSolveAPI make.lp lp.control set.objfn add.constraint set.type set.bounds get.objective
 #'
-#' @return A numerical vector with scores.
+#' @return A numerical vector with efficiency scores.
 EAT_RSL_out <- function(j, scores, x_k, y_k, atreeTk, ytreeTk, nX, nY, N_leaves) {
   for(d in 1:j){
     
@@ -268,9 +268,9 @@ EAT_RSL_out <- function(j, scores, x_k, y_k, atreeTk, ytreeTk, nX, nY, N_leaves)
   
 }
 
-#' @title Weighted Additive Model for an Efficiency Analysis Tree model
+#' @title Weighted Additive Model for an Efficiency Analysis Trees model
 #'
-#' @description Weighted Additive Model for an Efficiency Analysis Tree model.
+#' @description Weighted Additive Model for an Efficiency Analysis Trees model.
 #'
 #' @param j Integer. Number of DMUs.
 #' @param scores Matrix. Empty matrix for scores.
@@ -281,11 +281,11 @@ EAT_RSL_out <- function(j, scores, x_k, y_k, atreeTk, ytreeTk, nX, nY, N_leaves)
 #' @param nX Integer. Number of inputs.
 #' @param nY Integer. Number of outputs.
 #' @param N_leaves Integer. Number of leaf nodes.
-#' @param weights Character. \code{"MIP"} or \code{"RAM"}.
+#' @param weights Character. \code{"MIP"} for Measure of Inefficiency Proportion or \code{"RAM"} for Range Adjusted Measure of Inefficiency.
 #'
 #' @importFrom lpSolveAPI make.lp lp.control set.objfn add.constraint set.type set.bounds get.objective
 #'
-#' @return A numerical vector with scores.
+#' @return A numerical vector with efficiency scores.
 EAT_WAM <- function(j, scores, x_k, y_k, atreeTk, ytreeTk, nX, nY, N_leaves, weights) {
   
   # Range for RAM measures
@@ -348,11 +348,11 @@ EAT_WAM <- function(j, scores, x_k, y_k, atreeTk, ytreeTk, nX, nY, N_leaves, wei
   
 }
 
-#' @title Efficiency Analysis Tree Efficiency Scores
+#' @title Efficiency Analysis Trees Efficiency Scores
 #'
-#' @description This function calculates the efficiency scores for each DMU by an Efficiency Analysis Tree model.
+#' @description This function calculates the efficiency scores for each DMU by an Efficiency Analysis Trees model.
 #' 
-#' @param data Dataframe for which the efficiency score is calculated.
+#' @param data Dataframe containing the DMU for which the efficiency score is calculated.
 #' @param x Vector. Column input indexes in data.
 #' @param y Vector. Column output indexes in data.
 #' @param object An EAT object.
@@ -367,7 +367,7 @@ EAT_WAM <- function(j, scores, x_k, y_k, atreeTk, ytreeTk, nX, nY, N_leaves, wei
 #' \item{\code{WAM.RAM}} Weighted Additive Model. Range Adjusted Measure of Inefficiency.
 #' }
 #' @param r Integer. Decimal units for scores.
-#' @param FDH Logical. If \code{TRUE}, FDH scores are calculated with the programming model selected in \code{scores_model}.
+#' @param FDH Logical. If \code{TRUE}, FDH scores are also calculated with the programming model selected in \code{scores_model}.
 #' @param na.rm Logical. If \code{TRUE}, \code{NA} rows are omitted.
 #'  
 #' @importFrom dplyr summarise %>%
@@ -383,7 +383,7 @@ EAT_WAM <- function(j, scores, x_k, y_k, atreeTk, ytreeTk, nX, nY, N_leaves, wei
 #' efficiencyEAT(data = simulated, x = c(1, 2), y = c(3, 4), object = EAT_model, 
 #'               scores_model = "BCC.OUT", r = 2, FDH = TRUE, na.rm = TRUE)
 #' 
-#' @return Dataframe with input variables and efficiency scores by an EAT model.
+#' @return Dataframe introduced as argument with efficiency scores calculated through an Efficiency Analysis Trees model.
 efficiencyEAT <- function(data, x, y, object, 
                           scores_model, r = 3, FDH = TRUE,
                           na.rm = TRUE) {
@@ -456,7 +456,7 @@ efficiencyEAT <- function(data, x, y, object,
     EAT_model <- "EAT_RSL_OUT"
     
     if (FDH == TRUE){
-      scores_FDH <- EAT_RSL_OUT(j, scores, x_k, y_k, x_k, y_k, nX, nY, j)
+      scores_FDH <- EAT_RSL_out(j, scores, x_k, y_k, x_k, y_k, nX, nY, j)
       FDH_model <- "FDH_RSL_OUT"
     }
 
@@ -474,7 +474,7 @@ efficiencyEAT <- function(data, x, y, object,
     EAT_model <- "EAT_WAM_MIP"
     
     if (FDH == TRUE){
-      scores_FDH <- EAT_WAM(j, scores, x_k, y_k, x_k, y_k, nX, nY, j)
+      scores_FDH <- EAT_WAM(j, scores, x_k, y_k, x_k, y_k, nX, nY, j, "MIP")
       FDH_model <- "FDH_WAM_MIP"
     }
     
@@ -483,7 +483,7 @@ efficiencyEAT <- function(data, x, y, object,
     EAT_model <- "EAT_WAM_RAM"
     
     if (FDH == TRUE){
-      scores_FDH <- EAT_WAM(j, scores, x_k, y_k, x_k, y_k, nX, nY, j)
+      scores_FDH <- EAT_WAM(j, scores, x_k, y_k, x_k, y_k, nX, nY, j, "RAM")
       FDH_model <- "FDH_WAM_RAM"
     }
   }

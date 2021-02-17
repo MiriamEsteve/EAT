@@ -77,8 +77,9 @@
 #' EAT(data = simulated, x = c(1,2), y = c(3, 4), numStop = 10, fold = 7, max.depth = 7)
 #' 
 #' @export
-EAT <- function(data, x, y, numStop = 5, fold = 5, max.depth = NULL, 
-                max.leaves = NULL, na.rm = T) {
+EAT <- function(data, x, y, numStop = 5, fold = 5, 
+                max.depth = NULL, max.leaves = NULL, 
+                na.rm = TRUE) {
   conflict_prefer("filter", "dplyr")
   
   # max.depth and max.leaves included
@@ -156,11 +157,12 @@ EAT <- function(data, x, y, numStop = 5, fold = 5, max.depth = NULL,
 #' @param y Vector. Column output indexes in data.
 #' @param numStop Integer. Minimun number of observations in a node for a split to be attempted.
 #' @param max.depth Integer. Depth of the tree.
+#' @param max.leaves Integer. Maximum number of leaf nodes.
 #'
 #' @importFrom dplyr filter mutate %>% row_number
 #' @importFrom conflicted conflict_prefer
 #'
-#' @return List containing each possible pruning for the deep tree and its alpha associated.
+#' @return List containing each possible pruning for the deep tree and its alpha value associated.
 deepEAT <- function(data, x, y, numStop = 5, max.depth = NULL, max.leaves = NULL) {
   
   # Check if deepEAT is called by EAT
@@ -445,7 +447,7 @@ summary.EAT <- function(object, ...) {
   }
 }
 
-#' @title Efficiency Analysis Tree size
+#' @title Efficiency Analysis Trees Size
 #' 
 #' @description  This function returns the number of leaf nodes at the tree.
 #'
@@ -465,9 +467,9 @@ size <- function(object) {
   
 }
 
-#' @title Efficiency Analysis Tree Frontier Output Levels
+#' @title Efficiency Analysis Trees Frontier Output Levels
 #'
-#' @description This function returns the frontier output levels of an Efficiency Analysis Tree model.
+#' @description This function returns the frontier output levels of an Efficiency Analysis Trees model.
 #'
 #' @param object An EAT object.
 #' 

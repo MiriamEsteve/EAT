@@ -1,10 +1,10 @@
-#' @title Model prediction for Efficiency Analysis Trees.
+#' @title Model Prediction for Efficiency Analysis Trees.
 #'
 #' @description This function predicts the expected output by an EAT object.
 #'
 #' @param object An EAT object.
 #' @param newdata Dataframe. Set of input variables to predict on.
-#' @param x Inputs index
+#' @param x Inputs index.
 #'
 #' @importFrom dplyr %>%
 #'

@@ -1,4 +1,4 @@
-#' @title EAT frontier graph for a single input and output scenario
+#' @title Efficiency Analysis Trees Frontier Graph
 #'
 #' @description This function displays a plot with the frontier estimated by Efficiency Analysis Trees in a scenario of one input and one output.
 #' 

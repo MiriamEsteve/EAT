@@ -270,7 +270,7 @@ CEAT_RSL_out <- function(j, scores, x_k, y_k, atreeTk, ytreeTk, nX, nY, N_leaves
 #' @importFrom lpSolveAPI make.lp lp.control set.objfn add.constraint set.type set.bounds get.objective
 #'
 #' @return A numerical vector with scores.
-CEAT_WAM <- function(j, scores, x_k, y_k, atreeTk, ytreeTk, nX, nY, N_leaves) {
+CEAT_WAM <- function(j, scores, x_k, y_k, atreeTk, ytreeTk, nX, nY, N_leaves, weights) {
   
   # Range for RAM measures
   
@@ -332,9 +332,9 @@ CEAT_WAM <- function(j, scores, x_k, y_k, atreeTk, ytreeTk, nX, nY, N_leaves) {
 
 #' @title Convex Efficiency Analysis Tree Efficiency Scores
 #'
-#' @description This function calculates the efficiency scores for each DMU by a convex Efficiency Analysis Tree model.
+#' @description This function calculates the efficiency scores for each DMU by a convex Efficiency Analysis Trees model.
 #' 
-#' @param data Dataframe for which the efficiency score is calculated.
+#' @param data Dataframe containing the DMU for which the efficiency score is calculated.
 #' @param x Vector. Column input indexes in data.
 #' @param y Vector. Column output indexes in data.
 #' @param object An EAT object.
@@ -452,20 +452,20 @@ efficiencyCEAT <- function(data, x, y, object,
     }
 
   } else if (scores_model == "WAM.MIP"){
-    scores <- CEAT_WAM(j, scores, x_k, y_k, atreeTk, ytreeTk, nX, nY, N_leaves)
+    scores <- CEAT_WAM(j, scores, x_k, y_k, atreeTk, ytreeTk, nX, nY, N_leaves, "MIP")
     CEAT_model <- "CEAT_WAM_MIP"
     
     if (DEA == TRUE){
-      scores_DEA <- CEAT_WAM(j, scores, x_k, y_k, x_k, y_k, nX, nY, j)
+      scores_DEA <- CEAT_WAM(j, scores, x_k, y_k, x_k, y_k, nX, nY, j, "MIP")
       DEA_model <- "DEA_WAM_MIP"
     }
     
   } else if (scores_model == "WAM.RAM"){
-    scores <- CEAT_WAM(j, scores, x_k, y_k, atreeTk, ytreeTk, nX, nY, N_leaves)
+    scores <- CEAT_WAM(j, scores, x_k, y_k, atreeTk, ytreeTk, nX, nY, N_leaves, "RAM")
     CEAT_model <- "CEAT_WAM_RAM"
     
     if (DEA == TRUE){
-      scores_DEA <- CEAT_WAM(j, scores, x_k, y_k, x_k, y_k, nX, nY, j)
+      scores_DEA <- CEAT_WAM(j, scores, x_k, y_k, x_k, y_k, nX, nY, j, "RAM")
       DEA_model <- "DEA_WAM_RAM"
     }
   }

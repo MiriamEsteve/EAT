@@ -281,16 +281,30 @@ EAT_RSL_out <- function(j, scores, x_k, y_k, atreeTk, ytreeTk, nX, nY, N_leaves)
 #' @param nX Integer. Number of inputs.
 #' @param nY Integer. Number of outputs.
 #' @param N_leaves Integer. Number of leaf nodes.
+#' @param weights Character. \code{"MIP"} or \code{"RAM"}.
 #'
 #' @importFrom lpSolveAPI make.lp lp.control set.objfn add.constraint set.type set.bounds get.objective
 #'
 #' @return A numerical vector with scores.
-EAT_WAM <- function(j, scores, x_k, y_k, atreeTk, ytreeTk, nX, nY, N_leaves) {
+EAT_WAM <- function(j, scores, x_k, y_k, atreeTk, ytreeTk, nX, nY, N_leaves, weights) {
+  
+  # Range for RAM measures
+  
+  if (weights == "RAM") {
+    ranges <- apply(x_k, 2, max) - apply(x_k, 2, min)
+  }
+  
   for(d in 1:j){
     
     objVal <- matrix(ncol = nX + nY + N_leaves, nrow = 1)
-    objVal[1:(nX + nY)] <- c(1 / x_k[d, ], 1 / y_k[d, ]) # weights 
     
+    if (weights == "MIP") {
+      objVal[1:(nX + nY)] <- c(1 / x_k[d, ], 1 / y_k[d, ]) 
+      
+    } else if (weights == "RAM"){
+      objVal[1:(nX + nY)] <- ranges
+      
+    }
     
     # structure for lpSolve
     lps <- make.lp(nrow = nX + nY, ncol = nX + nY + N_leaves)
@@ -344,12 +358,13 @@ EAT_WAM <- function(j, scores, x_k, y_k, atreeTk, ytreeTk, nX, nY, N_leaves) {
 #' @param object An EAT object.
 #' @param scores_model Mathematic programming model to calculate scores. 
 #' \itemize{
-#' \item{\code{BCC_out}} BCC model. Output-oriented.
-#' \item{\code{BCC_in}}  BCC model. Input-oriented.
+#' \item{\code{BCC.OUT}} BCC model. Output-oriented.
+#' \item{\code{BCC.INP}}  BCC model. Input-oriented.
 #' \item{\code{DDF}}     Directional Distance Function.
-#' \item{\code{RSL_out}} Rusell model. Output-oriented.
-#' \item{\code{RSL_in}}  Rusell model. Input-oriented.
-#' \item{\code{WAM}}     Weighted Additive Model.
+#' \item{\code{RSL.OUT}} Rusell model. Output-oriented.
+#' \item{\code{RSL.INP}}  Rusell model. Input-oriented.
+#' \item{\code{WAM.MIP}} Weighted Additive Model. Measure of Inefficiency Proportions.
+#' \item{\code{WAM.RAM}} Weighted Additive Model. Range Adjusted Measure of Inefficiency.
 #' }
 #' @param r Integer. Decimal units for scores.
 #' @param FDH Logical. If \code{TRUE}, FDH scores are calculated with the programming model selected in \code{scores_model}.
@@ -366,7 +381,7 @@ EAT_WAM <- function(j, scores, x_k, y_k, atreeTk, ytreeTk, nX, nY, N_leaves) {
 #' EAT_model <- EAT(data = simulated, x = c(1,2), y = c(3, 4))
 #'
 #' efficiencyEAT(data = simulated, x = c(1, 2), y = c(3, 4), object = EAT_model, 
-#'               scores_model = "BCC_out", r = 2, FDH = TRUE, na.rm = TRUE)
+#'               scores_model = "BCC.OUT", r = 2, FDH = TRUE, na.rm = TRUE)
 #' 
 #' @return Dataframe with input variables and efficiency scores by an EAT model.
 efficiencyEAT <- function(data, x, y, object, 
@@ -378,8 +393,9 @@ efficiencyEAT <- function(data, x, y, object,
     
   } 
   
-  if (!scores_model %in% c("BCC_out", "BCC_in", "DDF", 
-                           "RSL_out", "RSL_in", "WAM")){
+  if (!scores_model %in% c("BCC.OUT", "BCC.INP", "DDF", 
+                           "RSL.OUT", "RSL.INP", "WAM.MIP",
+                           "WAM.RAM")){
     stop(paste(scores_model, "is not available. Please, check help(\"efficiencyEAT\")"))
   }
   
@@ -408,22 +424,22 @@ efficiencyEAT <- function(data, x, y, object,
   ytreeTk <- object[["model"]][["y"]]
   N_leaves <- object[["model"]][["leaf_nodes"]]
   
-  if (scores_model == "BCC_out"){
+  if (scores_model == "BCC.OUT"){
     scores <- EAT_BCC_out(j, scores, x_k, y_k, atreeTk, ytreeTk, nX, nY, N_leaves)
-    EAT_model <- "EAT_BCC_out"
+    EAT_model <- "EAT_BCC_OUT"
     
     if (FDH == TRUE){
       scores_FDH <- EAT_BCC_out(j, scores, x_k, y_k, x_k, y_k, nX, nY, j)
-      FDH_model <- "FDH_BCC_out"
+      FDH_model <- "FDH_BCC_OUT"
     }
 
-  } else if (scores_model == "BCC_in"){
+  } else if (scores_model == "BCC.INP"){
     scores <- EAT_BCC_in(j, scores, x_k, y_k, atreeTk, ytreeTk, nX, nY, N_leaves)
-    EAT_model <- "EAT_BCC_in"
+    EAT_model <- "EAT_BCC_INP"
     
     if (FDH == TRUE){
       scores_FDH <- EAT_BCC_in(j, scores, x_k, y_k, x_k, y_k, nX, nY, j)
-      FDH_model <- "FDH_BCC_in"
+      FDH_model <- "FDH_BCC_INP"
     }
 
   } else if (scores_model == "DDF"){
@@ -435,31 +451,40 @@ efficiencyEAT <- function(data, x, y, object,
       FDH_model <- "FDH_DDF"
     }
 
-  } else if (scores_model == "RSL_out"){
+  } else if (scores_model == "RSL.OUT"){
     scores <- EAT_RSL_out(j, scores, x_k, y_k, atreeTk, ytreeTk, nX, nY, N_leaves)
-    EAT_model <- "EAT_RSL_out"
+    EAT_model <- "EAT_RSL_OUT"
     
     if (FDH == TRUE){
-      scores_FDH <- EAT_RSL_out(j, scores, x_k, y_k, x_k, y_k, nX, nY, j)
-      FDH_model <- "FDH_RSL_out"
+      scores_FDH <- EAT_RSL_OUT(j, scores, x_k, y_k, x_k, y_k, nX, nY, j)
+      FDH_model <- "FDH_RSL_OUT"
     }
 
-  } else if (scores_model == "RSL_in"){
+  } else if (scores_model == "RSL.INP"){
     scores <- EAT_RSL_in(j, scores, x_k, y_k, atreeTk, ytreeTk, nX, nY, N_leaves)
-    EAT_model <- "EAT_RSL_in"
+    EAT_model <- "EAT_RSL_INP"
     
     if (FDH == TRUE){
       scores_FDH <- EAT_RSL_in(j, scores, x_k, y_k, x_k, y_k, nX, nY, j)
-      FDH_model <- "FDH_RSL_in"
+      FDH_model <- "FDH_RSL_INP"
     }
 
-  } else if (scores_model == "WAM"){
-    scores <- EAT_WAM(j, scores, x_k, y_k, atreeTk, ytreeTk, nX, nY, N_leaves)
-    EAT_model <- "EAT_WAM"
+  } else if (scores_model == "WAM.MIP"){
+    scores <- EAT_WAM(j, scores, x_k, y_k, atreeTk, ytreeTk, nX, nY, N_leaves, "MIP")
+    EAT_model <- "EAT_WAM_MIP"
     
     if (FDH == TRUE){
       scores_FDH <- EAT_WAM(j, scores, x_k, y_k, x_k, y_k, nX, nY, j)
-      FDH_model <- "FDH_WAM"
+      FDH_model <- "FDH_WAM_MIP"
+    }
+    
+  } else if (scores_model == "WAM.RAM") {
+    scores <- EAT_WAM(j, scores, x_k, y_k, atreeTk, ytreeTk, nX, nY, N_leaves, "RAM")
+    EAT_model <- "EAT_WAM_RAM"
+    
+    if (FDH == TRUE){
+      scores_FDH <- EAT_WAM(j, scores, x_k, y_k, x_k, y_k, nX, nY, j)
+      FDH_model <- "FDH_WAM_RAM"
     }
   }
 

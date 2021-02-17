@@ -4,7 +4,7 @@
 \alias{EAT_WAM}
 \title{Weighted Additive Model for an Efficiency Analysis Tree model}
 \usage{
-EAT_WAM(j, scores, x_k, y_k, atreeTk, ytreeTk, nX, nY, N_leaves)
+EAT_WAM(j, scores, x_k, y_k, atreeTk, ytreeTk, nX, nY, N_leaves, weights)
 }
 \arguments{
 \item{j}{Integer. Number of DMUs.}
@@ -24,6 +24,8 @@ EAT_WAM(j, scores, x_k, y_k, atreeTk, ytreeTk, nX, nY, N_leaves)
 \item{nY}{Integer. Number of outputs.}
 
 \item{N_leaves}{Integer. Number of leaf nodes.}
+
+\item{weights}{Character. \code{"MIP"} or \code{"RAM"}.}
 }
 \value{
 A numerical vector with scores.

@@ -70,7 +70,7 @@ efficiencyRFEAT <- function(data, x, y, object, r = 3, FDH = TRUE, na.rm = TRUE)
   }
   
   scoreRF <- as.data.frame(data$scoreRF)
-  names(scoreRF) <- "RFEAT_BCC_out"
+  names(scoreRF) <- "RFEAT_BCC_OUT"
   rownames(scoreRF) <- rwn
   
   descriptive <- scoreRF %>%
@@ -94,7 +94,7 @@ efficiencyRFEAT <- function(data, x, y, object, r = 3, FDH = TRUE, na.rm = TRUE)
     nY <- length(y)
     
     scores_FDH <- EAT_BCC_out(j, scores, x_k, y_k, x_k, y_k, nX, nY, j)
-    FDH_model <- "FDH_BCC_out"
+    FDH_model <- "FDH_BCC_OUT"
     
     scores_FDH <- as.data.frame(scores_FDH)
     names(scores_FDH) <- FDH_model

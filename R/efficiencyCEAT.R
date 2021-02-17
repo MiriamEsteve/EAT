@@ -271,10 +271,24 @@ CEAT_RSL_out <- function(j, scores, x_k, y_k, atreeTk, ytreeTk, nX, nY, N_leaves
 #'
 #' @return A numerical vector with scores.
 CEAT_WAM <- function(j, scores, x_k, y_k, atreeTk, ytreeTk, nX, nY, N_leaves) {
+  
+  # Range for RAM measures
+  
+  if (weights == "RAM") {
+    ranges <- apply(x_k, 2, max) - apply(x_k, 2, min)
+  }
+  
   for(d in 1:j){
     
     objVal <- matrix(ncol = N_leaves + nY + nX, nrow = 1)
-    objVal[1:(nX + nY)] <- c(1 / x_k[d, ], 1 / y_k[d, ])
+    
+    if (weights == "MIP") {
+      objVal[1:(nX + nY)] <- c(1 / x_k[d, ], 1 / y_k[d, ]) 
+      
+    } else if (weights == "RAM"){
+      objVal[1:(nX + nY)] <- ranges
+      
+    }
     
     
     # structure for lpSolve
@@ -326,12 +340,13 @@ CEAT_WAM <- function(j, scores, x_k, y_k, atreeTk, ytreeTk, nX, nY, N_leaves) {
 #' @param object An EAT object.
 #' @param scores_model Mathematic programming model to calculate scores. 
 #' \itemize{
-#' \item{\code{BCC_out}} BCC model. Output-oriented.
-#' \item{\code{BCC_in}}  BCC model. Input-oriented.
+#' \item{\code{BCC.OUT}} BCC model. Output-oriented.
+#' \item{\code{BCC.INP}}  BCC model. Input-oriented.
 #' \item{\code{DDF}}     Directional Distance Function.
-#' \item{\code{RSL_out}} Rusell model. Output-oriented.
-#' \item{\code{RSL_in}}  Rusell model. Input-oriented.
-#' \item{\code{WAM}}     Weighted Additive Model.
+#' \item{\code{RSL.OUT}} Rusell model. Output-oriented.
+#' \item{\code{RSL.INP}}  Rusell model. Input-oriented.
+#' \item{\code{WAM.MIP}} Weighted Additive Model. Measure of Inefficiency Proportions.
+#' \item{\code{WAM.RAM}} Weighted Additive Model. Range Adjusted Measure of Inefficiency.
 #' }
 #' @param r Integer. Decimal units for scores.
 #' @param DEA Logical. If \code{TRUE}, DEA scores are calculated with the programming model selected in \code{scores_model}
@@ -348,7 +363,7 @@ CEAT_WAM <- function(j, scores, x_k, y_k, atreeTk, ytreeTk, nX, nY, N_leaves) {
 #' EAT_model <- EAT(data = simulated, x = c(1,2), y = c(3, 4))
 #'
 #' efficiencyCEAT(data = simulated, x = c(1, 2), y = c(3, 4), object = EAT_model, 
-#'               scores_model = "BCC_out", r = 2, DEA = TRUE, na.rm = TRUE)
+#'               scores_model = "BCC.OUT", r = 2, DEA = TRUE, na.rm = TRUE)
 #'
 #' @return Dataframe with input variables and efficiency scores by a convex EAT model.
 efficiencyCEAT <- function(data, x, y, object, 
@@ -360,12 +375,13 @@ efficiencyCEAT <- function(data, x, y, object,
     
   } 
   
-  if (!scores_model %in% c("BCC_out", "BCC_in", "DDF", 
-                           "RSL_out", "RSL_in", "WAM")){
-    stop(paste(scores_model, "is not available. Please, check help(\"efficiencyCEAT\")"))
+  if (!scores_model %in% c("BCC.OUT", "BCC.INP", "DDF", 
+                           "RSL.OUT", "RSL.INP", "WAM.MIP",
+                           "WAM.RAM")){
+    stop(paste(scores_model, "is not available. Please, check help(\"efficiencyEAT\")"))
   }
   
-  rwn_data <- preProcess(data, x, y, na.rm = T)
+  rwn_data <- preProcess(data, x, y, na.rm = na.rm)
   
   rwn <- rwn_data[[1]]
   data <- rwn_data[[2]]
@@ -390,22 +406,22 @@ efficiencyCEAT <- function(data, x, y, object,
   ytreeTk <- object[["model"]][["y"]]
   N_leaves <- object[["model"]][["leaf_nodes"]]
   
-  if (scores_model == "BCC_out"){
+  if (scores_model == "BCC.OUT"){
     scores <- CEAT_BCC_out(j, scores, x_k, y_k, atreeTk, ytreeTk, nX, nY, N_leaves)
-    CEAT_model <- "CEAT_BCC_out"
+    CEAT_model <- "CEAT_BCC_OUT"
     
     if (DEA == TRUE){
       scores_DEA <- CEAT_BCC_out(j, scores, x_k, y_k, x_k, y_k, nX, nY, j)
-      DEA_model <- "DEA_BCC_out"
+      DEA_model <- "DEA_BCC_OUT"
     }
 
-  } else if (scores_model == "BCC_in"){
+  } else if (scores_model == "BCC.INP"){
     scores <- CEAT_BCC_in(j, scores, x_k, y_k, atreeTk, ytreeTk, nX, nY, N_leaves)
-    CEAT_model <- "CEAT_BCC_in"
+    CEAT_model <- "CEAT_BCC_INP"
     
     if (DEA == TRUE){
       scores_DEA <- CEAT_BCC_in(j, scores, x_k, y_k, x_k, y_k, nX, nY, j)
-      DEA_model <- "DEA_BCC_in"
+      DEA_model <- "DEA_BCC_INP"
     }
 
   } else if (scores_model == "DDF"){
@@ -417,31 +433,40 @@ efficiencyCEAT <- function(data, x, y, object,
       DEA_model <- "DEA_DDF"
     }
 
-  } else if (scores_model == "RSL_out"){
+  } else if (scores_model == "RSL.OUT"){
     scores <- CEAT_RSL_out(j, scores, x_k, y_k, atreeTk, ytreeTk, nX, nY, N_leaves)
-    CEAT_model <- "CEAT_RSL_out"
+    CEAT_model <- "CEAT_RSL_OUT"
     
     if (DEA == TRUE){
       scores_DEA <- CEAT_RSL_out(j, scores, x_k, y_k, x_k, y_k, nX, nY, j)
-      DEA_model <- "DEA_RSL_out"
+      DEA_model <- "DEA_RSL_OUT"
     }
 
-  } else if (scores_model == "RSL_in"){
+  } else if (scores_model == "RSL.INP"){
     scores <- CEAT_RSL_in(j, scores, x_k, y_k, atreeTk, ytreeTk, nX, nY, N_leaves)
-    CEAT_model <- "CEAT_RSL_in"
+    CEAT_model <- "CEAT_RSL_INP"
     
     if (DEA == TRUE){
       scores_DEA <- CEAT_RSL_in(j, scores, x_k, y_k, x_k, y_k, nX, nY, j)
-      DEA_model <- "DEA_RSL_in"
+      DEA_model <- "DEA_RSL_INP"
     }
 
-  } else if (scores_model == "WAM"){
+  } else if (scores_model == "WAM.MIP"){
     scores <- CEAT_WAM(j, scores, x_k, y_k, atreeTk, ytreeTk, nX, nY, N_leaves)
-    CEAT_model <- "CEAT_WAM"
+    CEAT_model <- "CEAT_WAM_MIP"
     
     if (DEA == TRUE){
       scores_DEA <- CEAT_WAM(j, scores, x_k, y_k, x_k, y_k, nX, nY, j)
-      DEA_model <- "DEA_WAM"
+      DEA_model <- "DEA_WAM_MIP"
+    }
+    
+  } else if (scores_model == "WAM.RAM"){
+    scores <- CEAT_WAM(j, scores, x_k, y_k, atreeTk, ytreeTk, nX, nY, N_leaves)
+    CEAT_model <- "CEAT_WAM_RAM"
+    
+    if (DEA == TRUE){
+      scores_DEA <- CEAT_WAM(j, scores, x_k, y_k, x_k, y_k, nX, nY, j)
+      DEA_model <- "DEA_WAM_RAM"
     }
   }
 

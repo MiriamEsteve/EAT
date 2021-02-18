@@ -12,7 +12,7 @@ EAT(
   fold = 5,
   max.depth = NULL,
   max.leaves = NULL,
-  na.rm = T
+  na.rm = TRUE
 )
 }
 \arguments{

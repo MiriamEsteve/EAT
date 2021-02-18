@@ -2,7 +2,7 @@
 % Please edit documentation in R/efficiencyEAT.R
 \name{efficiencyEAT}
 \alias{efficiencyEAT}
-\title{Efficiency Analysis Tree Efficiency Scores}
+\title{Efficiency Analysis Trees Efficiency Scores}
 \usage{
 efficiencyEAT(
   data,
@@ -16,7 +16,7 @@ efficiencyEAT(
 )
 }
 \arguments{
-\item{data}{Dataframe for which the efficiency score is calculated.}
+\item{data}{Dataframe containing the DMU for which the efficiency score is calculated.}
 
 \item{x}{Vector. Column input indexes in data.}
 
@@ -37,15 +37,15 @@ efficiencyEAT(
 
 \item{r}{Integer. Decimal units for scores.}
 
-\item{FDH}{Logical. If \code{TRUE}, FDH scores are calculated with the programming model selected in \code{scores_model}.}
+\item{FDH}{Logical. If \code{TRUE}, FDH scores are also calculated with the programming model selected in \code{scores_model}.}
 
 \item{na.rm}{Logical. If \code{TRUE}, \code{NA} rows are omitted.}
 }
 \value{
-Dataframe with input variables and efficiency scores by an EAT model.
+Dataframe introduced as argument with efficiency scores calculated through an Efficiency Analysis Trees model.
 }
 \description{
-This function calculates the efficiency scores for each DMU by an Efficiency Analysis Tree model.
+This function calculates the efficiency scores for each DMU by an Efficiency Analysis Trees model.
 }
 \examples{
 

@@ -16,7 +16,7 @@ efficiencyCEAT(
 )
 }
 \arguments{
-\item{data}{Dataframe for which the efficiency score is calculated.}
+\item{data}{Dataframe containing the DMU for which the efficiency score is calculated.}
 
 \item{x}{Vector. Column input indexes in data.}
 
@@ -45,7 +45,7 @@ efficiencyCEAT(
 Dataframe with input variables and efficiency scores by a convex EAT model.
 }
 \description{
-This function calculates the efficiency scores for each DMU by a convex Efficiency Analysis Tree model.
+This function calculates the efficiency scores for each DMU by a convex Efficiency Analysis Trees model.
 }
 \examples{
 

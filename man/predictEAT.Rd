@@ -2,7 +2,7 @@
 % Please edit documentation in R/userPredictions.R
 \name{predictEAT}
 \alias{predictEAT}
-\title{Model prediction for Efficiency Analysis Trees.}
+\title{Model Prediction for Efficiency Analysis Trees.}
 \usage{
 predictEAT(object, newdata, x)
 }
@@ -11,7 +11,7 @@ predictEAT(object, newdata, x)
 
 \item{newdata}{Dataframe. Set of input variables to predict on.}
 
-\item{x}{Inputs index}
+\item{x}{Inputs index.}
 }
 \value{
 Data frame with the original data and the predicted values.

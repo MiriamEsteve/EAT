@@ -2,7 +2,7 @@
 % Please edit documentation in R/bestModels.R
 \name{bestRFEAT}
 \alias{bestRFEAT}
-\title{Tuning a RFEAT model}
+\title{Tuning a Random Forest + Efficiency Analysis Trees model}
 \usage{
 bestRFEAT(
   training,
@@ -16,9 +16,9 @@ bestRFEAT(
 )
 }
 \arguments{
-\item{training}{Training dataframe or matrix containing the variables in the model for model construction.}
+\item{training}{Training dataframe or matrix containing the variables for model construction.}
 
-\item{test}{Test dataframe or matrix containing the variables in the model for model assessment.}
+\item{test}{Test dataframe or matrix containing the variables for model assessment.}
 
 \item{x}{Vector. Column input indexes in data.}
 
@@ -28,12 +28,12 @@ bestRFEAT(
 
 \item{m}{Vector. Set of number of trees to be build.}
 
-\item{s_mtry}{Character vector. Set of options for selecting number of inputs to be selected in each split.}
+\item{s_mtry}{Character vector. Set of options for selecting the number of inputs to be selected in each split.}
 
 \item{na.rm}{Logical. If \code{TRUE}, \code{NA} rows are omitted.}
 }
 \value{
-Dataframe in which each row corresponds to a given set of hyperparameters with its corresponding root mean square error (RMSE).
+Dataframe in which each row corresponds to a given set of hyperparameters and the root mean square error (RMSE).
 }
 \description{
 This funcion calculates the root mean square error (RMSE) for a Random Forest + Efficiency Analysis Tree model built with a set of given hyperparameters.
@@ -45,7 +45,7 @@ data("PISAindex")
 n <- nrow(PISAindex) # Observations in the dataset
 t_index <- sample(1:n, n * 0.7) # Training indexes
 training <- PISAindex[t_index, ] # Training set
-test <- PISAindex[-t_index, ] # Test set
+test <- PISAindex[- t_index, ] # Test set
 
 bestRFEAT(training = training, 
           test = test,

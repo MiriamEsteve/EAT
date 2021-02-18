@@ -280,7 +280,7 @@ bestEAT(training = training,
 bestEAT_model <- EAT(data = PISAindex,
                      x = c(6, 7, 8, 12, 17),
                      y = 3:5,
-                     numStop = 7,
+                     numStop = 5,
                      fold = 5)
 
 ## ----summary.bestEAT_model, collapse = FALSE----------------------------------
@@ -366,7 +366,7 @@ efficiencyDensity(df_scores = scores_CEAT[, 3:4],
 cursed_scores <- efficiencyEAT(data = PISAindex,
                                x = 6:18, 
                                y = 3:5,
-                               object = multioutput_model, 
+                               object = multioutput_model,
                                scores_model = "BCC.OUT",
                                r = 3,
                                FDH = TRUE)
@@ -385,9 +385,9 @@ efficiencyDensity(df_scores = cursed_scores[, 17:18],
 ## ----RFmodel------------------------------------------------------------------
 forest <- RFEAT(data = PISAindex, 
                 x = 6:18, # input 
-                y = 4:5, # output
+                y = 3:5, # output
                 numStop = 5, 
-                m = 5,
+                m = 30,
                 s_mtry = "BRM",
                 na.rm = TRUE)
 
@@ -431,7 +431,7 @@ bestRFEAT(training = training,
 ## ----scores_RF----------------------------------------------------------------
 scoresRF <- efficiencyRFEAT(data = PISAindex,
                             x = 6:18, # input
-                            y = 4:5, # output
+                            y = 3:5, # output
                             object = forest,
                             FDH = TRUE)
 
@@ -478,4 +478,16 @@ kableExtra::kable(predictions) %>%
   kableExtra::column_spec(c(4, 5, 6), background = "#FFFFD1") %>%
   kableExtra::column_spec(c(7, 8, 9), background = "#FFCCF9")
 
+
+## ----newDF, collapse = FALSE--------------------------------------------------
+
+new <- data.frame(NBMC = c(90, 95, 93),
+                  WS = c(87, 92, 99),
+                  S = c(93, 90, 90),
+                  HW = c(90, 91, 92),
+                  AAE = c(88, 91, 89))
+
+predictions_EAT <- predictEAT(object = EAT_model,
+                              newdata = new,
+                              x = 1:5)
 

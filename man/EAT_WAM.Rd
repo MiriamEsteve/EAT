@@ -2,7 +2,7 @@
 % Please edit documentation in R/efficiencyEAT.R
 \name{EAT_WAM}
 \alias{EAT_WAM}
-\title{Weighted Additive Model for an Efficiency Analysis Tree model}
+\title{Weighted Additive Model for an Efficiency Analysis Trees model}
 \usage{
 EAT_WAM(j, scores, x_k, y_k, atreeTk, ytreeTk, nX, nY, N_leaves, weights)
 }
@@ -25,11 +25,11 @@ EAT_WAM(j, scores, x_k, y_k, atreeTk, ytreeTk, nX, nY, N_leaves, weights)
 
 \item{N_leaves}{Integer. Number of leaf nodes.}
 
-\item{weights}{Character. \code{"MIP"} or \code{"RAM"}.}
+\item{weights}{Character. \code{"MIP"} for Measure of Inefficiency Proportion or \code{"RAM"} for Range Adjusted Measure of Inefficiency.}
 }
 \value{
-A numerical vector with scores.
+A numerical vector with efficiency scores.
 }
 \description{
-Weighted Additive Model for an Efficiency Analysis Tree model.
+Weighted Additive Model for an Efficiency Analysis Trees model.
 }

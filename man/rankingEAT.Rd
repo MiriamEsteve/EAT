@@ -2,7 +2,7 @@
 % Please edit documentation in R/rankingEAT.R
 \name{rankingEAT}
 \alias{rankingEAT}
-\title{Ranking of variables by Efficiency Analysis Trees}
+\title{Ranking of Variables by Efficiency Analysis Trees}
 \usage{
 rankingEAT(object, r = 2, threshold = 70, barplot = TRUE)
 }

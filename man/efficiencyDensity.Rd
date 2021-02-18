@@ -9,7 +9,7 @@ efficiencyDensity(df_scores, model = c("EAT", "FDH"))
 \arguments{
 \item{df_scores}{Dataframe with efficiency scores.}
 
-\item{model}{String vector. Scoring models in the order shown in \code{scores} by columns. The available models are: \code{"EAT"}, \code{"FDH"}, \code{"CEAT"}, \code{"DEA"} and \code{"RFEAT"}.}
+\item{model}{String vector. Scoring models in the order shown in \code{df_scores} by columns. The available models are: \code{"EAT"}, \code{"FDH"}, \code{"CEAT"}, \code{"DEA"} and \code{"RFEAT"}.}
 }
 \value{
 Density plot for efficiency scores.

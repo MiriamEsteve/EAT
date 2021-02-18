@@ -121,7 +121,7 @@ split_forest <- function(data, tree, leaves, t, x, y, numStop, arrayK){
   }
   
   S <- NULL
-  
+
   t[["SL"]] <- tL[["id"]] <- N_tree + 1
   t[["SR"]] <- tR[["id"]] <- N_tree + 2
   # Establish tree branches (father <--> sons)
@@ -130,8 +130,7 @@ split_forest <- function(data, tree, leaves, t, x, y, numStop, arrayK){
   tree[[which(t[["id"]] == lapply(tree, function(x) {
     x$id
   }))]] <- t
-  
-  
+
   # If they are end nodes
   if(isFinalNode(tR[["index"]], data[, x], numStop)){
     tR[["xi"]] <- tR[["s"]] <- -1

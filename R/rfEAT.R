@@ -6,7 +6,7 @@
 #' @param x Vector. Column input indexes in data.
 #' @param y Vector. Column output indexes in data.
 #' @param numStop Integer. Minimun number of observations in a node for a split to be attempted.
-#' @param s_mtry Number of variables randomly sampled as candidates at each split. The available options are: \code{"Breiman"}, \code{"DEA1"}, \code{"DEA2"}, \code{"DEA3"}, \code{"DEA4"} or any integer.
+#' @param s_mtry Number of variables randomly sampled as candidates at each split. The available options are: \code{"BRM"}, \code{"DEA1"}, \code{"DEA2"}, \code{"DEA3"}, \code{"DEA4"} or any integer.
 #' 
 #' @return List of m trees in forest and the error that will be used in the ranking of the importance of the variables.
 RandomEAT <- function(data, x, y, numStop, s_mtry){
@@ -78,7 +78,7 @@ RandomEAT <- function(data, x, y, numStop, s_mtry){
 #' @param m Integer. Number of trees to be build.
 #' @param s_mtry Number of variables randomly sampled as candidates at each split. The available options are:
 #' \itemize{
-#' \item{\code{"Breiman"}}: \code{in / 3}
+#' \item{\code{"BRM"}}: \code{in / 3}
 #' \item{\code{"DEA1"}}: \code{(t.obs / 2) - out}  
 #' \item{\code{"DEA2"}}: \code{(t.obs / 3) - out}
 #' \item{\code{"DEA3"}}: \code{t.obs - 2 * out}
@@ -94,7 +94,7 @@ RandomEAT <- function(data, x, y, numStop, s_mtry){
 #' simulated <- eat:::X2Y2.sim(N = 50, border = 0.1)
 #'
 #' RFmodel <- RFEAT(data = simulated, x = c(1,2), y = c(3, 4), numStop = 5,
-#'                   m = 50, s_mtry = "Breiman", na.rm = TRUE)
+#'                   m = 50, s_mtry = "BRM", na.rm = TRUE)
 #' 
 #' @return A RFEAT object containing:
 #' \itemize{
@@ -119,8 +119,20 @@ RandomEAT <- function(data, x, y, numStop, s_mtry){
 #' 
 #' @export
 RFEAT <- function(data, x, y, numStop = 5, m = 50, 
-                  s_mtry = "Breiman", na.rm = TRUE){
+                  s_mtry = "BRM", na.rm = TRUE){
   conflict_prefer("filter", "dplyr")
+  
+  # Transform character to number (if it's possible)
+  # Numbers accepted
+  # If character, available option
+  
+  if (!is.na(suppressWarnings(as.numeric(s_mtry)))){
+    s_mtry <- as.numeric(s_mtry)
+    
+  } else if (!s_mtry %in% c("BRM", "DEA1", "DEA2", "DEA3", "DEA4")) {
+    stop(paste(s_mtry, "is not available. Plase, cheack help(\"RFEAT\")"))
+    
+  }
   
   data <- preProcess(data, x, y, na.rm = na.rm)
   

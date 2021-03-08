@@ -70,18 +70,18 @@ efficiencyRFEAT <- function(data, x, y, object, r = 3, FDH = TRUE, na.rm = TRUE)
   }
   
   scoreRF <- as.data.frame(data$scoreRF)
-  names(scoreRF) <- "RFEAT_BCC_out"
+  names(scoreRF) <- "RFEAT_BCC_OUT"
   rownames(scoreRF) <- rwn
   
   descriptive <- scoreRF %>%
     summarise("Model" = "RFEAT",
-              "Mean" = round(mean(scoreRF[, 1]), 2),
-              "Std. Dev." = round(sd(scoreRF[, 1]), 2),
-              "Min" = round(min(scoreRF[, 1]), 2),
-              "Q1" = round(quantile(scoreRF[, 1])[[2]], 2),
-              "Median" = round(median(scoreRF[, 1]), 2),
-              "Q3" = round(quantile(scoreRF[, 1])[[3]], 2),
-              "Max" = round(max(scoreRF[, 1]), 2)
+              "Mean" = round(mean(scoreRF[, 1]), r),
+              "Std. Dev." = round(sd(scoreRF[, 1]), r),
+              "Min" = round(min(scoreRF[, 1]), r),
+              "Q1" = round(quantile(scoreRF[, 1])[[2]], r),
+              "Median" = round(median(scoreRF[, 1]), r),
+              "Q3" = round(quantile(scoreRF[, 1])[[3]], r),
+              "Max" = round(max(scoreRF[, 1]), r)
     )
   
   if (FDH == TRUE) {
@@ -94,7 +94,7 @@ efficiencyRFEAT <- function(data, x, y, object, r = 3, FDH = TRUE, na.rm = TRUE)
     nY <- length(y)
     
     scores_FDH <- EAT_BCC_out(j, scores, x_k, y_k, x_k, y_k, nX, nY, j)
-    FDH_model <- "FDH_BCC_out"
+    FDH_model <- "FDH_BCC_OUT"
     
     scores_FDH <- as.data.frame(scores_FDH)
     names(scores_FDH) <- FDH_model
@@ -102,13 +102,13 @@ efficiencyRFEAT <- function(data, x, y, object, r = 3, FDH = TRUE, na.rm = TRUE)
     
     descriptive_FDH <- scores_FDH %>%
       summarise("Model" = "FDH",
-                "Mean" = round(mean(scores_FDH[, 1]), 2),
-                "Std. Dev." = round(sd(scores_FDH[, 1]), 2),
-                "Min" = round(min(scores_FDH[, 1]), 2),
-                "Q1" = round(quantile(scores_FDH[, 1])[[2]], 2),
-                "Median" = round(median(scores_FDH[, 1]), 2),
-                "Q3" = round(quantile(scores_FDH[, 1])[[3]], 2),
-                "Max" = round(max(scores_FDH[, 1]), 2)
+                "Mean" = round(mean(scores_FDH[, 1]), r),
+                "Std. Dev." = round(sd(scores_FDH[, 1]), r),
+                "Min" = round(min(scores_FDH[, 1]), r),
+                "Q1" = round(quantile(scores_FDH[, 1])[[2]], r),
+                "Median" = round(median(scores_FDH[, 1]), r),
+                "Q3" = round(quantile(scores_FDH[, 1])[[3]], r),
+                "Max" = round(max(scores_FDH[, 1]), r)
       )
     
     scores_df <- cbind(data, round(scoreRF, r), round(scores_FDH, r))

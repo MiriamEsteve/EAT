@@ -1,10 +1,10 @@
-#' @title Model prediction for Efficiency Analysis Trees.
+#' @title Model Prediction for Efficiency Analysis Trees.
 #'
 #' @description This function predicts the expected output by an EAT object.
 #'
 #' @param object An EAT object.
 #' @param newdata Dataframe. Set of input variables to predict on.
-#' @param x Inputs index
+#' @param x Inputs index.
 #'
 #' @importFrom dplyr %>%
 #'
@@ -25,14 +25,14 @@ predictEAT <- function(object, newdata, x) {
     
   }
   
-  newdata <- newdata[, x]
-  
   train_names <- object[["data"]][["input_names"]]
-  test_names <- names(newdata)
+  test_names <- names(newdata)[x]
   
   if (!identical(sort(train_names), sort(test_names))) {
-    stop("Different variable names in training and test set. Remove the output variables in newdata.")
+   stop("Different variable names in training set and test set.")
   }
+  
+  newdata <- as.data.frame(newdata[, x])
   
   y <- object[["data"]][["y"]] 
   

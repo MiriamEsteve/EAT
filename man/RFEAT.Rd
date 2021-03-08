@@ -4,7 +4,7 @@
 \alias{RFEAT}
 \title{Random Forest EAT}
 \usage{
-RFEAT(data, x, y, numStop = 5, m = 50, s_mtry = "Breiman", na.rm = TRUE)
+RFEAT(data, x, y, numStop = 5, m = 50, s_mtry = "BRM", na.rm = TRUE)
 }
 \arguments{
 \item{data}{Dataframe or matrix containing the variables in the model.}
@@ -19,7 +19,7 @@ RFEAT(data, x, y, numStop = 5, m = 50, s_mtry = "Breiman", na.rm = TRUE)
 
 \item{s_mtry}{Number of variables randomly sampled as candidates at each split. The available options are:
 \itemize{
-\item{\code{"Breiman"}}: \code{in / 3}
+\item{\code{"BRM"}}: \code{in / 3}
 \item{\code{"DEA1"}}: \code{(t.obs / 2) - out}  
 \item{\code{"DEA2"}}: \code{(t.obs / 3) - out}
 \item{\code{"DEA3"}}: \code{t.obs - 2 * out}
@@ -59,6 +59,6 @@ This function build \code{m} individual Efficiency Analysis Trees in a forest st
 simulated <- eat:::X2Y2.sim(N = 50, border = 0.1)
 
 RFmodel <- RFEAT(data = simulated, x = c(1,2), y = c(3, 4), numStop = 5,
-                  m = 50, s_mtry = "Breiman", na.rm = TRUE)
+                  m = 50, s_mtry = "BRM", na.rm = TRUE)
 
 }

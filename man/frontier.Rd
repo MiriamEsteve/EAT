@@ -2,7 +2,7 @@
 % Please edit documentation in R/frontier.R
 \name{frontier}
 \alias{frontier}
-\title{EAT frontier graph for a single input and output scenario}
+\title{Efficiency Analysis Trees Frontier Graph}
 \usage{
 frontier(
   object,

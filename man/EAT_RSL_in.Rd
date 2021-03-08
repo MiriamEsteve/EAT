@@ -2,7 +2,7 @@
 % Please edit documentation in R/efficiencyEAT.R
 \name{EAT_RSL_in}
 \alias{EAT_RSL_in}
-\title{Rusell Model with input orientation for an Efficiency Analysis Tree model}
+\title{Rusell Model with Input Orientation for an Efficiency Analysis Trees model}
 \usage{
 EAT_RSL_in(j, scores, x_k, y_k, atreeTk, ytreeTk, nX, nY, N_leaves)
 }
@@ -26,8 +26,8 @@ EAT_RSL_in(j, scores, x_k, y_k, atreeTk, ytreeTk, nX, nY, N_leaves)
 \item{N_leaves}{Integer. Number of leaf nodes.}
 }
 \value{
-A numerical vector with scores.
+A numerical vector with efficiency scores.
 }
 \description{
-Rusell Model with input orientation for an Efficiency Analysis Tree model.
+Rusell Model with input orientation for an Efficiency Analysis Trees model.
 }

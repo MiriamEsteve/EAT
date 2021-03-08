@@ -1,14 +1,15 @@
 #' @title Tuning an Efficiency Analysis Trees model
 #'
-#' @description This funcion calculates the root mean square error (RMSE) for a Efficiency Analysis Trees model built with a set of given hyperparameters. 
+#' @description This funcion calculates the root mean square error (RMSE) for an Efficiency Analysis Trees model built with a set of given hyperparameters. 
 #'
-#' @param training Training dataframe or matrix containing the variables in the model for model construction.
-#' @param test Test dataframe or matrix containing the variables in the model for model assessment.
+#' @param training Training dataframe or matrix containing the variables for model construction.
+#' @param test Test dataframe or matrix containing the variables for model assessment.
 #' @param x Vector. Column input indexes in data.
 #' @param y Vector. Column output indexes in data.
 #' @param numStop Vector. Set of minimun number of observations in a node for a split to be attempted.
 #' @param fold Vector. Set of number of folds in which is divided the dataset to apply cross-validation during the pruning.
-#' @param max.depth Vector. Maximum number of leaf nodes.
+#' @param max.depth Integer. Depth of the tree.
+#' @param max.leaves Integer. Maximum number of leaf nodes.
 #' @param na.rm Logical. If \code{TRUE}, \code{NA} rows are omitted.
 #' 
 #' @importFrom dplyr arrange %>%
@@ -28,11 +29,12 @@
 #'         test = test,
 #'         x = 6:9,
 #'         y = 3,
-#'         numStop = c(3, 5, 7, 10),
+#'         numStop = c(3, 5, 7),
 #'         fold = c(5, 7, 10))
 #'
-#' @return Dataframe in which each row corresponds to a given set of hyperparameters with its corresponding root mean square error (RMSE).
-bestEAT <- function(training, test, x, y, numStop = 5, fold = 5, max.depth = NULL, na.rm = TRUE) {
+#' @return Dataframe in which each row corresponds to a given set of hyperparameters and the root mean square error (RMSE).
+bestEAT <- function(training, test, x, y, numStop = 5, fold = 5, max.depth = NULL, 
+                    max.leaves = NULL, na.rm = TRUE) {
 
   training <- preProcess(training, x, y, na.rm = na.rm)[[2]]
   test <- preProcess(test, x, y, na.rm = na.rm)[[2]]
@@ -41,27 +43,52 @@ bestEAT <- function(training, test, x, y, numStop = 5, fold = 5, max.depth = NUL
     stop("Different variable names in training and test set")
   }
   
-  if (is.null(max.depth)) {
+  # Reorder index 'x' and 'y' in data
+  x <- 1:((ncol(training) - 1) - length(y))
+  y <- (length(x) + 1):(ncol(training) - 1)
+  
+  # Grid of hyperparameters
+  
+  if (is.null(max.depth) && is.null(max.leaves)) {
     hp <- expand.grid(numStop = numStop,
-                      fold = fold)
+                      fold = fold,
+                      RMSE = NA)
+    
+  } else if(!is.null(max.depth)){
+    hp <- expand.grid(numStop = numStop,
+                      fold = fold,
+                      max.depth = max.depth,
+                      RMSE = NA)
   } else {
     hp <- expand.grid(numStop = numStop,
                       fold = fold,
-                      max.depth = max.depth)
+                      max.leaves = max.leaves,
+                      RMSE = NA)
   }
-  
-  hp$RMSE <- NA
   
   for (i in 1:nrow(hp)) {
     
-    if (is.null(max.depth)){
+    # max.depth & max.leaves
+    if (is.null(max.depth) && is.null(max.leaves)){
+      max.leaves <- NULL
       max.depth <- NULL
+      
+    } else if (!is.null(max.depth)) {
+      max.leaves <- NULL
+      max.depth <- hp[i, "max.depth"]
+    
+    } else if (!is.null(max.leaves)) {
+      max.leaves <- hp[i, "max.leaves"]
+      max.depth <- NULL 
+      
     } else {
+      max.leaves <- hp[i, "max.leaves"]
       max.depth <- hp[i, "max.depth"]
     }
     
     EATmodel <- EAT(data = training, x = x, y = y, numStop = hp[i, "numStop"],
-                    fold = hp[i, "fold"], max.depth = max.depth, na.rm = na.rm)
+                    fold = hp[i, "fold"], max.depth = max.depth, 
+                    max.leaves = max.leaves, na.rm = na.rm)
     
     x.t <- EATmodel[["data"]][["x"]]
     y.t <- EATmodel[["data"]][["y"]]
@@ -85,21 +112,21 @@ bestEAT <- function(training, test, x, y, numStop = 5, fold = 5, max.depth = NUL
   
   hp <- hp %>% arrange(RMSE)
   
-  print(hp)
+  return(hp)
   
 }
 
-#' @title Tuning a RFEAT model
+#' @title Tuning a Random Forest + Efficiency Analysis Trees model
 #'
 #' @description This funcion calculates the root mean square error (RMSE) for a Random Forest + Efficiency Analysis Tree model built with a set of given hyperparameters. 
 #'
-#' @param training Training dataframe or matrix containing the variables in the model for model construction.
-#' @param test Test dataframe or matrix containing the variables in the model for model assessment.
+#' @param training Training dataframe or matrix containing the variables for model construction.
+#' @param test Test dataframe or matrix containing the variables for model assessment.
 #' @param x Vector. Column input indexes in data.
 #' @param y Vector. Column output indexes in data.
 #' @param numStop Vector. Set of minimun number of observations in a node for a split to be attempted.
 #' @param m Vector. Set of number of trees to be build.
-#' @param s_mtry Character vector. Set of options for selecting number of inputs to be selected in each split.
+#' @param s_mtry Character vector. Set of options for selecting the number of inputs to be selected in each split.
 #' @param na.rm Logical. If \code{TRUE}, \code{NA} rows are omitted.
 #' 
 #' @examples
@@ -109,7 +136,7 @@ bestEAT <- function(training, test, x, y, numStop = 5, fold = 5, max.depth = NUL
 #' n <- nrow(PISAindex) # Observations in the dataset
 #' t_index <- sample(1:n, n * 0.7) # Training indexes
 #' training <- PISAindex[t_index, ] # Training set
-#' test <- PISAindex[-t_index, ] # Test set
+#' test <- PISAindex[- t_index, ] # Test set
 #' 
 #' bestRFEAT(training = training, 
 #'           test = test,
@@ -117,12 +144,13 @@ bestEAT <- function(training, test, x, y, numStop = 5, fold = 5, max.depth = NUL
 #'           y = 3,
 #'           numStop = c(3, 5, 7, 10),
 #'           m = c(20, 40, 60),
-#'           s_mtry = c("Breiman", "1", "2"))
+#'           s_mtry = c("BRM", "1", "2"))
 #' 
 #' @export
 #'
-#' @return Dataframe in which each row corresponds to a given set of hyperparameters with its corresponding root mean square error (RMSE).
-bestRFEAT <- function(training, test, x, y, numStop, m, s_mtry, na.rm = TRUE) {
+#' @return Dataframe in which each row corresponds to a given set of hyperparameters and the root mean square error (RMSE).
+bestRFEAT <- function(training, test, x, y, numStop = 5, m = 50, 
+                      s_mtry = c("5", "BRM"), na.rm = TRUE) {
   
   training <- preProcess(training, x, y, na.rm = na.rm)[[2]]
   test <- preProcess(test, x, y, na.rm = na.rm)[[2]]
@@ -131,26 +159,19 @@ bestRFEAT <- function(training, test, x, y, numStop, m, s_mtry, na.rm = TRUE) {
     stop("Different variable names in training and test set")
   }
   
+  # Reorder index 'x' and 'y' in data
+  x <- 1:((ncol(training) - 1) - length(y))
+  y <- (length(x) + 1):(ncol(training) - 1)
+  
   hp <- expand.grid(numStop = numStop,
                     m = m,
-                    s_mtry = s_mtry)
-  
-  hp$RMSE <- NA
-  
-  s_mtry_opt <- c("Breiman", "DEA1", "DEA2", "DEA3", "DEA4")
+                    s_mtry = s_mtry,
+                    RMSE = NA)
   
   for (i in 1:nrow(hp)) {
     
-    if (hp[i, "s_mtry"] %in% s_mtry_opt){
-      input_select <- as.character(hp[i, "s_mtry"])
-      
-    } else {
-      input_select <- as.numeric(hp[i, "s_mtry"])
-      
-    }
-    
     RFEATmodel <- RFEAT(data = training, x = x, y = y, numStop = hp[i, "numStop"],
-                        m = hp[i, "m"], s_mtry = input_select, na.rm = na.rm)
+                        m = hp[i, "m"], s_mtry = as.character(hp[i, "s_mtry"]), na.rm = na.rm)
     
     x.t <- RFEATmodel[["data"]][["x"]]
     y.t <- RFEATmodel[["data"]][["y"]]
@@ -173,6 +194,5 @@ bestRFEAT <- function(training, test, x, y, numStop, m, s_mtry, na.rm = TRUE) {
   
   hp <- hp %>% arrange(RMSE)
   
-  print(hp)
-  
+  return(hp)
 }

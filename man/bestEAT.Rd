@@ -12,13 +12,14 @@ bestEAT(
   numStop = 5,
   fold = 5,
   max.depth = NULL,
+  max.leaves = NULL,
   na.rm = TRUE
 )
 }
 \arguments{
-\item{training}{Training dataframe or matrix containing the variables in the model for model construction.}
+\item{training}{Training dataframe or matrix containing the variables for model construction.}
 
-\item{test}{Test dataframe or matrix containing the variables in the model for model assessment.}
+\item{test}{Test dataframe or matrix containing the variables for model assessment.}
 
 \item{x}{Vector. Column input indexes in data.}
 
@@ -28,15 +29,17 @@ bestEAT(
 
 \item{fold}{Vector. Set of number of folds in which is divided the dataset to apply cross-validation during the pruning.}
 
-\item{max.depth}{Vector. Maximum number of leaf nodes.}
+\item{max.depth}{Integer. Depth of the tree.}
+
+\item{max.leaves}{Integer. Maximum number of leaf nodes.}
 
 \item{na.rm}{Logical. If \code{TRUE}, \code{NA} rows are omitted.}
 }
 \value{
-Dataframe in which each row corresponds to a given set of hyperparameters with its corresponding root mean square error (RMSE).
+Dataframe in which each row corresponds to a given set of hyperparameters and the root mean square error (RMSE).
 }
 \description{
-This funcion calculates the root mean square error (RMSE) for a Efficiency Analysis Trees model built with a set of given hyperparameters.
+This funcion calculates the root mean square error (RMSE) for an Efficiency Analysis Trees model built with a set of given hyperparameters.
 }
 \examples{
 
@@ -51,7 +54,7 @@ bestEAT(training = training,
         test = test,
         x = 6:9,
         y = 3,
-        numStop = c(3, 5, 7, 10),
+        numStop = c(3, 5, 7),
         fold = c(5, 7, 10))
 
 }

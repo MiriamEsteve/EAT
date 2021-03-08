@@ -2,7 +2,7 @@
 % Please edit documentation in R/efficiencyEAT.R
 \name{efficiencyEAT}
 \alias{efficiencyEAT}
-\title{Efficiency Analysis Tree Efficiency Scores}
+\title{Efficiency Analysis Trees Efficiency Scores}
 \usage{
 efficiencyEAT(
   data,
@@ -16,7 +16,7 @@ efficiencyEAT(
 )
 }
 \arguments{
-\item{data}{Dataframe for which the efficiency score is calculated.}
+\item{data}{Dataframe containing the DMU for which the efficiency score is calculated.}
 
 \item{x}{Vector. Column input indexes in data.}
 
@@ -26,25 +26,26 @@ efficiencyEAT(
 
 \item{scores_model}{Mathematic programming model to calculate scores. 
 \itemize{
-\item{\code{BCC_out}} BCC model. Output-oriented.
-\item{\code{BCC_in}}  BCC model. Input-oriented.
+\item{\code{BCC.OUT}} BCC model. Output-oriented.
+\item{\code{BCC.INP}}  BCC model. Input-oriented.
 \item{\code{DDF}}     Directional Distance Function.
-\item{\code{RSL_out}} Rusell model. Output-oriented.
-\item{\code{RSL_in}}  Rusell model. Input-oriented.
-\item{\code{WAM}}     Weighted Additive Model.
+\item{\code{RSL.OUT}} Rusell model. Output-oriented.
+\item{\code{RSL.INP}}  Rusell model. Input-oriented.
+\item{\code{WAM.MIP}} Weighted Additive Model. Measure of Inefficiency Proportions.
+\item{\code{WAM.RAM}} Weighted Additive Model. Range Adjusted Measure of Inefficiency.
 }}
 
 \item{r}{Integer. Decimal units for scores.}
 
-\item{FDH}{Logical. If \code{TRUE}, FDH scores are calculated with the programming model selected in \code{scores_model}.}
+\item{FDH}{Logical. If \code{TRUE}, FDH scores are also calculated with the programming model selected in \code{scores_model}.}
 
 \item{na.rm}{Logical. If \code{TRUE}, \code{NA} rows are omitted.}
 }
 \value{
-Dataframe with input variables and efficiency scores by an EAT model.
+Dataframe introduced as argument with efficiency scores calculated through an Efficiency Analysis Trees model.
 }
 \description{
-This function calculates the efficiency scores for each DMU by an Efficiency Analysis Tree model.
+This function calculates the efficiency scores for each DMU by an Efficiency Analysis Trees model.
 }
 \examples{
 
@@ -52,6 +53,6 @@ simulated <- eat:::X2Y2.sim(N = 50, border = 0.2)
 EAT_model <- EAT(data = simulated, x = c(1,2), y = c(3, 4))
 
 efficiencyEAT(data = simulated, x = c(1, 2), y = c(3, 4), object = EAT_model, 
-              scores_model = "BCC_out", r = 2, FDH = TRUE, na.rm = TRUE)
+              scores_model = "BCC.OUT", r = 2, FDH = TRUE, na.rm = TRUE)
 
 }

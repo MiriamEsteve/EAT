@@ -13,14 +13,14 @@ plotEAT(object)
 Plot object with the following elements for each node:
 \itemize{
 \item{id}: node index .
-\item{R}: impurity at the node.
-\item{n(t)}: number of observations in the node.
+\item{R}: error at the node.
+\item{n(t)}: number of observations at the node.
 \item{an input name}: splitting variable.
 \item{y}: output prediction.
 }
 }
 \description{
-Plot a tree-structure for a Efficiency Analysis Tree model.
+Plot a tree-structure for an Efficiency Analysis Trees model.
 }
 \examples{
 

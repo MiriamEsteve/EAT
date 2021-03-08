@@ -2,7 +2,7 @@
 % Please edit documentation in R/EAT.R
 \name{size}
 \alias{size}
-\title{Efficiency Analysis Tree size}
+\title{Efficiency Analysis Trees Size}
 \usage{
 size(object)
 }

@@ -4,15 +4,16 @@
 #'
 #' @param object An EAT object.
 #' @param df_scores Dataframe with efficiency scores (from \code{efficiencyEAT} or \code{efficiencyCEAT}).
-#' @param scores_model Mathematic programming model of \code{df_scores} 
+#' @param scores_model Mathematic programming model to calculate scores. 
 #' \itemize{
-#' \item{\code{BCC_out}} BCC model. Output orientation.
-#' \item{\code{BCC_in}}  BCC model. Input orientation.
-#' \item{\code{DDF}}     Directional Distance Model.
-#' \item{\code{RSL_out}} Rusell model. Output orientation
-#' \item{\code{RSL_in}}  Rusell model. Input orientation.
-#' \item{\code{WAM}}     Weighted Additive model.
-#' } 
+#' \item{\code{BCC.OUT}} BCC model. Output-oriented.
+#' \item{\code{BCC.INP}}  BCC model. Input-oriented.
+#' \item{\code{DDF}}     Directional Distance Function.
+#' \item{\code{RSL.OUT}} Rusell model. Output-oriented.
+#' \item{\code{RSL.INP}}  Rusell model. Input-oriented.
+#' \item{\code{WAM.MIP}} Weighted Additive Model. Measure of Inefficiency Proportions.
+#' \item{\code{WAM.RAM}} Weighted Additive Model. Range Adjusted Measure of Inefficiency.
+#' }
 #' @param upb Numeric. Upper bound for labeling.
 #' @param lwb Numeric. Lower bound for labeling.
 #'
@@ -28,9 +29,9 @@
 #' EAT_model <- EAT(data = simulated, x = c(1,2), y = c(3, 4))
 #'
 #' EAT_scores <- efficiencyEAT(data = simulated, x = c(1, 2), y = c(3, 4), object = EAT_model,
-#'                             scores_model = "BCC_out", r = 2, na.rm = TRUE)
+#'                             scores_model = "BCC.OUT", r = 2, na.rm = TRUE)
 #' 
-#' efficiencyJitter(object = EAT_model, df_scores = EAT_scores, scores_model = "BCC_out")
+#' efficiencyJitter(object = EAT_model, df_scores = EAT_scores, scores_model = "BCC.OUT")
 #'
 #' @return Jitter plot with DMUs and scores.
 efficiencyJitter <- function(object, df_scores, scores_model, upb = NULL, lwb = NULL) {
@@ -39,8 +40,9 @@ efficiencyJitter <- function(object, df_scores, scores_model, upb = NULL, lwb = 
     
   } 
   
-  if (!scores_model %in% c("BCC_out", "BCC_in", "DDF", 
-                           "RSL_out", "RSL_in", "WAM")){
+  if (!scores_model %in% c("BCC.OUT", "BCC.INP", "DDF", 
+                           "RSL.OUT", "RSL.INP", "WAM.MIP",
+                           "WAM.RAM")){
     stop(paste(scores_model, "is not available. Please, check help(\"efficiencyEAT\")"))
   }
   
@@ -73,7 +75,7 @@ efficiencyJitter <- function(object, df_scores, scores_model, upb = NULL, lwb = 
     stat_summary(fun.data = data_summary, color = "black") +
     labs(color = "Leaf node index")
   
-  ifelse(scores_model %in% c("BCC_out", "BCC_in", "RSL_out", "RSL_in"),
+  ifelse(scores_model %in% c("BCC.OUT", "BCC.INP", "RSL.OUT", "RSL.INP"),
          score <- 1,
          score <- 0)
   
@@ -103,7 +105,7 @@ efficiencyJitter <- function(object, df_scores, scores_model, upb = NULL, lwb = 
 #' @description Density plot for efficiency scores.
 #'
 #' @param df_scores Dataframe with efficiency scores.
-#' @param model String vector. Scoring models in the order shown in \code{scores} by columns. The available models are: \code{"EAT"}, \code{"FDH"}, \code{"CEAT"}, \code{"DEA"} and \code{"RFEAT"}.
+#' @param model String vector. Scoring models in the order shown in \code{df_scores} by columns. The available models are: \code{"EAT"}, \code{"FDH"}, \code{"CEAT"}, \code{"DEA"} and \code{"RFEAT"}.
 #'
 #' @importFrom ggplot2 ggplot geom_density
 #' @importFrom reshape2 melt

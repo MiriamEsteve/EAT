@@ -35,7 +35,7 @@ bagging <- function(data, x, y){
 #'
 #' @description This function selects the number of inputs for a split in Random Forest.
 #'
-#' @param s_mtry  Select number of inputs. It could be: \code{"Breiman"}, \code{"DEA1"}, \code{"DEA2"}, \code{"DEA3"} or \code{"DEA4"} or any integer.
+#' @param s_mtry  Select number of inputs. It could be: \code{"BRM"}, \code{"DEA1"}, \code{"DEA2"}, \code{"DEA3"} or \code{"DEA4"} or any integer.
 #' @param t Node which is being splitted.
 #' @param nX Number of inputs in data.
 #' @param nY Number of outputa in data.
@@ -61,7 +61,7 @@ select_mtry <- function(s_mtry, t, nX, nY){
     mtry = min(nt / nY, (nt / 3) - nY)
     
   }else {
-    stop(paste(s_mtry, "doesn't exist!"))
+    mtry = s_mtry
   }
   
   if(mtry < 1)
@@ -121,7 +121,7 @@ split_forest <- function(data, tree, leaves, t, x, y, numStop, arrayK){
   }
   
   S <- NULL
-  
+
   t[["SL"]] <- tL[["id"]] <- N_tree + 1
   t[["SR"]] <- tR[["id"]] <- N_tree + 2
   # Establish tree branches (father <--> sons)
@@ -130,8 +130,7 @@ split_forest <- function(data, tree, leaves, t, x, y, numStop, arrayK){
   tree[[which(t[["id"]] == lapply(tree, function(x) {
     x$id
   }))]] <- t
-  
-  
+
   # If they are end nodes
   if(isFinalNode(tR[["index"]], data[, x], numStop)){
     tR[["xi"]] <- tR[["s"]] <- -1

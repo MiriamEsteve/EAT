@@ -21,7 +21,7 @@
 rankingRFEAT <- function(object, r = 2, barplot = TRUE) {
   
   if (class(object) != "RFEAT"){
-    stop(paste(deparse(substitute(object)), "must be an RFEAT object"))
+    stop(paste(deparse(substitute(object)), "must be a RFEAT object"))
     
   } 
   

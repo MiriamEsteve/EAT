@@ -346,7 +346,7 @@ print.EAT <- function(x, ...) {
 summary.EAT <- function(object, ...) {
   
   results <- object[["nodes_df"]] %>%
-    filter(SL == - 1) %>%
+    filter(SL == -1) %>%
     select(- index, - SL)
   
   names(results)[c(2:3, 5)] <- c("n(t)", "%", "R(t)")

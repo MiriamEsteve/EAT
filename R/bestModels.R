@@ -21,9 +21,9 @@
 #' data("PISAindex")
 #' 
 #' n <- nrow(PISAindex) # Observations in the dataset
-#' t_index <- sample(1:n, n * 0.7) # Training indexes
-#' training <- PISAindex[t_index, ] # Training set
-#' test <- PISAindex[-t_index, ] # Test set
+#' selected <- sample(1:n, n * 0.7) # Training indexes
+#' training <- PISAindex[selected, ] # Training set
+#' test <- PISAindex[-selected, ] # Test set
 #' 
 #' bestEAT(training = training, 
 #'         test = test,
@@ -134,9 +134,9 @@ bestEAT <- function(training, test, x, y, numStop = 5, fold = 5, max.depth = NUL
 #' data("PISAindex")
 #' 
 #' n <- nrow(PISAindex) # Observations in the dataset
-#' t_index <- sample(1:n, n * 0.7) # Training indexes
-#' training <- PISAindex[t_index, ] # Training set
-#' test <- PISAindex[- t_index, ] # Test set
+#' selected <- sample(1:n, n * 0.7) # Training indexes
+#' training <- PISAindex[selected, ] # Training set
+#' test <- PISAindex[- selected, ] # Test set
 #' 
 #' bestRFEAT(training = training, 
 #'           test = test,

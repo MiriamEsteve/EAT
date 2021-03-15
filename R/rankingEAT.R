@@ -6,12 +6,12 @@
 #' @param tree Tree from EAT object.
 #' @param x Column input indexes in data.
 #' @param y Column output indexes in data.
-#' @param r Decimal units.
+#' @param digits Decimal units.
 #'
 #' @importFrom dplyr %>% filter
 #'
 #' @return A dataframe with the best split for each node and variable and its importance.
-imp_var_EAT <- function(data, tree, x, y, r) {
+imp_var_EAT <- function(data, tree, x, y, digits) {
   index <- tree[[1]][["index"]]
 
   result <- list()
@@ -53,7 +53,7 @@ imp_var_EAT <- function(data, tree, x, y, r) {
 
         tR_p_i <- tR_p[["index"]]
 
-        imp <- round((sum(tL_p_i %in% tL_i) + sum(tR_p_i %in% tR_i)) / length(tL_i), r)
+        imp <- round((sum(tL_p_i %in% tL_i) + sum(tR_p_i %in% tR_i)) / length(tL_i), digits)
 
         P <- append(P, list(list(
           "id" = tree[[t]][["id"]],
@@ -111,12 +111,12 @@ imp_var_EAT <- function(data, tree, x, y, r) {
 #' @description This function evaluates the importance of each predictor by the notion of surrogate splits.
 #'
 #' @param object An EAT object.
-#' @param r Decimal units.
+#' @param digits Decimal units.
 #'
 #' @importFrom dplyr %>%  mutate row_number filter rename arrange
 #'
 #' @return Dataframe with one column and the importance of each variable in rows.
-M_Breiman <- function(object, r) {
+M_Breiman <- function(object, digits) {
   
   data <- object[["data"]][["df"]] %>%
     mutate(id = row_number())
@@ -125,7 +125,7 @@ M_Breiman <- function(object, r) {
   y <- object[["data"]][["y"]]
   nX <- length(x)
   
-  resultado <- imp_var_EAT(data, tree, x, y, r)
+  resultado <- imp_var_EAT(data, tree, x, y, digits)
   
   M <- as.list(rep(0, nX))
   
@@ -149,7 +149,7 @@ M_Breiman <- function(object, r) {
   maxM <- max(M)
   
   if (maxM != 0) {
-    m <- round(((100 * M) / maxM), r)
+    m <- round(((100 * M) / maxM), digits)
     
     M <- rbind(M, m)
   } else {
@@ -169,7 +169,7 @@ M_Breiman <- function(object, r) {
 #' @description This function calculates variable importance through an Efficiency Analysis Trees model.
 #'
 #' @param object An EAT object.
-#' @param r Integer. Decimal units.
+#' @param digits Integer. Decimal units.
 #' @param barplot Logical. If \code{TRUE}, a barplot with the importance scores is displayed.
 #' @param threshold Numeric. Importance score value in which a line is graphed.
 #'
@@ -181,23 +181,31 @@ M_Breiman <- function(object, r) {
 #' EAT_model <- EAT(data = simulated, x = c(1,2), y = c(3, 4))
 #' 
 #' rankingEAT(object = EAT_model,
-#'            r = 2,
+#'            digits = 2,
 #'            threshold = 70,
 #'            barplot = TRUE)
 #' 
 #' @export   
-rankingEAT <- function(object, r = 2, threshold = 70, barplot = TRUE) {
+rankingEAT <- function(object, digits = 2, threshold = 70, barplot = TRUE) {
   
-  if (class(object) != "EAT"){
-    stop(paste(deparse(substitute(object)), "must be an EAT object"))
+  if (class(object) != "EAT") {
+    stop(paste(deparse(substitute(object)), "must be an EAT object."))
     
   } 
   
-  if(length(object[["data"]][["x"]]) < 2){
-    stop("More than two predictors are necessary")
+  if (threshold < 0) {
+    stop(paste('threshold =', threshold, 'must be greater than 0.'))
   }
   
-  scores <- M_Breiman(object = object, r = r)
+  if (digits < 0) {
+    stop(paste('digits =', digits, 'must be greater than 0.'))
+  }
+  
+  if(length(object[["data"]][["x"]]) < 2){
+    stop("More than two predictors are necessary.")
+  }
+  
+  scores <- M_Breiman(object = object, digits = digits)
   
   if (barplot == T){
     barplot <- barplot_importance(scores, threshold = threshold)

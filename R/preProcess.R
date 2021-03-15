@@ -1,6 +1,6 @@
 #' @title Data preprocessing
 #'
-#' @description This function displays error messages in relation with data such as presence of NA values or not allowed classes of data. Also, it prepares the data in the required format and gets the names of the rows.
+#' @description This function displays error messages in relation with data such as presence of NA values or not allowed classes of data or argument introduced incorrectly. Also, it prepares the data in the required format and gets the names of the rows.
 #'
 #' @param data Dataframe or matrix containing the variables in the model.
 #' @param x Vector. Column input indexes in data.
@@ -10,13 +10,39 @@
 #' @importFrom stats na.omit
 #'
 #' @return List containing rownames and data processed in the [X, Y] format with only allowed classes.
-preProcess <- function(data, x, y, na.rm = TRUE) {
+preProcess <- function(data, x, y, numStop = 5, fold = 5, 
+                       max.depth = NULL, max.leaves = NULL, 
+                       na.rm = TRUE) {
+  
+  # fold argument bad introduced
+  
+  if (!is.null(fold) && fold < 2) {
+    stop('fold = ', fold, ' must be greater than or equal 2.')
+  }
+  
+  # numStop argument bad introduced
+  
+  if (!is.null(numStop) && numStop < 0) {
+    stop('numStop = ', numStop, ' must be greater than or equal 0.')
+  }
+  
+  # max.depth  bad introduced
+  
+  if (!is.null(max.depth) && max.depth <= 0) {
+    stop('max.depth = ', max.depth, ' must be greater than 0.')
+  }
+  
+  # max.leaves bad introduced
+  
+  if (!is.null(max.leaves) && max.leaves <= 0) {
+    stop('max.leaves = ', max.leaves, ' must be greater than 0.')
+  }
   
   # x and y well / bad introduced
   
   cols <- 1:length(data)
   if (!(all(x %in% cols) && all(y %in% cols))) {
-    stop("x or y indexes are not in data")
+    stop("x or y indexes are not in data.")
   }
   
   # Dataframe

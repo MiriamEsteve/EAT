@@ -84,11 +84,13 @@ EAT <- function(data, x, y, numStop = 5, fold = 5,
   
   # max.depth and max.leaves included
   if(!is.null(max.depth) && !is.null(max.leaves)) {
-    warning(paste("If max.depth and max.leaves arguments are included, only max.depth is used"))
+    warning(paste("If max.depth and max.leaves arguments are included, only max.depth is used."))
   }
   
   # Data in data[x, y] format and rownames
-  data <- preProcess(data, x, y, na.rm = na.rm)
+  data <- preProcess(data = data, x = x, y = y, numStop = numStop,
+                     fold = fold, max.depth = max.depth, max.leaves = max.leaves, 
+                     na.rm = na.rm)
   
   rwn <- data[[1]]
   
@@ -333,6 +335,9 @@ print.EAT <- function(x, ...) {
       rep("\n", 2)
     )
   }
+  
+  cat(paste('<*> is a leaf node'))
+  
 }
 
 #' @importFrom dplyr %>% select filter
@@ -453,7 +458,7 @@ summary.EAT <- function(object, ...) {
 #'
 #' @param object An EAT object.
 #' 
-#' @return Number of leaf nodes at the tree.
+#' @return Print with the number of leaf nodes at the tree.
 #' 
 #' @examples
 #' 
@@ -463,7 +468,10 @@ summary.EAT <- function(object, ...) {
 #' 
 #' @export
 size <- function(object) {
-  return(object[["model"]][["leaf_nodes"]])
+  
+  size <- object[["model"]][["leaf_nodes"]]
+  
+  cat(paste('The number of leaf nodes of the EAT model is:', size))
   
 }
 
@@ -487,6 +495,8 @@ frontier.levels <- function(object) {
   frontier.levels <- as.data.frame(unique(object[["model"]][["y"]]))
   colnames(frontier.levels) <- object[["data"]][["output_names"]]
   
+  cat(paste('The frontier levels of the outputs at the leaf nodes are: ', '\n'))
+  
   return(frontier.levels)
   
 }
@@ -497,7 +507,7 @@ frontier.levels <- function(object) {
 #' 
 #' @param object An EAT object.
 #' 
-#' @return List with centralization and dispersion measures and the root mean square error (RMSE) for each leaf node.
+#' @return List with centralization and dispersion measures and the root mean square error (RMSE) for each node.
 #' 
 #' 
 #' @importFrom stats median sd

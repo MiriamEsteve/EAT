@@ -134,7 +134,14 @@ RFEAT <- function(data, x, y, numStop = 5, m = 50,
     
   }
   
-  data <- preProcess(data, x, y, na.rm = na.rm)
+  # m argument bad introduced
+  
+  if (m < 0) {
+    stop(paste('m =', m, 'must be greater than or equal 1.'))
+    
+  }
+  
+  data <- preProcess(data = data, x = x, y = y, numStop = numStop, na.rm = na.rm)
   
   rwn <- data[[1]]
   

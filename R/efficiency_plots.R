@@ -29,21 +29,35 @@
 #' EAT_model <- EAT(data = simulated, x = c(1,2), y = c(3, 4))
 #'
 #' EAT_scores <- efficiencyEAT(data = simulated, x = c(1, 2), y = c(3, 4), object = EAT_model,
-#'                             scores_model = "BCC.OUT", r = 2, na.rm = TRUE)
+#'                             scores_model = "BCC.OUT", digits = 2, na.rm = TRUE)
 #' 
 #' efficiencyJitter(object = EAT_model, df_scores = EAT_scores, scores_model = "BCC.OUT")
 #'
 #' @return Jitter plot with DMUs and scores.
 efficiencyJitter <- function(object, df_scores, scores_model, upb = NULL, lwb = NULL) {
   if (class(object) != "EAT"){
-    stop(paste(deparse(substitute(object)), "must be an EAT object"))
+    stop(paste(deparse(substitute(object)), "must be an EAT object."))
     
   } 
+  
+  # Available score model
   
   if (!scores_model %in% c("BCC.OUT", "BCC.INP", "DDF", 
                            "RSL.OUT", "RSL.INP", "WAM.MIP",
                            "WAM.RAM")){
     stop(paste(scores_model, "is not available. Please, check help(\"efficiencyEAT\")"))
+  }
+  
+  # Available lower and upper bound
+  
+  if (!is.null(upb) && upb < 0) {
+    stop(paste('upb =', upb, 'must be greater than or equal 0.'))
+    
+  }
+  
+  if (!is.null(lwb) && lwb < 0) {
+    stop(paste('lwb =', lwb, 'must be greater than or equal 0.'))
+    
   }
   
   groups <- object[["nodes_df"]] %>%
@@ -80,21 +94,26 @@ efficiencyJitter <- function(object, df_scores, scores_model, upb = NULL, lwb = 
          score <- 0)
   
   jitter_plot <- jitter_plot + geom_text_repel(aes(label = ifelse(Score == score, 
-                                                                  rownames(scores_df), ""))
-                                               )
+                                                                  rownames(scores_df), "")),
+                                               show.legend = FALSE)
   
   if (!is.null(lwb) && !is.null(upb)){
     jitter_plot <- jitter_plot + 
       geom_text_repel(aes(label = ifelse(Score >= lwb & Score <= upb, 
-                                         rownames(scores_df), "")))
+                                         rownames(scores_df), "")),
+                      show.legend = FALSE)
+    
   } else if (!is.null(upb)) {
     jitter_plot <- jitter_plot +
       geom_text_repel(aes(label = ifelse(Score <= upb, 
-                                         rownames(scores_df), "")))
+                                         rownames(scores_df), "")),
+                      show.legend = FALSE)
+    
   } else if (!is.null(lwb)) {
     jitter_plot <- jitter_plot +
       geom_text_repel(aes(label = ifelse(Score >= lwb, 
-                                         rownames(scores_df), "")))
+                                         rownames(scores_df), "")),
+                      show.legend = FALSE)
   }
   
   return(jitter_plot)
@@ -118,7 +137,7 @@ efficiencyJitter <- function(object, df_scores, scores_model, upb = NULL, lwb = 
 #' EAT_model <- EAT(data = simulated, x = c(1,2), y = c(3, 4))
 #'
 #' scores <- efficiencyEAT(data = simulated, x = c(1, 2), y = c(3, 4), object = EAT_model, 
-#'                         scores_model = "BCC_out", r = 2, FDH = TRUE, na.rm = TRUE)
+#'                         scores_model = "BCC_out", digits = 2, FDH = TRUE, na.rm = TRUE)
 #' 
 #' efficiencyDensity(df_scores = scores[, 5:6],
 #'                   model = c("EAT", "FDH"))

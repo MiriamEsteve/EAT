@@ -58,11 +58,9 @@ predictEAT <- function(object, newdata, x) {
   
   names(predictions) <- paste(object[["data"]][["output_names"]],"_pred", sep = "")
   
-  print(predictions)
-  
   predictions <- cbind(newdata, predictions)
   
-  invisible(predictions)
+  return(predictions)
 }
 
 
@@ -123,9 +121,7 @@ predictRFEAT <- function(object, newdata, x) {
   
   names(predictions) <-  paste(object[["data"]][["output_names"]], "_pred", sep = "")
   
-  print(predictions)
-  
   predictions <- cbind(newdata, predictions)
   
-  invisible(predictions)
+  return(predictions)
 }

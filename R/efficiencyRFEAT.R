@@ -6,7 +6,7 @@
 #' @param x Vector. Column input indexes in data.
 #' @param y Vector. Column output indexes in data.
 #' @param object A RFEAT object.
-#' @param r Integer. Decimal units for scores.
+#' @param digits Integer. Decimal units for scores.
 #' @param FDH Logical. If \code{TRUE}, FDH scores are computed.
 #' @param na.rm Logical. If \code{TRUE}, \code{NA} rows are omitted.
 #'
@@ -21,15 +21,19 @@
 #' RFEAT_model <- RFEAT(data = simulated, x = c(1,2), y = c(3, 4))
 #'
 #' efficiencyRFEAT(data = simulated, x = c(1, 2), y = c(3, 4), object = RFEAT_model, 
-#'                 r = 2, FDH = TRUE, na.rm = TRUE)
+#'                 digits = 2, FDH = TRUE, na.rm = TRUE)
 #'
 #' @return Dataframe with input variables and efficiency scores through a Random Forest + Efficiency Analysis Trees model.
-efficiencyRFEAT <- function(data, x, y, object, r = 3, FDH = TRUE, na.rm = TRUE){
+efficiencyRFEAT <- function(data, x, y, object, digits = 3, FDH = TRUE, na.rm = TRUE){
   
   if (class(object) != "RFEAT"){
-    stop(paste(deparse(substitute(object)), "must be a RFEAT object"))
+    stop(paste(deparse(substitute(object)), "must be a RFEAT object."))
     
   } 
+  
+  if (digits < 0) {
+    stop(paste('digits =', digits, 'must be greater than 0.'))
+  }
   
   train_names <- c(object[["data"]][["input_names"]], object[["data"]][["output_names"]])
   
@@ -75,13 +79,13 @@ efficiencyRFEAT <- function(data, x, y, object, r = 3, FDH = TRUE, na.rm = TRUE)
   
   descriptive <- scoreRF %>%
     summarise("Model" = "RFEAT",
-              "Mean" = round(mean(scoreRF[, 1]), r),
-              "Std. Dev." = round(sd(scoreRF[, 1]), r),
-              "Min" = round(min(scoreRF[, 1]), r),
-              "Q1" = round(quantile(scoreRF[, 1])[[2]], r),
-              "Median" = round(median(scoreRF[, 1]), r),
-              "Q3" = round(quantile(scoreRF[, 1])[[3]], r),
-              "Max" = round(max(scoreRF[, 1]), r)
+              "Mean" = round(mean(scoreRF[, 1]), digits),
+              "Std. Dev." = round(sd(scoreRF[, 1]), digits),
+              "Min" = round(min(scoreRF[, 1]), digits),
+              "Q1" = round(quantile(scoreRF[, 1])[[2]], digits),
+              "Median" = round(median(scoreRF[, 1]), digits),
+              "Q3" = round(quantile(scoreRF[, 1])[[3]], digits),
+              "Max" = round(max(scoreRF[, 1]), digits)
     )
   
   if (FDH == TRUE) {
@@ -102,16 +106,16 @@ efficiencyRFEAT <- function(data, x, y, object, r = 3, FDH = TRUE, na.rm = TRUE)
     
     descriptive_FDH <- scores_FDH %>%
       summarise("Model" = "FDH",
-                "Mean" = round(mean(scores_FDH[, 1]), r),
-                "Std. Dev." = round(sd(scores_FDH[, 1]), r),
-                "Min" = round(min(scores_FDH[, 1]), r),
-                "Q1" = round(quantile(scores_FDH[, 1])[[2]], r),
-                "Median" = round(median(scores_FDH[, 1]), r),
-                "Q3" = round(quantile(scores_FDH[, 1])[[3]], r),
-                "Max" = round(max(scores_FDH[, 1]), r)
+                "Mean" = round(mean(scores_FDH[, 1]), digits),
+                "Std. Dev." = round(sd(scores_FDH[, 1]), digits),
+                "Min" = round(min(scores_FDH[, 1]), digits),
+                "Q1" = round(quantile(scores_FDH[, 1])[[2]], digits),
+                "Median" = round(median(scores_FDH[, 1]), digits),
+                "Q3" = round(quantile(scores_FDH[, 1])[[3]], digits),
+                "Max" = round(max(scores_FDH[, 1]), digits)
       )
     
-    scores_df <- cbind(data, round(scoreRF, r), round(scores_FDH, r))
+    scores_df <- cbind(data, round(scoreRF, digits), round(scores_FDH, digits))
     print(scores_df[, c(ncol(scores_df) - 1, ncol(scores_df))])
     
     cat("\n")
@@ -123,11 +127,11 @@ efficiencyRFEAT <- function(data, x, y, object, r = 3, FDH = TRUE, na.rm = TRUE)
     
   } else {
     
-    scores_df <- cbind(data, round(scoreRF, r))
+    scores_df <- cbind(data, round(scoreRF, digits))
     
     print(paste("BCC output orientation programming model"))
     cat("\n")
-    print(round(scores_df[, ncol(scores_df)], r))
+    print(round(scores_df[, ncol(scores_df)], digits))
     
     cat("\n") 
     print(descriptive, row.names = FALSE)

@@ -3,7 +3,7 @@
 #' @description This function calculates variable importance through a Random Forest + Efficiency Analysis Trees model.
 #'
 #' @param object A RFEAT object.
-#' @param r Integer. Decimal units.
+#' @param digits Integer. Decimal units.
 #' @param barplot Logical. If \code{TRUE}, a barplot with importance scores is displayed.
 #'
 #' @return Dataframe with the importance scores. If \code{barplot = TRUE}, it is returned a list containing the scores and the barplot.
@@ -14,22 +14,26 @@
 #' RFEAT_model <- RFEAT(data = simulated, x = c(1,2), y = c(3, 4))
 #' 
 #' rankingRFEAT(object = RFEAT_model,
-#'              r = 2,
+#'              digits = 2,
 #'              barplot = TRUE)
 #' 
 #' @export   
-rankingRFEAT <- function(object, r = 2, barplot = TRUE) {
+rankingRFEAT <- function(object, digits = 2, barplot = TRUE) {
   
   if (class(object) != "RFEAT"){
-    stop(paste(deparse(substitute(object)), "must be a RFEAT object"))
+    stop(paste(deparse(substitute(object)), "must be a RFEAT object."))
     
-  } 
-  
-  if(length(object[["data"]][["x"]]) < 2){
-    stop("More than two predictors are necessary")
   }
   
-  scores <- imp_var_RFEAT(object = object, r = r)
+  if (digits < 0) {
+    stop(paste('digits =', digits, 'must be greater than 0.'))
+  }
+  
+  if(length(object[["data"]][["x"]]) < 2){
+    stop("More than two predictors are necessary.")
+  }
+  
+  scores <- imp_var_RFEAT(object = object, digits = digits)
   
   if (barplot == T){
     barplot <- barplot_importance(scores, threshold = NULL)
@@ -46,11 +50,11 @@ rankingRFEAT <- function(object, r = 2, barplot = TRUE) {
 #' @description Importance variable through Random Forest + Efficiency Analysis Trees.
 #'
 #' @param object A RFEAT object
-#' @param r Integer. Decimal units.
+#' @param digits Integer. Decimal units.
 #' 
 #' @importFrom dplyr %>% arrange
 #' @return Vector of input importance scores
-imp_var_RFEAT <- function(object, r = 2){
+imp_var_RFEAT <- function(object, digits = 2){
   
   err <- object[["error"]]
   data <- object[["data"]][["df"]]

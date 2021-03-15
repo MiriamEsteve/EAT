@@ -348,7 +348,7 @@ CEAT_WAM <- function(j, scores, x_k, y_k, atreeTk, ytreeTk, nX, nY, N_leaves, we
 #' \item{\code{WAM.MIP}} Weighted Additive Model. Measure of Inefficiency Proportions.
 #' \item{\code{WAM.RAM}} Weighted Additive Model. Range Adjusted Measure of Inefficiency.
 #' }
-#' @param r Integer. Decimal units for scores.
+#' @param digits Integer. Decimal units for scores.
 #' @param DEA Logical. If \code{TRUE}, DEA scores are calculated with the programming model selected in \code{scores_model}
 #' @param na.rm Logical. If \code{TRUE}, \code{NA} rows are omitted.
 #'  
@@ -363,17 +363,21 @@ CEAT_WAM <- function(j, scores, x_k, y_k, atreeTk, ytreeTk, nX, nY, N_leaves, we
 #' EAT_model <- EAT(data = simulated, x = c(1,2), y = c(3, 4))
 #'
 #' efficiencyCEAT(data = simulated, x = c(1, 2), y = c(3, 4), object = EAT_model, 
-#'               scores_model = "BCC.OUT", r = 2, DEA = TRUE, na.rm = TRUE)
+#'               scores_model = "BCC.OUT", digits = 2, DEA = TRUE, na.rm = TRUE)
 #'
 #' @return Dataframe with input variables and efficiency scores by a convex EAT model.
 efficiencyCEAT <- function(data, x, y, object, 
-                           scores_model, r = 3, DEA = TRUE,
+                           scores_model, digits = 3, DEA = TRUE,
                            na.rm = TRUE) {
   
   if (class(object) != "EAT"){
     stop(paste(deparse(substitute(object)), "must be an EAT object"))
     
   } 
+  
+  if (digits < 0) {
+    stop(paste('digits =', digits, 'must be greater than 0.'))
+  }
   
   if (!scores_model %in% c("BCC.OUT", "BCC.INP", "DDF", 
                            "RSL.OUT", "RSL.INP", "WAM.MIP",
@@ -476,13 +480,13 @@ efficiencyCEAT <- function(data, x, y, object,
   
   descriptive <- scores %>%
     summarise("Model" = "CEAT",
-              "Mean" = round(mean(scores[, 1]), r),
-              "Std. Dev." = round(sd(scores[, 1]), r),
-              "Min" = round(min(scores[, 1]), r),
-              "Q1" = round(quantile(scores[, 1])[[2]], r),
-              "Median" = round(median(scores[, 1]), r),
-              "Q3" = round(quantile(scores[, 1])[[3]], r),
-              "Max" = round(max(scores[, 1]), r)
+              "Mean" = round(mean(scores[, 1]), digits),
+              "Std. Dev." = round(sd(scores[, 1]), digits),
+              "Min" = round(min(scores[, 1]), digits),
+              "Q1" = round(quantile(scores[, 1])[[2]], digits),
+              "Median" = round(median(scores[, 1]), digits),
+              "Q3" = round(quantile(scores[, 1])[[3]], digits),
+              "Max" = round(max(scores[, 1]), digits)
               )
   
   if (DEA == TRUE){
@@ -492,19 +496,19 @@ efficiencyCEAT <- function(data, x, y, object,
     
     descriptive_DEA <- scores %>%
       summarise("Model" = "DEA",
-                "Mean" = round(mean(scores_DEA[, 1]), r),
-                "Std. Dev." = round(sd(scores_DEA[, 1]), r),
-                "Min" = round(min(scores_DEA[, 1]), r),
-                "Q1" = round(quantile(scores_DEA[, 1])[[2]], r),
-                "Median" = round(median(scores_DEA[, 1]), r),
-                "Q3" = round(quantile(scores_DEA[, 1])[[3]], r),
-                "Max" = round(max(scores_DEA[, 1]), r)
+                "Mean" = round(mean(scores_DEA[, 1]), digits),
+                "Std. Dev." = round(sd(scores_DEA[, 1]), digits),
+                "Min" = round(min(scores_DEA[, 1]), digits),
+                "Q1" = round(quantile(scores_DEA[, 1])[[2]], digits),
+                "Median" = round(median(scores_DEA[, 1]), digits),
+                "Q3" = round(quantile(scores_DEA[, 1])[[3]], digits),
+                "Max" = round(max(scores_DEA[, 1]), digits)
       )
   }
   
   if (DEA == TRUE){
     
-    scores_df <- cbind(data, round(scores, r), round(scores_DEA, r))
+    scores_df <- cbind(data, round(scores, digits), round(scores_DEA, digits))
     print(scores_df[, c(ncol(scores_df) - 1, ncol(scores_df))])
     
     cat("\n")
@@ -516,8 +520,8 @@ efficiencyCEAT <- function(data, x, y, object,
     
   } else {
     
-    scores_df <- cbind(data, round(scores, r))
-    print(round(scores_df[, ncol(scores_df)], r))
+    scores_df <- cbind(data, round(scores, digits))
+    print(round(scores_df[, ncol(scores_df)], digits))
     
     cat("\n") 
     print(descriptive, row.names = FALSE)

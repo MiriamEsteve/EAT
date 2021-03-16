@@ -11,7 +11,8 @@ frontier(
   observed.color = "black",
   pch = 19,
   size = 1,
-  rwn = FALSE
+  rwn = FALSE,
+  max.overlaps = 10
 )
 }
 \arguments{
@@ -28,6 +29,8 @@ frontier(
 \item{size}{Integer. Point size.}
 
 \item{rwn}{Logical. If \code{TRUE}, rownames are displayed.}
+
+\item{max.overlaps}{Exclude text labels that overlap too many things.}
 }
 \value{
 Plot with estimated production frontier

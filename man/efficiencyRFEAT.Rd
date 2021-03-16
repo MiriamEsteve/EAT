@@ -4,7 +4,7 @@
 \alias{efficiencyRFEAT}
 \title{Random Forest + Efficiency Analysis Trees Efficiency Scores}
 \usage{
-efficiencyRFEAT(data, x, y, object, r = 3, FDH = TRUE, na.rm = TRUE)
+efficiencyRFEAT(data, x, y, object, digits = 3, FDH = TRUE, na.rm = TRUE)
 }
 \arguments{
 \item{data}{Dataframe for which the efficiency score is calculated.}
@@ -15,7 +15,7 @@ efficiencyRFEAT(data, x, y, object, r = 3, FDH = TRUE, na.rm = TRUE)
 
 \item{object}{A RFEAT object.}
 
-\item{r}{Integer. Decimal units for scores.}
+\item{digits}{Integer. Decimal units for scores.}
 
 \item{FDH}{Logical. If \code{TRUE}, FDH scores are computed.}
 
@@ -33,6 +33,6 @@ simulated <- eat:::X2Y2.sim(N = 50, border = 0.2)
 RFEAT_model <- RFEAT(data = simulated, x = c(1,2), y = c(3, 4))
 
 efficiencyRFEAT(data = simulated, x = c(1, 2), y = c(3, 4), object = RFEAT_model, 
-                r = 2, FDH = TRUE, na.rm = TRUE)
+                digits = 2, FDH = TRUE, na.rm = TRUE)
 
 }

@@ -4,12 +4,12 @@
 \alias{rankingEAT}
 \title{Ranking of Variables by Efficiency Analysis Trees}
 \usage{
-rankingEAT(object, r = 2, threshold = 70, barplot = TRUE)
+rankingEAT(object, digits = 2, threshold = 70, barplot = TRUE)
 }
 \arguments{
 \item{object}{An EAT object.}
 
-\item{r}{Integer. Decimal units.}
+\item{digits}{Integer. Decimal units.}
 
 \item{threshold}{Numeric. Importance score value in which a line is graphed.}
 
@@ -27,7 +27,7 @@ simulated <- eat:::X2Y2.sim(N = 50, border = 0.2)
 EAT_model <- EAT(data = simulated, x = c(1,2), y = c(3, 4))
 
 rankingEAT(object = EAT_model,
-           r = 2,
+           digits = 2,
            threshold = 70,
            barplot = TRUE)
 

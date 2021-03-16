@@ -10,7 +10,7 @@ efficiencyCEAT(
   y,
   object,
   scores_model,
-  r = 3,
+  digits = 3,
   DEA = TRUE,
   na.rm = TRUE
 )
@@ -35,7 +35,7 @@ efficiencyCEAT(
 \item{\code{WAM.RAM}} Weighted Additive Model. Range Adjusted Measure of Inefficiency.
 }}
 
-\item{r}{Integer. Decimal units for scores.}
+\item{digits}{Integer. Decimal units for scores.}
 
 \item{DEA}{Logical. If \code{TRUE}, DEA scores are calculated with the programming model selected in \code{scores_model}}
 
@@ -53,6 +53,6 @@ simulated <- eat:::X2Y2.sim(N = 50, border = 0.2)
 EAT_model <- EAT(data = simulated, x = c(1,2), y = c(3, 4))
 
 efficiencyCEAT(data = simulated, x = c(1, 2), y = c(3, 4), object = EAT_model, 
-              scores_model = "BCC.OUT", r = 2, DEA = TRUE, na.rm = TRUE)
+              scores_model = "BCC.OUT", digits = 2, DEA = TRUE, na.rm = TRUE)
 
 }

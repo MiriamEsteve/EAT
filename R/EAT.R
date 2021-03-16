@@ -507,7 +507,7 @@ frontier.levels <- function(object) {
 #' 
 #' @param object An EAT object.
 #' 
-#' @return List with centralization and dispersion measures and the root mean square error (RMSE) for each node.
+#' @return List with centralization and dispersion measures and the root mean square error (RMSE) for each node. In case of a single output, the result of the function is a data frame. 
 #' 
 #' 
 #' @importFrom stats median sd
@@ -581,6 +581,14 @@ descrEAT <- function(object) {
     rownames(descr) <- output_names
     
     descriptive[[i]] <- descr
+    
+  }
+  
+  if (length(output_names) == 1) {
+    
+    descriptive <- data.frame(matrix(unlist(descriptive), ncol = 12, byrow = T))
+    colnames(descriptive) <- c('Node', 'n(t)', '%', 'mean', 'var', 'sd', 'min', 'Q1',
+                               'median', 'Q3', 'max', 'RMSE')
     
   }
   

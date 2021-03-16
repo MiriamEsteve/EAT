@@ -4,7 +4,7 @@
 \alias{imp_var_EAT}
 \title{Importance variable of Breiman}
 \usage{
-imp_var_EAT(data, tree, x, y, r)
+imp_var_EAT(data, tree, x, y, digits)
 }
 \arguments{
 \item{data}{Data from EAT object.}
@@ -15,7 +15,7 @@ imp_var_EAT(data, tree, x, y, r)
 
 \item{y}{Column output indexes in data.}
 
-\item{r}{Decimal units.}
+\item{digits}{Decimal units.}
 }
 \value{
 A dataframe with the best split for each node and variable and its importance.

@@ -4,7 +4,16 @@
 \alias{preProcess}
 \title{Data preprocessing}
 \usage{
-preProcess(data, x, y, na.rm = TRUE)
+preProcess(
+  data,
+  x,
+  y,
+  numStop = 5,
+  fold = 5,
+  max.depth = NULL,
+  max.leaves = NULL,
+  na.rm = TRUE
+)
 }
 \arguments{
 \item{data}{Dataframe or matrix containing the variables in the model.}
@@ -19,5 +28,5 @@ preProcess(data, x, y, na.rm = TRUE)
 List containing rownames and data processed in the [X, Y] format with only allowed classes.
 }
 \description{
-This function displays error messages in relation with data such as presence of NA values or not allowed classes of data. Also, it prepares the data in the required format and gets the names of the rows.
+This function displays error messages in relation with data such as presence of NA values or not allowed classes of data or argument introduced incorrectly. Also, it prepares the data in the required format and gets the names of the rows.
 }

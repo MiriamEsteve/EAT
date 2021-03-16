@@ -10,7 +10,7 @@ size(object)
 \item{object}{An EAT object.}
 }
 \value{
-Number of leaf nodes at the tree.
+Print with the number of leaf nodes at the tree.
 }
 \description{
 This function returns the number of leaf nodes at the tree.

@@ -4,12 +4,12 @@
 \alias{imp_var_RFEAT}
 \title{Importance variable through Random Forest + Efficiency Analysis Trees}
 \usage{
-imp_var_RFEAT(object, r = 2)
+imp_var_RFEAT(object, digits = 2)
 }
 \arguments{
 \item{object}{A RFEAT object}
 
-\item{r}{Integer. Decimal units.}
+\item{digits}{Integer. Decimal units.}
 }
 \value{
 Vector of input importance scores

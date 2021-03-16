@@ -11,9 +11,10 @@
 #' @param pch Integer. Point shape.
 #' @param size Integer. Point size.
 #' @param rwn Logical. If \code{TRUE}, rownames are displayed.
+#' @param max.overlaps Exclude text labels that overlap too many things.
 #'
 #' @importFrom ggplot2 ggplot aes_string geom_point geom_step geom_text xlab ylab xlim ylim theme element_blank element_rect
-#' @importFrom ggrepel geom_label_repel
+#' @importFrom ggrepel geom_label_repel 
 #' @importFrom reshape2 melt
 #'
 #' @return Plot with estimated production frontier
@@ -34,7 +35,7 @@
 #' 
 #' @export
 frontier <- function(object, FDH = FALSE, observed.data = FALSE, observed.color = "black", 
-                     pch = 19, size = 1, rwn = FALSE){
+                     pch = 19, size = 1, rwn = FALSE, max.overlaps = 10){
   
   if (class(object) != "EAT"){
     stop(paste(deparse(substitute(object)), "must be an EAT object"))
@@ -125,7 +126,8 @@ frontier <- function(object, FDH = FALSE, observed.data = FALSE, observed.color 
       if (rwn == TRUE){
         plot <- plot + 
           geom_text_repel(data = t_data, aes_string(x = x_names, y = y_names, 
-                                     label = "rownames(t_data)"))
+                                                    label = "rownames(t_data)"),
+                          max.overlaps = max.overlaps)
       }
     }
   }

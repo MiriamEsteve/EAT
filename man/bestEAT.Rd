@@ -46,9 +46,9 @@ This funcion calculates the root mean square error (RMSE) for an Efficiency Anal
 data("PISAindex")
 
 n <- nrow(PISAindex) # Observations in the dataset
-t_index <- sample(1:n, n * 0.7) # Training indexes
-training <- PISAindex[t_index, ] # Training set
-test <- PISAindex[-t_index, ] # Test set
+selected <- sample(1:n, n * 0.7) # Training indexes
+training <- PISAindex[selected, ] # Training set
+test <- PISAindex[-selected, ] # Test set
 
 bestEAT(training = training, 
         test = test,

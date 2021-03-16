@@ -4,12 +4,12 @@
 \alias{M_Breiman}
 \title{Breiman Importance}
 \usage{
-M_Breiman(object, r)
+M_Breiman(object, digits)
 }
 \arguments{
 \item{object}{An EAT object.}
 
-\item{r}{Decimal units.}
+\item{digits}{Decimal units.}
 }
 \value{
 Dataframe with one column and the importance of each variable in rows.

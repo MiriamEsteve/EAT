@@ -252,7 +252,7 @@ size(single_model)
 frontier.levels(single_model)
 ```
 
-`descrEAT()` returns a list with measures of centralization and dispersion, as well as the root mean square error (RMSE) for each node. In multioutput scenarios, the measurenments are shown for each output. The following information is obtained:
+`descrEAT()` returns a list with measures of centralization and dispersion, as well as the root mean square error (RMSE) for each node. In multioutput scenarios, the measurenments are shown for each output.  In case of a single output, the result of the function is a data frame. The following information is obtained:
   
   * `Node`: node index.
   * `n(t)`: number of DMUs.
@@ -270,8 +270,7 @@ frontier.levels(single_model)
 ```{r perf.single.output, collapse = FALSE}
 descriptiveEAT <- descrEAT(single_model)
 
-# Descriptive for the nodes 1-3
-descriptiveEAT[1:3]
+descriptiveEAT
 ```
 
 Additionally, `EAT_object[["tree"]][[id_node]]` or `EAT_object$tree[[id_node]]` returns a `list` that allows to know in greater detail the characteristics of a given node. The elements that define a node are the following:
@@ -367,7 +366,8 @@ frontier(object,
          observed.color = "black",
          pch = 19,
          size = 1,
-         rwn = FALSE)
+         rwn = FALSE,
+         max.overlaps = 10)
 ```
 
 To continue, the frontier of the previous model is displayed. It can be seen how the frontier obtained by the `EAT` function generalizes the results of the frontier obtained through FDH, thus avoiding overfitting. The boundary estimated through Efficiency Analysis Trees generates 3 steps corresponding to the 3 leaf nodes (nodes 3, 4 and 5) obtained with the `EAT` function. For each of these steps, a frontier level in terms of the output is given with respect to the amount of input used (in this case level of `PFC`). In addition, we can appreciate 6 DMUs in the frontier: ALB (Albania), MDA (Moldova), SRB (Serbia), RUS (Russia), HUN (Hungary) and SGP (Singapur). Note that the first vertical plane of the frontier does not appear, but if it did, ALB would be on it. These DMUs are efficient and the rest of the DMUs below its specific step should increase the amount of output obtained or reduce the amount of input utilized until reaching the boundary to be efficient. 
@@ -420,7 +420,7 @@ multioutput_model <- EAT(data = PISAindex,
 
 ### rankingEAT()
 
-The second example presents a multiple output scenario where 13 inputs are used to model the 3 available outputs. In these situations, a selection of the most contributing variables may be recommended in order to reduce overfitting, improve precision and reduce future training times. `rankingEAT()` allows a selection of variables by calculating a score of importance through Efficiency Analysis Trees technique. The user can specify the number of decimal units (`r`), include a barplot with the scores of importance (`barplot`) and display a horizontal line in the graph to facilitate the cut-off point between important and not relevant variables (`threshold`).
+The second example presents a multiple output scenario where 13 inputs are used to model the 3 available outputs. In these situations, a selection of the most contributing variables may be recommended in order to reduce overfitting, improve precision and reduce future training times. `rankingEAT()` allows a selection of variables by calculating a score of importance through Efficiency Analysis Trees technique. The user can specify the number of decimal units (`digits`), include a barplot with the scores of importance (`barplot`) and display a horizontal line in the graph to facilitate the cut-off point between important and not relevant variables (`threshold`).
 
 ```{r ranking, eval = FALSE}
 rankingEAT(object,
@@ -620,7 +620,7 @@ If `FDH = TRUE`, scores are also calculated through a FDH model. Finally, a brie
 
 For this section, the previously created `single_model` is used (we still redefine it again).
 
-```{r single.output, collapse = FALSE}
+```{r single.output2, collapse = FALSE}
 single_model <- EAT(data = PISAindex, 
                     x = 15, # input 
                     y = 3) # output
@@ -811,6 +811,8 @@ As in `rankingEAT()`, the `rankingRFEAT` function allows to calculate an importa
 rankingRFEAT(object, digits = 2,
              barplot = TRUE)
 ```
+
+For example:
 
 ```{r RFmodel2}
 forestReduced <- RFEAT(data = PISAindex, 

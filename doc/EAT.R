@@ -9,11 +9,11 @@ knitr::opts_chunk$set(
 ## ----table, echo = FALSE------------------------------------------------------
 library(dplyr)
 
-functions <- data.frame("Purpose" = c(rep("Modeling", 2),
+functions <- data.frame("Purpose" = c(rep("Model", 2),
                                       rep("Summarise", 5),
-                                      rep("Tuning", 2), 
+                                      rep("Tune", 2), 
                                       rep("Graph", 3),
-                                      rep("Calculating efficiency scores", 3), 
+                                      rep("Calculate efficiency scores", 3), 
                                       rep("Graph efficiency scores", 2),
                                       rep("Predict", 2), 
                                       rep("Rank", 2)), 
@@ -94,8 +94,7 @@ frontier.levels(single_model)
 ## ----perf.single.output, collapse = FALSE-------------------------------------
 descriptiveEAT <- descrEAT(single_model)
 
-# Descriptive for the nodes 1-3
-descriptiveEAT[1:3]
+descriptiveEAT
 
 ## ----node.charac, collapse = FALSE--------------------------------------------
 single_model[["tree"]][[5]]
@@ -149,8 +148,9 @@ categorized_model <- EAT(data = PISAindex_GDP_PPP_cat,
 #           observed.data = FALSE,
 #           observed.color = "black",
 #           pch = 19,
+#           size = 1,
 #           rwn = FALSE,
-#           size = 1.5)
+#           max.overlaps = 10)
 
 ## ----single.output.frontier, fig.width = 7.2, fig.height = 6------------------
 frontier <- frontier(object = single_model,
@@ -181,18 +181,18 @@ plot(frontier_md)
 ## ----multioutput.scenario, collapse = FALSE-----------------------------------
 multioutput_model <- EAT(data = PISAindex, 
                          x = 6:18, # input 
-                         y = 3:5, # output
+                         y = 3:5 # output
                          ) 
 
 ## ----ranking, eval = FALSE----------------------------------------------------
 #  rankingEAT(object,
-#             r = 2,
+#             digits = 2,
 #             barplot = TRUE,
 #             threshold = 70)
 
 ## ----multioutput.importance, fig.width = 7.2, fig.height = 6------------------
 rankingEAT(object = multioutput_model,
-           r = 2,
+           digits = 2,
            barplot = TRUE,
            threshold = 70)
 
@@ -247,9 +247,9 @@ plotEAT(object = reduced_model4)
 
 ## ----training_test------------------------------------------------------------
 n <- nrow(PISAindex) # Observations in the dataset
-t_index <- sample(1:n, n * 0.7) # Training indexes
-training <- PISAindex[t_index, ] # Training set
-test <- PISAindex[- t_index, ] # Test set
+selected <- sample(1:n, n * 0.7) # Training indexes
+training <- PISAindex[selected, ] # Training set
+test <- PISAindex[- selected, ] # Test set
 
 ## ----bestEAT, eval = FALSE----------------------------------------------------
 #  bestEAT(training, test,
@@ -286,11 +286,16 @@ bestEAT_model <- EAT(data = PISAindex,
 ## ----summary.bestEAT_model, collapse = FALSE----------------------------------
 summary(bestEAT_model)
 
+## ----single.output2, collapse = FALSE-----------------------------------------
+single_model <- EAT(data = PISAindex, 
+                    x = 15, # input 
+                    y = 3) # output
+
 ## ----efficiencyEAT, eval = FALSE----------------------------------------------
 #  efficiencyEAT(data, x, y,
 #                object,
 #                score_model,
-#                r = 3,
+#                digits = 3,
 #                FDH = TRUE,
 #                na.rm = TRUE)
 
@@ -300,7 +305,7 @@ scores_EAT <- efficiencyEAT(data = PISAindex,
                             y = 3,
                             object = single_model, 
                             scores_model = "BCC.OUT",
-                            r = 3,
+                            digits = 3,
                             FDH = TRUE)
 
 ## ----scoresEAT2, collapse = FALSE---------------------------------------------
@@ -309,14 +314,14 @@ scores_EAT2 <- efficiencyEAT(data = PISAindex,
                              y = 3,
                              object = single_model, 
                              scores_model = "BCC.INP",
-                             r = 3,
+                             digits = 3,
                              FDH = TRUE)
 
 ## ----efficiencyCEAT, eval = FALSE---------------------------------------------
 #  efficiencyCEAT(data, x, y,
 #                 object,
 #                 score_model,
-#                 r = 3,
+#                 digits = 3,
 #                 DEA = TRUE,
 #                 na.rm = TRUE)
 
@@ -326,7 +331,7 @@ scores_CEAT <- efficiencyCEAT(data = PISAindex,
                               y = 3,
                               object = single_model, 
                               scores_model = "BCC.OUT",
-                              r = 3,
+                              digits = 3,
                               DEA = TRUE)
 
 ## ----efficiency_jitter, eval = FALSE------------------------------------------
@@ -347,6 +352,11 @@ efficiencyJitter(object = single_model,
                  upb = 0.65)
 
 ## ----frontier_comparar, fig.width = 7.2, fig.height = 6, fig.align = 'center'----
+frontier <- frontier(object = single_model,
+                     FDH = TRUE, 
+                     observed.data = TRUE,
+                     rwn = TRUE)
+
 plot(frontier)
 
 ## ----efficiency_density, eval = FALSE-----------------------------------------
@@ -368,7 +378,7 @@ cursed_scores <- efficiencyEAT(data = PISAindex,
                                y = 3:5,
                                object = multioutput_model,
                                scores_model = "BCC.OUT",
-                               r = 3,
+                               digits = 3,
                                FDH = TRUE)
 
 ## ----cursed.density, collapse = FALSE, fig.width = 7.2, fig.height = 6, fig.align = 'center'----
@@ -398,11 +408,24 @@ print(forest)
 plotRFEAT(forest)
 
 ## ----rankingRFEAT, eval = FALSE-----------------------------------------------
-#  rankingRFEAT(object, r = 2,
+#  rankingRFEAT(object, digits = 2,
 #               barplot = TRUE)
 
-## ----rankingRFEAT_forest, fig.width = 7.2, fig.height = 6---------------------
-rankingRFEAT(object = forest, r = 2,
+## ----RFmodel2-----------------------------------------------------------------
+forestReduced <- RFEAT(data = PISAindex, 
+                       x = c(6, 7, 8, 12, 17), 
+                       y = 3,
+                       numStop = 5, 
+                       m = 10,
+                       s_mtry = "BRM",
+                       na.rm = TRUE)
+
+## ----rankingRFEAT_forest1, fig.width = 7.2, fig.height = 6--------------------
+rankingRFEAT(object = forestReduced, digits = 2,
+             barplot = TRUE)
+
+## ----rankingRFEAT_forest2, fig.width = 7.2, fig.height = 6--------------------
+rankingRFEAT(object = forest, digits = 2,
              barplot = TRUE)
 
 ## ----bestRFEAT, eval = FALSE--------------------------------------------------
@@ -414,18 +437,18 @@ rankingRFEAT(object = forest, r = 2,
 #            na.rm = TRUE)
 
 ## ----tuning.bestRFEAT, collapse = FALSE---------------------------------------
-bestRFEAT(training = training, 
-          test = test,
-          x = 6:18,
-          y = 3:5,
-          numStop = c(3, 5, 10),
-          m = c(30, 40, 50),
-          s_mtry = c("BRM", "3"))
+bestRFEAT(training = training, # training set
+          test = test, # test set
+          x = 6:18, # inputs
+          y = 3:5, # outputs
+          numStop = c(3, 5, 10), # set of possible numStop
+          m = c(30, 40, 50), # set of possible m
+          s_mtry = c("BRM", 3)) # set of possible s_mtry 
 
 ## ----eff_scores, eval = FALSE-------------------------------------------------
 #  efficiencyRFEAT(data, x, y,
 #                  object,
-#                  r = 2,
+#                  digits = 2,
 #                  FDH = TRUE)
 
 ## ----scores_RF----------------------------------------------------------------
@@ -462,7 +485,7 @@ predictions_RFEAT <- predictRFEAT(object = RFEAT_model,
                                   newdata = PISAindex,
                                   x = input)
 
-## ----EAT_vs_RFEAT_vs_FDH, collapse = FALSE------------------------------------
+## ----EAT_vs_RFEAT_vs_FDH, collapse = FALSE, echo = FALSE----------------------
 predictions <- cbind(PISAindex[, 3], PISAindex[, 4], PISAindex[, 5], 
                      predictions_EAT[, 6], predictions_EAT[, 7], predictions_EAT[, 8],
                      predictions_RFEAT[, 6], predictions_RFEAT[, 7], predictions_RFEAT[, 8]) %>%

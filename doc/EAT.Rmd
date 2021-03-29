@@ -28,11 +28,11 @@ knitr::opts_chunk$set(
 )
 ```
 
-## Brief introduction to production theory field
+## A brief introduction to production theory field
 
-This vignette is intended to known the main functions of the `eat` package. [Efficiency Analysis Trees](https://www.sciencedirect.com/science/article/pii/S0957417420306072) is an algorithm that estimates a production frontier in a data-driven environment by adapting regression trees. In this way, techniques from the field of **machine learning** are incorporated into solving problems in the field of **production theory**. From the latter, the following terminology is introduced.
+This vignette is intended to know the main functions of the `eat` package. [Efficiency Analysis Trees](https://www.sciencedirect.com/science/article/pii/S0957417420306072) is an algorithm that estimates a production frontier in a data-driven environment by adapting regression trees. In this way, techniques from the field of **machine learning** are incorporated into solving problems in the field of **production theory**. From the latter, the following terminology is introduced.
 
-Let us consider $n$ Decision Making Units (DMUs) to be evaluated. $DMU_i$ consumes $\textbf{x}_i = (x_{1i}, ...,x_{mi}) \in R^{m}_{+}$ amount of inputs for the production of $\textbf{y}_i = (y_{1i}, ...,y_{si}) \in R^{s}_{+}$ amount of outputs. The relative efficiency of each DMU in the sample is assessed with reference to the so-called production prossibility set or technology, which is the set of technically feasible combinations of $(\textbf{x, y})$. It is defined in general terms as:
+Let us consider $n$ Decision Making Units (DMUs) to be evaluated. $DMU_i$ consumes $\textbf{x}_i = (x_{1i}, ...,x_{mi}) \in R^{m}_{+}$ amount of inputs for the production of $\textbf{y}_i = (y_{1i}, ...,y_{si}) \in R^{s}_{+}$ amount of outputs. The relative efficiency of each DMU in the sample is assessed with reference to the so-called production possibility set or technology, which is the set of technically feasible combinations of $(\textbf{x, y})$. It is defined in general terms as:
 
 \begin{equation}
     \Psi = \{(\textbf{x, y}) \in R^{m+s}_{+}: \textbf{x} \text{ can produce } \textbf{y}\}
@@ -42,16 +42,16 @@ Monotonicity (free disposability) of inputs and outputs is assumed, meaning that
 
 ## Summary of eat functions
 
-In this section, an **EAT** model, a **RFEAT** model, a **FDH** model and a **DEA** model refer to a modeling carried out using Efficiency Analysis Trees technique, Random Forest + Efficiency Analysis Trees technique, Free Disposal Hull method and Data Envelopment Analysis method respectively. Additionally, a **CEAT** model refers to a convex **EAT** model. The functions developed in the `eat` library are always oriented to one of the four previous models (EAT, RFEAT, FDH or DEA) and can be divided into seven categories depending on its purpose:
+In this section, an **EAT** model, a **RFEAT** model, a **FDH** model and a **DEA** model refer to a modeling carried out using Efficiency Analysis Trees technique, Random Forest + Efficiency Analysis Trees technique, Free Disposal Hull method and Data Envelopment Analysis method, respectively. Additionally, a **CEAT** model refers to a convex **EAT** model. The functions developed in the `eat` library are always oriented to one of the four previous models (EAT, RFEAT, FDH or DEA) and can be divided into seven categories depending on its purpose:
   
 ```{r table, echo = FALSE}
 library(dplyr)
 
-functions <- data.frame("Purpose" = c(rep("Modeling", 2),
+functions <- data.frame("Purpose" = c(rep("Model", 2),
                                       rep("Summarise", 5),
-                                      rep("Tuning", 2), 
+                                      rep("Tune", 2), 
                                       rep("Graph", 3),
-                                      rep("Calculating efficiency scores", 3), 
+                                      rep("Calculate efficiency scores", 3), 
                                       rep("Graph efficiency scores", 2),
                                       rep("Predict", 2), 
                                       rep("Rank", 2)), 
@@ -252,7 +252,7 @@ size(single_model)
 frontier.levels(single_model)
 ```
 
-`descrEAT()` returns a list with measures of centralization and dispersion, as well as the root mean square error (RMSE) for each combination of node and variable with the following structure:
+`descrEAT()` returns a list with measures of centralization and dispersion, as well as the root mean square error (RMSE) for each node. In multioutput scenarios, the measurenments are shown for each output.  In case of a single output, the result of the function is a data frame. The following information is obtained:
   
   * `Node`: node index.
   * `n(t)`: number of DMUs.
@@ -270,8 +270,7 @@ frontier.levels(single_model)
 ```{r perf.single.output, collapse = FALSE}
 descriptiveEAT <- descrEAT(single_model)
 
-# Descriptive for the nodes 1-3
-descriptiveEAT[1:3]
+descriptiveEAT
 ```
 
 Additionally, `EAT_object[["tree"]][[id_node]]` or `EAT_object$tree[[id_node]]` returns a `list` that allows to know in greater detail the characteristics of a given node. The elements that define a node are the following:
@@ -314,8 +313,10 @@ kableExtra::kable(types, align = rep("c", 5)) %>%
   kableExtra::kable_styling("striped", full_width = F)
 ```
 
-**Factor (not ordered)**
-  
+The Efficiency Analysis Trees methodology does not allow categorical variables. At this time, only ordinal factors can be entered. It is important to note that `order = True` must be included in the factor construction so as not to incur an error.
+
+* Factor (not ordered)
+
 ```{r continent}
 # Transform Continent to Factor
 PISAindex_factor_Continent <- PISAindex
@@ -328,7 +329,7 @@ error_model <- EAT(data = PISAindex_factor_Continent,
                    y = 3) # output
 ```
 
-**Factor ordered**
+* Factor ordered
   
 ```{r GDP_PPP_category, collapse = FALSE}
 # Cateogirze GDP_PPP into 4 groups: Low, Medium, High, Very High.  
@@ -364,8 +365,9 @@ frontier(object,
          observed.data = FALSE,
          observed.color = "black",
          pch = 19,
+         size = 1,
          rwn = FALSE,
-         size = 1.5)
+         max.overlaps = 10)
 ```
 
 To continue, the frontier of the previous model is displayed. It can be seen how the frontier obtained by the `EAT` function generalizes the results of the frontier obtained through FDH, thus avoiding overfitting. The boundary estimated through Efficiency Analysis Trees generates 3 steps corresponding to the 3 leaf nodes (nodes 3, 4 and 5) obtained with the `EAT` function. For each of these steps, a frontier level in terms of the output is given with respect to the amount of input used (in this case level of `PFC`). In addition, we can appreciate 6 DMUs in the frontier: ALB (Albania), MDA (Moldova), SRB (Serbia), RUS (Russia), HUN (Hungary) and SGP (Singapur). Note that the first vertical plane of the frontier does not appear, but if it did, ALB would be on it. These DMUs are efficient and the rest of the DMUs below its specific step should increase the amount of output obtained or reduce the amount of input utilized until reaching the boundary to be efficient. 
@@ -412,17 +414,17 @@ plot(frontier_md)
 ```{r multioutput.scenario, collapse = FALSE}
 multioutput_model <- EAT(data = PISAindex, 
                          x = 6:18, # input 
-                         y = 3:5, # output
+                         y = 3:5 # output
                          ) 
 ```
 
 ### rankingEAT()
 
-The second example presents a multiple output scenario where 13 inputs are used to model the 3 available outputs. In these situations, a selection of the most contributing variables may be recommended in order to reduce overfitting, improve precision and reduce future training times. `rankingEAT()` allows a selection of variables by calculating a score of importance through Efficiency Analysis Trees technique. The user can specify the number of decimal units (`r`), include a barplot with the scores of importance (`barplot`) and display a horizontal line in the graph to facilitate the cut-off point between important and not relevant variables (`threshold`).
+The second example presents a multiple output scenario where 13 inputs are used to model the 3 available outputs. In these situations, a selection of the most contributing variables may be recommended in order to reduce overfitting, improve precision and reduce future training times. `rankingEAT()` allows a selection of variables by calculating a score of importance through Efficiency Analysis Trees technique. The user can specify the number of decimal units (`digits`), include a barplot with the scores of importance (`barplot`) and display a horizontal line in the graph to facilitate the cut-off point between important and not relevant variables (`threshold`).
 
 ```{r ranking, eval = FALSE}
 rankingEAT(object,
-           r = 2,
+           digits = 2,
            barplot = TRUE,
            threshold = 70)
 ```
@@ -431,7 +433,7 @@ The importance score represents how influential each variable is in the model. I
 
 ```{r multioutput.importance, fig.width = 7.2, fig.height = 6}
 rankingEAT(object = multioutput_model,
-           r = 2,
+           digits = 2,
            barplot = TRUE,
            threshold = 70)
 ```
@@ -528,21 +530,21 @@ In this section, the `PISAindex` database is divided into a training subset with
 
 ```{r training_test}
 n <- nrow(PISAindex) # Observations in the dataset
-t_index <- sample(1:n, n * 0.7) # Training indexes
-training <- PISAindex[t_index, ] # Training set
-test <- PISAindex[- t_index, ] # Test set
+selected <- sample(1:n, n * 0.7) # Training indexes
+training <- PISAindex[selected, ] # Training set
+test <- PISAindex[- selected, ] # Test set
 ```
 
 ### bestEAT()
 
-The `bestEAT` function requires a training set (`training`) on which to model an Efficiency Analysis Trees model and a test set (`test`) on which to calculate the error. The number of trees built is given by the number of different combinations that can be given by the `numStop`, `fold`, `max.depth` and `max.leaves` arguments. Note that it is not possible to enter `NULL` and a certain value in `max.depth` or `max.leaves` arguments at the same time. `bestEAT()` returns a data frame with the following columns:
+The `bestEAT` function requires a training set (`training`) on which to model an Efficiency Analysis Trees model (with cross-validation) and a test set (`test`) on which to calculate the error. The number of trees built is given by the number of different combinations that can be given by the `numStop`, `fold`, `max.depth` and `max.leaves` arguments. Note that it is not possible to enter `NULL` and a certain value in `max.depth` or `max.leaves` arguments at the same time. `bestEAT()` returns a data frame with the following columns:
   
   * `numStop` : numStop hyperparameter value.
   * `fold` : fold hyperparameter value.
   * `max.depth` : max.depth hyperparameter value if it does not set to `NULL`.
   * `max.leaves` : max.leaves hyperparameter value if it does not set to `NULL`.
   * `RMSE`: root mean square error calculated on the test sample with a tree built with the training sample and the set of hyperparameters.
-  * `leaf`: number of leaf nodes at the tree.
+  * `leaves`: number of leaf nodes at the tree.
 
 ```{r bestEAT, eval = FALSE}
 bestEAT(training, test,
@@ -553,6 +555,8 @@ bestEAT(training, test,
         max.leaves = NULL,
         na.rm = TRUE)
 ```
+
+For example, if the arguments `numStop = {3, 5, 7}` and `fold = {5, 7}` are entered, 5 models of Efficiency Analysis Trees are constructed with {`numStop = 3`, `fold = 5`}, {`numStop = 3`, `fold = 7`}, {`numStop = 5`, `fold = 5`}, {`numStop = 5`, `fold = 7`}, {`numStop` = 7, `fold = 5`} and {`numStop = 7`, `fold = 7`}.
 
 Tuning for: 
   
@@ -614,16 +618,22 @@ The efficiency scores are numerical values that indicate the degree of efficienc
 
 If `FDH = TRUE`, scores are also calculated through a FDH model. Finally, a brief summary of the distribution of the scores calculated for each model is also included.
 
+For this section, the previously created `single_model` is used (we still redefine it again).
+
+```{r single.output2, collapse = FALSE}
+single_model <- EAT(data = PISAindex, 
+                    x = 15, # input 
+                    y = 3) # output
+```
+
 ```{r efficiencyEAT, eval = FALSE}
 efficiencyEAT(data, x, y, 
               object,
               score_model,
-              r = 3,
+              digits = 3,
               FDH = TRUE,
               na.rm = TRUE)
 ```
-
-For this section, the `single_model` previously created is used.
 
 ```{r scoresEAT, collapse = FALSE}
 scores_EAT <- efficiencyEAT(data = PISAindex,
@@ -631,7 +641,7 @@ scores_EAT <- efficiencyEAT(data = PISAindex,
                             y = 3,
                             object = single_model, 
                             scores_model = "BCC.OUT",
-                            r = 3,
+                            digits = 3,
                             FDH = TRUE)
 ```
 
@@ -641,7 +651,7 @@ scores_EAT2 <- efficiencyEAT(data = PISAindex,
                              y = 3,
                              object = single_model, 
                              scores_model = "BCC.INP",
-                             r = 3,
+                             digits = 3,
                              FDH = TRUE)
 ```
 
@@ -653,7 +663,7 @@ scores_EAT2 <- efficiencyEAT(data = PISAindex,
 efficiencyCEAT(data, x, y, 
                object,
                score_model,
-               r = 3,
+               digits = 3,
                DEA = TRUE,
                na.rm = TRUE)
 ```
@@ -664,7 +674,7 @@ scores_CEAT <- efficiencyCEAT(data = PISAindex,
                               y = 3,
                               object = single_model, 
                               scores_model = "BCC.OUT",
-                              r = 3,
+                              digits = 3,
                               DEA = TRUE)
 ```
 
@@ -701,6 +711,11 @@ Graphically, for a single input and output scenario it is observed that if the B
   * If a DMU is located in a corner of the frontier, it is efficient under both orientations.
 
 ```{r frontier_comparar, fig.width = 7.2, fig.height = 6, fig.align = 'center'}
+frontier <- frontier(object = single_model,
+                     FDH = TRUE, 
+                     observed.data = TRUE,
+                     rwn = TRUE)
+
 plot(frontier)
 ```
 
@@ -714,6 +729,8 @@ efficiencyDensity(df_scores,
 
 ```
 
+In our example:
+
 ```{r density_single, collapse = FALSE, fig.width = 7.2, fig.height = 6, fig.align = 'center'}
 efficiencyDensity(df_scores = scores_EAT[, 3:4],
                   model = c("EAT", "FDH"))
@@ -723,7 +740,7 @@ efficiencyDensity(df_scores = scores_CEAT[, 3:4],
 
 ```
 
-* The curse of dimensionality
+**The curse of dimensionality**
 
 When the ratio of the sample size and the number of variables (inputs and outputs) is low, the standard methods of efficiency analysis (specially FDH) tend to evaluate a large number of DMUs as technically efficient. This problem is known as **curse of dimensionality**. To show it, the efficiency scores of the `multioutput_model` (section 2) with 16 variables and 72 DMUs are calculated:
   
@@ -733,7 +750,7 @@ cursed_scores <- efficiencyEAT(data = PISAindex,
                                y = 3:5,
                                object = multioutput_model,
                                scores_model = "BCC.OUT",
-                               r = 3,
+                               digits = 3,
                                FDH = TRUE)
 ```
 
@@ -791,12 +808,24 @@ plotRFEAT(forest)
 As in `rankingEAT()`, the `rankingRFEAT` function allows to calculate an importance score for variables using a `RFEAT` object.
 
 ```{r rankingRFEAT, eval = FALSE}
-rankingRFEAT(object, r = 2,
+rankingRFEAT(object, digits = 2,
              barplot = TRUE)
 ```
 
-```{r rankingRFEAT_forest, fig.width = 7.2, fig.height = 6}
-rankingRFEAT(object = forest, r = 2,
+For example:
+
+```{r RFmodel2}
+forestReduced <- RFEAT(data = PISAindex, 
+                       x = c(6, 7, 8, 12, 17), 
+                       y = 3,
+                       numStop = 5, 
+                       m = 10,
+                       s_mtry = "BRM",
+                       na.rm = TRUE)
+``` 
+
+```{r rankingRFEAT_forest1, fig.width = 7.2, fig.height = 6}
+rankingRFEAT(object = forestReduced, digits = 2,
              barplot = TRUE)
 ```
 
@@ -804,9 +833,16 @@ rankingRFEAT(object = forest, r = 2,
 
 * A negative imporance score means that removing the input from the model improves the performance.
 
+Note: this example is computationally exhaustive and may take some time to run
+
+```{r rankingRFEAT_forest2, fig.width = 7.2, fig.height = 6}
+rankingRFEAT(object = forest, digits = 2,
+             barplot = TRUE)
+```
+
 ## bestRFEAT()
 
-As in `bestEAT()`, the `bestRFEAT` function is applied to find the optimal hyperparameters that minimize the root mean square error (RMSE) calculated on the test sample. In this case, the available hyperparameters are `numStop`, `m` and `s_mtry`. Note that `s_mtry` is a character vector even if integer values are introduced.
+As in `bestEAT()`, the `bestRFEAT` function is applied to find the optimal hyperparameters that minimize the root mean square error (RMSE) calculated on the test sample. In this case, the available hyperparameters are `numStop`, `m` and `s_mtry`. 
 
 ```{r bestRFEAT, eval = FALSE}
 bestRFEAT(training, test,
@@ -817,17 +853,19 @@ bestRFEAT(training, test,
           na.rm = TRUE)
 ```
 
+In our example:
+
 ```{r tuning.bestRFEAT, collapse = FALSE}
-bestRFEAT(training = training, 
-          test = test,
-          x = 6:18,
-          y = 3:5,
-          numStop = c(3, 5, 10),
-          m = c(30, 40, 50),
-          s_mtry = c("BRM", "3"))
+bestRFEAT(training = training, # training set
+          test = test, # test set
+          x = 6:18, # inputs
+          y = 3:5, # outputs
+          numStop = c(3, 5, 10), # set of possible numStop
+          m = c(30, 40, 50), # set of possible m
+          s_mtry = c("BRM", 3)) # set of possible s_mtry 
 ```
 
-The best Random Forest + Efficiency Analysis Trees model is given by the hyperparameters `{numStop = 3, m = 30, s_mtry = 3}` with `RMSE = 46.57`.
+The best Random Forest + Efficiency Analysis Trees model is given by the hyperparameters `{numStop = 3, m = 30, s_mtry = 'BRM'}` with `RMSE = 41.37`.
 
 ## efficiencyRFEAT()
 
@@ -836,9 +874,11 @@ As in `efficiencyEAT()`, the `efficiencyRFEAT` function returns the efficiency s
 ```{r eff_scores, eval = FALSE}
 efficiencyRFEAT(data, x, y,
                 object,
-                r = 2,
+                digits = 2,
                 FDH = TRUE)
 ```
+
+In our example:
 
 ```{r scores_RF}
 scoresRF <- efficiencyRFEAT(data = PISAindex,
@@ -866,6 +906,8 @@ predictEAT(object, newdata, x)
 predictRFEAT(object, newdata, x)
 ```
 
+Finally, an example is shown that aims to show the different predictions made by each of the methods:
+
 ```{r models, collapse = FALSE}
 input <- c(6, 7, 8, 12, 17)
 output <- 3:5
@@ -889,7 +931,7 @@ predictions_RFEAT <- predictRFEAT(object = RFEAT_model,
                                   x = input)
 ```
 
-```{r EAT_vs_RFEAT_vs_FDH, collapse = FALSE}
+```{r EAT_vs_RFEAT_vs_FDH, collapse = FALSE, echo = FALSE}
 predictions <- cbind(PISAindex[, 3], PISAindex[, 4], PISAindex[, 5], 
                      predictions_EAT[, 6], predictions_EAT[, 7], predictions_EAT[, 8],
                      predictions_RFEAT[, 6], predictions_RFEAT[, 7], predictions_RFEAT[, 8]) %>%

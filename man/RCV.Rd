@@ -13,14 +13,14 @@ RCV(N, Lv, y, alphaIprim, fold, TAiv)
 
 \item{y}{Column output indexes in data.}
 
-\item{alphaIprim}{Alpha obtained as the square root of the product of two consecutives alpha values in tree_alpha list. It is used to find the best pruing tree.}
+\item{alphaIprim}{Alpha obtained as the square root of the product of two consecutive alpha values in tree_alpha list. It is used to find the best pruning tree.}
 
-\item{fold}{Parts in which is divided the original data set to do Cross-Validation.}
+\item{fold}{Parts in which the original data is divided into to perform Cross-Validation.}
 
-\item{TAiv}{List with each possible pruning for the deep tree generated with train set and its alpha values associated.}
+\item{TAiv}{List with each possible pruning for the deep tree generated with the train set and its associated alpha values.}
 }
 \value{
-Set of best prunings and the associated error calculated with test sets.
+Set of best pruning and the associated error calculated with test sets.
 }
 \description{
 RCV

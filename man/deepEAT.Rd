@@ -13,15 +13,15 @@ deepEAT(data, x, y, numStop = 5, max.depth = NULL, max.leaves = NULL)
 
 \item{y}{Vector. Column output indexes in data.}
 
-\item{numStop}{Integer. Minimun number of observations in a node for a split to be attempted.}
+\item{numStop}{Integer. Minimum number of observations in a node for a split to be attempted.}
 
 \item{max.depth}{Integer. Depth of the tree.}
 
 \item{max.leaves}{Integer. Maximum number of leaf nodes.}
 }
 \value{
-List containing each possible pruning for the deep tree and its alpha value associated.
+List containing each possible pruning for the deep tree and its associated alpha value.
 }
 \description{
-This function creates a deep tree and a set of possible prunings by weakest-link pruning procedure.
+This function creates a deep tree and a set of possible prunings by pruning through the weakest-link pruning procedure.
 }

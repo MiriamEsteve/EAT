@@ -13,16 +13,16 @@ split(data, tree, leaves, t, x, y, numStop)
 
 \item{leaves}{List with leaf nodes or pending expansion nodes.}
 
-\item{t}{Node which is being splitted.}
+\item{t}{Node which is being split.}
 
 \item{x}{Column input indexes in data.}
 
 \item{y}{Column output indexes in data.}
 
-\item{numStop}{Minimun number of observations on a node to be splitted.}
+\item{numStop}{Minimum number of observations in a node to be split.}
 }
 \value{
-Leaves and tree lists updated with the new children nodes.
+Leaves and tree lists updated with the new child nodes.
 }
 \description{
 This function gets the variable and split value to be used in estimEAT, selects the best split and updates VarInfo, node indexes and leaves list.

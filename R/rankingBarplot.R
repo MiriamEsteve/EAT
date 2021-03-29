@@ -8,9 +8,9 @@
 #' @importFrom ggplot2 ggplot geom_col xlab aes geom_hline
 #' @importFrom stats reorder
 #'
-#' @return Barplot representing each variable in the x-axis and its importance in the y-axis.
+#' @return Barplot representing each variable on the x-axis and its importance on the y-axis.
 barplot_importance <- function(m, threshold) {
-  barplot_importance <- ggplot(m, aes(x = reorder(row.names(m), -Importance), 
+  barplot_importance <- ggplot(m, aes(x = reorder(row.names(m), - Importance), 
                                       y = Importance)) +
     geom_col() +
     xlab("Variable")

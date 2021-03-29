@@ -2,18 +2,18 @@
 % Please edit documentation in R/treesForRCV.R
 \name{generateLv}
 \alias{generateLv}
-\title{Train and test sets generation.}
+\title{Train and Test Sets Generation}
 \usage{
 generateLv(data, fold)
 }
 \arguments{
-\item{data}{Data to be splited in train and test.}
+\item{data}{Data to be split into train and test subsets.}
 
-\item{fold}{Parts in which is divided the original set to do Cross-Validation.}
+\item{fold}{Parts in which the original set is divided, to perform Cross-Validation.}
 }
 \value{
 List structure with the train and the test set.
 }
 \description{
-This function split the original data in two new data sets: a train set and a test set.
+This function splits the original data in two new data sets: a train set and a test set.
 }

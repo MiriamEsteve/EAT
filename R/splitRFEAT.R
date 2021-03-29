@@ -1,6 +1,6 @@
 #' @title Bagging data
 #'
-#' @description Bootstrap agggregating for data.
+#' @description Bootstrap aggregating for data.
 #'
 #' @param data Dataframe containing the variables in the model.
 #' @param x Column input indexes in data.
@@ -8,7 +8,7 @@
 #' 
 #' @importFrom dplyr %>% row_number
 #' 
-#' @return List containing training dataframe and list with binary respose as 0 if the observations has been selected for training and 0 in other case.
+#' @return List containing training dataframe and list with binary respose as 0 if the observations have been selected for training and 0 in any other case.
 bagging <- function(data, x, y){
   df_train <- data.frame(matrix(ncol = length(c(x, y)), nrow = 0))
   colnames(df_train) <- names(data[, c(x, y)])
@@ -36,11 +36,11 @@ bagging <- function(data, x, y){
 #' @description This function selects the number of inputs for a split in Random Forest.
 #'
 #' @param s_mtry  Select number of inputs. It could be: \code{"BRM"}, \code{"DEA1"}, \code{"DEA2"}, \code{"DEA3"} or \code{"DEA4"} or any integer.
-#' @param t Node which is being splitted.
+#' @param t Node which is being split.
 #' @param nX Number of inputs in data.
-#' @param nY Number of outputa in data.
+#' @param nY Number of outputs in data.
 #' 
-#' @return Number of inputs selected according with the rule specified.
+#' @return Number of inputs selected according to the specified rule.
 select_mtry <- function(s_mtry, t, nX, nY){
   nt = length(t["index"])
   mtry = 0
@@ -74,20 +74,20 @@ select_mtry <- function(s_mtry, t, nX, nY){
 
 #' @title Split node in Random Forest EAT
 #'
-#' @description This function gets the variable and split value to be used in estimEAT, selects the best split, node indexes and leaves list.
+#' @description This function gets the variable and split value to be used in estimEAT, selects the best split, node indexes and leaf list.
 #'
 #' @param data Data to be used.
 #' @param tree List structure with the tree nodes.
 #' @param leaves List with leaf nodes or pending expansion nodes.
-#' @param t Node which is being splitted.
+#' @param t Node which is being split.
 #' @param x Column input indexes in data.
 #' @param y Column output indexes in data.
-#' @param numStop Minimun number of observations on a node to be splitted.
+#' @param numStop Minimum number of observations on a node to be split.
 #' @param arrayK Column input indexes in data selected by s_mtry.
 #'
 #' @importFrom dplyr %>%
 #'
-#' @return Leaves and tree lists updated with the new children nodes.
+#' @return Leaves and tree lists updated with the new child nodes.
 split_forest <- function(data, tree, leaves, t, x, y, numStop, arrayK){
   N <- nrow(data)
   nX <- length(x)

@@ -9,7 +9,7 @@ X2Y2.sim(N, border, noise = NULL)
 \arguments{
 \item{N}{Sample size.}
 
-\item{border}{Percentage of DMU's in the frontier.}
+\item{border}{Percentage of DMUs in the frontier.}
 
 \item{noise}{Random noise.}
 }

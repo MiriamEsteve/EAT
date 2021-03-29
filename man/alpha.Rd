@@ -10,8 +10,8 @@ alpha(tree)
 \item{tree}{A list containing EAT nodes.}
 }
 \value{
-Numeric value corresponding to the minimun alpha associated with a suitable node to be pruned.
+Numeric value corresponding to the minimum alpha associated with a suitable node to be pruned.
 }
 \description{
-This function gets the minimun alpha for each subtree evaluated during the pruning procedure of Efficiency Analysis Trees.
+This function gets the minimum alpha for each subtree evaluated during the pruning procedure of Efficiency Analysis Trees.
 }

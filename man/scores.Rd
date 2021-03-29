@@ -15,13 +15,13 @@ scores(N, Lv_notLv, x, y, fold, numStop, Tk, tree_alpha_list)
 
 \item{y}{Column output indexes in data.}
 
-\item{fold}{Parts in which is divided the original data set to do Cross-Validation.}
+\item{fold}{Parts in which the original data set is divided to perform Cross-Validation.}
 
-\item{numStop}{Minimun number of observations on a node to be splitted.}
+\item{numStop}{Minimum number of observations on a node to be split.}
 
 \item{Tk}{Best pruned tree.}
 
-\item{tree_alpha_list}{List with all the possible pruning and its alpha associated.}
+\item{tree_alpha_list}{List with all the possible pruning and its associated alpha.}
 }
 \value{
 List with the best pruning for each fold, the pruning with a lower score and tree_alpha_list with scores updated.

@@ -9,14 +9,14 @@ select_mtry(s_mtry, t, nX, nY)
 \arguments{
 \item{s_mtry}{Select number of inputs. It could be: \code{"BRM"}, \code{"DEA1"}, \code{"DEA2"}, \code{"DEA3"} or \code{"DEA4"} or any integer.}
 
-\item{t}{Node which is being splitted.}
+\item{t}{Node which is being split.}
 
 \item{nX}{Number of inputs in data.}
 
-\item{nY}{Number of outputa in data.}
+\item{nY}{Number of outputs in data.}
 }
 \value{
-Number of inputs selected according with the rule specified.
+Number of inputs selected according to the specified rule.
 }
 \description{
 This function selects the number of inputs for a split in Random Forest.

@@ -9,13 +9,13 @@ selectTk(Tk, tree_alpha_list, SE)
 \arguments{
 \item{Tk}{Best pruned tree score.}
 
-\item{tree_alpha_list}{List with all the possible prunings and its alpha and scores associated.}
+\item{tree_alpha_list}{List with all the possible pruning and its associated alpha and scores.}
 
-\item{SE}{Value to get a range where find new prunings.}
+\item{SE}{Value to get a range where new prunings is found.}
 }
 \value{
 The same best tree or a new suitable one.
 }
 \description{
-This function tries to find a new pruned tree with a lower length and a score in the range generated for SE.
+This function tries to find a new pruned tree with a shorter length and a score in the range generated for SE.
 }

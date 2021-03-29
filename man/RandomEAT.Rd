@@ -13,7 +13,7 @@ RandomEAT(data, x, y, numStop, s_mtry)
 
 \item{y}{Vector. Column output indexes in data.}
 
-\item{numStop}{Integer. Minimun number of observations in a node for a split to be attempted.}
+\item{numStop}{Integer. Minimum number of observations in a node for a split to be attempted.}
 
 \item{s_mtry}{Number of variables randomly sampled as candidates at each split. The available options are: \code{"BRM"}, \code{"DEA1"}, \code{"DEA2"}, \code{"DEA3"}, \code{"DEA4"} or any integer.}
 }
@@ -21,5 +21,5 @@ RandomEAT(data, x, y, numStop, s_mtry)
 List of m trees in forest and the error that will be used in the ranking of the importance of the variables.
 }
 \description{
-This function builds a individual tree for Random Forest
+This function builds an individual tree for Random Forest
 }

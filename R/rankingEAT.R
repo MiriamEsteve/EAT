@@ -1,6 +1,6 @@
-#' @title Importance variable of Breiman
+#' @title Breiman's Variable Importance
 #'
-#' @description This function recalculates all the possible splits, with the exception of the actual used, and for each node and variable gets the best split based on their degree of importance.
+#' @description This function recalculates all the possible splits, with the exception of the one being used, and for each node and variable gets the best split based on their degree of importance.
 #'
 #' @param data Data from EAT object.
 #' @param tree Tree from EAT object.
@@ -10,7 +10,7 @@
 #'
 #' @importFrom dplyr %>% filter
 #'
-#' @return A dataframe with the best split for each node and variable and its importance.
+#' @return A dataframe with the best split for each node and its variable importance.
 imp_var_EAT <- function(data, tree, x, y, digits) {
   index <- tree[[1]][["index"]]
 

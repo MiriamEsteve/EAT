@@ -6,8 +6,8 @@
 #' @param x Vector. Column input indexes in data.
 #' @param y Vector. Column output indexes in data.
 #' @param register_names String vector. Data rownames.
-#' @param numStop Integer. Minimun number of observations in a node for a split to be attempted.
-#' @param fold Integer. Number of folds in which is divided the dataset to apply cross-validation during the pruning.
+#' @param numStop Integer. Minimum number of observations in a node for a split to be attempted.
+#' @param fold Integer. Set of number of folds in which the dataset to apply cross-validation during the pruning is divided.
 #' @param max.depth Integer. Maximum number of leaf nodes.
 #' @param max.leaves Integer. Depth of the tree.
 #' @param na.rm Logical. If True, NA rows are omitted. If False, an error occurs in case of NA rows.
@@ -100,7 +100,7 @@ EAT_object <- function(data, x, y, register_names, numStop, fold, max.depth, max
 #' @param y Vector. Column output indexes in data.
 #' @param register_names String vector. Data rownames.
 #' @param numStop Integer. Minimun number of observations in a node for a split to be attempted.
-#' @param m Integer. Number of trees to be build.
+#' @param m Integer. Number of trees to be built.
 #' @param s_mtry Select number of inputs in each split.
 #' \itemize{
 #' \item{\code{"Breiman"}}: \code{in / 3}

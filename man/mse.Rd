@@ -14,7 +14,7 @@ mse(data, t, y)
 \item{y}{Column output indexes in data.}
 }
 \value{
-Mean Square Error on a node.
+Mean Square Error at a node.
 }
 \description{
 This function calculates the Mean Square Error between the predicted value and the observations in a given node.

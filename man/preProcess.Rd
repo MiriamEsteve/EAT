@@ -25,8 +25,8 @@ preProcess(
 \item{na.rm}{Logical. If \code{TRUE}, \code{NA} rows are omitted.}
 }
 \value{
-List containing rownames and data processed in the [X, Y] format with only allowed classes.
+List containing rownames and data processed in the [X, Y] format with only categories allowed.
 }
 \description{
-This function displays error messages in relation with data such as presence of NA values or not allowed classes of data or argument introduced incorrectly. Also, it prepares the data in the required format and gets the names of the rows.
+This function displays error messages in relation with data such as presence of NA values, types of data not allowed or arguments entered incorrectly. Also, it prepares the data in the required format.
 }

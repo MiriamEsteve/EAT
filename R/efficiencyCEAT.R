@@ -143,9 +143,9 @@ CEAT_DDF <- function(j, scores, x_k, y_k, atreeTk, ytreeTk, nX, nY, N_leaves) {
   return(scores)
 }
 
-#' @title Rusell Model with input orientation for a convex Efficiency Analysis Tree model
+#' @title Russell Model with input orientation for a convex Efficiency Analysis Tree model
 #'
-#' @description Rusell Model with input orientation for a convex Efficiency Analysis Tree model.
+#' @description Russell Model with input orientation for a convex Efficiency Analysis Tree model.
 #'
 #' @param j Integer. Number of DMUs.
 #' @param scores Matrix. Empty matrix for scores.
@@ -198,9 +198,9 @@ CEAT_RSL_in <- function(j, scores, x_k, y_k, atreeTk, ytreeTk, nX, nY, N_leaves)
   
 }
 
-#' @title Rusell Model with output orientation for a convex Efficiency Analysis Tree model
+#' @title Russell Model with output orientation for a convex Efficiency Analysis Tree model
 #'
-#' @description Rusell Model with output orientation for a convex Efficiency Analysis Tree model.
+#' @description Russell Model with output orientation for a convex Efficiency Analysis Tree model.
 #'
 #' @param j Integer. Number of DMUs.
 #' @param scores Matrix. Empty matrix for scores.
@@ -332,19 +332,19 @@ CEAT_WAM <- function(j, scores, x_k, y_k, atreeTk, ytreeTk, nX, nY, N_leaves, we
 
 #' @title Convex Efficiency Analysis Tree Efficiency Scores
 #'
-#' @description This function calculates the efficiency scores for each DMU by a convex Efficiency Analysis Trees model.
+#' @description This function calculates the efficiency scores for each DMU through a convex Efficiency Analysis Trees model.
 #' 
 #' @param data Dataframe containing the DMU for which the efficiency score is calculated.
 #' @param x Vector. Column input indexes in data.
 #' @param y Vector. Column output indexes in data.
 #' @param object An EAT object.
-#' @param scores_model Mathematic programming model to calculate scores. 
+#' @param scores_model Mathematical programming model to calculate scores. 
 #' \itemize{
 #' \item{\code{BCC.OUT}} BCC model. Output-oriented.
 #' \item{\code{BCC.INP}}  BCC model. Input-oriented.
 #' \item{\code{DDF}}     Directional Distance Function.
-#' \item{\code{RSL.OUT}} Rusell model. Output-oriented.
-#' \item{\code{RSL.INP}}  Rusell model. Input-oriented.
+#' \item{\code{RSL.OUT}} Russell model. Output-oriented.
+#' \item{\code{RSL.INP}}  Russell model. Input-oriented.
 #' \item{\code{WAM.MIP}} Weighted Additive Model. Measure of Inefficiency Proportions.
 #' \item{\code{WAM.RAM}} Weighted Additive Model. Range Adjusted Measure of Inefficiency.
 #' }
@@ -365,7 +365,7 @@ CEAT_WAM <- function(j, scores, x_k, y_k, atreeTk, ytreeTk, nX, nY, N_leaves, we
 #' efficiencyCEAT(data = simulated, x = c(1, 2), y = c(3, 4), object = EAT_model, 
 #'               scores_model = "BCC.OUT", digits = 2, DEA = TRUE, na.rm = TRUE)
 #'
-#' @return Dataframe with input variables and efficiency scores by a convex EAT model.
+#' @return Dataframe with input variables and efficiency scores through a convex EAT model.
 efficiencyCEAT <- function(data, x, y, object, 
                            scores_model, digits = 3, DEA = TRUE,
                            na.rm = TRUE) {

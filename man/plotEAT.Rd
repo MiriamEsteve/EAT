@@ -12,7 +12,7 @@ plotEAT(object)
 \value{
 Plot object with the following elements for each node:
 \itemize{
-\item{id}: node index .
+\item{id}: node index.
 \item{R}: error at the node.
 \item{n(t)}: number of observations at the node.
 \item{an input name}: splitting variable.

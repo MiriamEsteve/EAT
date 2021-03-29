@@ -2,7 +2,7 @@
 % Please edit documentation in R/rankingRFEAT.R
 \name{imp_var_RFEAT}
 \alias{imp_var_RFEAT}
-\title{Importance variable through Random Forest + Efficiency Analysis Trees}
+\title{Variable Importance through Random Forest + Efficiency Analysis Trees}
 \usage{
 imp_var_RFEAT(object, digits = 2)
 }
@@ -15,5 +15,5 @@ imp_var_RFEAT(object, digits = 2)
 Vector of input importance scores
 }
 \description{
-Importance variable through Random Forest + Efficiency Analysis Trees.
+Variable Importance through Random Forest + Efficiency Analysis Trees.
 }

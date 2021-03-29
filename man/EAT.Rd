@@ -22,9 +22,9 @@ EAT(
 
 \item{y}{Vector. Column output indexes in data.}
 
-\item{numStop}{Integer. Minimun number of observations in a node for a split to be attempted.}
+\item{numStop}{Integer. Minimum number of observations in a node for a split to be attempted.}
 
-\item{fold}{Integer. Number of folds in which is divided the dataset to apply cross-validation during the pruning.}
+\item{fold}{Integer. Set of number of folds in which the dataset to apply cross-validation during the pruning is divided.}
 
 \item{max.depth}{Integer. Depth of the tree.}
 
@@ -58,7 +58,7 @@ An EAT object containing:
        \item{\code{Proportion}}: proportion of observations at the node.
        \item{the output predictions}.
        \item{\code{R}}: the error at the node.  
-       \item{\code{index}}: observations indexes at the node.}
+       \item{\code{index}}: observation indexes at the node.}
        }   
   \item{\code{model} \itemize{
        \item{\code{nodes}}: total number of nodes at the tree.  
@@ -72,7 +72,7 @@ An EAT object containing:
 This function estimates a stepped production frontier through regression trees.
 }
 \details{
-The EAT function generates a regression tree model based on CART \insertCite{breiman1984}{eat} under a new approach that guarantees the obtaining of a stepped production frontier that fulfills the property of free disposability. This frontier shares the aforementioned aspects with the FDH frontier \insertCite{deprins1984}{eat} but enhances some of its disadvantages such as the overfitting problem or the underestimation of technical inefficiency. More details in \insertCite{esteve2020;textual}{eat}.
+The EAT function generates a regression tree model based on CART \insertCite{breiman1984}{eat} under a new approach that guarantees obtaining a stepped production frontier that fulfills the property of free disposability. This frontier shares the aforementioned aspects with the FDH frontier \insertCite{deprins1984}{eat} but enhances some of its disadvantages such as the overfitting problem or the underestimation of technical inefficiency. More details in \insertCite{esteve2020;textual}{eat}.
 }
 \examples{
 # ====================== #

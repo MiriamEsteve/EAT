@@ -1,11 +1,11 @@
 #' @title Individual EAT for Random Forest
 #'
-#' @description This function builds a individual tree for Random Forest
+#' @description This function builds an individual tree for Random Forest
 #'
 #' @param data Dataframe containing the training set.
 #' @param x Vector. Column input indexes in data.
 #' @param y Vector. Column output indexes in data.
-#' @param numStop Integer. Minimun number of observations in a node for a split to be attempted.
+#' @param numStop Integer. Minimum number of observations in a node for a split to be attempted.
 #' @param s_mtry Number of variables randomly sampled as candidates at each split. The available options are: \code{"BRM"}, \code{"DEA1"}, \code{"DEA2"}, \code{"DEA3"}, \code{"DEA4"} or any integer.
 #' 
 #' @return List of m trees in forest and the error that will be used in the ranking of the importance of the variables.
@@ -69,13 +69,13 @@ RandomEAT <- function(data, x, y, numStop, s_mtry){
 
 #' @title Random Forest EAT
 #'
-#' @description This function build \code{m} individual Efficiency Analysis Trees in a forest structure.
+#' @description This function builds \code{m} individual Efficiency Analysis Trees in a forest structure.
 #' 
 #' @param data Dataframe or matrix containing the variables in the model.
 #' @param x Vector. Column input indexes in data.
 #' @param y Vector. Column output indexes in data.
-#' @param numStop Integer. Minimun number of observations in a node for a split to be attempted.
-#' @param m Integer. Number of trees to be build.
+#' @param numStop Integer. Minimum number of observations in a node for a split to be attempted.
+#' @param m Integer. Number of trees to be built.
 #' @param s_mtry Number of variables randomly sampled as candidates at each split. The available options are:
 #' \itemize{
 #' \item{\code{"BRM"}}: \code{in / 3}

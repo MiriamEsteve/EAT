@@ -2,7 +2,7 @@
 % Please edit documentation in R/efficiencyCEAT.R
 \name{CEAT_RSL_out}
 \alias{CEAT_RSL_out}
-\title{Rusell Model with output orientation for a convex Efficiency Analysis Tree model}
+\title{Russell Model with output orientation for a convex Efficiency Analysis Tree model}
 \usage{
 CEAT_RSL_out(j, scores, x_k, y_k, atreeTk, ytreeTk, nX, nY, N_leaves)
 }
@@ -29,5 +29,5 @@ CEAT_RSL_out(j, scores, x_k, y_k, atreeTk, ytreeTk, nX, nY, N_leaves)
 A numerical vector with scores.
 }
 \description{
-Rusell Model with output orientation for a convex Efficiency Analysis Tree model.
+Russell Model with output orientation for a convex Efficiency Analysis Tree model.
 }

@@ -6,8 +6,8 @@
 #' @param test Test dataframe or matrix containing the variables for model assessment.
 #' @param x Vector. Column input indexes in data.
 #' @param y Vector. Column output indexes in data.
-#' @param numStop Vector. Set of minimun number of observations in a node for a split to be attempted.
-#' @param fold Vector. Set of number of folds in which is divided the dataset to apply cross-validation during the pruning.
+#' @param numStop Vector. Set of minimum number of observations in a node for a split to be attempted.
+#' @param fold Vector. Set of number of folds in which the dataset to apply cross-validation during the pruning is divided.
 #' @param max.depth Integer. Depth of the tree.
 #' @param max.leaves Integer. Maximum number of leaf nodes.
 #' @param na.rm Logical. If \code{TRUE}, \code{NA} rows are omitted.
@@ -124,8 +124,8 @@ bestEAT <- function(training, test, x, y, numStop = 5, fold = 5, max.depth = NUL
 #' @param test Test dataframe or matrix containing the variables for model assessment.
 #' @param x Vector. Column input indexes in data.
 #' @param y Vector. Column output indexes in data.
-#' @param numStop Vector. Set of minimun number of observations in a node for a split to be attempted.
-#' @param m Vector. Set of number of trees to be build.
+#' @param numStop Vector. Set of minimum number of observations in a node for a split to be attempted.
+#' @param m Vector. Set of number of trees to be built.
 #' @param s_mtry Character vector. Set of options for selecting the number of inputs to be selected in each split.
 #' @param na.rm Logical. If \code{TRUE}, \code{NA} rows are omitted.
 #' 

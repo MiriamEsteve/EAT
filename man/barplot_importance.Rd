@@ -12,7 +12,7 @@ barplot_importance(m, threshold)
 \item{threshold}{Importance score value in which a line should be graphed.}
 }
 \value{
-Barplot representing each variable in the x-axis and its importance in the y-axis.
+Barplot representing each variable on the x-axis and its importance on the y-axis.
 }
 \description{
 This function generates a barplot with the importance of each predictor.

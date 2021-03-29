@@ -12,8 +12,8 @@ comparePareto(t1, t2)
 \item{t2}{A second node.}
 }
 \value{
--1 if t1 domines t2, 1 if t2 domines t1 and 0 if there are not Pareto-dominance relationships.
+-1 if t1 dominates t2, 1 if t2 dominates t1 and 0 if there are no Pareto-dominance relationships.
 }
 \description{
-This function denotes if a node domines another one or in other case, if it does not exist any Pareto-dominance relationship.
+This function denotes if a node dominates another one or if there is no Pareto-dominance relationship.
 }

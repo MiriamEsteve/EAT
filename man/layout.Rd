@@ -10,7 +10,7 @@ layout(py)
 \item{py}{a party object.}
 }
 \value{
-Dataframe with suitable modifications of the nodes layout.
+Dataframe with suitable modifications of the node layout.
 }
 \description{
 This function modifies the coordinates of the nodes in the plotEAT function to overcome overlapping.

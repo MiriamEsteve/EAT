@@ -5,11 +5,11 @@
 #' @param N Number of rows in data.
 #' @param Lv Test set.
 #' @param y Column output indexes in data.
-#' @param fold Parts in which is divided the original data set to do Cross-Validation.
+#' @param fold Parts in which the original data set is divided to perform Cross-Validation.
 #' @param Tk_score Best pruned tree score.
 #' @param BestTivs List of best pruned trees for each training set.
 #'
-#' @return Value to get a range where find new prunings.
+#' @return Value to get a range where new pruning is found.
 SERules <- function(N, Lv, y, fold, Tk_score, BestTivs) {
   s2 <- 0.0
   nY <- length(y)
@@ -35,11 +35,11 @@ SERules <- function(N, Lv, y, fold, Tk_score, BestTivs) {
 
 #' @title Select Tk
 #'
-#' @description This function tries to find a new pruned tree with a lower length and a score in the range generated for SE.
+#' @description This function tries to find a new pruned tree with a shorter length and a score in the range generated for SE.
 #'
 #' @param Tk Best pruned tree score.
-#' @param tree_alpha_list List with all the possible prunings and its alpha and scores associated.
-#' @param SE Value to get a range where find new prunings.
+#' @param tree_alpha_list List with all the possible pruning and its associated alpha and scores. 
+#' @param SE Value to get a range where new prunings is found.
 #'
 #' @return The same best tree or a new suitable one.
 selectTk <- function(Tk, tree_alpha_list, SE) {

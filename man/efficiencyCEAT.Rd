@@ -24,13 +24,13 @@ efficiencyCEAT(
 
 \item{object}{An EAT object.}
 
-\item{scores_model}{Mathematic programming model to calculate scores. 
+\item{scores_model}{Mathematical programming model to calculate scores. 
 \itemize{
 \item{\code{BCC.OUT}} BCC model. Output-oriented.
 \item{\code{BCC.INP}}  BCC model. Input-oriented.
 \item{\code{DDF}}     Directional Distance Function.
-\item{\code{RSL.OUT}} Rusell model. Output-oriented.
-\item{\code{RSL.INP}}  Rusell model. Input-oriented.
+\item{\code{RSL.OUT}} Russell model. Output-oriented.
+\item{\code{RSL.INP}}  Russell model. Input-oriented.
 \item{\code{WAM.MIP}} Weighted Additive Model. Measure of Inefficiency Proportions.
 \item{\code{WAM.RAM}} Weighted Additive Model. Range Adjusted Measure of Inefficiency.
 }}
@@ -42,10 +42,10 @@ efficiencyCEAT(
 \item{na.rm}{Logical. If \code{TRUE}, \code{NA} rows are omitted.}
 }
 \value{
-Dataframe with input variables and efficiency scores by a convex EAT model.
+Dataframe with input variables and efficiency scores through a convex EAT model.
 }
 \description{
-This function calculates the efficiency scores for each DMU by a convex Efficiency Analysis Trees model.
+This function calculates the efficiency scores for each DMU through a convex Efficiency Analysis Trees model.
 }
 \examples{
 

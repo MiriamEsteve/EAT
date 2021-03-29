@@ -10,7 +10,7 @@
 #' 
 #' @return Plot object with the following elements for each node:
 #' \itemize{
-#' \item{id}: node index .
+#' \item{id}: node index.
 #' \item{R}: error at the node.
 #' \item{n(t)}: number of observations at the node.
 #' \item{an input name}: splitting variable.
@@ -162,7 +162,7 @@ plotEAT <- function(object) {
 #'
 #' @importFrom ggparty ggparty
 #'
-#' @return Dataframe with suitable modifications of the nodes layout.
+#' @return Dataframe with suitable modifications of the node layout.
 layout <- function(py) {
 
   layout <- ggparty(py)$data[, 1:4]

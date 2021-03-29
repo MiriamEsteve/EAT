@@ -45,9 +45,9 @@ rankingRFEAT <- function(object, digits = 2, barplot = TRUE) {
   
 }
 
-#' @title Importance variable through Random Forest + Efficiency Analysis Trees
+#' @title Variable Importance through Random Forest + Efficiency Analysis Trees
 #'
-#' @description Importance variable through Random Forest + Efficiency Analysis Trees.
+#' @description Variable Importance through Random Forest + Efficiency Analysis Trees.
 #'
 #' @param object A RFEAT object
 #' @param digits Integer. Decimal units.

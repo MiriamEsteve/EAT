@@ -13,9 +13,9 @@ RFEAT(data, x, y, numStop = 5, m = 50, s_mtry = "BRM", na.rm = TRUE)
 
 \item{y}{Vector. Column output indexes in data.}
 
-\item{numStop}{Integer. Minimun number of observations in a node for a split to be attempted.}
+\item{numStop}{Integer. Minimum number of observations in a node for a split to be attempted.}
 
-\item{m}{Integer. Number of trees to be build.}
+\item{m}{Integer. Number of trees to be built.}
 
 \item{s_mtry}{Number of variables randomly sampled as candidates at each split. The available options are:
 \itemize{
@@ -52,7 +52,7 @@ A RFEAT object containing:
 }
 }
 \description{
-This function build \code{m} individual Efficiency Analysis Trees in a forest structure.
+This function builds \code{m} individual Efficiency Analysis Trees in a forest structure.
 }
 \examples{
 

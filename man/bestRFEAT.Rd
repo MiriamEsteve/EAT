@@ -24,9 +24,9 @@ bestRFEAT(
 
 \item{y}{Vector. Column output indexes in data.}
 
-\item{numStop}{Vector. Set of minimun number of observations in a node for a split to be attempted.}
+\item{numStop}{Vector. Set of minimum number of observations in a node for a split to be attempted.}
 
-\item{m}{Vector. Set of number of trees to be build.}
+\item{m}{Vector. Set of number of trees to be built.}
 
 \item{s_mtry}{Character vector. Set of options for selecting the number of inputs to be selected in each split.}
 

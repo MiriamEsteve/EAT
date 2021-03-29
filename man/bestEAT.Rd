@@ -25,9 +25,9 @@ bestEAT(
 
 \item{y}{Vector. Column output indexes in data.}
 
-\item{numStop}{Vector. Set of minimun number of observations in a node for a split to be attempted.}
+\item{numStop}{Vector. Set of minimum number of observations in a node for a split to be attempted.}
 
-\item{fold}{Vector. Set of number of folds in which is divided the dataset to apply cross-validation during the pruning.}
+\item{fold}{Vector. Set of number of folds in which the dataset to apply cross-validation during the pruning is divided.}
 
 \item{max.depth}{Integer. Depth of the tree.}
 

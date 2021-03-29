@@ -24,13 +24,13 @@ efficiencyEAT(
 
 \item{object}{An EAT object.}
 
-\item{scores_model}{Mathematic programming model to calculate scores. 
+\item{scores_model}{Mathematical programming model to calculate scores. 
 \itemize{
 \item{\code{BCC.OUT}} BCC model. Output-oriented.
 \item{\code{BCC.INP}}  BCC model. Input-oriented.
 \item{\code{DDF}}     Directional Distance Function.
-\item{\code{RSL.OUT}} Rusell model. Output-oriented.
-\item{\code{RSL.INP}}  Rusell model. Input-oriented.
+\item{\code{RSL.OUT}} Russell model. Output-oriented.
+\item{\code{RSL.INP}}  Russell model. Input-oriented.
 \item{\code{WAM.MIP}} Weighted Additive Model. Measure of Inefficiency Proportions.
 \item{\code{WAM.RAM}} Weighted Additive Model. Range Adjusted Measure of Inefficiency.
 }}

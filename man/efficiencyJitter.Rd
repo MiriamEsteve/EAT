@@ -11,13 +11,13 @@ efficiencyJitter(object, df_scores, scores_model, upb = NULL, lwb = NULL)
 
 \item{df_scores}{Dataframe with efficiency scores (from \code{efficiencyEAT} or \code{efficiencyCEAT}).}
 
-\item{scores_model}{Mathematic programming model to calculate scores. 
+\item{scores_model}{Mathematical programming model to calculate scores. 
 \itemize{
 \item{\code{BCC.OUT}} BCC model. Output-oriented.
 \item{\code{BCC.INP}}  BCC model. Input-oriented.
 \item{\code{DDF}}     Directional Distance Function.
-\item{\code{RSL.OUT}} Rusell model. Output-oriented.
-\item{\code{RSL.INP}}  Rusell model. Input-oriented.
+\item{\code{RSL.OUT}} Russell model. Output-oriented.
+\item{\code{RSL.INP}}  Russell model. Input-oriented.
 \item{\code{WAM.MIP}} Weighted Additive Model. Measure of Inefficiency Proportions.
 \item{\code{WAM.RAM}} Weighted Additive Model. Range Adjusted Measure of Inefficiency.
 }}
@@ -30,7 +30,7 @@ efficiencyJitter(object, df_scores, scores_model, upb = NULL, lwb = NULL)
 Jitter plot with DMUs and scores.
 }
 \description{
-This function returns a jitter plot from \code{ggplot2}. This graphic shows how DMUs are grouped into leaf nodes in a model built using the \code{EAT} function. Each leaf node groups DMUs with the same level of resources. The dot and the black line represent, respectively, the mean value and the standard deviation of the scores of its node. Additionally, efficient DMU labels always are displayed based on the model entered in the \code{scores_model} argument. Finally, the user can specify an upper bound \code{upn} and a lower bound \code{lwb} in order to show, in addition, the labels which efficiency score is between them.
+This function returns a jitter plot from \code{ggplot2}. This graphic shows how DMUs are grouped into leaf nodes in a model built using the \code{EAT} function. Each leaf node groups DMUs with the same level of resources. The dot and the black line represent, respectively, the mean value and the standard deviation of the scores of its node. Additionally, efficient DMU labels always are displayed based on the model entered in the \code{scores_model} argument. Finally, the user can specify an upper bound \code{upn} and a lower bound \code{lwb} in order to show, in addition, the labels whose efficiency score lies between them.
 }
 \examples{
 

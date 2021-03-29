@@ -13,13 +13,13 @@ treesForRCV(notLv, x, y, fold, numStop)
 
 \item{y}{Column output indexes in data.}
 
-\item{fold}{Parts in which is divided the original set to do Cross-Validation.}
+\item{fold}{Parts in which the original set is divided to perform Cross-Validation.}
 
-\item{numStop}{Minimun number of observations in a node to be splitted.}
+\item{numStop}{Minimum number of observations in a node to be split.}
 }
 \value{
-List with each possible pruning for the deep tree generated with train set and its alpha values associated.
+List with each possible pruning for the deep tree generated with train set and its associated alpha values.
 }
 \description{
-This function generates a deep EAT and all its prunings for each train set.
+This function generates a deep EAT and all pruning for each train set.
 }

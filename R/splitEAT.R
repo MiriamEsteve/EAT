@@ -2,9 +2,9 @@
 #'
 #' @description This function gets the estimation of the response variable and updates Pareto-coordinates and the observation index for both new nodes.
 #'
-#' @param data Data to be use.
+#' @param data Data to be used.
 #' @param leaves List structure with leaf nodes or pending expansion nodes.
-#' @param t Node which is being splitted.
+#' @param t Node which is being split.
 #' @param xi Variable index that produces the split.
 #' @param s Value of xi variable that produces the split.
 #' @param y Column output indexes in data.
@@ -83,12 +83,12 @@ estimEAT <- function(data, leaves, t, xi, s, y) {
 
 #' @title Pareto-dominance relationships
 #'
-#' @description This function denotes if a node domines another one or in other case, if it does not exist any Pareto-dominance relationship.
+#' @description This function denotes if a node dominates another one or if there is no Pareto-dominance relationship.
 #'
 #' @param t1 A first node.
 #' @param t2 A second node.
 #'
-#' @return -1 if t1 domines t2, 1 if t2 domines t1 and 0 if there are not Pareto-dominance relationships.
+#' @return -1 if t1 dominates t2, 1 if t2 dominates t1 and 0 if there are no Pareto-dominance relationships.
 comparePareto <- function(t1, t2) {
   if (all.equal(t1$a, t2$a) == TRUE && all.equal(t1$b, t2$b) == TRUE) {
     return(0)
@@ -118,14 +118,14 @@ comparePareto <- function(t1, t2) {
 #' @param data Data to be used.
 #' @param tree List structure with the tree nodes.
 #' @param leaves List with leaf nodes or pending expansion nodes.
-#' @param t Node which is being splitted.
+#' @param t Node which is being split.
 #' @param x Column input indexes in data.
 #' @param y Column output indexes in data.
-#' @param numStop Minimun number of observations on a node to be splitted.
+#' @param numStop Minimum number of observations in a node to be split.
 #'
 #' @importFrom dplyr %>%
 #'
-#' @return Leaves and tree lists updated with the new children nodes.
+#' @return Leaves and tree lists updated with the new child nodes.
 split <- function(data, tree, leaves, t, x, y, numStop) {
   N <- nrow(data)
   nX <- length(x)
@@ -205,8 +205,7 @@ split <- function(data, tree, leaves, t, x, y, numStop) {
 #' @param t A given node.
 #' @param y Column output indexes in data.
 #'
-#' @return Mean Square Error on a node.
-#' @export
+#' @return Mean Square Error at a node.
 mse <- function(data, t, y) {
   if (length(y) == 1) t[["y"]] <- unlist(t[["y"]])
 
@@ -221,9 +220,9 @@ mse <- function(data, t, y) {
 #'
 #' @param obs Observation in the evaluated node.
 #' @param data Data with predictive variable.
-#' @param numStop Minimun number of observations on a node to be splitted.
+#' @param numStop Minimum number of observations in a node to be split.
 #'
-#' @return True if the node is a final node and false in other case.
+#' @return True if the node is a final node and false in any other case.
 isFinalNode <- function(obs, data, numStop) {
   data <- as.data.frame(data)
   

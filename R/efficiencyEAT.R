@@ -152,9 +152,9 @@ EAT_DDF <- function(j, scores, x_k, y_k, atreeTk, ytreeTk, nX, nY, N_leaves) {
   return(scores)
 }
 
-#' @title Rusell Model with Input Orientation for an Efficiency Analysis Trees model
+#' @title Russell Model with Input Orientation for an Efficiency Analysis Trees model
 #'
-#' @description Rusell Model with input orientation for an Efficiency Analysis Trees model.
+#' @description Russell Model with input orientation for an Efficiency Analysis Trees model.
 #'
 #' @param j Integer. Number of DMUs.
 #' @param scores Matrix. Empty matrix for scores.
@@ -210,9 +210,9 @@ EAT_RSL_in <- function(j, scores, x_k, y_k, atreeTk, ytreeTk, nX, nY, N_leaves) 
   
 }
 
-#' @title Rusell Model with Output Orientation for an Efficiency Analysis Trees model
+#' @title Russell Model with Output Orientation for an Efficiency Analysis Trees model
 #'
-#' @description Rusell Model with output orientation for an Efficiency Analysis Tree model.
+#' @description Russell Model with output orientation for an Efficiency Analysis Tree model.
 #'
 #' @param j Integer. Number of DMUs.
 #' @param scores Matrix. Empty matrix for scores.
@@ -356,13 +356,13 @@ EAT_WAM <- function(j, scores, x_k, y_k, atreeTk, ytreeTk, nX, nY, N_leaves, wei
 #' @param x Vector. Column input indexes in data.
 #' @param y Vector. Column output indexes in data.
 #' @param object An EAT object.
-#' @param scores_model Mathematic programming model to calculate scores. 
+#' @param scores_model Mathematical programming model to calculate scores. 
 #' \itemize{
 #' \item{\code{BCC.OUT}} BCC model. Output-oriented.
 #' \item{\code{BCC.INP}}  BCC model. Input-oriented.
 #' \item{\code{DDF}}     Directional Distance Function.
-#' \item{\code{RSL.OUT}} Rusell model. Output-oriented.
-#' \item{\code{RSL.INP}}  Rusell model. Input-oriented.
+#' \item{\code{RSL.OUT}} Russell model. Output-oriented.
+#' \item{\code{RSL.INP}}  Russell model. Input-oriented.
 #' \item{\code{WAM.MIP}} Weighted Additive Model. Measure of Inefficiency Proportions.
 #' \item{\code{WAM.RAM}} Weighted Additive Model. Range Adjusted Measure of Inefficiency.
 #' }

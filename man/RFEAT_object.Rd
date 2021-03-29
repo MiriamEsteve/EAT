@@ -29,7 +29,7 @@ RFEAT_object(
 
 \item{numStop}{Integer. Minimun number of observations in a node for a split to be attempted.}
 
-\item{m}{Integer. Number of trees to be build.}
+\item{m}{Integer. Number of trees to be built.}
 
 \item{s_mtry}{Select number of inputs in each split.
 \itemize{

@@ -1,9 +1,9 @@
-#' @title Train and test sets generation.
+#' @title Train and Test Sets Generation
 #'
-#' @description This function split the original data in two new data sets: a train set and a test set.
+#' @description This function splits the original data in two new data sets: a train set and a test set.
 #'
-#' @param data Data to be splited in train and test.
-#' @param fold Parts in which is divided the original set to do Cross-Validation.
+#' @param data Data to be split into train and test subsets.
+#' @param fold Parts in which the original set is divided, to perform Cross-Validation.
 #'
 #' @return List structure with the train and the test set.
 generateLv <- function(data, fold) {
@@ -40,15 +40,15 @@ generateLv <- function(data, fold) {
 
 #' @title Trees for RCV
 #'
-#' @description This function generates a deep EAT and all its prunings for each train set.
+#' @description This function generates a deep EAT and all pruning for each train set.
 #'
 #' @param notLv Train set.
 #' @param x Column input indexes in data.
 #' @param y Column output indexes in data.
-#' @param fold Parts in which is divided the original set to do Cross-Validation.
-#' @param numStop Minimun number of observations in a node to be splitted.
+#' @param fold Parts in which the original set is divided to perform Cross-Validation.
+#' @param numStop Minimum number of observations in a node to be split.
 #'
-#' @return List with each possible pruning for the deep tree generated with train set and its alpha values associated.
+#' @return List with each possible pruning for the deep tree generated with train set and its associated alpha values.
 treesForRCV <- function(notLv, x, y, fold, numStop) {
   TAiv <- vector("list", fold)
 

@@ -7,11 +7,11 @@
 estimEAT(data, leaves, t, xi, s, y)
 }
 \arguments{
-\item{data}{Data to be use.}
+\item{data}{Data to be used.}
 
 \item{leaves}{List structure with leaf nodes or pending expansion nodes.}
 
-\item{t}{Node which is being splitted.}
+\item{t}{Node which is being split.}
 
 \item{xi}{Variable index that produces the split.}
 

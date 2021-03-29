@@ -11,10 +11,10 @@ isFinalNode(obs, data, numStop)
 
 \item{data}{Data with predictive variable.}
 
-\item{numStop}{Minimun number of observations on a node to be splitted.}
+\item{numStop}{Minimum number of observations in a node to be split.}
 }
 \value{
-True if the node is a final node and false in other case.
+True if the node is a final node and false in any other case.
 }
 \description{
 This function evaluates a node and checks if it fulfills the conditions to be a final node.

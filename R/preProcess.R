@@ -1,6 +1,6 @@
 #' @title Data preprocessing
 #'
-#' @description This function displays error messages in relation with data such as presence of NA values or not allowed classes of data or argument introduced incorrectly. Also, it prepares the data in the required format and gets the names of the rows.
+#' @description This function displays error messages in relation with data such as presence of NA values, types of data not allowed or arguments entered incorrectly. Also, it prepares the data in the required format.
 #'
 #' @param data Dataframe or matrix containing the variables in the model.
 #' @param x Vector. Column input indexes in data.
@@ -9,7 +9,7 @@
 #'
 #' @importFrom stats na.omit
 #'
-#' @return List containing rownames and data processed in the [X, Y] format with only allowed classes.
+#' @return List containing rownames and data processed in the [X, Y] format with only categories allowed.
 preProcess <- function(data, x, y, numStop = 5, fold = 5, 
                        max.depth = NULL, max.leaves = NULL, 
                        na.rm = TRUE) {

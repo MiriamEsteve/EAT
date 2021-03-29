@@ -6,10 +6,10 @@
 #' @param Lv_notLv List with train and test sets.
 #' @param x Column input indexes in data.
 #' @param y Column output indexes in data.
-#' @param fold Parts in which is divided the original data set to do Cross-Validation.
-#' @param numStop Minimun number of observations on a node to be splitted.
+#' @param fold Parts in which the original data set is divided to perform Cross-Validation.
+#' @param numStop Minimum number of observations on a node to be split.
 #' @param Tk Best pruned tree.
-#' @param tree_alpha_list List with all the possible pruning and its alpha associated.
+#' @param tree_alpha_list List with all the possible pruning and its associated alpha.
 #'
 #' @return List with the best pruning for each fold, the pruning with a lower score and tree_alpha_list with scores updated.
 scores <- function(N, Lv_notLv, x, y, fold, numStop, Tk, tree_alpha_list) {
@@ -48,11 +48,11 @@ scores <- function(N, Lv_notLv, x, y, fold, numStop, Tk, tree_alpha_list) {
 #' @param N Number of rows in data.
 #' @param Lv Test set.
 #' @param y Column output indexes in data.
-#' @param alphaIprim Alpha obtained as the square root of the product of two consecutives alpha values in tree_alpha list. It is used to find the best pruing tree.
-#' @param fold Parts in which is divided the original data set to do Cross-Validation.
-#' @param TAiv List with each possible pruning for the deep tree generated with train set and its alpha values associated.
+#' @param alphaIprim Alpha obtained as the square root of the product of two consecutive alpha values in tree_alpha list. It is used to find the best pruning tree.
+#' @param fold Parts in which the original data is divided into to perform Cross-Validation.
+#' @param TAiv List with each possible pruning for the deep tree generated with the train set and its associated alpha values.
 #'
-#' @return Set of best prunings and the associated error calculated with test sets.
+#' @return Set of best pruning and the associated error calculated with test sets.
 RCV <- function(N, Lv, y, alphaIprim, fold, TAiv) {
   BestTivs <- vector("list", fold)
   Rcv <- 0.0

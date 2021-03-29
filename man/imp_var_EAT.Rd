@@ -2,7 +2,7 @@
 % Please edit documentation in R/rankingEAT.R
 \name{imp_var_EAT}
 \alias{imp_var_EAT}
-\title{Importance variable of Breiman}
+\title{Breiman's Variable Importance}
 \usage{
 imp_var_EAT(data, tree, x, y, digits)
 }
@@ -18,8 +18,8 @@ imp_var_EAT(data, tree, x, y, digits)
 \item{digits}{Decimal units.}
 }
 \value{
-A dataframe with the best split for each node and variable and its importance.
+A dataframe with the best split for each node and its variable importance.
 }
 \description{
-This function recalculates all the possible splits, with the exception of the actual used, and for each node and variable gets the best split based on their degree of importance.
+This function recalculates all the possible splits, with the exception of the one being used, and for each node and variable gets the best split based on their degree of importance.
 }

@@ -14,8 +14,8 @@ bagging(data, x, y)
 \item{y}{Column output indexes in data.}
 }
 \value{
-List containing training dataframe and list with binary respose as 0 if the observations has been selected for training and 0 in other case.
+List containing training dataframe and list with binary respose as 0 if the observations have been selected for training and 0 in any other case.
 }
 \description{
-Bootstrap agggregating for data.
+Bootstrap aggregating for data.
 }

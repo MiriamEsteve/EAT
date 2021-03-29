@@ -7,13 +7,13 @@
 #' @param data Data frame or matrix containing the variables in the model.
 #' @param x Vector. Column input indexes in data.
 #' @param y Vector. Column output indexes in data.
-#' @param numStop Integer. Minimun number of observations in a node for a split to be attempted.
-#' @param fold Integer. Number of folds in which is divided the dataset to apply cross-validation during the pruning.
+#' @param numStop Integer. Minimum number of observations in a node for a split to be attempted.
+#' @param fold Integer. Set of number of folds in which the dataset to apply cross-validation during the pruning is divided.
 #' @param max.depth Integer. Depth of the tree.
 #' @param max.leaves Integer. Maximum number of leaf nodes.
 #' @param na.rm Logical. If \code{TRUE}, \code{NA} rows are omitted.
 #'
-#' @details The EAT function generates a regression tree model based on CART \insertCite{breiman1984}{eat} under a new approach that guarantees the obtaining of a stepped production frontier that fulfills the property of free disposability. This frontier shares the aforementioned aspects with the FDH frontier \insertCite{deprins1984}{eat} but enhances some of its disadvantages such as the overfitting problem or the underestimation of technical inefficiency. More details in \insertCite{esteve2020;textual}{eat}.
+#' @details The EAT function generates a regression tree model based on CART \insertCite{breiman1984}{eat} under a new approach that guarantees obtaining a stepped production frontier that fulfills the property of free disposability. This frontier shares the aforementioned aspects with the FDH frontier \insertCite{deprins1984}{eat} but enhances some of its disadvantages such as the overfitting problem or the underestimation of technical inefficiency. More details in \insertCite{esteve2020;textual}{eat}.
 #'
 #' @references
 #' \insertRef{breiman1984}{eat} \cr
@@ -51,7 +51,7 @@
 #'        \item{\code{Proportion}}: proportion of observations at the node.
 #'        \item{the output predictions}.
 #'        \item{\code{R}}: the error at the node.  
-#'        \item{\code{index}}: observations indexes at the node.}
+#'        \item{\code{index}}: observation indexes at the node.}
 #'        }   
 #'   \item{\code{model} \itemize{
 #'        \item{\code{nodes}}: total number of nodes at the tree.  
@@ -152,19 +152,19 @@ EAT <- function(data, x, y, numStop = 5, fold = 5,
 
 #' @title Deep Efficiency Analysis Trees
 #'
-#' @description This function creates a deep tree and a set of possible prunings by weakest-link pruning procedure.
+#' @description This function creates a deep tree and a set of possible prunings by pruning through the weakest-link pruning procedure.
 #'
 #' @param data Dataframe or matrix containing the variables in the model.
 #' @param x Vector. Column input indexes in data.
 #' @param y Vector. Column output indexes in data.
-#' @param numStop Integer. Minimun number of observations in a node for a split to be attempted.
+#' @param numStop Integer. Minimum number of observations in a node for a split to be attempted.
 #' @param max.depth Integer. Depth of the tree.
 #' @param max.leaves Integer. Maximum number of leaf nodes.
 #'
 #' @importFrom dplyr filter mutate %>% row_number
 #' @importFrom conflicted conflict_prefer
 #'
-#' @return List containing each possible pruning for the deep tree and its alpha value associated.
+#' @return List containing each possible pruning for the deep tree and its associated alpha value. 
 deepEAT <- function(data, x, y, numStop = 5, max.depth = NULL, max.leaves = NULL) {
   
   # Check if deepEAT is called by EAT

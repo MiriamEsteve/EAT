@@ -26,9 +26,9 @@ EAT_object(
 
 \item{register_names}{String vector. Data rownames.}
 
-\item{numStop}{Integer. Minimun number of observations in a node for a split to be attempted.}
+\item{numStop}{Integer. Minimum number of observations in a node for a split to be attempted.}
 
-\item{fold}{Integer. Number of folds in which is divided the dataset to apply cross-validation during the pruning.}
+\item{fold}{Integer. Set of number of folds in which the dataset to apply cross-validation during the pruning is divided.}
 
 \item{max.depth}{Integer. Maximum number of leaf nodes.}
 

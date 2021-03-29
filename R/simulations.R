@@ -78,7 +78,7 @@ Y1.sim <- function(N, nX) {
 #' @description This function is used to simulate the data in a scenario with 2 inputs and 2 outputs.
 #'
 #' @param N Sample size.
-#' @param border Percentage of DMU's in the frontier.
+#' @param border Percentage of DMUs in the frontier.
 #' @param noise Random noise.
 #'
 #' @importFrom dplyr %>%

@@ -13,14 +13,14 @@ SERules(N, Lv, y, fold, Tk_score, BestTivs)
 
 \item{y}{Column output indexes in data.}
 
-\item{fold}{Parts in which is divided the original data set to do Cross-Validation.}
+\item{fold}{Parts in which the original data set is divided to perform Cross-Validation.}
 
 \item{Tk_score}{Best pruned tree score.}
 
 \item{BestTivs}{List of best pruned trees for each training set.}
 }
 \value{
-Value to get a range where find new prunings.
+Value to get a range where new pruning is found.
 }
 \description{
 Based on Validation tests over BestTivs, a new range of scores is obtained to find new pruned trees.

@@ -14,7 +14,7 @@ checkEAT <- function(tree) {
     if (tree[[t1]][["SL"]] == -1) {
       for (t2 in (t1 + 1):length(tree)) {
         if (tree[[t2]][["SL"]] == -1) {
-          resComp <- eat:::comparePareto(tree[[t1]], tree[[t2]])
+          resComp <- comparePareto(tree[[t1]], tree[[t2]])
 
           for (j in 1:nY) {
             if (resComp == -1 && tree[[t1]][["y"]][[j]] > tree[[t2]][["y"]][[j]]) {

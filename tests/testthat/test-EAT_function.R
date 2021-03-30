@@ -5,7 +5,7 @@ model <- EAT(data = simulated, x = c(1,2), y = c(3, 4))
 
 # Test 1: return an EAT object type with 5 elements
 
-test_that("Return a object EAT of length 5", {
+test_that("Return an object EAT of length 5", {
   expect_s3_class(model, "EAT")
   expect_equal(length(model), 5)
 })

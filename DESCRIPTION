@@ -46,7 +46,8 @@ Imports:
 Suggests: 
     rmarkdown,
     testthat,
-    kableExtra
+    kableExtra,
+    usethis
 RdMacros: 
     Rdpack
 VignetteBuilder: knitr

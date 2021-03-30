@@ -266,6 +266,7 @@ CEAT_RSL_out <- function(j, scores, x_k, y_k, atreeTk, ytreeTk, nX, nY, N_leaves
 #' @param nX Integer. Number of inputs.
 #' @param nY Integer. Number of outputs.
 #' @param N_leaves Integer. Number of leaf nodes.
+#' @param weights Character. \code{"MIP"} for Measure of Inefficiency Proportion or \code{"RAM"} for Range Adjusted Measure of Inefficiency.
 #'
 #' @importFrom lpSolveAPI make.lp lp.control set.objfn add.constraint set.type set.bounds get.objective
 #'
@@ -289,7 +290,6 @@ CEAT_WAM <- function(j, scores, x_k, y_k, atreeTk, ytreeTk, nX, nY, N_leaves, we
       objVal[1:(nX + nY)] <- ranges
       
     }
-    
     
     # structure for lpSolve
     lps <- make.lp(nrow = nX + nY, ncol = N_leaves + nY + nX)

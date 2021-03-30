@@ -5,6 +5,10 @@
 #' @param data Dataframe or matrix containing the variables in the model.
 #' @param x Vector. Column input indexes in data.
 #' @param y Vector. Column output indexes in data.
+#' @param numStop Integer. Minimum number of observations in a node for a split to be attempted.
+#' @param fold Integer. Set of number of folds in which the dataset to apply cross-validation during the pruning is divided.
+#' @param max.depth Integer. Depth of the tree.
+#' @param max.leaves Integer. Maximum number of leaf nodes.
 #' @param na.rm Logical. If \code{TRUE}, \code{NA} rows are omitted.
 #'
 #' @importFrom stats na.omit

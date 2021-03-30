@@ -6,7 +6,7 @@ EAT_model <- EAT(data = simulated, x = c(1,2), y = c(3, 4))
 
 scores <- efficiencyEAT(data = simulated, x = c(1, 2), y = c(3, 4), 
                         object = EAT_model, scores_model = "BCC_out", 
-                        r = 2, FDH = TRUE, na.rm = TRUE)
+                        digits = 2, FDH = TRUE, na.rm = TRUE)
 
 # Test 1: model not allowed
 

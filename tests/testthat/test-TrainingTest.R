@@ -16,5 +16,5 @@ test_that("Training and test have different size", {
 test_that("Training and test have different variable names", {
   subtest <- test
   names(subtest) <- c("a", "b", "c", "d")
-  expect_error(bestRFEAT(training, test, x = 1:2, y = 3:4))
+  expect_error(bestRFEAT(training, subtest, x = 1:2, y = 3:4))
 })

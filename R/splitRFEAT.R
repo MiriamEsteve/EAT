@@ -31,7 +31,7 @@ bagging <- function(data, x, y){
 }
 
 
-#' @title Select possible inputs in split.
+#' @title Select Possible Inputs in Split.
 #'
 #' @description This function selects the number of inputs for a split in Random Forest.
 #'
@@ -72,7 +72,30 @@ select_mtry <- function(s_mtry, t, nX, nY){
   return(as.integer(round(mtry)))
 }
 
-#' @title Split node in Random Forest EAT
+#' @title Random Selection of Variables
+#'
+#' @description This function randomly selects the variables that are evaluated to divide a node and removes those that do not present variability.
+#' 
+#' @param data Dataframe containing the training set.
+#' @param x Vector. Column input indexes in data.
+#' @param t Node which is being split.
+#' @param mtry Integer. Number of inputs selected for a node to be split.
+#' 
+#' @return Index of the variables by which the node is divided.
+valid_mtry <- function(data, x, t, mtry){
+  
+  # Columns without variability
+  drpVars <- which(apply(data[t[['index']], ], 2, sd) == 0)
+  
+  # If all variables have variability drpVars = 0 to select all variables
+  if (length(drpVars) == 0) drpVars <- 0
+  
+  arrayK <- sort(sample(x[x != drpVars], mtry, replace = FALSE))
+  
+  return(arrayK)
+}
+
+#' @title Split Node in Random Forest EAT
 #'
 #' @description This function gets the variable and split value to be used in estimEAT, selects the best split, node indexes and leaf list.
 #'
@@ -104,6 +127,7 @@ split_forest <- function(data, tree, leaves, t, x, y, numStop, arrayK){
     if (length(S) == 1) next
     
     for(i in 2:length(S)){
+      
       tL_tR_ <- estimEAT(data, leaves, t, xi, S[i], y)
       tL_ <- tL_tR_[[1]]
       tR_ <- tL_tR_[[2]]
@@ -111,6 +135,7 @@ split_forest <- function(data, tree, leaves, t, x, y, numStop, arrayK){
       err <- tL_[["R"]] + tR_[["R"]]
       
       if (err < err_min){
+        
         t[["xi"]] <- xi
         t[["s"]] <- S[i]
         err_min <- err

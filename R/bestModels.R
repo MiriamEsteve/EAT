@@ -44,8 +44,8 @@ bestEAT <- function(training, test, x, y, numStop = 5, fold = 5, max.depth = NUL
   }
   
   # Reorder index 'x' and 'y' in data
-  x <- 1:((ncol(training) - 1) - length(y))
-  y <- (length(x) + 1):(ncol(training) - 1)
+  x <- 1:(ncol(training) - length(y))
+  y <- (length(x) + 1):ncol(training)
   
   # Grid of hyperparameters
   
@@ -142,9 +142,9 @@ bestEAT <- function(training, test, x, y, numStop = 5, fold = 5, max.depth = NUL
 #'           test = test,
 #'           x = 6:9,
 #'           y = 3,
-#'           numStop = c(3, 5, 7, 10),
-#'           m = c(20, 40, 60),
-#'           s_mtry = c("BRM", "1", "2"))
+#'           numStop = c(3, 5),
+#'           m = c(20, 30),
+#'           s_mtry = c("BRM", "1"))
 #' 
 #' @export
 #'
@@ -156,12 +156,12 @@ bestRFEAT <- function(training, test, x, y, numStop = 5, m = 50,
   test <- preProcess(test, x, y, na.rm = na.rm)[[2]]
   
   if (!identical(sort(names(training)), sort(names(test)))) {
-    stop("Different variable names in training and test set")
+    stop("Different variable names in training and test sets")
   }
   
   # Reorder index 'x' and 'y' in data
-  x <- 1:((ncol(training) - 1) - length(y))
-  y <- (length(x) + 1):(ncol(training) - 1)
+  x <- 1:(ncol(training) - length(y))
+  y <- (length(x) + 1):ncol(training)
   
   hp <- expand.grid(numStop = numStop,
                     m = m,

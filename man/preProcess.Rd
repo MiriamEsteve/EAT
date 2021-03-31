@@ -22,6 +22,14 @@ preProcess(
 
 \item{y}{Vector. Column output indexes in data.}
 
+\item{numStop}{Integer. Minimum number of observations in a node for a split to be attempted.}
+
+\item{fold}{Integer. Set of number of folds in which the dataset to apply cross-validation during the pruning is divided.}
+
+\item{max.depth}{Integer. Depth of the tree.}
+
+\item{max.leaves}{Integer. Maximum number of leaf nodes.}
+
 \item{na.rm}{Logical. If \code{TRUE}, \code{NA} rows are omitted.}
 }
 \value{

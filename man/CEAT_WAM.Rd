@@ -24,6 +24,8 @@ CEAT_WAM(j, scores, x_k, y_k, atreeTk, ytreeTk, nX, nY, N_leaves, weights)
 \item{nY}{Integer. Number of outputs.}
 
 \item{N_leaves}{Integer. Number of leaf nodes.}
+
+\item{weights}{Character. \code{"MIP"} for Measure of Inefficiency Proportion or \code{"RAM"} for Range Adjusted Measure of Inefficiency.}
 }
 \value{
 A numerical vector with scores.

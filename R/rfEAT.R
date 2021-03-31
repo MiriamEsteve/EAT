@@ -53,7 +53,9 @@ RandomEAT <- function(data, x, y, numStop, s_mtry){
     mtry <- select_mtry(s_mtry, t, nX, nY)
     # Randomly select k (<P) of the original predictors
     # Select random columns by index
-    arrayK <- sort(sample(x, mtry, replace = FALSE))
+    
+    # Remove inputs without variability
+    arrayK <- valid_mtry(data, x, t, mtry)
     
     tree_leaves <- split_forest(data, tree, leaves, t, x, y, numStop, arrayK)
     

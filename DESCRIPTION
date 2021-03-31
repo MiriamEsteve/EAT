@@ -47,7 +47,8 @@ Suggests:
     rmarkdown,
     testthat,
     kableExtra,
-    usethis
+    usethis,
+    devtools
 RdMacros: 
     Rdpack
 VignetteBuilder: knitr

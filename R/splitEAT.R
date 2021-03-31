@@ -12,7 +12,7 @@
 #' @return Left and right children nodes.
 estimEAT <- function(data, leaves, t, xi, s, y) {
   nY <- length(y)
-  maxL <- rep(list(-1), nY)
+  maxL <- rep(list(- 1), nY)
 
   # Divide child's matrix
 
@@ -226,6 +226,8 @@ mse <- function(data, t, y) {
 isFinalNode <- function(obs, data, numStop) {
   data <- as.data.frame(data)
   
+  # First condition: fewer observations than numStop
+  # Second condition: all observations are duplicated
   if (length(obs) <= numStop || sum(duplicated(data[obs, ])) == length(obs) - 1) {
     return(TRUE)
   }

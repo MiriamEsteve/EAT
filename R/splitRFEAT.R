@@ -82,7 +82,7 @@ select_mtry <- function(s_mtry, t, nX, nY){
 #' @param mtry Integer. Number of inputs selected for a node to be split.
 #' 
 #' @return Index of the variables by which the node is divided.
-valid_mtry <- function(data, x, t, mtry){
+mtry_inputSelection <- function(data, x, t, mtry){
   
   # Columns without variability
   drpVars <- which(apply(data[t[['index']], ], 2, sd) == 0)

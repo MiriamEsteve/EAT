@@ -12,7 +12,7 @@
 
 <meta name="author" content="Center of Operations Research" />
 
-<meta name="date" content="2021-03-16" />
+<meta name="date" content="2021-03-31" />
 
 <title>EAT: Efficiency Analysis Trees</title>
 
@@ -603,7 +603,7 @@ code > span.er { color: #a61717; background-color: #e3d2d2; }
 
 <h1 class="title toc-ignore">EAT: Efficiency Analysis Trees</h1>
 <h4 class="author">Center of Operations Research</h4>
-<h4 class="date">2021-03-16</h4>
+<h4 class="date">2021-03-31</h4>
 
 
 
@@ -623,7 +623,7 @@ code > span.er { color: #a61717; background-color: #e3d2d2; }
 </div>
 <div id="summary-of-eat-functions" class="section level2">
 <h2>Summary of eat functions</h2>
-<p>In this section, an <strong>EAT</strong> model, a <strong>RFEAT</strong> model, a <strong>FDH</strong> model and a <strong>DEA</strong> model refer to a modeling carried out using Efficiency Analysis Trees technique, Random Forest + Efficiency Analysis Trees technique, Free Disposal Hull method and Data Envelopment Analysis method, respectively. Additionally, a <strong>CEAT</strong> model refers to a convex <strong>EAT</strong> model. The functions developed in the <code>eat</code> library are always oriented to one of the four previous models (EAT, RFEAT, FDH or DEA) and can be divided into seven categories depending on its purpose:</p>
+<p>In this section, an <strong>EAT</strong> model, a <strong>RFEAT</strong> model, a <strong>FDH</strong> model and a <strong>DEA</strong> model refer to a modeling carried out using Efficiency Analysis Trees technique, Random Forest + Efficiency Analysis Trees technique, Free Disposal Hull method and Data Envelopment Analysis method, respectively. Additionally, a <strong>CEAT</strong> model refers to a convex <strong>EAT</strong> model. The functions developed in the <code>eat</code> library are always oriented to one of the four previous models (EAT, RFEAT, FDH or DEA) and can be divided into seven categories depending on their purpose:</p>
 <table class="table table-striped" style="width: auto !important; margin-left: auto; margin-right: auto;">
 <thead>
 <tr>
@@ -660,7 +660,7 @@ Apply Random Forest + Efficiency Analysis Trees technique to a data set. Return 
 </tr>
 <tr>
 <td style="text-align:left;vertical-align: middle !important;background-color: #FFFFD1 !important;" rowspan="5">
-Summarise
+Summarize
 </td>
 <td style="text-align:left;background-color: #FFFFD1 !important;">
 print
@@ -744,7 +744,7 @@ Plot the tree structure of an EAT model.
 plotRFEAT
 </td>
 <td style="text-align:left;background-color: #FFFFD1 !important;">
-Shows a line graph with the OOB error on the y-axis calculated from a forest made up of k trees (x-axis).
+Shows a line graph with the OOB error on the y-axis, calculated from a forest made up of k trees (x-axis).
 </td>
 </tr>
 <tr>
@@ -755,7 +755,7 @@ Calculate efficiency scores
 efficiencyEAT
 </td>
 <td style="text-align:left;background-color: #DBFFD6 !important;">
-Calculate DMU efficiency scores through an EAT model (through a FDH model is optional).
+Calculate DMU efficiency scores through an EAT (and optionally through a FDH) model.
 </td>
 </tr>
 <tr>
@@ -763,7 +763,7 @@ Calculate DMU efficiency scores through an EAT model (through a FDH model is opt
 efficiencyCEAT
 </td>
 <td style="text-align:left;background-color: #DBFFD6 !important;">
-Calculate DMU efficiency scores through a convex EAT model (through a DEA model is optional).
+Calculate DMU efficiency scores through a convex EAT (and optionally through a DEA) model.
 </td>
 </tr>
 <tr>
@@ -771,7 +771,7 @@ Calculate DMU efficiency scores through a convex EAT model (through a DEA model 
 efficiencyRFEAT
 </td>
 <td style="text-align:left;background-color: #DBFFD6 !important;">
-Calculate DMU efficiency scores through a RFEAT model (through a FDH model is optional).
+Calculate DMU efficiency scores through a RFEAT (and optionally through a FDH) model.
 </td>
 </tr>
 <tr>
@@ -836,7 +836,7 @@ Calculate variable importance scores through a RFEAT model.
 </div>
 <div id="the-pisaindex-database" class="section level2">
 <h2>The PISAindex database</h2>
-<p>The <code>PISAindex</code> database is included as a data object in the <code>eat</code> library and is employed to exemplify the package functions. On the one hand, the inputs correspond to 13 variables that define the socioeconomic context of a country by means of a score in the range [1-100], except for the Gross Domestic Product by Purchasing Power Parity, which is measured in thousands of dollars. All of them have been obtained from the <a href="https://www.socialprogress.org/">Social Progress Index</a>. On the other hand, the performance of each country in the PISA exams is measured by the average score of its schools in the disciplines of Science, Reading and Mathematics and they have been collected from <a href="https://www.oecd.org/pisa/Combined_Executive_Summaries_PISA_2018.pdf">PISA 2018 Results</a>.</p>
+<p>The <code>PISAindex</code> database is included as a data object in the <code>eat</code> library and is employed to exemplify the package functions. On the one hand, the inputs correspond to 13 variables that define the socioeconomic context of a country, by means of a score in the range [1-100], except for the Gross Domestic Product by Purchasing Power Parity, which is measured in thousands of dollars. All of them have been obtained from the <a href="https://www.socialprogress.org/">Social Progress Index</a>. On the other hand, the performance of each country in the PISA exams is measured by the average score of its schools in the disciplines of Science, Reading and Mathematics which have been collected from <a href="https://www.oecd.org/pisa/Combined_Executive_Summaries_PISA_2018.pdf">PISA 2018 Results</a>.</p>
 <p>The following variables are collected for 72 countries that take the PISA exam:</p>
 <ul>
 <li><p><strong>Country</strong>, <strong>Continent</strong> and a 3-letter code that identifies the country following the ISO 3166 ALPHA-3 as rownames.</p></li>
@@ -855,7 +855,7 @@ Calculate variable importance scores through a RFEAT model.
 <li><strong>S</strong> : Shelter.</li>
 <li><strong>PS</strong> : Personal Safety.</li>
 </ul></li>
-<li><p>Foundations of Wellbeing field :</p>
+<li><p>Foundations of Well-being field :</p>
 <ul>
 <li><strong>ABK</strong> : Access to Basic Knowledge.</li>
 <li><strong>AIC</strong> : Access to Information and Communications.</li>
@@ -872,7 +872,7 @@ Calculate variable importance scores through a RFEAT model.
 <li><p><strong>GDP_PPP</strong> : Gross Domestic Product based on Purchasing Power Parity.</p></li>
 </ul></li>
 </ul>
-<p>The <code>eat</code> package is applied with the following purposes: (1) to create homogeneous groups of countries in terms of their socioeconomic characteristics (Basic Human Needs, Foundations of Wellbeing, Opportunity and GDP PPP per capita) and subsequently to know for each of these groups, what is the maximum PISA score expected in a specific discipline or in more than one; (2) to know which countries exercise best practices and which of them do not obtain a performance according to their socioeconomic level; and (3) to know what variables are more relevant in obtaining efficient levels of output.</p>
+<p>The <code>eat</code> package is applied with the following purposes: (1) to create homogeneous groups of countries in terms of their socioeconomic characteristics (Basic Human Needs, Foundations of Well-being, Opportunity and GDP PPP per capita) and subsequently to know what maximum PISA score is expected in one or more specific disciplines for each of these groups; (2) to know which countries exercise best practices and which of them do not obtain a performance according to their socioeconomic level; and (3) to know what variables are more relevant in obtaining efficient levels of output.</p>
 <div class="sourceCode" id="cb1"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb1-1"><a href="#cb1-1"></a><span class="co"># We save the seed for reproducibility of the results</span></span>
 <span id="cb1-2"><a href="#cb1-2"></a><span class="kw">set.seed</span>(<span class="dv">120</span>)</span></code></pre></div>
 <div class="sourceCode" id="cb2"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb2-1"><a href="#cb2-1"></a><span class="kw">library</span>(eat)</span>
@@ -882,18 +882,18 @@ Calculate variable importance scores through a RFEAT model.
 <h2>Modeling a scenario with an input and an output. Plotting the frontier</h2>
 <div id="eat" class="section level3">
 <h3>EAT()</h3>
-<p>The <code>EAT</code> function is the centerpiece of the <code>eat</code> library. <code>EAT</code> performs a regression tree based on CART methodology under a new approach that guarantees obtaining a frontier as estimator that fulfills the property of free disposability. This new technique has been baptized as Efficiency Analysis Trees. The development of the functions contained in the <code>eat</code> library has been thought so that even true R novices can easily use the library. The minimum arguments of the function are the data (<code>data</code>) containing the study variables, the indexes of the predictor variables or inputs (<code>x</code>) and the indexes of the predicted variables or outputs (<code>y</code>). Additionally, the <code>numStop</code>, <code>fold</code>, <code>max.depth</code> and <code>max.leaves</code> arguments are included for those more experienced users in the fields of machine learning and tree-based models. Modifying these four allows obtaining different frontiers and therefore selecting the one that best suits the needs of the analysis.</p>
+<p>The <code>EAT</code> function is the centerpiece of the <code>eat</code> library. <code>EAT</code> performs a regression tree based on CART methodology under a new approach that guarantees obtaining a frontier as an estimator that fulfills the property of free disposability. This new technique has been baptized as Efficiency Analysis Trees. The development of the functions contained in the <code>eat</code> library has been designed so that even true R novices can use the library easily. The minimum arguments of the function are the data (<code>data</code>) containing the study variables, the indexes of the predictor variables or inputs (<code>x</code>) and the indexes of the predicted variables or outputs (<code>y</code>). Additionally, the <code>numStop</code>, <code>fold</code>, <code>max.depth</code> and <code>max.leaves</code> arguments are included for those more experienced users in the fields of machine learning and tree-based models. Modifying these four allows obtaining different frontiers and therefore selecting the one that best suits the needs of the analysis.</p>
 <ul>
-<li><p><code>numStop</code> refers to the minimum number of observations in a node to be divided and is directly related to the size of the tree. The higher the value of <code>numStop</code> the smaller the size of the tree.</p></li>
+<li><p><code>numStop</code> refers to the minimum number of observations in a node to be divided and is directly related to the size of the tree. The higher the value of <code>numStop</code>, the smaller the size of the tree.</p></li>
 <li><p><code>fold</code> refers to the number of parts in which the dataset is divided to apply the cross-validation technique. Variations in the <code>fold</code> argument are not directly related to the size of the tree.</p></li>
 <li><p><code>max.depth</code> limits the number of nodes between the root node and the furthest leaf node (root not included). When this argument is introduced, the typical process of growth-pruning is not carried out. In this case, the tree is allowed to grow to the required depth.</p></li>
-<li><p><code>max.leaves</code> determines the maximum number of leaf nodes. As in <code>max.depth</code>, the process of growth-pruning is also not performed. In this respect, the tree grows until the required number of leaf nodes is reached, and then, the tree is returned.</p></li>
+<li><p><code>max.leaves</code> determines the maximum number of leaf nodes. As in <code>max.depth</code>, the process of growth-pruning is not performed. In this respect, the tree grows until the required number of leaf nodes is reached, and then, the tree is returned.</p></li>
 </ul>
 <p>Note that including the arguments <code>max.depth</code> or <code>max.leaves</code> hyperparameters reduce the computation time by eliminating the pruning procedure. If both are included at the same time, a warning message is displayed and only <code>max.depth</code> is used.</p>
 <p>The error of a given node <span class="math inline">\(t\)</span> is measured as the prediction error at the node <span class="math inline">\(t\)</span> over the total number of observations: <span class="math display">\[\begin{equation}
 R(t) = \frac{n(t)}{N} \cdot MSE(t) = \frac{1}{N} \cdot \sum_{(x_i,y_i)\in t}(y_i - \hat{y}(t))^2
 \end{equation}\]</span></p>
-<p>The impurity of a tree <span class="math inline">\(T\)</span> is measured as the sum of the impurities for each leaf node. <span class="math display">\[\begin{equation}
+<p>The impurity of a tree <span class="math inline">\(T\)</span> is measured as the sum of the impurities for each leaf node <span class="math display">\[\begin{equation}
 R(T) = \sum_{i = 1}^{\widetilde{T}}R(t_i),
 \end{equation}\]</span></p>
 <p>where <span class="math inline">\(\widetilde{T}\)</span> is the set of leaf nodes for the tree <span class="math inline">\(T\)</span>.</p>
@@ -1003,7 +1003,7 @@ R(T) = \sum_{i = 1}^{\widetilde{T}}R(t_i),
 1    551
 2    428
 3    478</code></pre>
-<p><code>descrEAT()</code> returns a list with measures of centralization and dispersion, as well as the root mean square error (RMSE) for each node. In multioutput scenarios, the measurenments are shown for each output. In case of a single output, the result of the function is a data frame. The following information is obtained:</p>
+<p><code>descrEAT()</code> returns a list with measures of centralization and dispersion, as well as the root mean square error (RMSE) for each node. In multioutput scenarios, the measurements are shown for each output. In case of a single output, the result of the function is a data frame. The following information is obtained:</p>
 <ul>
 <li><code>Node</code>: node index.</li>
 <li><code>n(t)</code>: number of DMUs.</li>
@@ -1027,7 +1027,7 @@ R(T) = \sum_{i = 1}^{\widetilde{T}}R(t_i),
 3    3   38  53 489.21  851.95 29.19 419 478.00  494.0 504.50 551  68.17
 4    4   16  22 394.62  684.65 26.17 336 381.50  398.0 414.00 428  41.90
 5    5   18  25 436.67  889.29 29.82 386 415.25  433.5 468.00 478  50.48</code></pre>
-<p>Additionally, <code>EAT_object[[&quot;tree&quot;]][[id_node]]</code> or <code>EAT_object$tree[[id_node]]</code> returns a <code>list</code> that allows to know in greater detail the characteristics of a given node. The elements that define a node are the following:</p>
+<p>Additionally, <code>EAT_object[[&quot;tree&quot;]][[id_node]]</code> or <code>EAT_object$tree[[id_node]]</code> returns a <code>list</code> that allows knowing the characteristics of a given node in greater detail. The elements that define a node are the following:</p>
 <ul>
 <li><code>id</code> : node index.</li>
 <li><code>F</code> : father node index.</li>
@@ -1153,7 +1153,7 @@ x
 </tr>
 </tbody>
 </table>
-<p>The Efficiency Analysis Trees methodology does not allow categorical variables. At this time, only ordinal factors can be entered. It is important to note that <code>order = True</code> must be included in the factor construction so as not to incur an error.</p>
+<p>The Efficiency Analysis Trees methodology does not allow categorical variables. At this time, only ordinal factors can be entered. It is important to note that <code>order = True</code> must be included in the factor construction so as not to produce an error.</p>
 <ul>
 <li>Factor (not ordered)</li>
 </ul>
@@ -1189,7 +1189,7 @@ x
 </div>
 <div id="frontier" class="section level3">
 <h3>frontier()</h3>
-<p>The <code>frontier</code> function displays the frontier estimated by the <code>EAT</code> function through a plot from <code>ggplot2</code>. The frontier estimated by FDH can be plotted too if <code>FDH = TRUE</code>. Observed DMUs can be showed by a scatterplot if <code>observed.data = TRUE</code> and its color, shape and size can be modified with <code>observed.color</code>, <code>pch</code> and <code>size</code> respectively. Finally, rownames can be included with <code>rwn = TRUE</code>.</p>
+<p>The <code>frontier</code> function displays the frontier estimated by the <code>EAT</code> function through a plot from <code>ggplot2</code>. The frontier estimated by FDH can also be plotted if <code>FDH = TRUE</code>. Observed DMUs can be showed by a scatterplot if <code>observed.data = TRUE</code> and its color, shape and size can be modified with <code>observed.color</code>, <code>pch</code> and <code>size</code> respectively. Finally, rownames can be included with <code>rwn = TRUE</code>.</p>
 <div class="sourceCode" id="cb26"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb26-1"><a href="#cb26-1"></a><span class="kw">frontier</span>(object,</span>
 <span id="cb26-2"><a href="#cb26-2"></a>         <span class="dt">FDH =</span> <span class="ot">FALSE</span>,</span>
 <span id="cb26-3"><a href="#cb26-3"></a>         <span class="dt">observed.data =</span> <span class="ot">FALSE</span>,</span>
@@ -1198,7 +1198,7 @@ x
 <span id="cb26-6"><a href="#cb26-6"></a>         <span class="dt">size =</span> <span class="dv">1</span>,</span>
 <span id="cb26-7"><a href="#cb26-7"></a>         <span class="dt">rwn =</span> <span class="ot">FALSE</span>,</span>
 <span id="cb26-8"><a href="#cb26-8"></a>         <span class="dt">max.overlaps =</span> <span class="dv">10</span>)</span></code></pre></div>
-<p>To continue, the frontier of the previous model is displayed. It can be seen how the frontier obtained by the <code>EAT</code> function generalizes the results of the frontier obtained through FDH, thus avoiding overfitting. The boundary estimated through Efficiency Analysis Trees generates 3 steps corresponding to the 3 leaf nodes (nodes 3, 4 and 5) obtained with the <code>EAT</code> function. For each of these steps, a frontier level in terms of the output is given with respect to the amount of input used (in this case level of <code>PFC</code>). In addition, we can appreciate 6 DMUs in the frontier: ALB (Albania), MDA (Moldova), SRB (Serbia), RUS (Russia), HUN (Hungary) and SGP (Singapur). Note that the first vertical plane of the frontier does not appear, but if it did, ALB would be on it. These DMUs are efficient and the rest of the DMUs below its specific step should increase the amount of output obtained or reduce the amount of input utilized until reaching the boundary to be efficient.</p>
+<p>To continue, the frontier of the previous model is displayed. It can be seen how the frontier obtained by the <code>EAT</code> function generalizes the results of the frontier obtained through FDH, thus avoiding overfitting. The boundary estimated through Efficiency Analysis Trees generates 3 steps corresponding to the 3 leaf nodes (nodes 3, 4 and 5) obtained with the <code>EAT</code> function. For each of these steps, a frontier level in terms of the output is given with respect to the amount of input used (in this case level of <code>PFC</code>). In addition, we can appreciate 6 DMUs on the frontier: ALB (Albania), MDA (Moldova), SRB (Serbia), RUS (Russia), HUN (Hungary) and SGP (Singapore). Note that the first vertical plane of the frontier does not appear, but if it did, ALB would be on it. These DMUs are efficient and the rest of the DMUs below their specific step should increase the amount of output obtained or reduce the amount of input utilized until reaching the boundary to be efficient.</p>
 <div class="sourceCode" id="cb27"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb27-1"><a href="#cb27-1"></a>frontier &lt;-<span class="st"> </span><span class="kw">frontier</span>(<span class="dt">object =</span> single_model,</span>
 <span id="cb27-2"><a href="#cb27-2"></a>                     <span class="dt">FDH =</span> <span class="ot">TRUE</span>, </span>
 <span id="cb27-3"><a href="#cb27-3"></a>                     <span class="dt">observed.data =</span> <span class="ot">TRUE</span>,</span>
@@ -1207,7 +1207,7 @@ x
 <span id="cb27-6"><a href="#cb27-6"></a><span class="kw">plot</span>(frontier)</span></code></pre></div>
 <p><img src="data:image/png;base64,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" /><!-- --></p>
 <ul>
-<li>Is the number of steps in the frontier always the number of leaf nodes?</li>
+<li>Is the number of steps on the frontier always the same as the number of leaf nodes?</li>
 </ul>
 <p>The answer is no. Note that there may be situations where the estimation of two or more nodes is identical. This is necessary to ensure the estimation of an increasing monotonic frontier. In this case, the number of leaf nodes is 5, however the predictions for nodes 4 and 5 are the same and therefore the border only has 4 steps.</p>
 <div class="sourceCode" id="cb28"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb28-1"><a href="#cb28-1"></a>single_model_md &lt;-<span class="st"> </span><span class="kw">EAT</span>(<span class="dt">data =</span> PISAindex, </span>
@@ -1241,7 +1241,7 @@ x
 <span id="cb34-4"><a href="#cb34-4"></a>                         ) </span></code></pre></div>
 <div id="rankingeat" class="section level3">
 <h3>rankingEAT()</h3>
-<p>The second example presents a multiple output scenario where 13 inputs are used to model the 3 available outputs. In these situations, a selection of the most contributing variables may be recommended in order to reduce overfitting, improve precision and reduce future training times. <code>rankingEAT()</code> allows a selection of variables by calculating a score of importance through Efficiency Analysis Trees technique. The user can specify the number of decimal units (<code>digits</code>), include a barplot with the scores of importance (<code>barplot</code>) and display a horizontal line in the graph to facilitate the cut-off point between important and not relevant variables (<code>threshold</code>).</p>
+<p>The second example presents a multiple output scenario where 13 inputs are used to model the 3 available outputs. In these situations, a selection of the most contributing variables may be recommended in order to reduce overfitting, improve precision and reduce future training times. <code>rankingEAT()</code> allows a selection of variables by calculating a score of importance through the Efficiency Analysis Trees technique. The user can specify the number of decimal units (<code>digits</code>), include a barplot with the scores of importance (<code>barplot</code>) and display a horizontal line in the graph to facilitate the cut-off point between important and irrelevant variables (<code>threshold</code>).</p>
 <div class="sourceCode" id="cb35"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb35-1"><a href="#cb35-1"></a><span class="kw">rankingEAT</span>(object,</span>
 <span id="cb35-2"><a href="#cb35-2"></a>           <span class="dt">digits =</span> <span class="dv">2</span>,</span>
 <span id="cb35-3"><a href="#cb35-3"></a>           <span class="dt">barplot =</span> <span class="ot">TRUE</span>,</span>
@@ -1275,7 +1275,7 @@ x
 <h2>Graphical representation by a tree structure</h2>
 <div id="ploteat" class="section level3">
 <h3>plotEAT()</h3>
-<p><code>frontier()</code> allows us to see the regions of the input space originated with <code>EAT()</code> in a very clear way, however, this is impossible with more than two variables (one input and one output). For multiple input and / or output scenarios, it is provided the typical tree-structure in which the relations between the predicted variable(s) and the predictive variable(s) are showed.</p>
+<p><code>frontier()</code> allows us to clearly see the regions of the input space originated with <code>EAT()</code>; however, this is impossible with more than two variables (one input and one output). For multiple input and / or output scenarios, the typical tree-structure showing the relationships between the predicted and predictive variables, is given.</p>
 <p>In each node, we can obtain the following information:</p>
 <ul>
 <li><code>id</code>: node index.</li>
@@ -1284,7 +1284,7 @@ x
 <li><code>input name</code> by which the split take place.</li>
 <li><code>y</code> : vector of predictions.</li>
 </ul>
-<p>Furthermore, the nodes are colored according to the variable by which the division is performed or they are black in the case of being a leaf node.</p>
+<p>Furthermore, the nodes are colored according to the variable by which the division is performed or they are black, in the case of being a leaf node.</p>
 <div class="sourceCode" id="cb37"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb37-1"><a href="#cb37-1"></a><span class="kw">plotEAT</span>(object)</span></code></pre></div>
 <p>Below are the 3 ways to control the size of a tree model: <code>numStop</code>, <code>max.depth</code> and <code>max.leaves</code>.</p>
 <ul>
@@ -1334,7 +1334,7 @@ x
 </div>
 <div id="eat-tuning" class="section level2">
 <h2>EAT tuning</h2>
-<p>In this section, the <code>PISAindex</code> database is divided into a training subset with 70% of the DMUs and a test subset with the other 30% of the DMUs. Next, the <code>bestEAT</code> function is applied to find the value of the hyperparameters that minimize the error calculated on the test sample from a Efficiency Analysis Trees fitted with the training sample.</p>
+<p>In this section, the <code>PISAindex</code> database is divided into a training subset with 70% of the DMUs and a test subset with the remaining 30%. Next, the <code>bestEAT</code> function is applied to find the value of the hyperparameters that minimize the error calculated on the test sample from an Efficiency Analysis Trees fitted with the training sample.</p>
 <div class="sourceCode" id="cb49"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb49-1"><a href="#cb49-1"></a>n &lt;-<span class="st"> </span><span class="kw">nrow</span>(PISAindex) <span class="co"># Observations in the dataset</span></span>
 <span id="cb49-2"><a href="#cb49-2"></a>selected &lt;-<span class="st"> </span><span class="kw">sample</span>(<span class="dv">1</span><span class="op">:</span>n, n <span class="op">*</span><span class="st"> </span><span class="fl">0.7</span>) <span class="co"># Training indexes</span></span>
 <span id="cb49-3"><a href="#cb49-3"></a>training &lt;-<span class="st"> </span>PISAindex[selected, ] <span class="co"># Training set</span></span>
@@ -1368,12 +1368,12 @@ x
 <span id="cb51-5"><a href="#cb51-5"></a>        <span class="dt">numStop =</span> <span class="kw">c</span>(<span class="dv">3</span>, <span class="dv">5</span>, <span class="dv">7</span>),</span>
 <span id="cb51-6"><a href="#cb51-6"></a>        <span class="dt">fold =</span> <span class="kw">c</span>(<span class="dv">5</span>, <span class="dv">7</span>))</span></code></pre></div>
 <pre><code>  numStop fold  RMSE leaves
-1       3    5 49.85     20
-2       3    7 49.85     20
-3       5    5 60.23     11
-4       5    7 60.23     11
-5       7    5 60.50      8
-6       7    7 60.50      8</code></pre>
+1       7    5 64.11      8
+2       7    7 64.11      8
+3       3    7 70.23     13
+4       5    7 70.66     11
+5       3    5 73.09     12
+6       5    5 73.09      9</code></pre>
 <p>Tuning for:</p>
 <p><code>S_PISA + R_PISA + M_PISA ~ NBMC + WS + S + HW + AAE</code>.</p>
 <p><code>numStop = {3, 5, 7}</code> and <code>fold = {5, 7}</code></p>
@@ -1384,12 +1384,12 @@ x
 <span id="cb53-5"><a href="#cb53-5"></a>        <span class="dt">numStop =</span> <span class="kw">c</span>(<span class="dv">3</span>, <span class="dv">5</span>, <span class="dv">7</span>),</span>
 <span id="cb53-6"><a href="#cb53-6"></a>        <span class="dt">fold =</span> <span class="kw">c</span>(<span class="dv">5</span>, <span class="dv">7</span>))</span></code></pre></div>
 <pre><code>  numStop fold  RMSE leaves
-1       3    5 36.86     22
-2       5    5 42.45     14
-3       5    7 42.45     13
-4       3    7 43.46     13
-5       7    7 48.24      8
-6       7    5 50.36      7</code></pre>
+1       3    5 46.17     24
+2       3    7 51.27     17
+3       7    5 53.55     10
+4       7    7 58.88      9
+5       5    7 76.50      7
+6       5    5 94.47      6</code></pre>
 <p>The best Efficiency Analysis Trees is given by the hyperparameters <code>{numStop = 3, fold = 5}</code> in the reduced model with <code>RMSE = 36.86</code> and 22 leaf nodes. However, this model is too complex. Therefore, we select the model with parameters <code>{numStop = 5, fold = 5}</code> with <code>RMSE = 42.45</code> but with only 14 leaf nodes. Now we check the results of this model.</p>
 <div class="sourceCode" id="cb55"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb55-1"><a href="#cb55-1"></a>bestEAT_model &lt;-<span class="st"> </span><span class="kw">EAT</span>(<span class="dt">data =</span> PISAindex,</span>
 <span id="cb55-2"><a href="#cb55-2"></a>                     <span class="dt">x =</span> <span class="kw">c</span>(<span class="dv">6</span>, <span class="dv">7</span>, <span class="dv">8</span>, <span class="dv">12</span>, <span class="dv">17</span>),</span>
@@ -1574,7 +1574,7 @@ x
 <h2>Efficiency scores. Graphical representation.</h2>
 <div id="efficiency-analysis-trees-model-efficiencyeat" class="section level3">
 <h3>Efficiency Analysis Trees model: efficiencyEAT()</h3>
-<p>The efficiency scores are numerical values that indicate the degree of efficiency of a set of DMUs. It must be entered a dataset (<code>data</code>) and the corresponding indexes of input(s) (<code>x</code>) and output(s) (<code>y</code>). It is recommended that the dataset with the DMUs whose efficiency is to be calculated coincide with those used to estimate the frontier. However, it is also possible to calculate the efficiency scores for a new dataset. The efficiency scores are calculated using the mathematical programming model included in the argument <code>score_model</code>. The following models are available:</p>
+<p>The efficiency scores are numerical values that indicate the degree of efficiency of a set of DMUs. A dataset (<code>data</code>) and the corresponding indexes of input(s) (<code>x</code>) and output(s) (<code>y</code>) must be entered. It is recommended that the dataset with the DMUs whose efficiency is to be calculated coincide with those used to estimate the frontier. However, it is also possible to calculate the efficiency scores for a new dataset. The efficiency scores are calculated using the mathematical programming model included in the argument <code>score_model</code>. The following models are available:</p>
 <ul>
 <li><code>BCC.OUT</code>: Banker Charnes and Cooper output-oriented radial model with efficiency level at 1.</li>
 <li><code>BCC.INP</code>: Banker Charnes and Cooper input-oriented radial model with efficiency level at 1.</li>
@@ -1585,7 +1585,7 @@ x
 <li><code>WAM.RAM</code>: Weighted Additive Model with Range Adjusted Measure of Inefficiency. Efficiency level at 0.</li>
 </ul>
 <p>If <code>FDH = TRUE</code>, scores are also calculated through a FDH model. Finally, a brief summary of the distribution of the scores calculated for each model is also included.</p>
-<p>For this section, the previously created <code>single_model</code> is used (we still redefine it again).</p>
+<p>For this section, the previously created <code>single_model</code> is used (we still redefine it).</p>
 <div class="sourceCode" id="cb58"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb58-1"><a href="#cb58-1"></a>single_model &lt;-<span class="st"> </span><span class="kw">EAT</span>(<span class="dt">data =</span> PISAindex, </span>
 <span id="cb58-2"><a href="#cb58-2"></a>                    <span class="dt">x =</span> <span class="dv">15</span>, <span class="co"># input </span></span>
 <span id="cb58-3"><a href="#cb58-3"></a>                    <span class="dt">y =</span> <span class="dv">3</span>) <span class="co"># output</span></span></code></pre></div>
@@ -1770,7 +1770,7 @@ DOM       0.804       0.804
 </div>
 <div id="convex-efficiency-analysis-trees-model-efficiencyceat" class="section level3">
 <h3>Convex Efficiency Analysis Trees model: efficiencyCEAT()</h3>
-<p><code>efficiencyCEAT()</code> returns the efficiency scores for the convex frontier obtained through an Efficiency Analysis Trees model. In this case, If <code>DEA = TRUE</code> scores are also calculated through a DEA model.</p>
+<p><code>efficiencyCEAT()</code> returns the efficiency scores for the convex frontier obtained through an Efficiency Analysis Trees model. In this case, if <code>DEA = TRUE</code>, scores are also calculated through a DEA model.</p>
 <div class="sourceCode" id="cb64"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb64-1"><a href="#cb64-1"></a><span class="kw">efficiencyCEAT</span>(data, x, y, </span>
 <span id="cb64-2"><a href="#cb64-2"></a>               object,</span>
 <span id="cb64-3"><a href="#cb64-3"></a>               score_model,</span>
@@ -1866,7 +1866,7 @@ DOM        1.415       1.354
 </div>
 <div id="efficiencyjitter" class="section level3">
 <h3>efficiencyJitter()</h3>
-<p><code>efficiencyJitter</code> returns a jitter plot from <code>ggplot2</code>. This graphic shows how DMUs are grouped into leaf nodes in a model built using the <code>EAT</code> function. Each leaf node groups DMUs with the same level of resources. The dot and the black line represent, respectively, the mean value and the standard deviation of the scores of its node. Additionally, efficient DMU labels always are displayed based on the model entered in the <code>score_model</code> argument. Finally, the user can specify an upper bound (<code>upb</code>) and a lower bound (<code>lwb</code>) in order to show, in addition, the labels which efficiency score is between them. Scores from a convex Efficiency Analysis Tree (<code>CEAT</code>) model can also be used.</p>
+<p><code>efficiencyJitter</code> returns a jitter plot from <code>ggplot2</code>. This graphic shows how DMUs are grouped into leaf nodes in a model built using the <code>EAT</code> function. Each leaf node groups DMUs with the same level of resources. The dot and the black line represent, respectively, the mean value and the standard deviation of the scores of its node. Additionally, efficient DMU labels are always displayed based on the model entered in the <code>score_model</code> argument. Finally, the user can specify an upper bound (<code>upb</code>) and a lower bound (<code>lwb</code>) in order to show, in addition, the labels whose efficiency score lies between them. Scores from a convex Efficiency Analysis Tree (<code>CEAT</code>) model can also be used.</p>
 <div class="sourceCode" id="cb67"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb67-1"><a href="#cb67-1"></a><span class="kw">efficiencyJitter</span>(object, df_scores,</span>
 <span id="cb67-2"><a href="#cb67-2"></a>                 scores_model,</span>
 <span id="cb67-3"><a href="#cb67-3"></a>                 <span class="dt">lwb =</span> <span class="ot">NULL</span>, <span class="dt">upb =</span> <span class="ot">NULL</span>)</span></code></pre></div>
@@ -1907,7 +1907,7 @@ DOM        1.415       1.354
 <span id="cb73-2"><a href="#cb73-2"></a>                  <span class="dt">model =</span> <span class="kw">c</span>(<span class="st">&quot;CEAT&quot;</span>, <span class="st">&quot;DEA&quot;</span>))</span></code></pre></div>
 <p><img src="data:image/png;base64,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" style="display: block; margin: auto;" /></p>
 <p><strong>The curse of dimensionality</strong></p>
-<p>When the ratio of the sample size and the number of variables (inputs and outputs) is low, the standard methods of efficiency analysis (specially FDH) tend to evaluate a large number of DMUs as technically efficient. This problem is known as <strong>curse of dimensionality</strong>. To show it, the efficiency scores of the <code>multioutput_model</code> (section 2) with 16 variables and 72 DMUs are calculated:</p>
+<p>When the ratio of the sample size and the number of variables (inputs and outputs) is low, the standard methods of efficiency analysis (specially FDH) tend to evaluate a large number of DMUs as technically efficient. This problem is known as the <strong>curse of dimensionality</strong>. To show it, the efficiency scores of the <code>multioutput_model</code> (section 2) with 16 variables and 72 DMUs are calculated:</p>
 <div class="sourceCode" id="cb74"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb74-1"><a href="#cb74-1"></a>cursed_scores &lt;-<span class="st"> </span><span class="kw">efficiencyEAT</span>(<span class="dt">data =</span> PISAindex,</span>
 <span id="cb74-2"><a href="#cb74-2"></a>                               <span class="dt">x =</span> <span class="dv">6</span><span class="op">:</span><span class="dv">18</span>, </span>
 <span id="cb74-3"><a href="#cb74-3"></a>                               <span class="dt">y =</span> <span class="dv">3</span><span class="op">:</span><span class="dv">5</span>,</span>
@@ -2002,7 +2002,7 @@ DOM       1.102       1.000
 <h2>Random Forest</h2>
 <div id="rfeat" class="section level3">
 <h3>RFEAT()</h3>
-<p>Random Forest + Efficiency Analysis Trees (<code>RFEAT</code>) has also been developed with the aim of providing a greater stability to the results obtained by the <code>EAT</code> function. The <code>RFEAT</code> function requires the <code>data</code> containing the variables for the analysis, <code>x</code> and <code>y</code> corresponding to the inputs and outputs indexes respectively, the minimun number of observation in a node for a split to be attempted (<code>numStop</code>) and <code>na.rm</code> to ignore observations with <code>NA</code> cells. All these arguments are used for the construction of the <code>m</code> individual Efficiency Analysis Trees that make up the random forest. Finally, the argument <code>s_mtry</code> indicates the number of inputs that can be randomly selected in each split. It can be set as any integer although there are also certain predefined values. Being, <span class="math inline">\(n_{x}\)</span> the number of inputs, <span class="math inline">\(n_{y}\)</span> the number of outputs and <span class="math inline">\(n(t)\)</span> the number of observations in a node, the available options in <code>s_mtry</code> are:</p>
+<p>Random Forest + Efficiency Analysis Trees (<code>RFEAT</code>) has also been developed with the aim of providing a greater stability to the results obtained by the <code>EAT</code> function. The <code>RFEAT</code> function requires the <code>data</code> containing the variables for the analysis, <code>x</code> and <code>y</code> corresponding to the inputs and outputs indexes respectively, the minimum number of observations in a node for a split to be attempted (<code>numStop</code>) and <code>na.rm</code> to ignore observations with <code>NA</code> cells. All these arguments are used for the construction of the <code>m</code> individual Efficiency Analysis Trees that make up the random forest. Finally, the argument <code>s_mtry</code> indicates the number of inputs that can be randomly selected in each split. It can be set as any integer although there are also certain predefined values. Being, <span class="math inline">\(n_{x}\)</span> the number of inputs, <span class="math inline">\(n_{y}\)</span> the number of outputs and <span class="math inline">\(n(t)\)</span> the number of observations in a node, the available options in <code>s_mtry</code> are:</p>
 <ul>
 <li><code>BRM</code> = <span class="math inline">\(\frac{n_{x}}{3}\)</span></li>
 <li><code>DEA1</code> = <span class="math inline">\(\frac{n(t)}{2} - n_{y}\)</span></li>
@@ -2044,7 +2044,7 @@ DOM       1.102       1.000
 </div>
 <div id="rankingrfeat" class="section level2">
 <h2>rankingRFEAT()</h2>
-<p>As in <code>rankingEAT()</code>, the <code>rankingRFEAT</code> function allows to calculate an importance score for variables using a <code>RFEAT</code> object.</p>
+<p>As in <code>rankingEAT()</code>, the <code>rankingRFEAT</code> function allows an importance score for variables using a <code>RFEAT</code> object to be calculated.</p>
 <div class="sourceCode" id="cb82"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb82-1"><a href="#cb82-1"></a><span class="kw">rankingRFEAT</span>(object, <span class="dt">digits =</span> <span class="dv">2</span>,</span>
 <span id="cb82-2"><a href="#cb82-2"></a>             <span class="dt">barplot =</span> <span class="ot">TRUE</span>)</span></code></pre></div>
 <p>For example:</p>
@@ -2069,7 +2069,7 @@ DOM       1.102       1.000
 <p><img src="data:image/png;base64,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" /><!-- --></p>
 <ul>
 <li><p>A positive importance score means that including the input in the model improves the performance.</p></li>
-<li><p>A negative imporance score means that removing the input from the model improves the performance.</p></li>
+<li><p>A negative importance score means that removing the input from the model improves the performance.</p></li>
 </ul>
 <p>Note: this example is computationally exhaustive and may take some time to run</p>
 <div class="sourceCode" id="cb85"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb85-1"><a href="#cb85-1"></a><span class="kw">rankingRFEAT</span>(<span class="dt">object =</span> forest, <span class="dt">digits =</span> <span class="dv">2</span>,</span>
@@ -2111,24 +2111,24 @@ DOM       1.102       1.000
 <span id="cb87-6"><a href="#cb87-6"></a>          <span class="dt">m =</span> <span class="kw">c</span>(<span class="dv">30</span>, <span class="dv">40</span>, <span class="dv">50</span>), <span class="co"># set of possible m</span></span>
 <span id="cb87-7"><a href="#cb87-7"></a>          <span class="dt">s_mtry =</span> <span class="kw">c</span>(<span class="st">&quot;BRM&quot;</span>, <span class="dv">3</span>)) <span class="co"># set of possible s_mtry </span></span></code></pre></div>
 <pre><code>   numStop  m s_mtry  RMSE
-1        3 30      3 41.61
-2        3 40    BRM 42.29
-3        3 50    BRM 42.56
-4        3 40      3 43.41
-5        3 30    BRM 43.69
-6        3 50      3 43.76
-7        5 30    BRM 44.25
-8        5 40    BRM 44.54
-9        5 50    BRM 45.91
-10       5 40      3 46.27
-11       5 30      3 47.05
-12       5 50      3 48.17
-13      10 50      3 49.83
-14      10 30    BRM 49.96
-15      10 40    BRM 50.44
-16      10 50    BRM 53.02
-17      10 30      3 54.14
-18      10 40      3 55.40</code></pre>
+1        3 40    BRM 43.55
+2        3 30      3 46.60
+3        3 40      3 46.61
+4        3 50    BRM 47.63
+5        3 50      3 47.68
+6        5 50      3 48.18
+7        5 40    BRM 48.38
+8        5 30    BRM 49.11
+9        3 30    BRM 49.18
+10       5 40      3 49.40
+11       5 50    BRM 49.62
+12       5 30      3 50.25
+13      10 40    BRM 55.95
+14      10 30    BRM 56.59
+15      10 50    BRM 56.74
+16      10 50      3 57.98
+17      10 40      3 60.72
+18      10 30      3 62.10</code></pre>
 <p>The best Random Forest + Efficiency Analysis Trees model is given by the hyperparameters <code>{numStop = 3, m = 30, s_mtry = &#39;BRM&#39;}</code> with <code>RMSE = 41.37</code>.</p>
 </div>
 <div id="efficiencyrfeat" class="section level2">
@@ -2305,13 +2305,13 @@ M_RFEAT
 569
 </td>
 <td style="text-align:right;background-color: #FFCCF9 !important;">
-540.58
+533.94
 </td>
 <td style="text-align:right;background-color: #FFCCF9 !important;">
-538.58
+531.18
 </td>
 <td style="text-align:right;background-color: #FFCCF9 !important;">
-555.00
+546.20
 </td>
 </tr>
 <tr>
@@ -2334,13 +2334,13 @@ M_RFEAT
 569
 </td>
 <td style="text-align:right;background-color: #FFCCF9 !important;">
-524.82
+528.16
 </td>
 <td style="text-align:right;background-color: #FFCCF9 !important;">
-518.82
+521.62
 </td>
 <td style="text-align:right;background-color: #FFCCF9 !important;">
-531.66
+533.76
 </td>
 </tr>
 <tr>
@@ -2363,13 +2363,13 @@ M_RFEAT
 526
 </td>
 <td style="text-align:right;background-color: #FFCCF9 !important;">
-520.00
+519.48
 </td>
 <td style="text-align:right;background-color: #FFCCF9 !important;">
-516.04
+514.94
 </td>
 <td style="text-align:right;background-color: #FFCCF9 !important;">
-524.02
+522.30
 </td>
 </tr>
 <tr>
@@ -2392,13 +2392,13 @@ M_RFEAT
 526
 </td>
 <td style="text-align:right;background-color: #FFCCF9 !important;">
-513.08
+515.58
 </td>
 <td style="text-align:right;background-color: #FFCCF9 !important;">
-507.08
+509.68
 </td>
 <td style="text-align:right;background-color: #FFCCF9 !important;">
-512.32
+513.68
 </td>
 </tr>
 <tr>
@@ -2421,13 +2421,13 @@ M_RFEAT
 519
 </td>
 <td style="text-align:right;background-color: #FFCCF9 !important;">
-519.94
+521.04
 </td>
 <td style="text-align:right;background-color: #FFCCF9 !important;">
-518.12
+518.68
 </td>
 <td style="text-align:right;background-color: #FFCCF9 !important;">
-524.56
+525.32
 </td>
 </tr>
 <tr>
@@ -2450,13 +2450,13 @@ M_RFEAT
 516
 </td>
 <td style="text-align:right;background-color: #FFCCF9 !important;">
-506.92
+505.78
 </td>
 <td style="text-align:right;background-color: #FFCCF9 !important;">
-505.20
+504.24
 </td>
 <td style="text-align:right;background-color: #FFCCF9 !important;">
-511.84
+510.86
 </td>
 </tr>
 <tr>
@@ -2479,13 +2479,13 @@ M_RFEAT
 569
 </td>
 <td style="text-align:right;background-color: #FFCCF9 !important;">
-543.72
+540.72
 </td>
 <td style="text-align:right;background-color: #FFCCF9 !important;">
-541.60
+538.22
 </td>
 <td style="text-align:right;background-color: #FFCCF9 !important;">
-556.94
+551.26
 </td>
 </tr>
 <tr>
@@ -2508,13 +2508,13 @@ M_RFEAT
 526
 </td>
 <td style="text-align:right;background-color: #FFCCF9 !important;">
-525.02
+527.70
 </td>
 <td style="text-align:right;background-color: #FFCCF9 !important;">
-521.36
+522.96
 </td>
 <td style="text-align:right;background-color: #FFCCF9 !important;">
-524.02
+526.30
 </td>
 </tr>
 <tr>
@@ -2537,13 +2537,13 @@ M_RFEAT
 516
 </td>
 <td style="text-align:right;background-color: #FFCCF9 !important;">
-519.22
+519.94
 </td>
 <td style="text-align:right;background-color: #FFCCF9 !important;">
-517.44
+518.00
 </td>
 <td style="text-align:right;background-color: #FFCCF9 !important;">
-523.34
+523.78
 </td>
 </tr>
 <tr>
@@ -2566,13 +2566,13 @@ M_RFEAT
 509
 </td>
 <td style="text-align:right;background-color: #FFCCF9 !important;">
-512.10
+513.02
 </td>
 <td style="text-align:right;background-color: #FFCCF9 !important;">
-507.72
+507.88
 </td>
 <td style="text-align:right;background-color: #FFCCF9 !important;">
-515.22
+515.46
 </td>
 </tr>
 <tr>
@@ -2595,13 +2595,13 @@ M_RFEAT
 516
 </td>
 <td style="text-align:right;background-color: #FFCCF9 !important;">
-517.82
+518.90
 </td>
 <td style="text-align:right;background-color: #FFCCF9 !important;">
-516.26
+516.84
 </td>
 <td style="text-align:right;background-color: #FFCCF9 !important;">
-521.36
+522.46
 </td>
 </tr>
 <tr>
@@ -2624,13 +2624,13 @@ M_RFEAT
 526
 </td>
 <td style="text-align:right;background-color: #FFCCF9 !important;">
-527.42
+529.10
 </td>
 <td style="text-align:right;background-color: #FFCCF9 !important;">
-523.16
+524.56
 </td>
 <td style="text-align:right;background-color: #FFCCF9 !important;">
-525.66
+527.20
 </td>
 </tr>
 <tr>
@@ -2653,13 +2653,13 @@ M_RFEAT
 526
 </td>
 <td style="text-align:right;background-color: #FFCCF9 !important;">
-525.16
+527.18
 </td>
 <td style="text-align:right;background-color: #FFCCF9 !important;">
-522.16
+523.88
 </td>
 <td style="text-align:right;background-color: #FFCCF9 !important;">
-524.88
+526.86
 </td>
 </tr>
 <tr>
@@ -2682,13 +2682,13 @@ M_RFEAT
 519
 </td>
 <td style="text-align:right;background-color: #FFCCF9 !important;">
-517.64
+518.30
 </td>
 <td style="text-align:right;background-color: #FFCCF9 !important;">
-515.82
+516.32
 </td>
 <td style="text-align:right;background-color: #FFCCF9 !important;">
-521.74
+522.36
 </td>
 </tr>
 <tr>
@@ -2711,13 +2711,13 @@ M_RFEAT
 526
 </td>
 <td style="text-align:right;background-color: #FFCCF9 !important;">
-526.02
+527.46
 </td>
 <td style="text-align:right;background-color: #FFCCF9 !important;">
-523.12
+523.84
 </td>
 <td style="text-align:right;background-color: #FFCCF9 !important;">
-526.00
+526.94
 </td>
 </tr>
 <tr>
@@ -2740,13 +2740,13 @@ M_RFEAT
 516
 </td>
 <td style="text-align:right;background-color: #FFCCF9 !important;">
-518.96
+520.08
 </td>
 <td style="text-align:right;background-color: #FFCCF9 !important;">
-517.26
+518.22
 </td>
 <td style="text-align:right;background-color: #FFCCF9 !important;">
-522.20
+523.60
 </td>
 </tr>
 <tr>
@@ -2769,13 +2769,13 @@ M_RFEAT
 526
 </td>
 <td style="text-align:right;background-color: #FFCCF9 !important;">
-523.98
+526.30
 </td>
 <td style="text-align:right;background-color: #FFCCF9 !important;">
-521.24
+523.38
 </td>
 <td style="text-align:right;background-color: #FFCCF9 !important;">
-523.52
+526.06
 </td>
 </tr>
 <tr>
@@ -2798,13 +2798,13 @@ M_RFEAT
 516
 </td>
 <td style="text-align:right;background-color: #FFCCF9 !important;">
-518.52
+519.32
 </td>
 <td style="text-align:right;background-color: #FFCCF9 !important;">
-517.00
+517.60
 </td>
 <td style="text-align:right;background-color: #FFCCF9 !important;">
-521.58
+523.36
 </td>
 </tr>
 <tr>
@@ -2827,10 +2827,10 @@ M_RFEAT
 516
 </td>
 <td style="text-align:right;background-color: #FFCCF9 !important;">
-511.10
+511.24
 </td>
 <td style="text-align:right;background-color: #FFCCF9 !important;">
-509.00
+508.60
 </td>
 <td style="text-align:right;background-color: #FFCCF9 !important;">
 514.56
@@ -2856,13 +2856,13 @@ M_RFEAT
 496
 </td>
 <td style="text-align:right;background-color: #FFCCF9 !important;">
-483.92
+483.36
 </td>
 <td style="text-align:right;background-color: #FFCCF9 !important;">
-477.14
+476.86
 </td>
 <td style="text-align:right;background-color: #FFCCF9 !important;">
-492.56
+490.96
 </td>
 </tr>
 <tr>
@@ -2885,13 +2885,13 @@ M_RFEAT
 526
 </td>
 <td style="text-align:right;background-color: #FFCCF9 !important;">
-526.44
+527.98
 </td>
 <td style="text-align:right;background-color: #FFCCF9 !important;">
-522.40
+523.86
 </td>
 <td style="text-align:right;background-color: #FFCCF9 !important;">
-527.12
+528.34
 </td>
 </tr>
 <tr>
@@ -2914,13 +2914,13 @@ M_RFEAT
 526
 </td>
 <td style="text-align:right;background-color: #FFCCF9 !important;">
-527.30
+528.54
 </td>
 <td style="text-align:right;background-color: #FFCCF9 !important;">
-522.88
+524.56
 </td>
 <td style="text-align:right;background-color: #FFCCF9 !important;">
-527.66
+529.12
 </td>
 </tr>
 <tr>
@@ -2943,13 +2943,13 @@ M_RFEAT
 526
 </td>
 <td style="text-align:right;background-color: #FFCCF9 !important;">
-522.82
+524.32
 </td>
 <td style="text-align:right;background-color: #FFCCF9 !important;">
-518.68
+519.30
 </td>
 <td style="text-align:right;background-color: #FFCCF9 !important;">
-520.58
+521.76
 </td>
 </tr>
 <tr>
@@ -2972,13 +2972,13 @@ M_RFEAT
 496
 </td>
 <td style="text-align:right;background-color: #FFCCF9 !important;">
-498.20
+501.00
 </td>
 <td style="text-align:right;background-color: #FFCCF9 !important;">
-495.70
+497.14
 </td>
 <td style="text-align:right;background-color: #FFCCF9 !important;">
-501.66
+503.20
 </td>
 </tr>
 <tr>
@@ -3001,13 +3001,13 @@ M_RFEAT
 526
 </td>
 <td style="text-align:right;background-color: #FFCCF9 !important;">
-524.36
+526.98
 </td>
 <td style="text-align:right;background-color: #FFCCF9 !important;">
-520.86
+522.64
 </td>
 <td style="text-align:right;background-color: #FFCCF9 !important;">
-524.08
+526.44
 </td>
 </tr>
 <tr>
@@ -3030,13 +3030,13 @@ M_RFEAT
 496
 </td>
 <td style="text-align:right;background-color: #FFCCF9 !important;">
-476.50
+476.38
 </td>
 <td style="text-align:right;background-color: #FFCCF9 !important;">
-472.64
+472.46
 </td>
 <td style="text-align:right;background-color: #FFCCF9 !important;">
-480.50
+477.04
 </td>
 </tr>
 <tr>
@@ -3059,13 +3059,13 @@ M_RFEAT
 516
 </td>
 <td style="text-align:right;background-color: #FFCCF9 !important;">
-519.84
+519.10
 </td>
 <td style="text-align:right;background-color: #FFCCF9 !important;">
-517.94
+517.24
 </td>
 <td style="text-align:right;background-color: #FFCCF9 !important;">
-523.30
+523.48
 </td>
 </tr>
 <tr>
@@ -3088,13 +3088,13 @@ M_RFEAT
 486
 </td>
 <td style="text-align:right;background-color: #FFCCF9 !important;">
-472.70
+472.26
 </td>
 <td style="text-align:right;background-color: #FFCCF9 !important;">
-468.26
+467.66
 </td>
 <td style="text-align:right;background-color: #FFCCF9 !important;">
-481.34
+481.20
 </td>
 </tr>
 <tr>
@@ -3117,13 +3117,13 @@ M_RFEAT
 496
 </td>
 <td style="text-align:right;background-color: #FFCCF9 !important;">
-489.96
+489.20
 </td>
 <td style="text-align:right;background-color: #FFCCF9 !important;">
-485.60
+483.80
 </td>
 <td style="text-align:right;background-color: #FFCCF9 !important;">
-495.04
+494.14
 </td>
 </tr>
 <tr>
@@ -3146,13 +3146,13 @@ M_RFEAT
 486
 </td>
 <td style="text-align:right;background-color: #FFCCF9 !important;">
-470.70
+470.20
 </td>
 <td style="text-align:right;background-color: #FFCCF9 !important;">
-466.28
+465.78
 </td>
 <td style="text-align:right;background-color: #FFCCF9 !important;">
-474.76
+474.18
 </td>
 </tr>
 <tr>
@@ -3175,13 +3175,13 @@ M_RFEAT
 496
 </td>
 <td style="text-align:right;background-color: #FFCCF9 !important;">
-484.72
+483.94
 </td>
 <td style="text-align:right;background-color: #FFCCF9 !important;">
-478.70
+478.36
 </td>
 <td style="text-align:right;background-color: #FFCCF9 !important;">
-490.62
+489.56
 </td>
 </tr>
 <tr>
@@ -3204,13 +3204,13 @@ NA
 526
 </td>
 <td style="text-align:right;background-color: #FFCCF9 !important;">
-526.40
+527.12
 </td>
 <td style="text-align:right;background-color: #FFCCF9 !important;">
-523.24
+523.96
 </td>
 <td style="text-align:right;background-color: #FFCCF9 !important;">
-525.84
+526.52
 </td>
 </tr>
 <tr>
@@ -3233,13 +3233,13 @@ NA
 516
 </td>
 <td style="text-align:right;background-color: #FFCCF9 !important;">
-515.24
+514.32
 </td>
 <td style="text-align:right;background-color: #FFCCF9 !important;">
-513.88
+511.96
 </td>
 <td style="text-align:right;background-color: #FFCCF9 !important;">
-518.52
+517.74
 </td>
 </tr>
 <tr>
@@ -3262,13 +3262,13 @@ NA
 496
 </td>
 <td style="text-align:right;background-color: #FFCCF9 !important;">
-477.18
+476.08
 </td>
 <td style="text-align:right;background-color: #FFCCF9 !important;">
-475.16
+474.48
 </td>
 <td style="text-align:right;background-color: #FFCCF9 !important;">
-479.22
+479.18
 </td>
 </tr>
 <tr>
@@ -3291,13 +3291,13 @@ NA
 496
 </td>
 <td style="text-align:right;background-color: #FFCCF9 !important;">
-480.70
+479.36
 </td>
 <td style="text-align:right;background-color: #FFCCF9 !important;">
-475.64
+473.80
 </td>
 <td style="text-align:right;background-color: #FFCCF9 !important;">
-487.76
+486.30
 </td>
 </tr>
 <tr>
@@ -3320,13 +3320,13 @@ NA
 496
 </td>
 <td style="text-align:right;background-color: #FFCCF9 !important;">
-479.98
+483.40
 </td>
 <td style="text-align:right;background-color: #FFCCF9 !important;">
-477.70
+481.30
 </td>
 <td style="text-align:right;background-color: #FFCCF9 !important;">
-483.74
+487.66
 </td>
 </tr>
 <tr>
@@ -3349,13 +3349,13 @@ NA
 496
 </td>
 <td style="text-align:right;background-color: #FFCCF9 !important;">
-505.26
+506.02
 </td>
 <td style="text-align:right;background-color: #FFCCF9 !important;">
-502.18
+502.28
 </td>
 <td style="text-align:right;background-color: #FFCCF9 !important;">
-508.72
+509.04
 </td>
 </tr>
 <tr>
@@ -3378,13 +3378,13 @@ NA
 454
 </td>
 <td style="text-align:right;background-color: #FFCCF9 !important;">
-467.26
+471.56
 </td>
 <td style="text-align:right;background-color: #FFCCF9 !important;">
-465.40
+468.94
 </td>
 <td style="text-align:right;background-color: #FFCCF9 !important;">
-462.16
+464.16
 </td>
 </tr>
 <tr>
@@ -3407,13 +3407,13 @@ NA
 454
 </td>
 <td style="text-align:right;background-color: #FFCCF9 !important;">
-452.30
+458.70
 </td>
 <td style="text-align:right;background-color: #FFCCF9 !important;">
-448.28
+454.00
 </td>
 <td style="text-align:right;background-color: #FFCCF9 !important;">
-447.08
+450.50
 </td>
 </tr>
 <tr>
@@ -3436,13 +3436,13 @@ NA
 486
 </td>
 <td style="text-align:right;background-color: #FFCCF9 !important;">
-484.54
+483.22
 </td>
 <td style="text-align:right;background-color: #FFCCF9 !important;">
-480.84
+478.66
 </td>
 <td style="text-align:right;background-color: #FFCCF9 !important;">
-490.96
+489.62
 </td>
 </tr>
 <tr>
@@ -3465,13 +3465,13 @@ NA
 516
 </td>
 <td style="text-align:right;background-color: #FFCCF9 !important;">
-511.94
+512.54
 </td>
 <td style="text-align:right;background-color: #FFCCF9 !important;">
-510.26
+510.84
 </td>
 <td style="text-align:right;background-color: #FFCCF9 !important;">
-515.64
+516.88
 </td>
 </tr>
 <tr>
@@ -3494,13 +3494,13 @@ NA
 454
 </td>
 <td style="text-align:right;background-color: #FFCCF9 !important;">
-450.62
+453.42
 </td>
 <td style="text-align:right;background-color: #FFCCF9 !important;">
-448.16
+450.30
 </td>
 <td style="text-align:right;background-color: #FFCCF9 !important;">
-453.64
+454.94
 </td>
 </tr>
 <tr>
@@ -3523,13 +3523,13 @@ NA
 440
 </td>
 <td style="text-align:right;background-color: #FFCCF9 !important;">
-435.48
+429.38
 </td>
 <td style="text-align:right;background-color: #FFCCF9 !important;">
-426.18
+418.82
 </td>
 <td style="text-align:right;background-color: #FFCCF9 !important;">
-437.04
+429.14
 </td>
 </tr>
 <tr>
@@ -3552,13 +3552,13 @@ NA
 437
 </td>
 <td style="text-align:right;background-color: #FFCCF9 !important;">
-419.96
+419.12
 </td>
 <td style="text-align:right;background-color: #FFCCF9 !important;">
-412.50
+411.96
 </td>
 <td style="text-align:right;background-color: #FFCCF9 !important;">
-429.98
+427.66
 </td>
 </tr>
 <tr>
@@ -3581,13 +3581,13 @@ NA
 440
 </td>
 <td style="text-align:right;background-color: #FFCCF9 !important;">
-437.06
+441.32
 </td>
 <td style="text-align:right;background-color: #FFCCF9 !important;">
-434.24
+438.38
 </td>
 <td style="text-align:right;background-color: #FFCCF9 !important;">
-441.18
+444.40
 </td>
 </tr>
 <tr>
@@ -3610,13 +3610,13 @@ NA
 440
 </td>
 <td style="text-align:right;background-color: #FFCCF9 !important;">
-428.02
+428.96
 </td>
 <td style="text-align:right;background-color: #FFCCF9 !important;">
-423.48
+423.76
 </td>
 <td style="text-align:right;background-color: #FFCCF9 !important;">
-432.00
+431.26
 </td>
 </tr>
 <tr>
@@ -3639,13 +3639,13 @@ NA
 430
 </td>
 <td style="text-align:right;background-color: #FFCCF9 !important;">
-432.58
+434.38
 </td>
 <td style="text-align:right;background-color: #FFCCF9 !important;">
-431.22
+431.68
 </td>
 <td style="text-align:right;background-color: #FFCCF9 !important;">
-439.04
+438.42
 </td>
 </tr>
 <tr>
@@ -3668,13 +3668,13 @@ NA
 440
 </td>
 <td style="text-align:right;background-color: #FFCCF9 !important;">
-431.98
+431.82
 </td>
 <td style="text-align:right;background-color: #FFCCF9 !important;">
-428.96
+427.12
 </td>
 <td style="text-align:right;background-color: #FFCCF9 !important;">
-437.14
+434.58
 </td>
 </tr>
 <tr>
@@ -3697,13 +3697,13 @@ NA
 437
 </td>
 <td style="text-align:right;background-color: #FFCCF9 !important;">
-426.30
+428.86
 </td>
 <td style="text-align:right;background-color: #FFCCF9 !important;">
-419.74
+420.38
 </td>
 <td style="text-align:right;background-color: #FFCCF9 !important;">
-430.28
+430.68
 </td>
 </tr>
 <tr>
@@ -3726,13 +3726,13 @@ NA
 437
 </td>
 <td style="text-align:right;background-color: #FFCCF9 !important;">
-419.58
+424.20
 </td>
 <td style="text-align:right;background-color: #FFCCF9 !important;">
-412.54
+418.22
 </td>
 <td style="text-align:right;background-color: #FFCCF9 !important;">
-419.76
+423.26
 </td>
 </tr>
 <tr>
@@ -3755,13 +3755,13 @@ NA
 420
 </td>
 <td style="text-align:right;background-color: #FFCCF9 !important;">
-399.30
+402.14
 </td>
 <td style="text-align:right;background-color: #FFCCF9 !important;">
-388.22
+391.32
 </td>
 <td style="text-align:right;background-color: #FFCCF9 !important;">
-406.14
+408.96
 </td>
 </tr>
 <tr>
@@ -3784,13 +3784,13 @@ NA
 437
 </td>
 <td style="text-align:right;background-color: #FFCCF9 !important;">
-420.78
+420.14
 </td>
 <td style="text-align:right;background-color: #FFCCF9 !important;">
-408.90
+407.52
 </td>
 <td style="text-align:right;background-color: #FFCCF9 !important;">
-421.62
+418.98
 </td>
 </tr>
 <tr>
@@ -3813,13 +3813,13 @@ NA
 437
 </td>
 <td style="text-align:right;background-color: #FFCCF9 !important;">
-444.82
+450.48
 </td>
 <td style="text-align:right;background-color: #FFCCF9 !important;">
-441.42
+445.44
 </td>
 <td style="text-align:right;background-color: #FFCCF9 !important;">
-446.58
+452.30
 </td>
 </tr>
 <tr>
@@ -3842,13 +3842,13 @@ NA
 496
 </td>
 <td style="text-align:right;background-color: #FFCCF9 !important;">
-486.72
+486.78
 </td>
 <td style="text-align:right;background-color: #FFCCF9 !important;">
-480.42
+480.78
 </td>
 <td style="text-align:right;background-color: #FFCCF9 !important;">
-493.90
+493.76
 </td>
 </tr>
 <tr>
@@ -3871,13 +3871,13 @@ NA
 437
 </td>
 <td style="text-align:right;background-color: #FFCCF9 !important;">
-431.18
+431.58
 </td>
 <td style="text-align:right;background-color: #FFCCF9 !important;">
-425.96
+425.00
 </td>
 <td style="text-align:right;background-color: #FFCCF9 !important;">
-436.12
+435.24
 </td>
 </tr>
 <tr>
@@ -3900,13 +3900,13 @@ NA
 437
 </td>
 <td style="text-align:right;background-color: #FFCCF9 !important;">
-428.18
+425.56
 </td>
 <td style="text-align:right;background-color: #FFCCF9 !important;">
-423.72
+420.98
 </td>
 <td style="text-align:right;background-color: #FFCCF9 !important;">
-433.70
+428.96
 </td>
 </tr>
 <tr>
@@ -3929,13 +3929,13 @@ NA
 430
 </td>
 <td style="text-align:right;background-color: #FFCCF9 !important;">
-429.06
+428.98
 </td>
 <td style="text-align:right;background-color: #FFCCF9 !important;">
-426.56
+424.92
 </td>
 <td style="text-align:right;background-color: #FFCCF9 !important;">
-434.62
+431.54
 </td>
 </tr>
 <tr>
@@ -3958,13 +3958,13 @@ NA
 437
 </td>
 <td style="text-align:right;background-color: #FFCCF9 !important;">
-447.30
+450.26
 </td>
 <td style="text-align:right;background-color: #FFCCF9 !important;">
-443.94
+445.32
 </td>
 <td style="text-align:right;background-color: #FFCCF9 !important;">
-449.68
+452.00
 </td>
 </tr>
 <tr>
@@ -3987,13 +3987,13 @@ NA
 437
 </td>
 <td style="text-align:right;background-color: #FFCCF9 !important;">
-435.86
+433.76
 </td>
 <td style="text-align:right;background-color: #FFCCF9 !important;">
-429.92
+427.28
 </td>
 <td style="text-align:right;background-color: #FFCCF9 !important;">
-438.72
+435.08
 </td>
 </tr>
 <tr>
@@ -4016,13 +4016,13 @@ NA
 420
 </td>
 <td style="text-align:right;background-color: #FFCCF9 !important;">
-409.32
+402.64
 </td>
 <td style="text-align:right;background-color: #FFCCF9 !important;">
-398.26
+391.72
 </td>
 <td style="text-align:right;background-color: #FFCCF9 !important;">
-409.42
+401.62
 </td>
 </tr>
 <tr>
@@ -4045,13 +4045,13 @@ NA
 420
 </td>
 <td style="text-align:right;background-color: #FFCCF9 !important;">
-411.24
+411.50
 </td>
 <td style="text-align:right;background-color: #FFCCF9 !important;">
-403.96
+404.00
 </td>
 <td style="text-align:right;background-color: #FFCCF9 !important;">
-419.12
+417.86
 </td>
 </tr>
 <tr>
@@ -4074,13 +4074,13 @@ NA
 430
 </td>
 <td style="text-align:right;background-color: #FFCCF9 !important;">
-428.74
+431.20
 </td>
 <td style="text-align:right;background-color: #FFCCF9 !important;">
-426.08
+426.56
 </td>
 <td style="text-align:right;background-color: #FFCCF9 !important;">
-434.80
+433.60
 </td>
 </tr>
 <tr>
@@ -4103,13 +4103,13 @@ NA
 437
 </td>
 <td style="text-align:right;background-color: #FFCCF9 !important;">
-423.36
+426.32
 </td>
 <td style="text-align:right;background-color: #FFCCF9 !important;">
-417.28
+419.38
 </td>
 <td style="text-align:right;background-color: #FFCCF9 !important;">
-431.74
+431.08
 </td>
 </tr>
 <tr>
@@ -4132,13 +4132,13 @@ NA
 437
 </td>
 <td style="text-align:right;background-color: #FFCCF9 !important;">
-435.72
+434.30
 </td>
 <td style="text-align:right;background-color: #FFCCF9 !important;">
-430.36
+428.46
 </td>
 <td style="text-align:right;background-color: #FFCCF9 !important;">
-438.96
+435.68
 </td>
 </tr>
 <tr>
@@ -4161,13 +4161,13 @@ NA
 437
 </td>
 <td style="text-align:right;background-color: #FFCCF9 !important;">
-432.78
+429.22
 </td>
 <td style="text-align:right;background-color: #FFCCF9 !important;">
-428.68
+424.48
 </td>
 <td style="text-align:right;background-color: #FFCCF9 !important;">
-434.74
+430.82
 </td>
 </tr>
 <tr>
@@ -4190,13 +4190,13 @@ NA
 454
 </td>
 <td style="text-align:right;background-color: #FFCCF9 !important;">
-466.88
+472.22
 </td>
 <td style="text-align:right;background-color: #FFCCF9 !important;">
-462.00
+467.68
 </td>
 <td style="text-align:right;background-color: #FFCCF9 !important;">
-466.34
+470.60
 </td>
 </tr>
 <tr>
@@ -4219,13 +4219,13 @@ NA
 379
 </td>
 <td style="text-align:right;background-color: #FFCCF9 !important;">
-388.20
+383.90
 </td>
 <td style="text-align:right;background-color: #FFCCF9 !important;">
-369.88
+368.84
 </td>
 <td style="text-align:right;background-color: #FFCCF9 !important;">
-379.10
+375.44
 </td>
 </tr>
 <tr>
@@ -4248,13 +4248,13 @@ NA
 440
 </td>
 <td style="text-align:right;background-color: #FFCCF9 !important;">
-430.30
+431.98
 </td>
 <td style="text-align:right;background-color: #FFCCF9 !important;">
-425.18
+425.26
 </td>
 <td style="text-align:right;background-color: #FFCCF9 !important;">
-436.80
+434.78
 </td>
 </tr>
 <tr>
@@ -4277,13 +4277,13 @@ NA
 379
 </td>
 <td style="text-align:right;background-color: #FFCCF9 !important;">
-387.90
+386.14
 </td>
 <td style="text-align:right;background-color: #FFCCF9 !important;">
-371.78
+371.84
 </td>
 <td style="text-align:right;background-color: #FFCCF9 !important;">
-381.72
+380.66
 </td>
 </tr>
 <tr>
@@ -4306,13 +4306,13 @@ NA
 379
 </td>
 <td style="text-align:right;background-color: #FFCCF9 !important;">
-414.34
+406.56
 </td>
 <td style="text-align:right;background-color: #FFCCF9 !important;">
-405.98
+398.28
 </td>
 <td style="text-align:right;background-color: #FFCCF9 !important;">
-410.46
+400.36
 </td>
 </tr>
 <tr>
@@ -4335,13 +4335,13 @@ NA
 379
 </td>
 <td style="text-align:right;background-color: #FFCCF9 !important;">
-382.54
+376.94
 </td>
 <td style="text-align:right;background-color: #FFCCF9 !important;">
-365.30
+362.84
 </td>
 <td style="text-align:right;background-color: #FFCCF9 !important;">
-374.84
+371.18
 </td>
 </tr>
 <tr>
@@ -4364,13 +4364,13 @@ NA
 379
 </td>
 <td style="text-align:right;background-color: #FFCCF9 !important;">
-380.12
+373.96
 </td>
 <td style="text-align:right;background-color: #FFCCF9 !important;">
-369.94
+365.24
 </td>
 <td style="text-align:right;background-color: #FFCCF9 !important;">
-376.34
+368.92
 </td>
 </tr>
 </tbody>

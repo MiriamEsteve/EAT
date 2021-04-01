@@ -11,8 +11,8 @@
 #' @examples 
 #' 
 #' simulated <- eat:::Y1.sim(N = 150, nX = 6)
-#' RFmodel <- RFEAT(data = simulated, x = 1:6, y = 7, numStop = 5,
-#'                   m = 100, s_mtry = "Breiman", na.rm = TRUE)
+#' RFmodel <- RFEAT(data = simulated, x = 1:6, y = 7, numStop = 10,
+#'                   m = 50, s_mtry = "BRM", na.rm = TRUE)
 #' plotRFEAT(RFmodel)
 #' 
 #' @export

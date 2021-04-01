@@ -85,7 +85,7 @@ select_mtry <- function(s_mtry, t, nX, nY){
 mtry_inputSelection <- function(data, x, t, mtry){
   
   # Columns without variability
-  drpVars <- which(apply(data[t[['index']], ], 2, sd) == 0)
+  drpVars <- which(apply(data[t[['index']], x], 2, sd) == 0)
   
   # If all variables have variability drpVars = 0 to select all variables
   if (length(drpVars) == 0) drpVars <- 0

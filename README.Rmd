@@ -17,7 +17,7 @@ knitr::opts_chunk$set(
 
 The `EAT` algorithm performs a regression tree based on CART methodology under a new approach that guarantees obtaining a frontier as estimator that fulfills the property of free disposability. This new technique has been baptized as Efficiency Analysis Trees. Some of its main functions are:
 
-* To create homogeneous groups of DMUs in terms of their inputs and to know for each of these groups, what is the maximum output expected.
+* To create homogeneous groups of DMUs in terms of their inputs and to know for each of these groups, what is the maximum expected output.
 
 * To know which DMUs exercise best practices and which of them do not obtain a performance according to their resources level.
 
@@ -81,8 +81,7 @@ frontier.levels(single_model)
 ```{r perf.model1, collapse = FALSE}
 descriptiveEAT <- descrEAT(single_model)
 
-# Descriptive for the nodes 1-3
-descriptiveEAT[1:3]
+descriptiveEAT
 ```
 
 * Plot the frontier
@@ -90,12 +89,12 @@ descriptiveEAT[1:3]
 ```{r frontier, collapse = FALSE}
 frontier(object = single_model,
          FDH = TRUE, 
-         train.data = TRUE,
+         observed.data = TRUE,
          rwn = TRUE)
 
 ```
 
-* EAT model with 18 inputs and 3 outputs
+* EAT model with 13 inputs and 3 outputs
 
 ```{r model2, collapse = FALSE}
 multioutput <- EAT(data = PISAindex, 
@@ -107,9 +106,9 @@ multioutput <- EAT(data = PISAindex,
 
 ```{r ranking, collapse = FALSE}
 rankingEAT(object = multioutput,
-           r = 2,
            barplot = TRUE,
-           threshold = 70)
+           threshold = 70,
+           digits = 2)
 ```
 
 * Plot an EAT model
@@ -137,12 +136,17 @@ bestEAT(training = training,
 * Efficiency scores EAT
 
 ```{r eff_EAT, collapse = FALSE}
+
+single_model <- EAT(data = PISAindex, 
+                    x = 15, # input 
+                    y = 3) # output
+
 scores_EAT <-  efficiencyEAT(data = PISAindex,
                             x = 15, 
                             y = 3,
                             object = single_model, 
-                            scores_model = "BCC_out",
-                            r = 3,
+                            scores_model = "BCC.OUT",
+                            digits = 3,
                             FDH = TRUE)
 ```
 
@@ -153,8 +157,8 @@ scores_CEAT <- efficiencyCEAT(data = PISAindex,
                               x = 15, 
                               y = 3,
                               object = single_model, 
-                              scores_model = "BCC_in",
-                              r = 3,
+                              scores_model = "BCC.INP",
+                              digits = 3,
                               DEA = TRUE)
 ```
 
@@ -162,15 +166,15 @@ scores_CEAT <- efficiencyCEAT(data = PISAindex,
 
 ```{r jitter, collapse = FALSE}
 efficiencyJitter(object = single_model,
-                 scores_EAT = scores_EAT$EAT_BCC_out,
-                 scores_model = "BCC_out",
+                 df_scores = scores_EAT$EAT_BCC_OUT,
+                 scores_model = "BCC.OUT",
                  lwb = 1.2)
 ```
 
 * Efficiency density plot
 
 ```{r density, collapse = FALSE}
-efficiencyDensity(scores = scores_EAT[, 3:4],
+efficiencyDensity(df_scores = scores_EAT[, 3:4],
                   model = c("EAT", "FDH"))
 ```
 
@@ -182,7 +186,7 @@ forest <- RFEAT(data = PISAindex,
                 y = 5, # output
                 numStop = 5, 
                 m = 30,
-                s_mtry = "Breiman",
+                s_mtry = "BRM",
                 na.rm = TRUE)
 ```
 
@@ -192,7 +196,7 @@ forest <- RFEAT(data = PISAindex,
 print(forest)
 ```
 
-* Plot the Out-of-Bag error for a forest of k trees
+* Plot the Out-of-Bag error for a forest made up of k trees
 
 ```{r plot.RFEAT, collapse = FALSE}
 plotRFEAT(forest)
@@ -201,8 +205,8 @@ plotRFEAT(forest)
 * RFEAT ranking
 
 ```{r rankingRFEAT, collapse = FALSE}
-rankingRFEAT(object = forest, r = 2,
-             barplot = TRUE)
+rankingRFEAT(object = forest, barplot = TRUE,
+             digits = 2)
 ```
 
 * Tuning a RFEAT model
@@ -213,8 +217,8 @@ bestRFEAT(training = training,
           x = 6:18,
           y = 3:5,
           numStop = c(5, 10),
-          m = c(30, 35, 40),
-          s_mtry = c("Breiman", "3"))
+          m = c(30, 40),
+          s_mtry = c("BRM", "3"))
 ```
 
 * RFEAT scores
@@ -227,35 +231,27 @@ efficiencyRFEAT(data = PISAindex,
                 FDH = TRUE)
 ```
 
-* EAT, RFEAT and FDH predictions 
+* EAT and RFEAT predictions 
 
 ```{r models, collapse = FALSE}
 input <- c(6, 7, 8, 12, 17)
 output <- 3:5
 
-which(is.na(PISAindex), arr.ind = TRUE)
-
-# FDH does not accept NA rows, so we exclude ESP
-
-EAT_model <- EAT(data = PISAindex[- 32, ],
+EAT_model <- EAT(data = PISAindex,
                  x = input,
                  y = output)
 
-RFEAT_model <- RFEAT(data = PISAindex[- 32, ],
+RFEAT_model <- RFEAT(data = PISAindex,
                      x = input,
                      y = output)
 
 # PREDICTIONS
 
 predictions_EAT <- predictEAT(object = EAT_model,
-                              newdata = PISAindex[- 32, input])
+                              newdata = PISAindex[, input])
 
 predictions_RFEAT <- predictRFEAT(object = RFEAT_model,
-                                  newdata = PISAindex[- 32, input])
-
-predictions_FDH <- predictFDH(data = PISAindex[- 32, ],
-                              x = input,
-                              y = output)
+                                  newdata = PISAindex[, input])
 ```
 
 Please, check the vignette for more details.

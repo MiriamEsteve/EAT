@@ -169,9 +169,9 @@ M_Breiman <- function(object, digits) {
 #' @description This function calculates variable importance through an Efficiency Analysis Trees model.
 #'
 #' @param object An EAT object.
-#' @param digits Integer. Decimal units.
 #' @param barplot Logical. If \code{TRUE}, a barplot with the importance scores is displayed.
 #' @param threshold Numeric. Importance score value in which a line is graphed.
+#' @param digits Integer. Decimal units.
 #'
 #' @return Dataframe with the importance scores. If \code{barplot = TRUE}, it is returned a list containing the scores and the barplot.
 #' 
@@ -181,12 +181,12 @@ M_Breiman <- function(object, digits) {
 #' EAT_model <- EAT(data = simulated, x = c(1,2), y = c(3, 4))
 #' 
 #' rankingEAT(object = EAT_model,
-#'            digits = 2,
+#'            barplot = TRUE,
 #'            threshold = 70,
-#'            barplot = TRUE)
+#'            digits = 2)
 #' 
 #' @export   
-rankingEAT <- function(object, digits = 2, threshold = 70, barplot = TRUE) {
+rankingEAT <- function(object, barplot = TRUE, threshold = 70, digits = 2) {
   
   if (class(object) != "EAT") {
     stop(paste(deparse(substitute(object)), "must be an EAT object."))

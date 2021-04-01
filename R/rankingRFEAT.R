@@ -3,8 +3,8 @@
 #' @description This function calculates variable importance through a Random Forest + Efficiency Analysis Trees model.
 #'
 #' @param object A RFEAT object.
-#' @param digits Integer. Decimal units.
 #' @param barplot Logical. If \code{TRUE}, a barplot with importance scores is displayed.
+#' @param digits Integer. Decimal units.
 #'
 #' @return Dataframe with the importance scores. If \code{barplot = TRUE}, it is returned a list containing the scores and the barplot.
 #' 
@@ -14,11 +14,11 @@
 #' RFEAT_model <- RFEAT(data = simulated, x = c(1,2), y = c(3, 4))
 #' 
 #' rankingRFEAT(object = RFEAT_model,
-#'              digits = 2,
-#'              barplot = TRUE)
+#'              barplot = TRUE,
+#'              digits = 2)
 #' 
 #' @export   
-rankingRFEAT <- function(object, digits = 2, barplot = TRUE) {
+rankingRFEAT <- function(object, barplot = TRUE, digits = 2) {
   
   if (class(object) != "RFEAT"){
     stop(paste(deparse(substitute(object)), "must be a RFEAT object."))

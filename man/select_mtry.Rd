@@ -2,7 +2,7 @@
 % Please edit documentation in R/splitRFEAT.R
 \name{select_mtry}
 \alias{select_mtry}
-\title{Select possible inputs in split.}
+\title{Select Possible Inputs in Split.}
 \usage{
 select_mtry(s_mtry, t, nX, nY)
 }

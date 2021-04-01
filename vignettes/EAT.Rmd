@@ -424,18 +424,18 @@ The second example presents a multiple output scenario where 13 inputs are used 
 
 ```{r ranking, eval = FALSE}
 rankingEAT(object,
-           digits = 2,
            barplot = TRUE,
-           threshold = 70)
+           threshold = 70,
+           digits = 2)
 ```
 
 The importance score represents how influential each variable is in the model. In this case, the cut-off point is set at 70 and therefore important variables are considered: **AAE** (Acess to Advance Education), **WS** (Water and Sanitation), **NBMC** (Nutrition and Basic Medical Care), **HW** (Health and Wellness) and **S** (Shelter). 
 
 ```{r multioutput.importance, fig.width = 7.2, fig.height = 6}
 rankingEAT(object = multioutput_model,
-           digits = 2,
            barplot = TRUE,
-           threshold = 70)
+           threshold = 70,
+           digits = 2)
 ```
 
 ## Graphical representation by a tree structure
@@ -808,8 +808,10 @@ plotRFEAT(forest)
 As in `rankingEAT()`, the `rankingRFEAT` function allows an importance score for variables using a `RFEAT` object to be calculated.
 
 ```{r rankingRFEAT, eval = FALSE}
-rankingRFEAT(object, digits = 2,
-             barplot = TRUE)
+rankingRFEAT(object, 
+             barplot = TRUE, 
+             digits = 2,
+)
 ```
 
 For example:
@@ -825,8 +827,9 @@ forestReduced <- RFEAT(data = PISAindex,
 ``` 
 
 ```{r rankingRFEAT_forest1, fig.width = 7.2, fig.height = 6}
-rankingRFEAT(object = forestReduced, digits = 2,
-             barplot = TRUE)
+rankingRFEAT(object = forestReduced, 
+             barplot = TRUE,
+             digits = 2)
 ```
 
 * A positive importance score means that including the input in the model improves the performance.
@@ -836,8 +839,9 @@ rankingRFEAT(object = forestReduced, digits = 2,
 Note: this example is computationally exhaustive and may take some time to run
 
 ```{r rankingRFEAT_forest2, fig.width = 7.2, fig.height = 6}
-rankingRFEAT(object = forest, digits = 2,
-             barplot = TRUE)
+rankingRFEAT(object = forest,
+             barplot = TRUE,
+             digits = 2)
 ```
 
 ## bestRFEAT()

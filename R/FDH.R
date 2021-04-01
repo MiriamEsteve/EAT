@@ -6,11 +6,6 @@
 #' @param x Vector. Column input indexes in data.
 #' @param y Vector. Column output indexes in data.
 #' 
-#' @examples
-#'  
-#' simulated <- eat:::Y1.sim(N = 50, nX = 1)
-#' predictFDH(simulated, x = 1, y = 2)
-#' 
 #' @return Data frame with the original data and the predicted values through a Free Disposal Hull model.
 predictFDH <- function(data, x, y) {
   

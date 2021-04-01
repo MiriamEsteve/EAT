@@ -2,7 +2,7 @@
 % Please edit documentation in R/splitRFEAT.R
 \name{split_forest}
 \alias{split_forest}
-\title{Split node in Random Forest EAT}
+\title{Split Node in Random Forest EAT}
 \usage{
 split_forest(data, tree, leaves, t, x, y, numStop, arrayK)
 }

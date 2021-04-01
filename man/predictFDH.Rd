@@ -19,9 +19,3 @@ Data frame with the original data and the predicted values through a Free Dispos
 \description{
 This function predicts the expected output by a Free Disposal Hull model.
 }
-\examples{
- 
-simulated <- eat:::Y1.sim(N = 50, nX = 1)
-predictFDH(simulated, x = 1, y = 2)
-
-}

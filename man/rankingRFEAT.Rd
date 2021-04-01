@@ -4,14 +4,14 @@
 \alias{rankingRFEAT}
 \title{Ranking of variables by Random Forest + Efficiency Analysis Trees.}
 \usage{
-rankingRFEAT(object, digits = 2, barplot = TRUE)
+rankingRFEAT(object, barplot = TRUE, digits = 2)
 }
 \arguments{
 \item{object}{A RFEAT object.}
 
-\item{digits}{Integer. Decimal units.}
-
 \item{barplot}{Logical. If \code{TRUE}, a barplot with importance scores is displayed.}
+
+\item{digits}{Integer. Decimal units.}
 }
 \value{
 Dataframe with the importance scores. If \code{barplot = TRUE}, it is returned a list containing the scores and the barplot.
@@ -25,7 +25,7 @@ simulated <- eat:::X2Y2.sim(N = 50, border = 0.2)
 RFEAT_model <- RFEAT(data = simulated, x = c(1,2), y = c(3, 4))
 
 rankingRFEAT(object = RFEAT_model,
-             digits = 2,
-             barplot = TRUE)
+             barplot = TRUE,
+             digits = 2)
 
 }

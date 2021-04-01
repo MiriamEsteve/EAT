@@ -10,7 +10,7 @@ knitr::opts_chunk$set(
 library(dplyr)
 
 functions <- data.frame("Purpose" = c(rep("Model", 2),
-                                      rep("Summarise", 5),
+                                      rep("Summarize", 5),
                                       rep("Tune", 2), 
                                       rep("Graph", 3),
                                       rep("Calculate efficiency scores", 3), 
@@ -39,10 +39,10 @@ functions <- data.frame("Purpose" = c(rep("Model", 2),
                                     "Plot the estimated frontier through an EAT model in a low dimensional scenario
                                     (FDH estimated frontier is optional).",
                                     "Plot the tree structure of an EAT model.",
-                                    "Shows a line graph with the OOB error on the y-axis calculated from a forest made up of k trees (x-axis).",
-                                    "Calculate DMU efficiency scores through an EAT model (through a FDH model is optional).",
-                                    "Calculate DMU efficiency scores through a convex EAT model (through a DEA model is optional).",
-                                    "Calculate DMU efficiency scores through a RFEAT model (through a FDH model is optional).",
+                                    "Shows a line graph with the OOB error on the y-axis, calculated from a forest made up of k trees (x-axis).",
+                                    "Calculate DMU efficiency scores through an EAT (and optionally through a FDH) model.",
+                                    "Calculate DMU efficiency scores through a convex EAT (and optionally through a DEA) model.",
+                                    "Calculate DMU efficiency scores through a RFEAT (and optionally through a FDH) model.",
                                     "Graph a density plot for a data frame of efficiency scores (EAT, FDH, CEAT, DEA and RFEAT are available).",
                                     "Graph a jitter plot for a vector of efficiency scores calculated through an EAT model 
                                     (EAT or CEAT scores are accepted).",

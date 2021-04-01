@@ -23,7 +23,7 @@ simulated <- eat:::X2Y2.sim(N = 50, border = 0.2)
 EAT_model <- EAT(data = simulated, x = c(1,2), y = c(3, 4))
 
 scores <- efficiencyEAT(data = simulated, x = c(1, 2), y = c(3, 4), object = EAT_model, 
-                        scores_model = "BCC_out", digits = 2, FDH = TRUE, na.rm = TRUE)
+                        scores_model = "BCC.OUT", digits = 2, FDH = TRUE, na.rm = TRUE)
 
 efficiencyDensity(df_scores = scores[, 5:6],
                   model = c("EAT", "FDH"))

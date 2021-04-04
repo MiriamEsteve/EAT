@@ -17,7 +17,7 @@
 #' @export
 #' 
 #' @examples
-#' 
+#' \dontrun{
 #' data("PISAindex")
 #' 
 #' n <- nrow(PISAindex) # Observations in the dataset
@@ -31,6 +31,7 @@
 #'         y = 3,
 #'         numStop = c(3, 5, 7),
 #'         fold = c(5, 7, 10))
+#' }
 #'
 #' @return Dataframe in which each row corresponds to a given set of hyperparameters and the root mean square error (RMSE).
 bestEAT <- function(training, test, x, y, numStop = 5, fold = 5, max.depth = NULL, 
@@ -130,7 +131,7 @@ bestEAT <- function(training, test, x, y, numStop = 5, fold = 5, max.depth = NUL
 #' @param na.rm Logical. If \code{TRUE}, \code{NA} rows are omitted.
 #' 
 #' @examples
-#' 
+#' \dontrun{
 #' data("PISAindex")
 #' 
 #' n <- nrow(PISAindex) # Observations in the dataset
@@ -145,6 +146,7 @@ bestEAT <- function(training, test, x, y, numStop = 5, fold = 5, max.depth = NUL
 #'           numStop = c(3, 5),
 #'           m = c(20, 30),
 #'           s_mtry = c("BRM", "1"))
+#' }
 #' 
 #' @export
 #'

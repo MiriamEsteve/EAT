@@ -54,5 +54,5 @@ RdMacros:
 VignetteBuilder: knitr
 Depends: 
     R (>= 2.10)
-URL: http://efficiencytools.wordpress.com/
+URL: https://efficiencytools.wordpress.com/
 BugReports: https://github.com/MiriamEsteve/EAT/issues

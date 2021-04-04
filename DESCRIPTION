@@ -19,7 +19,7 @@ Authors@R: c(
            role = c("ctr"),
            comment = c(ORCID = "0000-0003-3079-5855"))
            )
-Description: This package provides functions to determine production frontiers and 
+Description: Functions are provided to determine production frontiers and 
     technical efficiency measures through non-parametric techniques based upon regression 
     trees. The package includes code for estimating radial input, output, directional and 
     additive measures, plotting graphical representations of the scores and the production 

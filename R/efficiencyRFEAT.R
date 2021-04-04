@@ -16,12 +16,13 @@
 #' @export
 #' 
 #' @examples
-#' 
+#' \dontrun{
 #' simulated <- eat:::X2Y2.sim(N = 50, border = 0.2)
 #' RFEAT_model <- RFEAT(data = simulated, x = c(1,2), y = c(3, 4))
 #'
 #' efficiencyRFEAT(data = simulated, x = c(1, 2), y = c(3, 4), object = RFEAT_model, 
 #'                 digits = 2, FDH = TRUE, na.rm = TRUE)
+#' }
 #'
 #' @return Dataframe with input variables and efficiency scores through a Random Forest + Efficiency Analysis Trees model.
 efficiencyRFEAT <- function(data, x, y, object, digits = 3, FDH = TRUE, na.rm = TRUE){

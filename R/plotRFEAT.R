@@ -9,11 +9,12 @@
 #' @return Line plot with the OOB error and the number of trees in the forest.
 #' 
 #' @examples 
-#' 
+#' \dontrun{
 #' simulated <- eat:::Y1.sim(N = 150, nX = 6)
 #' RFmodel <- RFEAT(data = simulated, x = 1:6, y = 7, numStop = 10,
 #'                   m = 50, s_mtry = "BRM", na.rm = TRUE)
 #' plotRFEAT(RFmodel)
+#' }
 #' 
 #' @export
 plotRFEAT <- function(object) {

@@ -24,7 +24,7 @@
 #' @export
 #' 
 #' @examples 
-#' 
+#' \dontrun{
 #' simulated <- eat:::X2Y2.sim(N = 50, border = 0.2)
 #' EAT_model <- EAT(data = simulated, x = c(1,2), y = c(3, 4))
 #'
@@ -32,7 +32,8 @@
 #'                             scores_model = "BCC.OUT", digits = 2, na.rm = TRUE)
 #' 
 #' efficiencyJitter(object = EAT_model, df_scores = EAT_scores, scores_model = "BCC.OUT")
-#'
+#' }
+#' 
 #' @return Jitter plot with DMUs and scores.
 efficiencyJitter <- function(object, df_scores, scores_model, upb = NULL, lwb = NULL) {
   if (class(object) != "EAT"){
@@ -132,7 +133,7 @@ efficiencyJitter <- function(object, df_scores, scores_model, upb = NULL, lwb = 
 #' @export
 #' 
 #' @examples 
-#' 
+#' \dontrun{
 #' simulated <- eat:::X2Y2.sim(N = 50, border = 0.2)
 #' EAT_model <- EAT(data = simulated, x = c(1,2), y = c(3, 4))
 #'
@@ -141,7 +142,8 @@ efficiencyJitter <- function(object, df_scores, scores_model, upb = NULL, lwb = 
 #' 
 #' efficiencyDensity(df_scores = scores[, 5:6],
 #'                   model = c("EAT", "FDH"))
-#'
+#' } 
+#' 
 #' @return Density plot for efficiency scores.
 efficiencyDensity <- function(df_scores, model = c("EAT", "FDH")) {
   

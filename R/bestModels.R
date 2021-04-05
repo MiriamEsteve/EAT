@@ -17,7 +17,7 @@
 #' @export
 #' 
 #' @examples
-#' \dontrun{
+#' \donttest{
 #' data("PISAindex")
 #' 
 #' n <- nrow(PISAindex) # Observations in the dataset
@@ -131,7 +131,7 @@ bestEAT <- function(training, test, x, y, numStop = 5, fold = 5, max.depth = NUL
 #' @param na.rm Logical. If \code{TRUE}, \code{NA} rows are omitted.
 #' 
 #' @examples
-#' \dontrun{
+#' \donttest{
 #' data("PISAindex")
 #' 
 #' n <- nrow(PISAindex) # Observations in the dataset

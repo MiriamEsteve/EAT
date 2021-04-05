@@ -9,7 +9,7 @@
 #' @return Dataframe with the importance scores. If \code{barplot = TRUE}, it is returned a list containing the scores and the barplot.
 #' 
 #' @examples 
-#' \dontrun{
+#' \donttest{
 #' simulated <- eat:::X2Y2.sim(N = 50, border = 0.2)
 #' RFEAT_model <- RFEAT(data = simulated, x = c(1,2), y = c(3, 4))
 #' 

@@ -845,7 +845,7 @@ bestRFEAT(training = training,
           s_mtry = c("BRM", 1)) # set of possible s_mtry 
 ```
 
-The best Random Forest + Efficiency Analysis Trees model is given by the hyperparameters `{numStop = 10, m = 30, s_mtry = 1}` with `RMSE = 54.15`.
+The best Random Forest + Efficiency Analysis Trees model is given by the hyperparameters `{numStop = 5, m = 20, s_mtry = "BRM"}` with `RMSE = 54.18`.
 
 ```{r bestModelRFEAT, collapse = FALSE}
 bestRFEAT_model <- RFEAT(data = PISAindex,

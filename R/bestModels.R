@@ -152,7 +152,7 @@ bestEAT <- function(training, test, x, y, numStop = 5, fold = 5, max.depth = NUL
 #'
 #' @return Dataframe in which each row corresponds to a given set of hyperparameters and the root mean square error (RMSE).
 bestRFEAT <- function(training, test, x, y, numStop = 5, m = 50, 
-                      s_mtry = c("5", "BRM"), na.rm = TRUE) {
+                      s_mtry = c(5, "BRM"), na.rm = TRUE) {
   
   training <- preProcess(training, x, y, na.rm = na.rm)[[2]]
   test <- preProcess(test, x, y, na.rm = na.rm)[[2]]
@@ -173,7 +173,8 @@ bestRFEAT <- function(training, test, x, y, numStop = 5, m = 50,
   for (i in 1:nrow(hp)) {
     
     RFEATmodel <- RFEAT(data = training, x = x, y = y, numStop = hp[i, "numStop"],
-                        m = hp[i, "m"], s_mtry = as.character(hp[i, "s_mtry"]), na.rm = na.rm)
+                        m = hp[i, "m"], s_mtry = as.character(hp[i, "s_mtry"]), 
+                        na.rm = na.rm)
     
     x.t <- RFEATmodel[["data"]][["x"]]
     y.t <- RFEATmodel[["data"]][["y"]]

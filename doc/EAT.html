@@ -2011,7 +2011,7 @@ DOM       1.102       1.000
 6       5 30      1 61.23
 7      10 20      1 63.96
 8      10 30      1 65.45</code></pre>
-<p>The best Random Forest + Efficiency Analysis Trees model is given by the hyperparameters <code>{numStop = 10, m = 30, s_mtry = 1}</code> with <code>RMSE = 54.15</code>.</p>
+<p>The best Random Forest + Efficiency Analysis Trees model is given by the hyperparameters <code>{numStop = 5, m = 20, s_mtry = &quot;BRM&quot;}</code> with <code>RMSE = 54.18</code>.</p>
 <div class="sourceCode" id="cb83"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb83-1"><a href="#cb83-1"></a>bestRFEAT_model &lt;-<span class="st"> </span><span class="kw">RFEAT</span>(<span class="dt">data =</span> PISAindex,</span>
 <span id="cb83-2"><a href="#cb83-2"></a>                         <span class="dt">x =</span> <span class="kw">c</span>(<span class="dv">6</span>, <span class="dv">7</span>, <span class="dv">8</span>, <span class="dv">12</span>, <span class="dv">17</span>),</span>
 <span id="cb83-3"><a href="#cb83-3"></a>                         <span class="dt">y =</span> <span class="dv">3</span><span class="op">:</span><span class="dv">5</span>,</span>

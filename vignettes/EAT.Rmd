@@ -512,18 +512,6 @@ plotEAT(object = reduced_model3)
 # Depth: 3
 ```
 
-* Example 4: `S_PISA ~ NBMC + S + HW + I + GDP_PPP`
-
-```{r model.graph4, collapse = FALSE}
-reduced_model4 <- EAT(data = PISAindex, 
-                      x = c(6, 8, 12, 16, 18), # input
-                      y = 3) # output
-```
-
-```{r graph4, fig.dim = c(8.4, 7.5)}
-plotEAT(object = reduced_model4)
-```
-
 ## EAT tuning
 
 In this section, the `PISAindex` database is divided into a training subset with 70% of the DMUs and a test subset with the remaining 30%. Next, the `bestEAT` function is applied to find the value of the hyperparameters  that minimize the error calculated on the test sample from an Efficiency Analysis Trees fitted with the training sample.
@@ -556,22 +544,7 @@ bestEAT(training, test,
         na.rm = TRUE)
 ```
 
-For example, if the arguments `numStop = {3, 5, 7}` and `fold = {5, 7}` are entered, 5 models of Efficiency Analysis Trees are constructed with {`numStop = 3`, `fold = 5`}, {`numStop = 3`, `fold = 7`}, {`numStop = 5`, `fold = 5`}, {`numStop = 5`, `fold = 7`}, {`numStop` = 7, `fold = 5`} and {`numStop = 7`, `fold = 7`}.
-
-Tuning for: 
-  
-`S_PISA + R_PISA + M_PISA ~ NBMC + WS + S + PS + ABK + AIC + HW + EQ + PR + PFC + I + AAE + GDP_PPP`
-
-`numStop = {3, 5, 7}` and `fold = {5, 7}`
-
-```{r eat.tuning1, collapse = FALSE}
-bestEAT(training = training, 
-        test = test,
-        x = 6:18,
-        y = 3:5,
-        numStop = c(3, 5, 7),
-        fold = c(5, 7))
-```
+For example, if the arguments `numStop = {3, 5, 7}` and `fold = {5, 7}` are entered, 6 models of Efficiency Analysis Trees are constructed with {`numStop = 3`, `fold = 5`}, {`numStop = 3`, `fold = 7`}, {`numStop = 5`, `fold = 5`}, {`numStop = 5`, `fold = 7`}, {`numStop` = 7, `fold = 5`} and {`numStop = 7`, `fold = 7`}.
 
 Tuning for: 
   
@@ -579,7 +552,7 @@ Tuning for:
 
 `numStop = {3, 5, 7}` and `fold = {5, 7}`
 
-```{r eat.tuning2, collapse = FALSE}
+```{r eat.tuning, collapse = FALSE}
 bestEAT(training = training, 
         test = test,
         x = c(6, 7, 8, 12, 17),
@@ -588,14 +561,14 @@ bestEAT(training = training,
         fold = c(5, 7))
 ```
 
-The best Efficiency Analysis Trees is given by the hyperparameters `{numStop = 3, fold = 5}` in the reduced model with `RMSE = 36.86` and 22 leaf nodes. However, this model is too complex. Therefore, we select the model with parameters `{numStop = 5, fold = 5}` with `RMSE = 42.45` but with only 14 leaf nodes. Now we check the results of this model.
+The best Efficiency Analysis Trees is given by the hyperparameters `{numStop = 3, fold = 7}` with `RMSE = 56.82` and 24 leaf nodes. However, this model is too complex. Therefore, we select the model with parameters `{numStop = 7, fold = 5}` with `RMSE = 59.14` but with only 10 leaf nodes. Now we check the results of this model.
 
 ```{r bestEAT_model, collapse = FALSE}
 bestEAT_model <- EAT(data = PISAindex,
                      x = c(6, 7, 8, 12, 17),
                      y = 3:5,
-                     numStop = 5,
-                     fold = 5)
+                     numStop = 3,
+                     fold = 7)
 ```
 
 ```{r summary.bestEAT_model, collapse = FALSE}
@@ -618,13 +591,7 @@ The efficiency scores are numerical values that indicate the degree of efficienc
 
 If `FDH = TRUE`, scores are also calculated through a FDH model. Finally, a brief summary of the distribution of the scores calculated for each model is also included.
 
-For this section, the previously created `single_model` is used (we still redefine it).
-
-```{r single.output2, collapse = FALSE}
-single_model <- EAT(data = PISAindex, 
-                    x = 15, # input 
-                    y = 3) # output
-```
+For this section, the previously created `single_model` is used:
 
 ```{r efficiencyEAT, eval = FALSE}
 efficiencyEAT(data, x, y, 
@@ -636,13 +603,18 @@ efficiencyEAT(data, x, y,
 ```
 
 ```{r scoresEAT, collapse = FALSE}
+# single_model <- EAT(data = PISAindex, 
+                    # x = 15,
+                    # y = 3)
+
 scores_EAT <- efficiencyEAT(data = PISAindex,
                             x = 15, 
                             y = 3,
                             object = single_model, 
                             scores_model = "BCC.OUT",
                             digits = 3,
-                            FDH = TRUE)
+                            FDH = TRUE,
+                            na.rm = TRUE)
 ```
 
 ```{r scoresEAT2, collapse = FALSE}
@@ -652,7 +624,8 @@ scores_EAT2 <- efficiencyEAT(data = PISAindex,
                              object = single_model, 
                              scores_model = "BCC.INP",
                              digits = 3,
-                             FDH = TRUE)
+                             FDH = TRUE,
+                             na.rm = TRUE)
 ```
 
 ### Convex Efficiency Analysis Trees model: efficiencyCEAT()
@@ -673,9 +646,10 @@ scores_CEAT <- efficiencyCEAT(data = PISAindex,
                               x = 15, 
                               y = 3,
                               object = single_model, 
-                              scores_model = "BCC.OUT",
+                              scores_model = "BCC.INP",
                               digits = 3,
-                              DEA = TRUE)
+                              DEA = TRUE,
+                              na.rm = TRUE)
 ```
 
 ### efficiencyJitter()
@@ -711,10 +685,10 @@ Graphically, for a single input and output scenario it is observed that if the B
   * If a DMU is located in a corner of the frontier, it is efficient under both orientations.
 
 ```{r frontier_comparar, fig.width = 7.2, fig.height = 6, fig.align = 'center'}
-frontier <- frontier(object = single_model,
-                     FDH = TRUE, 
-                     observed.data = TRUE,
-                     rwn = TRUE)
+# frontier <- frontier(object = single_model,
+                     # FDH = TRUE, 
+                     # observed.data = TRUE,
+                     # rwn = TRUE)
 
 plot(frontier)
 ```
@@ -745,6 +719,11 @@ efficiencyDensity(df_scores = scores_CEAT[, 3:4],
 When the ratio of the sample size and the number of variables (inputs and outputs) is low, the standard methods of efficiency analysis (specially FDH) tend to evaluate a large number of DMUs as technically efficient. This problem is known as the **curse of dimensionality**. To show it, the efficiency scores of the `multioutput_model` (section 2) with 16 variables and 72 DMUs are calculated:
   
 ```{r cursed.scores, collapse = FALSE}
+# multioutput_model <- EAT(data = PISAindex, 
+                         # x = 6:18, 
+                         # y = 3:5
+                         # ) 
+
 cursed_scores <- efficiencyEAT(data = PISAindex,
                                x = 6:18, 
                                y = 3:5,
@@ -814,19 +793,19 @@ rankingRFEAT(object,
 )
 ```
 
-For example:
+For example (this function is usually computationally exhaustive, thus a database reduction is carried out):
 
 ```{r RFmodel2}
 forestReduced <- RFEAT(data = PISAindex, 
                        x = c(6, 7, 8, 12, 17), 
-                       y = 3,
+                       y = 3:5,
                        numStop = 5, 
-                       m = 10,
+                       m = 30,
                        s_mtry = "BRM",
                        na.rm = TRUE)
 ``` 
 
-```{r rankingRFEAT_forest1, fig.width = 7.2, fig.height = 6}
+```{r rankingRFEAT_forestReduced, fig.width = 7.2, fig.height = 6}
 rankingRFEAT(object = forestReduced, 
              barplot = TRUE,
              digits = 2)
@@ -835,14 +814,6 @@ rankingRFEAT(object = forestReduced,
 * A positive importance score means that including the input in the model improves the performance.
 
 * A negative importance score means that removing the input from the model improves the performance.
-
-Note: this example is computationally exhaustive and may take some time to run
-
-```{r rankingRFEAT_forest2, fig.width = 7.2, fig.height = 6}
-rankingRFEAT(object = forest,
-             barplot = TRUE,
-             digits = 2)
-```
 
 ## bestRFEAT()
 
@@ -860,16 +831,30 @@ bestRFEAT(training, test,
 In our example:
 
 ```{r tuning.bestRFEAT, collapse = FALSE}
-bestRFEAT(training = training, # training set
-          test = test, # test set
-          x = 6:18, # inputs
-          y = 3:5, # outputs
-          numStop = c(3, 5, 10), # set of possible numStop
-          m = c(30, 40, 50), # set of possible m
-          s_mtry = c("BRM", 3)) # set of possible s_mtry 
+# n <- nrow(PISAindex)
+# selected <- sample(1:n, n * 0.7)
+# training <- PISAindex[selected, ]
+# test <- PISAindex[- selected, ]
+
+bestRFEAT(training = training,
+          test = test,
+          x = c(6, 7, 8, 12, 17),
+          y = 3:5,
+          numStop = c(5, 10), # set of possible numStop
+          m = c(20, 30), # set of possible m
+          s_mtry = c("BRM", 1)) # set of possible s_mtry 
 ```
 
-The best Random Forest + Efficiency Analysis Trees model is given by the hyperparameters `{numStop = 3, m = 30, s_mtry = 'BRM'}` with `RMSE = 41.37`.
+The best Random Forest + Efficiency Analysis Trees model is given by the hyperparameters `{numStop = 10, m = 30, s_mtry = 1}` with `RMSE = 54.15`.
+
+```{r bestModelRFEAT, collapse = FALSE}
+bestRFEAT_model <- RFEAT(data = PISAindex,
+                         x = c(6, 7, 8, 12, 17),
+                         y = 3:5,
+                         numStop = 10,
+                         m = 30,
+                         s_mtry = 1)
+```
 
 ## efficiencyRFEAT()
 
@@ -886,9 +871,9 @@ In our example:
 
 ```{r scores_RF}
 scoresRF <- efficiencyRFEAT(data = PISAindex,
-                            x = 6:18, # input
+                            x = c(6, 7, 8, 12, 17), # input
                             y = 3:5, # output
-                            object = forest,
+                            object = bestRFEAT_model,
                             FDH = TRUE)
 ```
 
@@ -910,29 +895,29 @@ predictEAT(object, newdata, x)
 predictRFEAT(object, newdata, x)
 ```
 
-Finally, an example is shown that aims to show the different predictions made by each of the methods:
-
-```{r models, collapse = FALSE}
-input <- c(6, 7, 8, 12, 17)
-output <- 3:5
-
-EAT_model <- EAT(data = PISAindex,
-                 x = input,
-                 y = output)
-
-RFEAT_model <- RFEAT(data = PISAindex,
-                     x = input,
-                     y = output)
-```
+Finally, an example is shown that aims to show the different predictions made by each of the methods (both have been previously defined):
 
 ```{r predictions, collapse = FALSE}
-predictions_EAT <- predictEAT(object = EAT_model,
-                              newdata = PISAindex,
-                              x = input)
+# bestEAT_model <- EAT(data = PISAindex,
+                     # x = c(6, 7, 8, 12, 17),
+                     # y = 3:5,
+                     # numStop = 5,
+                     # fold = 5)
 
-predictions_RFEAT <- predictRFEAT(object = RFEAT_model,
+# bestRFEAT_model <- EAT(data = PISAindex,
+                       # x = c(6, 7, 8, 12, 17),
+                       # y = 3:5,
+                       # numStop = 3,
+                       # m = 30,
+                       # s_mtry = 'BRM')
+
+predictions_EAT <- predictEAT(object = bestEAT_model,
+                              newdata = PISAindex,
+                              x = c(6, 7, 8, 12, 17))
+
+predictions_RFEAT <- predictRFEAT(object = bestRFEAT_model,
                                   newdata = PISAindex,
-                                  x = input)
+                                  x = c(6, 7, 8, 12, 17))
 ```
 
 ```{r EAT_vs_RFEAT_vs_FDH, collapse = FALSE, echo = FALSE}
@@ -956,14 +941,13 @@ kableExtra::kable(predictions) %>%
 * Prediction for new observations
 
 ```{r newDF, collapse = FALSE}
-
 new <- data.frame(NBMC = c(90, 95, 93),
                   WS = c(87, 92, 99),
                   S = c(93, 90, 90),
                   HW = c(90, 91, 92),
                   AAE = c(88, 91, 89))
 
-predictions_EAT <- predictEAT(object = EAT_model,
+predictions_EAT <- predictEAT(object = bestEAT_model,
                               newdata = new,
                               x = 1:5)
 ```

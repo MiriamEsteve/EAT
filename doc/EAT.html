@@ -1366,11 +1366,11 @@ x
 4       7    7 59.14     10
 5       5    7 60.13     12
 6       5    5 60.24     11</code></pre>
-<p>The best Efficiency Analysis Trees is given by the hyperparameters <code>{numStop = 3, fold = 5}</code> in the reduced model with <code>RMSE = 36.86</code> and 22 leaf nodes. However, this model is too complex. Therefore, we select the model with parameters <code>{numStop = 5, fold = 5}</code> with <code>RMSE = 42.45</code> but with only 14 leaf nodes. Now we check the results of this model.</p>
+<p>The best Efficiency Analysis Trees is given by the hyperparameters <code>{numStop = 3, fold = 7}</code> with <code>RMSE = 56.82</code> and 24 leaf nodes. However, this model is too complex. Therefore, we select the model with parameters <code>{numStop = 7, fold = 5}</code> with <code>RMSE = 59.14</code> but with only 10 leaf nodes. Now we check the results of this model.</p>
 <div class="sourceCode" id="cb51"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb51-1"><a href="#cb51-1"></a>bestEAT_model &lt;-<span class="st"> </span><span class="kw">EAT</span>(<span class="dt">data =</span> PISAindex,</span>
 <span id="cb51-2"><a href="#cb51-2"></a>                     <span class="dt">x =</span> <span class="kw">c</span>(<span class="dv">6</span>, <span class="dv">7</span>, <span class="dv">8</span>, <span class="dv">12</span>, <span class="dv">17</span>),</span>
 <span id="cb51-3"><a href="#cb51-3"></a>                     <span class="dt">y =</span> <span class="dv">3</span><span class="op">:</span><span class="dv">5</span>,</span>
-<span id="cb51-4"><a href="#cb51-4"></a>                     <span class="dt">numStop =</span> <span class="dv">5</span>,</span>
+<span id="cb51-4"><a href="#cb51-4"></a>                     <span class="dt">numStop =</span> <span class="dv">7</span>,</span>
 <span id="cb51-5"><a href="#cb51-5"></a>                     <span class="dt">fold =</span> <span class="dv">5</span>)</span></code></pre></div>
 <div class="sourceCode" id="cb52"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb52-1"><a href="#cb52-1"></a><span class="kw">summary</span>(bestEAT_model)</span></code></pre></div>
 <pre><code>
@@ -1380,37 +1380,27 @@ x
  #   Summary for leaf nodes   # 
  # ========================== # 
  
- id n(t)  % S_PISA R(t) M_PISA     R
-  6    5  7    396  377    379 64.72
- 10    3  4    404  401    420  9.14
- 12    4  6    426  405    437 39.03
- 13    3  4    428  424    437 29.33
- 14    3  4    415  421    430 15.37
- 16    5  7    429  427    437 24.23
- 17    5  7    438  432    440 43.32
- 18    3  4    469  466    454 65.48
- 20    1  1    469  466    454  7.54
- 22    3  4    481  476    486 29.72
- 23    4  6    487  479    496 43.47
- 25    3  4    551  549    569 68.31
- 26    5  7    492  492    496 33.47
- 29   10 14    530  523    526 98.80
- 31    1  1    519  514    526  0.00
- 32    1  1    492  492    496 11.61
- 35    2  3    511  512    519  5.55
- 36    1  1    507  495    509  0.00
- 37    9 13    511  512    516 95.55
+ id n(t)  % S_PISA R(t) M_PISA       R
+  3   32 45    551  549    569 1811.66
+  6    5  7    396  377    379   64.72
+ 10    3  4    404  401    420    9.14
+ 11    7 10    428  424    437   91.35
+ 12    3  4    415  421    430   15.37
+ 14    5  7    429  427    437   24.23
+ 15    5  7    438  432    440   43.32
+ 16    3  4    469  466    454   65.48
+ 17    8 11    487  479    496  112.99
 
  # ========================== # 
  #            Tree            # 
  # ========================== # 
  
- Interior nodes: 18 
-     Leaf nodes: 19 
-    Total nodes: 37 
+ Interior nodes: 8 
+     Leaf nodes: 9 
+    Total nodes: 17 
  
-           R(T): 684.64 
-        numStop: 5 
+           R(T): 2238.26 
+        numStop: 7 
            fold: 5 
       max.depth: 
      max.leaves:
@@ -1433,13 +1423,6 @@ x
     WS --&gt; {R: 2341.68, s: 86.44} 
     HW --&gt; {R: 2783.94, s: 57.95} 
 
- Node 3 --&gt; {24,25} || HW --&gt; {R: 634.4, s: 89.96}
-   Surrogate splits 
-    S --&gt; {R: 1339.33, s: 96.88} 
-    AAE --&gt; {R: 1364.2, s: 73.16} 
-    NBMC --&gt; {R: 1458.4, s: 98.02} 
-    WS --&gt; {R: 1468.3, s: 98.92} 
-
  Node 4 --&gt; {6,7} || NBMC --&gt; {R: 382.76, s: 90.39}
    Surrogate splits 
     HW --&gt; {R: 514.17, s: 59.25} 
@@ -1447,7 +1430,7 @@ x
     WS --&gt; {R: 581.11, s: 90.02} 
     S --&gt; {R: 639.65, s: 83.49} 
 
- Node 5 --&gt; {18,19} || NBMC --&gt; {R: 178.47, s: 95.37}
+ Node 5 --&gt; {16,17} || NBMC --&gt; {R: 178.47, s: 95.37}
    Surrogate splits 
     S --&gt; {R: 216.28, s: 93.2} 
     WS --&gt; {R: 237.44, s: 91.21} 
@@ -1468,82 +1451,19 @@ x
     HW --&gt; {R: 121.5, s: 72.35} 
     AAE --&gt; {R: 128.7, s: 54.17} 
 
- Node 9 --&gt; {14,15} || S --&gt; {R: 94.35, s: 87.87}
+ Node 9 --&gt; {12,13} || S --&gt; {R: 94.35, s: 87.87}
    Surrogate splits 
     AAE --&gt; {R: 98.11, s: 60.78} 
     HW --&gt; {R: 114.28, s: 67.69} 
     NBMC --&gt; {R: 114.97, s: 94.49} 
     WS --&gt; {R: 115.91, s: 94.63} 
 
- Node 11 --&gt; {12,13} || S --&gt; {R: 68.36, s: 92.59}
-   Surrogate splits 
-    NBMC --&gt; {R: 77.61, s: 94.6} 
-    HW --&gt; {R: 78.33, s: 72.35} 
-    WS --&gt; {R: 81.75, s: 90.02} 
-    AAE --&gt; {R: 89.08, s: 55.88} 
-
- Node 15 --&gt; {16,17} || AAE --&gt; {R: 67.55, s: 60.78}
+ Node 13 --&gt; {14,15} || AAE --&gt; {R: 67.55, s: 60.78}
    Surrogate splits 
     S --&gt; {R: 71.15, s: 92.12} 
     NBMC --&gt; {R: 74.55, s: 94.49} 
     WS --&gt; {R: 75.49, s: 94.63} 
-    HW --&gt; {R: 76.2, s: 67.69} 
-
- Node 19 --&gt; {20,21} || S --&gt; {R: 91.83, s: 93.2}
-   Surrogate splits 
-    AAE --&gt; {R: 94.29, s: 72.76} 
-    NBMC --&gt; {R: 100.13, s: 96.72} 
-    HW --&gt; {R: 103.15, s: 68} 
-    WS --&gt; {R: 111.27, s: 94.7} 
-
- Node 21 --&gt; {22,23} || AAE --&gt; {R: 73.19, s: 72.76}
-   Surrogate splits 
-    S --&gt; {R: 80.36, s: 94.88} 
-    NBMC --&gt; {R: 80.41, s: 96.72} 
-    HW --&gt; {R: 82.48, s: 69.07} 
-    WS --&gt; {R: 82.57, s: 94.7} 
-
- Node 24 --&gt; {26,27} || AAE --&gt; {R: 403.33, s: 73.16}
-   Surrogate splits 
-    S --&gt; {R: 459.63, s: 97.82} 
-    HW --&gt; {R: 519.36, s: 77.33} 
-    WS --&gt; {R: 528.81, s: 96.47} 
-    NBMC --&gt; {R: 545.91, s: 97.43} 
-
- Node 27 --&gt; {28,29} || S --&gt; {R: 293.55, s: 97.82}
-   Surrogate splits 
-    HW --&gt; {R: 354.53, s: 87.97} 
-    AAE --&gt; {R: 355.12, s: 86.32} 
-    NBMC --&gt; {R: 363.33, s: 98.22} 
-    WS --&gt; {R: 367.57, s: 98.91} 
-
- Node 28 --&gt; {30,31} || HW --&gt; {R: 143.21, s: 87.97}
-   Surrogate splits 
-    AAE --&gt; {R: 144.9, s: 82.99} 
-    NBMC --&gt; {R: 171.68, s: 98.22} 
-    S --&gt; {R: 177.76, s: 96.71} 
-    WS --&gt; {R: 188.05, s: 98.91} 
-
- Node 30 --&gt; {32,33} || AAE --&gt; {R: 120.54, s: 74.63}
-   Surrogate splits 
-    WS --&gt; {R: 135.51, s: 99.69} 
-    HW --&gt; {R: 135.93, s: 85.58} 
-    NBMC --&gt; {R: 137.18, s: 98.51} 
-    S --&gt; {R: 138, s: 97.47} 
-
- Node 33 --&gt; {34,35} || WS --&gt; {R: 102.77, s: 99.69}
-   Surrogate splits 
-    HW --&gt; {R: 103.19, s: 85.58} 
-    AAE --&gt; {R: 103.68, s: 82.99} 
-    NBMC --&gt; {R: 104.44, s: 98.51} 
-    S --&gt; {R: 105.26, s: 97.47} 
-
- Node 34 --&gt; {36,37} || AAE --&gt; {R: 95.55, s: 76.21}
-   Surrogate splits 
-    WS --&gt; {R: 97.22, s: 98.99} 
-    HW --&gt; {R: 97.22, s: 81.74} 
-    NBMC --&gt; {R: 97.22, s: 98.21} 
-    S --&gt; {R: 97.22, s: 97.31} </code></pre>
+    HW --&gt; {R: 76.2, s: 67.69} </code></pre>
 </div>
 </div>
 <div id="efficiency-scores.-graphical-representation." class="section level2">
@@ -2075,29 +1995,29 @@ DOM       1.102       1.000
 <span id="cb81-3"><a href="#cb81-3"></a><span class="co"># training &lt;- PISAindex[selected, ]</span></span>
 <span id="cb81-4"><a href="#cb81-4"></a><span class="co"># test &lt;- PISAindex[- selected, ]</span></span>
 <span id="cb81-5"><a href="#cb81-5"></a></span>
-<span id="cb81-6"><a href="#cb81-6"></a><span class="kw">bestRFEAT</span>(<span class="dt">training =</span> training, <span class="co"># training set</span></span>
-<span id="cb81-7"><a href="#cb81-7"></a>          <span class="dt">test =</span> test, <span class="co"># test set</span></span>
-<span id="cb81-8"><a href="#cb81-8"></a>          <span class="dt">x =</span> <span class="kw">c</span>(<span class="dv">6</span>, <span class="dv">7</span>, <span class="dv">8</span>, <span class="dv">12</span>, <span class="dv">17</span>), <span class="co"># inputs</span></span>
-<span id="cb81-9"><a href="#cb81-9"></a>          <span class="dt">y =</span> <span class="dv">3</span><span class="op">:</span><span class="dv">5</span>, <span class="co"># outputs</span></span>
+<span id="cb81-6"><a href="#cb81-6"></a><span class="kw">bestRFEAT</span>(<span class="dt">training =</span> training,</span>
+<span id="cb81-7"><a href="#cb81-7"></a>          <span class="dt">test =</span> test,</span>
+<span id="cb81-8"><a href="#cb81-8"></a>          <span class="dt">x =</span> <span class="kw">c</span>(<span class="dv">6</span>, <span class="dv">7</span>, <span class="dv">8</span>, <span class="dv">12</span>, <span class="dv">17</span>),</span>
+<span id="cb81-9"><a href="#cb81-9"></a>          <span class="dt">y =</span> <span class="dv">3</span><span class="op">:</span><span class="dv">5</span>,</span>
 <span id="cb81-10"><a href="#cb81-10"></a>          <span class="dt">numStop =</span> <span class="kw">c</span>(<span class="dv">5</span>, <span class="dv">10</span>), <span class="co"># set of possible numStop</span></span>
 <span id="cb81-11"><a href="#cb81-11"></a>          <span class="dt">m =</span> <span class="kw">c</span>(<span class="dv">20</span>, <span class="dv">30</span>), <span class="co"># set of possible m</span></span>
-<span id="cb81-12"><a href="#cb81-12"></a>          <span class="dt">s_mtry =</span> <span class="kw">c</span>(<span class="st">&quot;BRM&quot;</span>, <span class="dv">2</span>)) <span class="co"># set of possible s_mtry </span></span></code></pre></div>
+<span id="cb81-12"><a href="#cb81-12"></a>          <span class="dt">s_mtry =</span> <span class="kw">c</span>(<span class="st">&quot;BRM&quot;</span>, <span class="dv">1</span>)) <span class="co"># set of possible s_mtry </span></span></code></pre></div>
 <pre><code>  numStop  m s_mtry  RMSE
-1      10 30      2 54.15
-2       5 20    BRM 54.18
-3      10 20      2 55.50
-4      10 30    BRM 55.52
-5       5 20      2 56.11
-6       5 30      2 56.99
-7       5 30    BRM 58.55
-8      10 20    BRM 60.99</code></pre>
-<p>The best Random Forest + Efficiency Analysis Trees model is given by the hyperparameters <code>{numStop = 3, m = 30, s_mtry = &#39;BRM&#39;}</code> with <code>RMSE = 41.37</code>.</p>
+1       5 20    BRM 54.18
+2      10 30    BRM 55.52
+3       5 20      1 56.21
+4       5 30    BRM 58.55
+5      10 20    BRM 60.99
+6       5 30      1 61.23
+7      10 20      1 63.96
+8      10 30      1 65.45</code></pre>
+<p>The best Random Forest + Efficiency Analysis Trees model is given by the hyperparameters <code>{numStop = 10, m = 30, s_mtry = 1}</code> with <code>RMSE = 54.15</code>.</p>
 <div class="sourceCode" id="cb83"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb83-1"><a href="#cb83-1"></a>bestRFEAT_model &lt;-<span class="st"> </span><span class="kw">RFEAT</span>(<span class="dt">data =</span> PISAindex,</span>
 <span id="cb83-2"><a href="#cb83-2"></a>                         <span class="dt">x =</span> <span class="kw">c</span>(<span class="dv">6</span>, <span class="dv">7</span>, <span class="dv">8</span>, <span class="dv">12</span>, <span class="dv">17</span>),</span>
 <span id="cb83-3"><a href="#cb83-3"></a>                         <span class="dt">y =</span> <span class="dv">3</span><span class="op">:</span><span class="dv">5</span>,</span>
-<span id="cb83-4"><a href="#cb83-4"></a>                         <span class="dt">numStop =</span> <span class="dv">3</span>,</span>
-<span id="cb83-5"><a href="#cb83-5"></a>                         <span class="dt">m =</span> <span class="dv">30</span>,</span>
-<span id="cb83-6"><a href="#cb83-6"></a>                         <span class="dt">s_mtry =</span> <span class="st">&#39;BRM&#39;</span>)</span></code></pre></div>
+<span id="cb83-4"><a href="#cb83-4"></a>                         <span class="dt">numStop =</span> <span class="dv">5</span>,</span>
+<span id="cb83-5"><a href="#cb83-5"></a>                         <span class="dt">m =</span> <span class="dv">20</span>,</span>
+<span id="cb83-6"><a href="#cb83-6"></a>                         <span class="dt">s_mtry =</span> <span class="st">&quot;BRM&quot;</span>)</span></code></pre></div>
 </div>
 <div id="efficiencyrfeat" class="section level2">
 <h2>efficiencyRFEAT()</h2>
@@ -2113,80 +2033,80 @@ DOM       1.102       1.000
 <span id="cb85-4"><a href="#cb85-4"></a>                            <span class="dt">object =</span> bestRFEAT_model,</span>
 <span id="cb85-5"><a href="#cb85-5"></a>                            <span class="dt">FDH =</span> <span class="ot">TRUE</span>)</span>
 <span id="cb85-6"><a href="#cb85-6"></a>    RFEAT_BCC_OUT FDH_BCC_OUT</span>
-<span id="cb85-7"><a href="#cb85-7"></a>SGP         <span class="fl">0.946</span>       <span class="fl">1.000</span></span>
-<span id="cb85-8"><a href="#cb85-8"></a>JPN         <span class="fl">1.001</span>       <span class="fl">1.000</span></span>
-<span id="cb85-9"><a href="#cb85-9"></a>KOR         <span class="fl">0.993</span>       <span class="fl">1.000</span></span>
-<span id="cb85-10"><a href="#cb85-10"></a>EST         <span class="fl">0.971</span>       <span class="fl">1.000</span></span>
-<span id="cb85-11"><a href="#cb85-11"></a>NLD         <span class="fl">1.004</span>       <span class="fl">1.000</span></span>
-<span id="cb85-12"><a href="#cb85-12"></a>POL         <span class="fl">0.983</span>       <span class="fl">1.000</span></span>
-<span id="cb85-13"><a href="#cb85-13"></a>CHE         <span class="fl">1.060</span>       <span class="fl">1.105</span></span>
-<span id="cb85-14"><a href="#cb85-14"></a>CAN         <span class="fl">1.002</span>       <span class="fl">1.006</span></span>
-<span id="cb85-15"><a href="#cb85-15"></a>DNK         <span class="fl">1.021</span>       <span class="fl">1.014</span></span>
-<span id="cb85-16"><a href="#cb85-16"></a>SVN         <span class="fl">1.010</span>       <span class="fl">1.000</span></span>
-<span id="cb85-17"><a href="#cb85-17"></a>BEL         <span class="fl">1.022</span>       <span class="fl">1.016</span></span>
-<span id="cb85-18"><a href="#cb85-18"></a>FIN         <span class="fl">1.004</span>       <span class="fl">1.006</span></span>
-<span id="cb85-19"><a href="#cb85-19"></a>SWE         <span class="fl">1.029</span>       <span class="fl">1.034</span></span>
-<span id="cb85-20"><a href="#cb85-20"></a>GBR         <span class="fl">1.021</span>       <span class="fl">1.012</span></span>
-<span id="cb85-21"><a href="#cb85-21"></a>NOR         <span class="fl">1.044</span>       <span class="fl">1.044</span></span>
+<span id="cb85-7"><a href="#cb85-7"></a>SGP         <span class="fl">0.934</span>       <span class="fl">1.000</span></span>
+<span id="cb85-8"><a href="#cb85-8"></a>JPN         <span class="fl">0.998</span>       <span class="fl">1.000</span></span>
+<span id="cb85-9"><a href="#cb85-9"></a>KOR         <span class="fl">0.998</span>       <span class="fl">1.000</span></span>
+<span id="cb85-10"><a href="#cb85-10"></a>EST         <span class="fl">0.968</span>       <span class="fl">1.000</span></span>
+<span id="cb85-11"><a href="#cb85-11"></a>NLD         <span class="fl">1.013</span>       <span class="fl">1.000</span></span>
+<span id="cb85-12"><a href="#cb85-12"></a>POL         <span class="fl">0.972</span>       <span class="fl">1.000</span></span>
+<span id="cb85-13"><a href="#cb85-13"></a>CHE         <span class="fl">1.051</span>       <span class="fl">1.105</span></span>
+<span id="cb85-14"><a href="#cb85-14"></a>CAN         <span class="fl">1.007</span>       <span class="fl">1.006</span></span>
+<span id="cb85-15"><a href="#cb85-15"></a>DNK         <span class="fl">1.025</span>       <span class="fl">1.014</span></span>
+<span id="cb85-16"><a href="#cb85-16"></a>SVN         <span class="fl">1.004</span>       <span class="fl">1.000</span></span>
+<span id="cb85-17"><a href="#cb85-17"></a>BEL         <span class="fl">1.025</span>       <span class="fl">1.016</span></span>
+<span id="cb85-18"><a href="#cb85-18"></a>FIN         <span class="fl">1.008</span>       <span class="fl">1.006</span></span>
+<span id="cb85-19"><a href="#cb85-19"></a>SWE         <span class="fl">1.034</span>       <span class="fl">1.034</span></span>
+<span id="cb85-20"><a href="#cb85-20"></a>GBR         <span class="fl">1.022</span>       <span class="fl">1.012</span></span>
+<span id="cb85-21"><a href="#cb85-21"></a>NOR         <span class="fl">1.048</span>       <span class="fl">1.044</span></span>
 <span id="cb85-22"><a href="#cb85-22"></a>DEU         <span class="fl">1.029</span>       <span class="fl">1.016</span></span>
-<span id="cb85-23"><a href="#cb85-23"></a>IRL         <span class="fl">1.004</span>       <span class="fl">1.010</span></span>
+<span id="cb85-23"><a href="#cb85-23"></a>IRL         <span class="fl">1.008</span>       <span class="fl">1.010</span></span>
 <span id="cb85-24"><a href="#cb85-24"></a>AUT         <span class="fl">1.041</span>       <span class="fl">1.034</span></span>
-<span id="cb85-25"><a href="#cb85-25"></a>CZE         <span class="fl">1.026</span>       <span class="fl">1.028</span></span>
-<span id="cb85-26"><a href="#cb85-26"></a>LVA         <span class="fl">0.990</span>       <span class="fl">1.000</span></span>
-<span id="cb85-27"><a href="#cb85-27"></a>FRA         <span class="fl">1.058</span>       <span class="fl">1.057</span></span>
-<span id="cb85-28"><a href="#cb85-28"></a>ISL         <span class="fl">1.062</span>       <span class="fl">1.057</span></span>
+<span id="cb85-25"><a href="#cb85-25"></a>CZE         <span class="fl">1.018</span>       <span class="fl">1.028</span></span>
+<span id="cb85-26"><a href="#cb85-26"></a>LVA         <span class="fl">0.985</span>       <span class="fl">1.000</span></span>
+<span id="cb85-27"><a href="#cb85-27"></a>FRA         <span class="fl">1.063</span>       <span class="fl">1.057</span></span>
+<span id="cb85-28"><a href="#cb85-28"></a>ISL         <span class="fl">1.067</span>       <span class="fl">1.057</span></span>
 <span id="cb85-29"><a href="#cb85-29"></a>NZL         <span class="fl">1.025</span>       <span class="fl">1.034</span></span>
 <span id="cb85-30"><a href="#cb85-30"></a>PRT         <span class="fl">1.015</span>       <span class="fl">1.000</span></span>
-<span id="cb85-31"><a href="#cb85-31"></a>AUS         <span class="fl">1.034</span>       <span class="fl">1.040</span></span>
-<span id="cb85-32"><a href="#cb85-32"></a>RUS         <span class="fl">0.977</span>       <span class="fl">1.000</span></span>
+<span id="cb85-31"><a href="#cb85-31"></a>AUS         <span class="fl">1.038</span>       <span class="fl">1.040</span></span>
+<span id="cb85-32"><a href="#cb85-32"></a>RUS         <span class="fl">0.982</span>       <span class="fl">1.000</span></span>
 <span id="cb85-33"><a href="#cb85-33"></a>ITA         <span class="fl">1.067</span>       <span class="fl">1.060</span></span>
-<span id="cb85-34"><a href="#cb85-34"></a>SVK         <span class="fl">0.985</span>       <span class="fl">1.000</span></span>
-<span id="cb85-35"><a href="#cb85-35"></a>LUX         <span class="fl">1.024</span>       <span class="fl">1.000</span></span>
-<span id="cb85-36"><a href="#cb85-36"></a>HUN         <span class="fl">0.980</span>       <span class="fl">1.000</span></span>
-<span id="cb85-37"><a href="#cb85-37"></a>LTU         <span class="fl">1.002</span>       <span class="fl">1.000</span></span>
-<span id="cb85-38"><a href="#cb85-38"></a>USA         <span class="fl">1.018</span>       <span class="fl">1.014</span></span>
-<span id="cb85-39"><a href="#cb85-39"></a>BLR         <span class="fl">1.008</span>       <span class="fl">1.000</span></span>
-<span id="cb85-40"><a href="#cb85-40"></a>MLT         <span class="fl">1.027</span>       <span class="fl">1.000</span></span>
-<span id="cb85-41"><a href="#cb85-41"></a>HRV         <span class="fl">0.997</span>       <span class="fl">1.000</span></span>
-<span id="cb85-42"><a href="#cb85-42"></a>ISR         <span class="fl">1.063</span>       <span class="fl">1.019</span></span>
+<span id="cb85-34"><a href="#cb85-34"></a>SVK         <span class="fl">0.994</span>       <span class="fl">1.000</span></span>
+<span id="cb85-35"><a href="#cb85-35"></a>LUX         <span class="fl">1.027</span>       <span class="fl">1.000</span></span>
+<span id="cb85-36"><a href="#cb85-36"></a>HUN         <span class="fl">0.988</span>       <span class="fl">1.000</span></span>
+<span id="cb85-37"><a href="#cb85-37"></a>LTU         <span class="fl">1.003</span>       <span class="fl">1.000</span></span>
+<span id="cb85-38"><a href="#cb85-38"></a>USA         <span class="fl">1.017</span>       <span class="fl">1.014</span></span>
+<span id="cb85-39"><a href="#cb85-39"></a>BLR         <span class="fl">0.999</span>       <span class="fl">1.000</span></span>
+<span id="cb85-40"><a href="#cb85-40"></a>MLT         <span class="fl">1.022</span>       <span class="fl">1.000</span></span>
+<span id="cb85-41"><a href="#cb85-41"></a>HRV         <span class="fl">0.996</span>       <span class="fl">1.000</span></span>
+<span id="cb85-42"><a href="#cb85-42"></a>ISR         <span class="fl">1.059</span>       <span class="fl">1.019</span></span>
 <span id="cb85-43"><a href="#cb85-43"></a>TUR         <span class="fl">1.000</span>       <span class="fl">1.000</span></span>
-<span id="cb85-44"><a href="#cb85-44"></a>UKR         <span class="fl">0.984</span>       <span class="fl">1.000</span></span>
-<span id="cb85-45"><a href="#cb85-45"></a>CYP         <span class="fl">1.093</span>       <span class="fl">1.067</span></span>
-<span id="cb85-46"><a href="#cb85-46"></a>GRC         <span class="fl">1.109</span>       <span class="fl">1.120</span></span>
-<span id="cb85-47"><a href="#cb85-47"></a>SRB         <span class="fl">1.018</span>       <span class="fl">1.000</span></span>
-<span id="cb85-48"><a href="#cb85-48"></a>MYS         <span class="fl">0.979</span>       <span class="fl">1.000</span></span>
-<span id="cb85-49"><a href="#cb85-49"></a>ALB         <span class="fl">0.962</span>       <span class="fl">1.000</span></span>
-<span id="cb85-50"><a href="#cb85-50"></a>BGR         <span class="fl">1.017</span>       <span class="fl">1.000</span></span>
-<span id="cb85-51"><a href="#cb85-51"></a>ARE         <span class="fl">0.983</span>       <span class="fl">1.000</span></span>
-<span id="cb85-52"><a href="#cb85-52"></a>MNE         <span class="fl">1.016</span>       <span class="fl">1.000</span></span>
-<span id="cb85-53"><a href="#cb85-53"></a>ROU         <span class="fl">0.988</span>       <span class="fl">1.000</span></span>
-<span id="cb85-54"><a href="#cb85-54"></a>KAZ         <span class="fl">1.014</span>       <span class="fl">1.000</span></span>
-<span id="cb85-55"><a href="#cb85-55"></a>MDA         <span class="fl">0.991</span>       <span class="fl">1.000</span></span>
-<span id="cb85-56"><a href="#cb85-56"></a>AZE         <span class="fl">0.962</span>       <span class="fl">1.000</span></span>
-<span id="cb85-57"><a href="#cb85-57"></a>THA         <span class="fl">0.987</span>       <span class="fl">1.000</span></span>
-<span id="cb85-58"><a href="#cb85-58"></a>URY         <span class="fl">1.038</span>       <span class="fl">1.000</span></span>
-<span id="cb85-59"><a href="#cb85-59"></a>CHL         <span class="fl">1.063</span>       <span class="fl">1.060</span></span>
+<span id="cb85-44"><a href="#cb85-44"></a>UKR         <span class="fl">0.971</span>       <span class="fl">1.000</span></span>
+<span id="cb85-45"><a href="#cb85-45"></a>CYP         <span class="fl">1.097</span>       <span class="fl">1.067</span></span>
+<span id="cb85-46"><a href="#cb85-46"></a>GRC         <span class="fl">1.101</span>       <span class="fl">1.120</span></span>
+<span id="cb85-47"><a href="#cb85-47"></a>SRB         <span class="fl">1.020</span>       <span class="fl">1.000</span></span>
+<span id="cb85-48"><a href="#cb85-48"></a>MYS         <span class="fl">0.990</span>       <span class="fl">1.000</span></span>
+<span id="cb85-49"><a href="#cb85-49"></a>ALB         <span class="fl">0.967</span>       <span class="fl">1.000</span></span>
+<span id="cb85-50"><a href="#cb85-50"></a>BGR         <span class="fl">1.022</span>       <span class="fl">1.000</span></span>
+<span id="cb85-51"><a href="#cb85-51"></a>ARE         <span class="fl">0.993</span>       <span class="fl">1.000</span></span>
+<span id="cb85-52"><a href="#cb85-52"></a>MNE         <span class="fl">1.035</span>       <span class="fl">1.000</span></span>
+<span id="cb85-53"><a href="#cb85-53"></a>ROU         <span class="fl">1.001</span>       <span class="fl">1.000</span></span>
+<span id="cb85-54"><a href="#cb85-54"></a>KAZ         <span class="fl">1.021</span>       <span class="fl">1.000</span></span>
+<span id="cb85-55"><a href="#cb85-55"></a>MDA         <span class="fl">0.980</span>       <span class="fl">1.000</span></span>
+<span id="cb85-56"><a href="#cb85-56"></a>AZE         <span class="fl">0.961</span>       <span class="fl">1.000</span></span>
+<span id="cb85-57"><a href="#cb85-57"></a>THA         <span class="fl">0.996</span>       <span class="fl">1.000</span></span>
+<span id="cb85-58"><a href="#cb85-58"></a>URY         <span class="fl">1.031</span>       <span class="fl">1.000</span></span>
+<span id="cb85-59"><a href="#cb85-59"></a>CHL         <span class="fl">1.062</span>       <span class="fl">1.060</span></span>
 <span id="cb85-60"><a href="#cb85-60"></a>QAT         <span class="fl">1.039</span>       <span class="fl">1.000</span></span>
 <span id="cb85-61"><a href="#cb85-61"></a>MEX         <span class="fl">1.000</span>       <span class="fl">1.000</span></span>
-<span id="cb85-62"><a href="#cb85-62"></a>BIH         <span class="fl">1.043</span>       <span class="fl">1.000</span></span>
-<span id="cb85-63"><a href="#cb85-63"></a>CRI         <span class="fl">1.042</span>       <span class="fl">1.000</span></span>
-<span id="cb85-64"><a href="#cb85-64"></a>JOR         <span class="fl">1.020</span>       <span class="fl">1.000</span></span>
-<span id="cb85-65"><a href="#cb85-65"></a>PER         <span class="fl">0.989</span>       <span class="fl">1.000</span></span>
-<span id="cb85-66"><a href="#cb85-66"></a>GEO         <span class="fl">1.036</span>       <span class="fl">1.000</span></span>
-<span id="cb85-67"><a href="#cb85-67"></a>MKD         <span class="fl">1.022</span>       <span class="fl">1.000</span></span>
-<span id="cb85-68"><a href="#cb85-68"></a>LBN         <span class="fl">1.070</span>       <span class="fl">1.036</span></span>
-<span id="cb85-69"><a href="#cb85-69"></a>COL         <span class="fl">1.042</span>       <span class="fl">1.000</span></span>
+<span id="cb85-62"><a href="#cb85-62"></a>BIH         <span class="fl">1.066</span>       <span class="fl">1.000</span></span>
+<span id="cb85-63"><a href="#cb85-63"></a>CRI         <span class="fl">1.046</span>       <span class="fl">1.000</span></span>
+<span id="cb85-64"><a href="#cb85-64"></a>JOR         <span class="fl">1.025</span>       <span class="fl">1.000</span></span>
+<span id="cb85-65"><a href="#cb85-65"></a>PER         <span class="fl">1.008</span>       <span class="fl">1.000</span></span>
+<span id="cb85-66"><a href="#cb85-66"></a>GEO         <span class="fl">1.043</span>       <span class="fl">1.000</span></span>
+<span id="cb85-67"><a href="#cb85-67"></a>MKD         <span class="fl">1.048</span>       <span class="fl">1.000</span></span>
+<span id="cb85-68"><a href="#cb85-68"></a>LBN         <span class="fl">1.098</span>       <span class="fl">1.036</span></span>
+<span id="cb85-69"><a href="#cb85-69"></a>COL         <span class="fl">1.050</span>       <span class="fl">1.000</span></span>
 <span id="cb85-70"><a href="#cb85-70"></a>BRA         <span class="fl">1.024</span>       <span class="fl">1.000</span></span>
-<span id="cb85-71"><a href="#cb85-71"></a>ARG         <span class="fl">1.166</span>       <span class="fl">1.159</span></span>
-<span id="cb85-72"><a href="#cb85-72"></a>IDN         <span class="fl">0.990</span>       <span class="fl">1.000</span></span>
-<span id="cb85-73"><a href="#cb85-73"></a>SAU         <span class="fl">1.058</span>       <span class="fl">1.015</span></span>
-<span id="cb85-74"><a href="#cb85-74"></a>MAR         <span class="fl">1.035</span>       <span class="fl">1.000</span></span>
-<span id="cb85-75"><a href="#cb85-75"></a>PAN         <span class="fl">1.091</span>       <span class="fl">1.000</span></span>
-<span id="cb85-76"><a href="#cb85-76"></a>PHL         <span class="fl">1.047</span>       <span class="fl">1.000</span></span>
-<span id="cb85-77"><a href="#cb85-77"></a>DOM         <span class="fl">1.080</span>       <span class="fl">1.000</span></span>
+<span id="cb85-71"><a href="#cb85-71"></a>ARG         <span class="fl">1.139</span>       <span class="fl">1.159</span></span>
+<span id="cb85-72"><a href="#cb85-72"></a>IDN         <span class="fl">0.989</span>       <span class="fl">1.000</span></span>
+<span id="cb85-73"><a href="#cb85-73"></a>SAU         <span class="fl">1.077</span>       <span class="fl">1.015</span></span>
+<span id="cb85-74"><a href="#cb85-74"></a>MAR         <span class="fl">1.026</span>       <span class="fl">1.000</span></span>
+<span id="cb85-75"><a href="#cb85-75"></a>PAN         <span class="fl">1.089</span>       <span class="fl">1.000</span></span>
+<span id="cb85-76"><a href="#cb85-76"></a>PHL         <span class="fl">1.054</span>       <span class="fl">1.000</span></span>
+<span id="cb85-77"><a href="#cb85-77"></a>DOM         <span class="fl">1.106</span>       <span class="fl">1.000</span></span>
 <span id="cb85-78"><a href="#cb85-78"></a></span>
-<span id="cb85-79"><a href="#cb85-79"></a> Model  Mean Std. Dev.   Min    Q1 Median   Q3   Max</span>
-<span id="cb85-80"><a href="#cb85-80"></a> RFEAT <span class="fl">1.022</span>     <span class="fl">0.037</span> <span class="fl">0.946</span> <span class="fl">0.995</span>   <span class="fl">1.02</span> <span class="fl">1.02</span> <span class="fl">1.166</span></span>
+<span id="cb85-79"><a href="#cb85-79"></a> Model  Mean Std. Dev.   Min    Q1 Median    Q3   Max</span>
+<span id="cb85-80"><a href="#cb85-80"></a> RFEAT <span class="fl">1.024</span>     <span class="fl">0.038</span> <span class="fl">0.934</span> <span class="fl">0.998</span>  <span class="fl">1.022</span> <span class="fl">1.022</span> <span class="fl">1.139</span></span>
 <span id="cb85-81"><a href="#cb85-81"></a></span>
 <span id="cb85-82"><a href="#cb85-82"></a> Model  Mean Std. Dev. Min Q1 Median Q3   Max</span>
 <span id="cb85-83"><a href="#cb85-83"></a>   FDH <span class="fl">1.015</span>      <span class="fl">0.03</span>   <span class="dv">1</span>  <span class="dv">1</span>      <span class="dv">1</span>  <span class="dv">1</span> <span class="fl">1.159</span></span></code></pre></div>
@@ -2276,13 +2196,13 @@ M_RFEAT
 569
 </td>
 <td style="text-align:right;background-color: #FFCCF9 !important;">
-528.5000
+520.95
 </td>
 <td style="text-align:right;background-color: #FFCCF9 !important;">
-525.5333
+517.55
 </td>
 <td style="text-align:right;background-color: #FFCCF9 !important;">
-538.4000
+531.30
 </td>
 </tr>
 <tr>
@@ -2305,13 +2225,13 @@ M_RFEAT
 569
 </td>
 <td style="text-align:right;background-color: #FFCCF9 !important;">
-529.3333
+527.70
 </td>
 <td style="text-align:right;background-color: #FFCCF9 !important;">
-522.3667
+520.90
 </td>
 <td style="text-align:right;background-color: #FFCCF9 !important;">
-531.9667
+530.75
 </td>
 </tr>
 <tr>
@@ -2325,22 +2245,22 @@ M_RFEAT
 526
 </td>
 <td style="text-align:right;background-color: #FFFFD1 !important;">
-519
+551
 </td>
 <td style="text-align:right;background-color: #FFFFD1 !important;">
-514
+549
 </td>
 <td style="text-align:right;background-color: #FFFFD1 !important;">
-526
+569
 </td>
 <td style="text-align:right;background-color: #FFCCF9 !important;">
-519.4000
+520.95
 </td>
 <td style="text-align:right;background-color: #FFCCF9 !important;">
-515.3667
+515.60
 </td>
 <td style="text-align:right;background-color: #FFCCF9 !important;">
-522.5333
+525.10
 </td>
 </tr>
 <tr>
@@ -2354,22 +2274,22 @@ M_RFEAT
 523
 </td>
 <td style="text-align:right;background-color: #FFFFD1 !important;">
-530
+551
 </td>
 <td style="text-align:right;background-color: #FFFFD1 !important;">
-523
+549
 </td>
 <td style="text-align:right;background-color: #FFFFD1 !important;">
-526
+569
 </td>
 <td style="text-align:right;background-color: #FFCCF9 !important;">
-514.7000
+512.90
 </td>
 <td style="text-align:right;background-color: #FFCCF9 !important;">
-508.4000
+506.25
 </td>
 <td style="text-align:right;background-color: #FFCCF9 !important;">
-512.8333
+512.30
 </td>
 </tr>
 <tr>
@@ -2383,22 +2303,22 @@ M_RFEAT
 519
 </td>
 <td style="text-align:right;background-color: #FFFFD1 !important;">
-511
+551
 </td>
 <td style="text-align:right;background-color: #FFFFD1 !important;">
-512
+549
 </td>
 <td style="text-align:right;background-color: #FFFFD1 !important;">
-519
+569
 </td>
 <td style="text-align:right;background-color: #FFCCF9 !important;">
-517.6667
+520.20
 </td>
 <td style="text-align:right;background-color: #FFCCF9 !important;">
-515.8333
+517.25
 </td>
 <td style="text-align:right;background-color: #FFCCF9 !important;">
-521.3000
+525.50
 </td>
 </tr>
 <tr>
@@ -2412,22 +2332,22 @@ M_RFEAT
 516
 </td>
 <td style="text-align:right;background-color: #FFFFD1 !important;">
-511
+551
 </td>
 <td style="text-align:right;background-color: #FFFFD1 !important;">
-512
+549
 </td>
 <td style="text-align:right;background-color: #FFFFD1 !important;">
-516
+569
 </td>
 <td style="text-align:right;background-color: #FFCCF9 !important;">
-505.7000
+501.60
 </td>
 <td style="text-align:right;background-color: #FFCCF9 !important;">
-503.2667
+497.50
 </td>
 <td style="text-align:right;background-color: #FFCCF9 !important;">
-510.9000
+505.70
 </td>
 </tr>
 <tr>
@@ -2450,13 +2370,13 @@ M_RFEAT
 569
 </td>
 <td style="text-align:right;background-color: #FFCCF9 !important;">
-537.3333
+533.75
 </td>
 <td style="text-align:right;background-color: #FFCCF9 !important;">
-534.5333
+532.70
 </td>
 <td style="text-align:right;background-color: #FFCCF9 !important;">
-545.7000
+541.40
 </td>
 </tr>
 <tr>
@@ -2470,22 +2390,22 @@ M_RFEAT
 512
 </td>
 <td style="text-align:right;background-color: #FFFFD1 !important;">
-530
+551
 </td>
 <td style="text-align:right;background-color: #FFFFD1 !important;">
-523
+549
 </td>
 <td style="text-align:right;background-color: #FFFFD1 !important;">
-526
+569
 </td>
 <td style="text-align:right;background-color: #FFCCF9 !important;">
-525.0333
+528.55
 </td>
 <td style="text-align:right;background-color: #FFCCF9 !important;">
-521.1333
+523.70
 </td>
 <td style="text-align:right;background-color: #FFCCF9 !important;">
-523.8000
+528.10
 </td>
 </tr>
 <tr>
@@ -2499,22 +2419,22 @@ M_RFEAT
 509
 </td>
 <td style="text-align:right;background-color: #FFFFD1 !important;">
-511
+551
 </td>
 <td style="text-align:right;background-color: #FFFFD1 !important;">
-512
+549
 </td>
 <td style="text-align:right;background-color: #FFFFD1 !important;">
-516
+569
 </td>
 <td style="text-align:right;background-color: #FFCCF9 !important;">
-517.6667
+517.80
 </td>
 <td style="text-align:right;background-color: #FFCCF9 !important;">
-515.0000
+515.15
 </td>
 <td style="text-align:right;background-color: #FFCCF9 !important;">
-519.7000
+521.75
 </td>
 </tr>
 <tr>
@@ -2528,22 +2448,22 @@ M_RFEAT
 509
 </td>
 <td style="text-align:right;background-color: #FFFFD1 !important;">
-507
+551
 </td>
 <td style="text-align:right;background-color: #FFFFD1 !important;">
-495
+549
 </td>
 <td style="text-align:right;background-color: #FFFFD1 !important;">
-509
+569
 </td>
 <td style="text-align:right;background-color: #FFCCF9 !important;">
-513.5333
+509.15
 </td>
 <td style="text-align:right;background-color: #FFCCF9 !important;">
-508.2000
+502.80
 </td>
 <td style="text-align:right;background-color: #FFCCF9 !important;">
-514.1333
+510.90
 </td>
 </tr>
 <tr>
@@ -2557,22 +2477,22 @@ M_RFEAT
 508
 </td>
 <td style="text-align:right;background-color: #FFFFD1 !important;">
-511
+551
 </td>
 <td style="text-align:right;background-color: #FFFFD1 !important;">
-512
+549
 </td>
 <td style="text-align:right;background-color: #FFFFD1 !important;">
-516
+569
 </td>
 <td style="text-align:right;background-color: #FFCCF9 !important;">
-517.1667
+517.55
 </td>
 <td style="text-align:right;background-color: #FFCCF9 !important;">
-514.7333
+514.50
 </td>
 <td style="text-align:right;background-color: #FFCCF9 !important;">
-518.9667
+520.90
 </td>
 </tr>
 <tr>
@@ -2586,22 +2506,22 @@ M_RFEAT
 507
 </td>
 <td style="text-align:right;background-color: #FFFFD1 !important;">
-530
+551
 </td>
 <td style="text-align:right;background-color: #FFFFD1 !important;">
-523
+549
 </td>
 <td style="text-align:right;background-color: #FFFFD1 !important;">
-526
+569
 </td>
 <td style="text-align:right;background-color: #FFCCF9 !important;">
-526.4000
+529.25
 </td>
 <td style="text-align:right;background-color: #FFCCF9 !important;">
-521.9333
+524.40
 </td>
 <td style="text-align:right;background-color: #FFCCF9 !important;">
-523.9667
+528.40
 </td>
 </tr>
 <tr>
@@ -2615,22 +2535,22 @@ M_RFEAT
 502
 </td>
 <td style="text-align:right;background-color: #FFFFD1 !important;">
-530
+551
 </td>
 <td style="text-align:right;background-color: #FFFFD1 !important;">
-523
+549
 </td>
 <td style="text-align:right;background-color: #FFFFD1 !important;">
-526
+569
 </td>
 <td style="text-align:right;background-color: #FFCCF9 !important;">
-524.0000
+525.25
 </td>
 <td style="text-align:right;background-color: #FFCCF9 !important;">
-520.7000
+523.20
 </td>
 <td style="text-align:right;background-color: #FFCCF9 !important;">
-523.4000
+525.30
 </td>
 </tr>
 <tr>
@@ -2644,22 +2564,22 @@ M_RFEAT
 502
 </td>
 <td style="text-align:right;background-color: #FFFFD1 !important;">
-511
+551
 </td>
 <td style="text-align:right;background-color: #FFFFD1 !important;">
-512
+549
 </td>
 <td style="text-align:right;background-color: #FFFFD1 !important;">
-519
+569
 </td>
 <td style="text-align:right;background-color: #FFCCF9 !important;">
-516.8000
+517.00
 </td>
 <td style="text-align:right;background-color: #FFCCF9 !important;">
-514.7667
+515.15
 </td>
 <td style="text-align:right;background-color: #FFCCF9 !important;">
-519.1667
+520.40
 </td>
 </tr>
 <tr>
@@ -2673,22 +2593,22 @@ M_RFEAT
 501
 </td>
 <td style="text-align:right;background-color: #FFFFD1 !important;">
-530
+551
 </td>
 <td style="text-align:right;background-color: #FFFFD1 !important;">
-523
+549
 </td>
 <td style="text-align:right;background-color: #FFFFD1 !important;">
-526
+569
 </td>
 <td style="text-align:right;background-color: #FFCCF9 !important;">
-523.9667
+527.65
 </td>
 <td style="text-align:right;background-color: #FFCCF9 !important;">
-521.0667
+522.95
 </td>
 <td style="text-align:right;background-color: #FFCCF9 !important;">
-523.6000
+527.70
 </td>
 </tr>
 <tr>
@@ -2702,22 +2622,22 @@ M_RFEAT
 500
 </td>
 <td style="text-align:right;background-color: #FFFFD1 !important;">
-511
+551
 </td>
 <td style="text-align:right;background-color: #FFFFD1 !important;">
-512
+549
 </td>
 <td style="text-align:right;background-color: #FFFFD1 !important;">
-516
+569
 </td>
 <td style="text-align:right;background-color: #FFCCF9 !important;">
-517.4333
+517.80
 </td>
 <td style="text-align:right;background-color: #FFCCF9 !important;">
-514.7333
+514.20
 </td>
 <td style="text-align:right;background-color: #FFCCF9 !important;">
-519.3000
+521.25
 </td>
 </tr>
 <tr>
@@ -2731,22 +2651,22 @@ M_RFEAT
 500
 </td>
 <td style="text-align:right;background-color: #FFFFD1 !important;">
-530
+551
 </td>
 <td style="text-align:right;background-color: #FFFFD1 !important;">
-523
+549
 </td>
 <td style="text-align:right;background-color: #FFFFD1 !important;">
-526
+569
 </td>
 <td style="text-align:right;background-color: #FFCCF9 !important;">
-523.4667
+523.95
 </td>
 <td style="text-align:right;background-color: #FFCCF9 !important;">
-520.2333
+522.40
 </td>
 <td style="text-align:right;background-color: #FFCCF9 !important;">
-522.4000
+523.25
 </td>
 </tr>
 <tr>
@@ -2760,22 +2680,22 @@ M_RFEAT
 499
 </td>
 <td style="text-align:right;background-color: #FFFFD1 !important;">
-511
+551
 </td>
 <td style="text-align:right;background-color: #FFFFD1 !important;">
-512
+549
 </td>
 <td style="text-align:right;background-color: #FFFFD1 !important;">
-516
+569
 </td>
 <td style="text-align:right;background-color: #FFCCF9 !important;">
-517.1667
+515.90
 </td>
 <td style="text-align:right;background-color: #FFCCF9 !important;">
-514.4333
+513.50
 </td>
 <td style="text-align:right;background-color: #FFCCF9 !important;">
-519.3000
+519.70
 </td>
 </tr>
 <tr>
@@ -2789,22 +2709,22 @@ M_RFEAT
 499
 </td>
 <td style="text-align:right;background-color: #FFFFD1 !important;">
-511
+551
 </td>
 <td style="text-align:right;background-color: #FFFFD1 !important;">
-512
+549
 </td>
 <td style="text-align:right;background-color: #FFFFD1 !important;">
-516
+569
 </td>
 <td style="text-align:right;background-color: #FFCCF9 !important;">
-509.7333
+506.05
 </td>
 <td style="text-align:right;background-color: #FFCCF9 !important;">
-507.3667
+501.65
 </td>
 <td style="text-align:right;background-color: #FFCCF9 !important;">
-512.7667
+508.30
 </td>
 </tr>
 <tr>
@@ -2827,13 +2747,13 @@ M_RFEAT
 496
 </td>
 <td style="text-align:right;background-color: #FFCCF9 !important;">
-483.1333
+479.75
 </td>
 <td style="text-align:right;background-color: #FFCCF9 !important;">
-476.0667
+473.80
 </td>
 <td style="text-align:right;background-color: #FFCCF9 !important;">
-490.8667
+489.00
 </td>
 </tr>
 <tr>
@@ -2847,22 +2767,22 @@ M_RFEAT
 495
 </td>
 <td style="text-align:right;background-color: #FFFFD1 !important;">
-530
+551
 </td>
 <td style="text-align:right;background-color: #FFFFD1 !important;">
-523
+549
 </td>
 <td style="text-align:right;background-color: #FFFFD1 !important;">
-526
+569
 </td>
 <td style="text-align:right;background-color: #FFCCF9 !important;">
-525.7333
+526.90
 </td>
 <td style="text-align:right;background-color: #FFCCF9 !important;">
-521.5667
+524.05
 </td>
 <td style="text-align:right;background-color: #FFCCF9 !important;">
-525.5000
+528.10
 </td>
 </tr>
 <tr>
@@ -2876,22 +2796,22 @@ M_RFEAT
 495
 </td>
 <td style="text-align:right;background-color: #FFFFD1 !important;">
-530
+551
 </td>
 <td style="text-align:right;background-color: #FFFFD1 !important;">
-523
+549
 </td>
 <td style="text-align:right;background-color: #FFFFD1 !important;">
-526
+569
 </td>
 <td style="text-align:right;background-color: #FFCCF9 !important;">
-526.1667
+526.90
 </td>
 <td style="text-align:right;background-color: #FFCCF9 !important;">
-522.2333
+523.65
 </td>
 <td style="text-align:right;background-color: #FFCCF9 !important;">
-525.6333
+528.25
 </td>
 </tr>
 <tr>
@@ -2905,22 +2825,22 @@ M_RFEAT
 494
 </td>
 <td style="text-align:right;background-color: #FFFFD1 !important;">
-530
+551
 </td>
 <td style="text-align:right;background-color: #FFFFD1 !important;">
-523
+549
 </td>
 <td style="text-align:right;background-color: #FFFFD1 !important;">
-526
+569
 </td>
 <td style="text-align:right;background-color: #FFCCF9 !important;">
-522.8000
+522.95
 </td>
 <td style="text-align:right;background-color: #FFCCF9 !important;">
-518.7333
+518.55
 </td>
 <td style="text-align:right;background-color: #FFCCF9 !important;">
-520.6667
+520.30
 </td>
 </tr>
 <tr>
@@ -2934,22 +2854,22 @@ M_RFEAT
 492
 </td>
 <td style="text-align:right;background-color: #FFFFD1 !important;">
-492
+551
 </td>
 <td style="text-align:right;background-color: #FFFFD1 !important;">
-492
+549
 </td>
 <td style="text-align:right;background-color: #FFFFD1 !important;">
-496
+569
 </td>
 <td style="text-align:right;background-color: #FFCCF9 !important;">
-501.6667
+502.85
 </td>
 <td style="text-align:right;background-color: #FFCCF9 !important;">
-499.3333
+499.15
 </td>
 <td style="text-align:right;background-color: #FFCCF9 !important;">
-503.7000
+504.90
 </td>
 </tr>
 <tr>
@@ -2963,22 +2883,22 @@ M_RFEAT
 491
 </td>
 <td style="text-align:right;background-color: #FFFFD1 !important;">
-530
+551
 </td>
 <td style="text-align:right;background-color: #FFFFD1 !important;">
-523
+549
 </td>
 <td style="text-align:right;background-color: #FFFFD1 !important;">
-526
+569
 </td>
 <td style="text-align:right;background-color: #FFCCF9 !important;">
-524.0000
+526.45
 </td>
 <td style="text-align:right;background-color: #FFCCF9 !important;">
-520.3333
+521.90
 </td>
 <td style="text-align:right;background-color: #FFCCF9 !important;">
-523.4667
+526.35
 </td>
 </tr>
 <tr>
@@ -3001,13 +2921,13 @@ M_RFEAT
 496
 </td>
 <td style="text-align:right;background-color: #FFCCF9 !important;">
-474.9333
+476.10
 </td>
 <td style="text-align:right;background-color: #FFCCF9 !important;">
-471.2333
+472.50
 </td>
 <td style="text-align:right;background-color: #FFCCF9 !important;">
-476.7000
+479.10
 </td>
 </tr>
 <tr>
@@ -3021,22 +2941,22 @@ M_RFEAT
 487
 </td>
 <td style="text-align:right;background-color: #FFFFD1 !important;">
-511
+551
 </td>
 <td style="text-align:right;background-color: #FFFFD1 !important;">
-512
+549
 </td>
 <td style="text-align:right;background-color: #FFFFD1 !important;">
-516
+569
 </td>
 <td style="text-align:right;background-color: #FFCCF9 !important;">
-517.1667
+515.90
 </td>
 <td style="text-align:right;background-color: #FFCCF9 !important;">
-514.6333
+513.15
 </td>
 <td style="text-align:right;background-color: #FFCCF9 !important;">
-519.5000
+519.70
 </td>
 </tr>
 <tr>
@@ -3050,22 +2970,22 @@ M_RFEAT
 486
 </td>
 <td style="text-align:right;background-color: #FFFFD1 !important;">
-481
+487
 </td>
 <td style="text-align:right;background-color: #FFFFD1 !important;">
-476
+479
 </td>
 <td style="text-align:right;background-color: #FFFFD1 !important;">
-486
+496
 </td>
 <td style="text-align:right;background-color: #FFCCF9 !important;">
-470.8000
+474.35
 </td>
 <td style="text-align:right;background-color: #FFCCF9 !important;">
-466.2000
+470.80
 </td>
 <td style="text-align:right;background-color: #FFCCF9 !important;">
-478.9333
+483.25
 </td>
 </tr>
 <tr>
@@ -3079,22 +2999,22 @@ M_RFEAT
 483
 </td>
 <td style="text-align:right;background-color: #FFFFD1 !important;">
-492
+551
 </td>
 <td style="text-align:right;background-color: #FFFFD1 !important;">
-492
+549
 </td>
 <td style="text-align:right;background-color: #FFFFD1 !important;">
-496
+569
 </td>
 <td style="text-align:right;background-color: #FFCCF9 !important;">
-490.6667
+491.00
 </td>
 <td style="text-align:right;background-color: #FFCCF9 !important;">
-485.6333
+485.90
 </td>
 <td style="text-align:right;background-color: #FFCCF9 !important;">
-494.7333
+496.20
 </td>
 </tr>
 <tr>
@@ -3108,22 +3028,22 @@ M_RFEAT
 481
 </td>
 <td style="text-align:right;background-color: #FFFFD1 !important;">
-481
+487
 </td>
 <td style="text-align:right;background-color: #FFFFD1 !important;">
-476
+479
 </td>
 <td style="text-align:right;background-color: #FFFFD1 !important;">
-486
+496
 </td>
 <td style="text-align:right;background-color: #FFCCF9 !important;">
-471.3333
+475.00
 </td>
 <td style="text-align:right;background-color: #FFCCF9 !important;">
-466.8000
+471.25
 </td>
 <td style="text-align:right;background-color: #FFCCF9 !important;">
-475.2333
+479.85
 </td>
 </tr>
 <tr>
@@ -3146,13 +3066,13 @@ M_RFEAT
 496
 </td>
 <td style="text-align:right;background-color: #FFCCF9 !important;">
-483.1000
+483.80
 </td>
 <td style="text-align:right;background-color: #FFCCF9 !important;">
-477.2000
+477.60
 </td>
 <td style="text-align:right;background-color: #FFCCF9 !important;">
-489.9333
+490.70
 </td>
 </tr>
 <tr>
@@ -3166,22 +3086,22 @@ NA
 481
 </td>
 <td style="text-align:right;background-color: #FFFFD1 !important;">
-530
+551
 </td>
 <td style="text-align:right;background-color: #FFFFD1 !important;">
-523
+549
 </td>
 <td style="text-align:right;background-color: #FFFFD1 !important;">
-526
+569
 </td>
 <td style="text-align:right;background-color: #FFCCF9 !important;">
-524.2000
+524.65
 </td>
 <td style="text-align:right;background-color: #FFCCF9 !important;">
-520.4667
+522.45
 </td>
 <td style="text-align:right;background-color: #FFCCF9 !important;">
-522.4000
+524.75
 </td>
 </tr>
 <tr>
@@ -3195,22 +3115,22 @@ NA
 478
 </td>
 <td style="text-align:right;background-color: #FFFFD1 !important;">
-511
+551
 </td>
 <td style="text-align:right;background-color: #FFFFD1 !important;">
-512
+549
 </td>
 <td style="text-align:right;background-color: #FFFFD1 !important;">
-516
+569
 </td>
 <td style="text-align:right;background-color: #FFCCF9 !important;">
-516.5000
+515.75
 </td>
 <td style="text-align:right;background-color: #FFCCF9 !important;">
-514.2333
+513.45
 </td>
 <td style="text-align:right;background-color: #FFCCF9 !important;">
-518.0333
+518.30
 </td>
 </tr>
 <tr>
@@ -3224,22 +3144,22 @@ NA
 472
 </td>
 <td style="text-align:right;background-color: #FFFFD1 !important;">
-492
+551
 </td>
 <td style="text-align:right;background-color: #FFFFD1 !important;">
-492
+549
 </td>
 <td style="text-align:right;background-color: #FFFFD1 !important;">
-496
+569
 </td>
 <td style="text-align:right;background-color: #FFCCF9 !important;">
-480.3667
+474.75
 </td>
 <td style="text-align:right;background-color: #FFCCF9 !important;">
-477.7000
+473.30
 </td>
 <td style="text-align:right;background-color: #FFCCF9 !important;">
-483.7333
+478.90
 </td>
 </tr>
 <tr>
@@ -3253,22 +3173,22 @@ NA
 472
 </td>
 <td style="text-align:right;background-color: #FFFFD1 !important;">
-492
+551
 </td>
 <td style="text-align:right;background-color: #FFFFD1 !important;">
-492
+549
 </td>
 <td style="text-align:right;background-color: #FFFFD1 !important;">
-496
+569
 </td>
 <td style="text-align:right;background-color: #FFCCF9 !important;">
-478.2000
+475.75
 </td>
 <td style="text-align:right;background-color: #FFCCF9 !important;">
-472.1000
+471.20
 </td>
 <td style="text-align:right;background-color: #FFCCF9 !important;">
-484.8667
+482.25
 </td>
 </tr>
 <tr>
@@ -3282,22 +3202,22 @@ NA
 464
 </td>
 <td style="text-align:right;background-color: #FFFFD1 !important;">
-492
+551
 </td>
 <td style="text-align:right;background-color: #FFFFD1 !important;">
-492
+549
 </td>
 <td style="text-align:right;background-color: #FFFFD1 !important;">
-496
+569
 </td>
 <td style="text-align:right;background-color: #FFCCF9 !important;">
-481.3667
+479.70
 </td>
 <td style="text-align:right;background-color: #FFCCF9 !important;">
-477.5333
+477.20
 </td>
 <td style="text-align:right;background-color: #FFCCF9 !important;">
-486.6333
+484.55
 </td>
 </tr>
 <tr>
@@ -3311,22 +3231,22 @@ NA
 463
 </td>
 <td style="text-align:right;background-color: #FFFFD1 !important;">
-492
+551
 </td>
 <td style="text-align:right;background-color: #FFFFD1 !important;">
-492
+549
 </td>
 <td style="text-align:right;background-color: #FFFFD1 !important;">
-496
+569
 </td>
 <td style="text-align:right;background-color: #FFCCF9 !important;">
-503.6667
+501.65
 </td>
 <td style="text-align:right;background-color: #FFCCF9 !important;">
-499.7333
+497.80
 </td>
 <td style="text-align:right;background-color: #FFCCF9 !important;">
-505.8000
+506.15
 </td>
 </tr>
 <tr>
@@ -3349,13 +3269,13 @@ NA
 454
 </td>
 <td style="text-align:right;background-color: #FFCCF9 !important;">
-468.9667
+468.30
 </td>
 <td style="text-align:right;background-color: #FFCCF9 !important;">
-465.9333
+466.20
 </td>
 <td style="text-align:right;background-color: #FFCCF9 !important;">
-463.9333
+460.00
 </td>
 </tr>
 <tr>
@@ -3378,13 +3298,13 @@ NA
 454
 </td>
 <td style="text-align:right;background-color: #FFCCF9 !important;">
-461.3000
+456.95
 </td>
 <td style="text-align:right;background-color: #FFCCF9 !important;">
-458.5667
+452.40
 </td>
 <td style="text-align:right;background-color: #FFCCF9 !important;">
-455.9333
+447.85
 </td>
 </tr>
 <tr>
@@ -3398,22 +3318,22 @@ NA
 451
 </td>
 <td style="text-align:right;background-color: #FFFFD1 !important;">
-481
+487
 </td>
 <td style="text-align:right;background-color: #FFFFD1 !important;">
-476
+479
 </td>
 <td style="text-align:right;background-color: #FFFFD1 !important;">
-486
+496
 </td>
 <td style="text-align:right;background-color: #FFCCF9 !important;">
-486.7000
+488.55
 </td>
 <td style="text-align:right;background-color: #FFCCF9 !important;">
-481.6000
+483.30
 </td>
 <td style="text-align:right;background-color: #FFCCF9 !important;">
-493.1667
+494.95
 </td>
 </tr>
 <tr>
@@ -3427,22 +3347,22 @@ NA
 451
 </td>
 <td style="text-align:right;background-color: #FFFFD1 !important;">
-511
+551
 </td>
 <td style="text-align:right;background-color: #FFFFD1 !important;">
-512
+549
 </td>
 <td style="text-align:right;background-color: #FFFFD1 !important;">
-516
+569
 </td>
 <td style="text-align:right;background-color: #FFCCF9 !important;">
-509.4000
+507.25
 </td>
 <td style="text-align:right;background-color: #FFCCF9 !important;">
-507.0000
+503.10
 </td>
 <td style="text-align:right;background-color: #FFCCF9 !important;">
-512.8000
+513.00
 </td>
 </tr>
 <tr>
@@ -3456,22 +3376,22 @@ NA
 448
 </td>
 <td style="text-align:right;background-color: #FFFFD1 !important;">
-469
+487
 </td>
 <td style="text-align:right;background-color: #FFFFD1 !important;">
-466
+479
 </td>
 <td style="text-align:right;background-color: #FFFFD1 !important;">
-454
+496
 </td>
 <td style="text-align:right;background-color: #FFCCF9 !important;">
-452.0667
+453.15
 </td>
 <td style="text-align:right;background-color: #FFCCF9 !important;">
-448.8667
+450.90
 </td>
 <td style="text-align:right;background-color: #FFCCF9 !important;">
-456.1333
+456.80
 </td>
 </tr>
 <tr>
@@ -3494,13 +3414,13 @@ NA
 440
 </td>
 <td style="text-align:right;background-color: #FFCCF9 !important;">
-430.1000
+436.10
 </td>
 <td style="text-align:right;background-color: #FFCCF9 !important;">
-421.7000
+426.55
 </td>
 <td style="text-align:right;background-color: #FFCCF9 !important;">
-430.9000
+435.70
 </td>
 </tr>
 <tr>
@@ -3514,22 +3434,22 @@ NA
 437
 </td>
 <td style="text-align:right;background-color: #FFFFD1 !important;">
-426
+428
 </td>
 <td style="text-align:right;background-color: #FFFFD1 !important;">
-405
+424
 </td>
 <td style="text-align:right;background-color: #FFFFD1 !important;">
 437
 </td>
 <td style="text-align:right;background-color: #FFCCF9 !important;">
-411.2000
+413.65
 </td>
 <td style="text-align:right;background-color: #FFCCF9 !important;">
-403.8333
+407.65
 </td>
 <td style="text-align:right;background-color: #FFCCF9 !important;">
-420.4667
+422.75
 </td>
 </tr>
 <tr>
@@ -3552,13 +3472,13 @@ NA
 440
 </td>
 <td style="text-align:right;background-color: #FFCCF9 !important;">
-438.6667
+441.80
 </td>
 <td style="text-align:right;background-color: #FFCCF9 !important;">
-436.2667
+439.30
 </td>
 <td style="text-align:right;background-color: #FFCCF9 !important;">
-443.6000
+445.80
 </td>
 </tr>
 <tr>
@@ -3581,13 +3501,13 @@ NA
 440
 </td>
 <td style="text-align:right;background-color: #FFCCF9 !important;">
-428.3333
+431.95
 </td>
 <td style="text-align:right;background-color: #FFCCF9 !important;">
-424.5667
+428.85
 </td>
 <td style="text-align:right;background-color: #FFCCF9 !important;">
-431.2000
+435.20
 </td>
 </tr>
 <tr>
@@ -3610,13 +3530,13 @@ NA
 430
 </td>
 <td style="text-align:right;background-color: #FFCCF9 !important;">
-432.6000
+441.30
 </td>
 <td style="text-align:right;background-color: #FFCCF9 !important;">
-428.7333
+439.35
 </td>
 <td style="text-align:right;background-color: #FFCCF9 !important;">
-436.9000
+445.15
 </td>
 </tr>
 <tr>
@@ -3639,13 +3559,13 @@ NA
 440
 </td>
 <td style="text-align:right;background-color: #FFCCF9 !important;">
-426.4333
+431.10
 </td>
 <td style="text-align:right;background-color: #FFCCF9 !important;">
-423.0000
+428.35
 </td>
 <td style="text-align:right;background-color: #FFCCF9 !important;">
-429.5667
+435.35
 </td>
 </tr>
 <tr>
@@ -3659,22 +3579,22 @@ NA
 423
 </td>
 <td style="text-align:right;background-color: #FFFFD1 !important;">
-426
+428
 </td>
 <td style="text-align:right;background-color: #FFFFD1 !important;">
-405
+424
 </td>
 <td style="text-align:right;background-color: #FFFFD1 !important;">
 437
 </td>
 <td style="text-align:right;background-color: #FFCCF9 !important;">
-426.9333
+429.95
 </td>
 <td style="text-align:right;background-color: #FFCCF9 !important;">
-421.2000
+424.55
 </td>
 <td style="text-align:right;background-color: #FFCCF9 !important;">
-428.7333
+431.80
 </td>
 </tr>
 <tr>
@@ -3697,13 +3617,13 @@ NA
 437
 </td>
 <td style="text-align:right;background-color: #FFCCF9 !important;">
-427.7000
+422.10
 </td>
 <td style="text-align:right;background-color: #FFCCF9 !important;">
-420.3333
+415.70
 </td>
 <td style="text-align:right;background-color: #FFCCF9 !important;">
-423.9000
+422.80
 </td>
 </tr>
 <tr>
@@ -3726,13 +3646,13 @@ NA
 420
 </td>
 <td style="text-align:right;background-color: #FFCCF9 !important;">
-400.3000
+400.70
 </td>
 <td style="text-align:right;background-color: #FFCCF9 !important;">
-389.4000
+390.15
 </td>
 <td style="text-align:right;background-color: #FFCCF9 !important;">
-404.0333
+403.80
 </td>
 </tr>
 <tr>
@@ -3746,22 +3666,22 @@ NA
 419
 </td>
 <td style="text-align:right;background-color: #FFFFD1 !important;">
-426
+428
 </td>
 <td style="text-align:right;background-color: #FFFFD1 !important;">
-405
+424
 </td>
 <td style="text-align:right;background-color: #FFFFD1 !important;">
 437
 </td>
 <td style="text-align:right;background-color: #FFCCF9 !important;">
-420.4333
+424.35
 </td>
 <td style="text-align:right;background-color: #FFCCF9 !important;">
-409.7333
+415.75
 </td>
 <td style="text-align:right;background-color: #FFCCF9 !important;">
-421.1333
+425.35
 </td>
 </tr>
 <tr>
@@ -3784,13 +3704,13 @@ NA
 437
 </td>
 <td style="text-align:right;background-color: #FFCCF9 !important;">
-446.3333
+445.20
 </td>
 <td style="text-align:right;background-color: #FFCCF9 !important;">
-443.1000
+440.05
 </td>
 <td style="text-align:right;background-color: #FFCCF9 !important;">
-448.1000
+448.45
 </td>
 </tr>
 <tr>
@@ -3813,13 +3733,13 @@ NA
 496
 </td>
 <td style="text-align:right;background-color: #FFCCF9 !important;">
-487.0000
+486.25
 </td>
 <td style="text-align:right;background-color: #FFCCF9 !important;">
-480.4333
+479.80
 </td>
 <td style="text-align:right;background-color: #FFCCF9 !important;">
-494.3667
+493.40
 </td>
 </tr>
 <tr>
@@ -3842,13 +3762,13 @@ NA
 437
 </td>
 <td style="text-align:right;background-color: #FFCCF9 !important;">
-435.4333
+435.45
 </td>
 <td style="text-align:right;background-color: #FFCCF9 !important;">
-430.4667
+430.10
 </td>
 <td style="text-align:right;background-color: #FFCCF9 !important;">
-438.7667
+441.70
 </td>
 </tr>
 <tr>
@@ -3871,13 +3791,13 @@ NA
 437
 </td>
 <td style="text-align:right;background-color: #FFCCF9 !important;">
-421.6667
+424.60
 </td>
 <td style="text-align:right;background-color: #FFCCF9 !important;">
-419.9000
+420.15
 </td>
 <td style="text-align:right;background-color: #FFCCF9 !important;">
-422.8667
+428.05
 </td>
 </tr>
 <tr>
@@ -3900,13 +3820,13 @@ NA
 430
 </td>
 <td style="text-align:right;background-color: #FFCCF9 !important;">
-425.3333
+432.05
 </td>
 <td style="text-align:right;background-color: #FFCCF9 !important;">
-420.4000
+429.40
 </td>
 <td style="text-align:right;background-color: #FFCCF9 !important;">
-428.1667
+435.25
 </td>
 </tr>
 <tr>
@@ -3929,13 +3849,13 @@ NA
 437
 </td>
 <td style="text-align:right;background-color: #FFCCF9 !important;">
-447.2333
+448.20
 </td>
 <td style="text-align:right;background-color: #FFCCF9 !important;">
-443.8333
+445.50
 </td>
 <td style="text-align:right;background-color: #FFCCF9 !important;">
-449.7667
+451.55
 </td>
 </tr>
 <tr>
@@ -3958,13 +3878,13 @@ NA
 437
 </td>
 <td style="text-align:right;background-color: #FFCCF9 !important;">
-437.6667
+439.60
 </td>
 <td style="text-align:right;background-color: #FFCCF9 !important;">
-432.5667
+432.60
 </td>
 <td style="text-align:right;background-color: #FFCCF9 !important;">
-438.5667
+440.30
 </td>
 </tr>
 <tr>
@@ -3987,13 +3907,13 @@ NA
 420
 </td>
 <td style="text-align:right;background-color: #FFCCF9 !important;">
-402.6000
+412.95
 </td>
 <td style="text-align:right;background-color: #FFCCF9 !important;">
-396.6333
+404.25
 </td>
 <td style="text-align:right;background-color: #FFCCF9 !important;">
-406.5667
+416.00
 </td>
 </tr>
 <tr>
@@ -4016,13 +3936,13 @@ NA
 420
 </td>
 <td style="text-align:right;background-color: #FFCCF9 !important;">
-406.7333
+411.15
 </td>
 <td style="text-align:right;background-color: #FFCCF9 !important;">
-401.0000
+404.50
 </td>
 <td style="text-align:right;background-color: #FFCCF9 !important;">
-412.3000
+415.10
 </td>
 </tr>
 <tr>
@@ -4045,13 +3965,13 @@ NA
 430
 </td>
 <td style="text-align:right;background-color: #FFCCF9 !important;">
-422.0333
+432.75
 </td>
 <td style="text-align:right;background-color: #FFCCF9 !important;">
-415.5667
+427.70
 </td>
 <td style="text-align:right;background-color: #FFCCF9 !important;">
-422.7333
+434.45
 </td>
 </tr>
 <tr>
@@ -4065,22 +3985,22 @@ NA
 393
 </td>
 <td style="text-align:right;background-color: #FFFFD1 !important;">
-426
+428
 </td>
 <td style="text-align:right;background-color: #FFFFD1 !important;">
-405
+424
 </td>
 <td style="text-align:right;background-color: #FFFFD1 !important;">
 437
 </td>
 <td style="text-align:right;background-color: #FFCCF9 !important;">
-415.8667
+428.05
 </td>
 <td style="text-align:right;background-color: #FFCCF9 !important;">
-408.7667
+422.25
 </td>
 <td style="text-align:right;background-color: #FFCCF9 !important;">
-420.7000
+431.45
 </td>
 </tr>
 <tr>
@@ -4103,13 +4023,13 @@ NA
 437
 </td>
 <td style="text-align:right;background-color: #FFCCF9 !important;">
-433.5333
+437.10
 </td>
 <td style="text-align:right;background-color: #FFCCF9 !important;">
-429.3000
+432.80
 </td>
 <td style="text-align:right;background-color: #FFCCF9 !important;">
-433.9000
+438.75
 </td>
 </tr>
 <tr>
@@ -4132,13 +4052,13 @@ NA
 437
 </td>
 <td style="text-align:right;background-color: #FFCCF9 !important;">
-425.2333
+426.15
 </td>
 <td style="text-align:right;background-color: #FFCCF9 !important;">
-423.0333
+422.80
 </td>
 <td style="text-align:right;background-color: #FFCCF9 !important;">
-424.7333
+428.55
 </td>
 </tr>
 <tr>
@@ -4161,13 +4081,13 @@ NA
 454
 </td>
 <td style="text-align:right;background-color: #FFCCF9 !important;">
-473.6000
+462.40
 </td>
 <td style="text-align:right;background-color: #FFCCF9 !important;">
-468.8667
+458.05
 </td>
 <td style="text-align:right;background-color: #FFCCF9 !important;">
-474.4333
+457.15
 </td>
 </tr>
 <tr>
@@ -4190,13 +4110,13 @@ NA
 379
 </td>
 <td style="text-align:right;background-color: #FFCCF9 !important;">
-392.2333
+391.50
 </td>
 <td style="text-align:right;background-color: #FFCCF9 !important;">
-370.7333
+372.00
 </td>
 <td style="text-align:right;background-color: #FFCCF9 !important;">
-379.4667
+379.45
 </td>
 </tr>
 <tr>
@@ -4219,13 +4139,13 @@ NA
 440
 </td>
 <td style="text-align:right;background-color: #FFCCF9 !important;">
-428.6333
+434.85
 </td>
 <td style="text-align:right;background-color: #FFCCF9 !important;">
-422.0333
+429.60
 </td>
 <td style="text-align:right;background-color: #FFCCF9 !important;">
-434.6000
+436.85
 </td>
 </tr>
 <tr>
@@ -4248,13 +4168,13 @@ NA
 379
 </td>
 <td style="text-align:right;background-color: #FFCCF9 !important;">
-390.0667
+390.15
 </td>
 <td style="text-align:right;background-color: #FFCCF9 !important;">
-372.1000
+372.85
 </td>
 <td style="text-align:right;background-color: #FFCCF9 !important;">
-382.1667
+377.65
 </td>
 </tr>
 <tr>
@@ -4277,13 +4197,13 @@ NA
 379
 </td>
 <td style="text-align:right;background-color: #FFCCF9 !important;">
-420.9667
+420.30
 </td>
 <td style="text-align:right;background-color: #FFCCF9 !important;">
-411.3667
+410.50
 </td>
 <td style="text-align:right;background-color: #FFCCF9 !important;">
-417.5667
+416.95
 </td>
 </tr>
 <tr>
@@ -4306,13 +4226,13 @@ NA
 379
 </td>
 <td style="text-align:right;background-color: #FFCCF9 !important;">
-378.2333
+381.80
 </td>
 <td style="text-align:right;background-color: #FFCCF9 !important;">
-360.2000
+364.45
 </td>
 <td style="text-align:right;background-color: #FFCCF9 !important;">
-369.4333
+372.20
 </td>
 </tr>
 <tr>
@@ -4335,13 +4255,13 @@ NA
 379
 </td>
 <td style="text-align:right;background-color: #FFCCF9 !important;">
-380.7333
+389.80
 </td>
 <td style="text-align:right;background-color: #FFCCF9 !important;">
-369.5000
+378.25
 </td>
 <td style="text-align:right;background-color: #FFCCF9 !important;">
-373.9000
+381.85
 </td>
 </tr>
 </tbody>

@@ -567,8 +567,8 @@ The best Efficiency Analysis Trees is given by the hyperparameters `{numStop = 3
 bestEAT_model <- EAT(data = PISAindex,
                      x = c(6, 7, 8, 12, 17),
                      y = 3:5,
-                     numStop = 3,
-                     fold = 7)
+                     numStop = 7,
+                     fold = 5)
 ```
 
 ```{r summary.bestEAT_model, collapse = FALSE}
@@ -851,9 +851,9 @@ The best Random Forest + Efficiency Analysis Trees model is given by the hyperpa
 bestRFEAT_model <- RFEAT(data = PISAindex,
                          x = c(6, 7, 8, 12, 17),
                          y = 3:5,
-                         numStop = 10,
-                         m = 30,
-                         s_mtry = 1)
+                         numStop = 5,
+                         m = 20,
+                         s_mtry = "BRM")
 ```
 
 ## efficiencyRFEAT()

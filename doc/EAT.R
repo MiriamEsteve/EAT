@@ -264,7 +264,7 @@ bestEAT(training = training,
 bestEAT_model <- EAT(data = PISAindex,
                      x = c(6, 7, 8, 12, 17),
                      y = 3:5,
-                     numStop = 5,
+                     numStop = 7,
                      fold = 5)
 
 ## ----summary.bestEAT_model, collapse = FALSE----------------------------------
@@ -432,21 +432,21 @@ rankingRFEAT(object = forestReduced,
 # training <- PISAindex[selected, ]
 # test <- PISAindex[- selected, ]
 
-bestRFEAT(training = training, # training set
-          test = test, # test set
-          x = c(6, 7, 8, 12, 17), # inputs
-          y = 3:5, # outputs
+bestRFEAT(training = training,
+          test = test,
+          x = c(6, 7, 8, 12, 17),
+          y = 3:5,
           numStop = c(5, 10), # set of possible numStop
           m = c(20, 30), # set of possible m
-          s_mtry = c("BRM", 2)) # set of possible s_mtry 
+          s_mtry = c("BRM", 1)) # set of possible s_mtry 
 
 ## ----bestModelRFEAT, collapse = FALSE-----------------------------------------
 bestRFEAT_model <- RFEAT(data = PISAindex,
                          x = c(6, 7, 8, 12, 17),
                          y = 3:5,
-                         numStop = 3,
-                         m = 30,
-                         s_mtry = 'BRM')
+                         numStop = 5,
+                         m = 20,
+                         s_mtry = "BRM")
 
 ## ----eff_scores, eval = FALSE-------------------------------------------------
 #  efficiencyRFEAT(data, x, y,

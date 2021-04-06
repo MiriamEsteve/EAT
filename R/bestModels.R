@@ -119,7 +119,7 @@ bestEAT <- function(training, test, x, y, numStop = 5, fold = 5, max.depth = NUL
 
 #' @title Tuning a Random Forest + Efficiency Analysis Trees model
 #'
-#' @description This funcion calculates the root mean square error (RMSE) for a Random Forest + Efficiency Analysis Tree model built with a set of given hyperparameters. 
+#' @description This funcion calculates the root mean square error (RMSE) for a Random Forest + Efficiency Analysis Trees model built with a set of given hyperparameters. 
 #'
 #' @param training Training dataframe or matrix containing the variables for model construction.
 #' @param test Test dataframe or matrix containing the variables for model assessment.
@@ -145,14 +145,14 @@ bestEAT <- function(training, test, x, y, numStop = 5, fold = 5, max.depth = NUL
 #'           y = 3,
 #'           numStop = c(3, 5),
 #'           m = c(20, 30),
-#'           s_mtry = c("BRM", "1"))
+#'           s_mtry = c("1", "BRM"))
 #' }
 #' 
 #' @export
 #'
 #' @return Dataframe in which each row corresponds to a given set of hyperparameters and the root mean square error (RMSE).
 bestRFEAT <- function(training, test, x, y, numStop = 5, m = 50, 
-                      s_mtry = c(5, "BRM"), na.rm = TRUE) {
+                      s_mtry = c("5", "BRM"), na.rm = TRUE) {
   
   training <- preProcess(training, x, y, na.rm = na.rm)[[2]]
   test <- preProcess(test, x, y, na.rm = na.rm)[[2]]

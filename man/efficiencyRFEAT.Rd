@@ -28,11 +28,12 @@ Dataframe with input variables and efficiency scores through a Random Forest + E
 This function calculates the efficiency scores for each DMU through a Random Forest + Efficiency Analysis Trees model and the Banker Charnes and Cooper mathematical programming model with output orientation.
 }
 \examples{
-
+\donttest{
 simulated <- eat:::X2Y2.sim(N = 50, border = 0.2)
 RFEAT_model <- RFEAT(data = simulated, x = c(1,2), y = c(3, 4))
 
 efficiencyRFEAT(data = simulated, x = c(1, 2), y = c(3, 4), object = RFEAT_model, 
                 digits = 2, FDH = TRUE, na.rm = TRUE)
+}
 
 }

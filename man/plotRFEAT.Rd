@@ -16,10 +16,11 @@ Line plot with the OOB error and the number of trees in the forest.
 Plot a graph with the Out-of-Bag error for the training dataset and a forest consisting of k trees.
 }
 \examples{
-
+\dontrun{
 simulated <- eat:::Y1.sim(N = 150, nX = 6)
 RFmodel <- RFEAT(data = simulated, x = 1:6, y = 7, numStop = 10,
                   m = 50, s_mtry = "BRM", na.rm = TRUE)
 plotRFEAT(RFmodel)
+}
 
 }

@@ -22,7 +22,7 @@ Dataframe with the importance scores. If \code{barplot = TRUE}, it is returned a
 This function calculates variable importance through an Efficiency Analysis Trees model.
 }
 \examples{
-
+\dontrun{
 simulated <- eat:::X2Y2.sim(N = 50, border = 0.2)
 EAT_model <- EAT(data = simulated, x = c(1,2), y = c(3, 4))
 
@@ -30,5 +30,6 @@ rankingEAT(object = EAT_model,
            barplot = TRUE,
            threshold = 70,
            digits = 2)
+}
 
 }

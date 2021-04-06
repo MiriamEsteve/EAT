@@ -36,10 +36,10 @@ bestRFEAT(
 Dataframe in which each row corresponds to a given set of hyperparameters and the root mean square error (RMSE).
 }
 \description{
-This funcion calculates the root mean square error (RMSE) for a Random Forest + Efficiency Analysis Tree model built with a set of given hyperparameters.
+This funcion calculates the root mean square error (RMSE) for a Random Forest + Efficiency Analysis Trees model built with a set of given hyperparameters.
 }
 \examples{
-
+\donttest{
 data("PISAindex")
 
 n <- nrow(PISAindex) # Observations in the dataset
@@ -53,6 +53,7 @@ bestRFEAT(training = training,
           y = 3,
           numStop = c(3, 5),
           m = c(20, 30),
-          s_mtry = c("BRM", "1"))
+          s_mtry = c("1", "BRM"))
+}
 
 }

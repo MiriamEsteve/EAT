@@ -42,7 +42,7 @@ Dataframe in which each row corresponds to a given set of hyperparameters and th
 This funcion calculates the root mean square error (RMSE) for an Efficiency Analysis Trees model built with a set of given hyperparameters.
 }
 \examples{
-
+\donttest{
 data("PISAindex")
 
 n <- nrow(PISAindex) # Observations in the dataset
@@ -56,5 +56,6 @@ bestEAT(training = training,
         y = 3,
         numStop = c(3, 5, 7),
         fold = c(5, 7, 10))
+}
 
 }

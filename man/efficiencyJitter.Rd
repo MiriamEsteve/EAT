@@ -33,7 +33,7 @@ Jitter plot with DMUs and scores.
 This function returns a jitter plot from \code{ggplot2}. This graphic shows how DMUs are grouped into leaf nodes in a model built using the \code{EAT} function. Each leaf node groups DMUs with the same level of resources. The dot and the black line represent, respectively, the mean value and the standard deviation of the scores of its node. Additionally, efficient DMU labels always are displayed based on the model entered in the \code{scores_model} argument. Finally, the user can specify an upper bound \code{upn} and a lower bound \code{lwb} in order to show, in addition, the labels whose efficiency score lies between them.
 }
 \examples{
-
+\dontrun{
 simulated <- eat:::X2Y2.sim(N = 50, border = 0.2)
 EAT_model <- EAT(data = simulated, x = c(1,2), y = c(3, 4))
 
@@ -41,5 +41,6 @@ EAT_scores <- efficiencyEAT(data = simulated, x = c(1, 2), y = c(3, 4), object =
                             scores_model = "BCC.OUT", digits = 2, na.rm = TRUE)
 
 efficiencyJitter(object = EAT_model, df_scores = EAT_scores, scores_model = "BCC.OUT")
+}
 
 }

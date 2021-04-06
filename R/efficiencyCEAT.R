@@ -359,11 +359,13 @@ CEAT_WAM <- function(j, scores, x_k, y_k, atreeTk, ytreeTk, nX, nY, N_leaves, we
 #' 
 #' @examples
 #' 
+#' \donttest{
 #' simulated <- eat:::X2Y2.sim(N = 50, border = 0.2)
 #' EAT_model <- EAT(data = simulated, x = c(1,2), y = c(3, 4))
 #'
 #' efficiencyCEAT(data = simulated, x = c(1, 2), y = c(3, 4), object = EAT_model, 
 #'               scores_model = "BCC.OUT", digits = 2, DEA = TRUE, na.rm = TRUE)
+#' }
 #'
 #' @return Dataframe with input variables and efficiency scores through a convex EAT model.
 efficiencyCEAT <- function(data, x, y, object, 

@@ -21,9 +21,11 @@ This function predicts the expected output by an EAT object.
 }
 \examples{
 
+\donttest{
 simulated <- eat:::X2Y2.sim(N = 50, border = 0.2)
 EAT_model <- EAT(data = simulated, x = c(1,2), y = c(3, 4))
 
 predictEAT(object = EAT_model, newdata = simulated, x = c(1,2))
+}
 
 }

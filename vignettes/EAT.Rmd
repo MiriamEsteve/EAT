@@ -9,6 +9,7 @@ vignette: >
   %\VignetteIndexEntry{EAT: Efficiency Analysis Trees}
   %\VignetteEngine{knitr::rmarkdown}
   %\VignetteEncoding{UTF-8}
+  %\VignetteEngine{knitr::rmarkdown_notangle}
   % \VignetteDepends{kableExtra}
 ---
 
@@ -20,11 +21,15 @@ vignette: >
 
 
 ```{r, include = FALSE}
+is_check <- ("CheckExEnv" %in% search()) || any(c("_R_CHECK_TIMINGS_",
+             "_R_CHECK_LICENSE_") %in% names(Sys.getenv()))
+
 knitr::opts_chunk$set(
   collapse = TRUE,
   comment = "",
   warning = FALSE,
-  message = FALSE
+  message = FALSE,
+  eval = !is_check
 )
 ```
 
@@ -323,7 +328,7 @@ PISAindex_factor_Continent <- PISAindex
 PISAindex_factor_Continent$Continent <- as.factor(PISAindex_factor_Continent$Continent)
 ```
 
-```{r preprocess_factor, error = TRUE, collapse = FALSE}
+```{r preprocess_factor, error = TRUE, collapse = FALSE, purl = FALSE}
 error_model <- EAT(data = PISAindex_factor_Continent, 
                    x = c(2, 15), # input
                    y = 3) # output

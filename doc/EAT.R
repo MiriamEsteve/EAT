@@ -421,9 +421,9 @@ rankingRFEAT(object = forestReduced,
 ## ----bestRFEAT, eval = FALSE--------------------------------------------------
 #  bestRFEAT(training, test,
 #            x, y,
-#            numStop,
-#            m,
-#            s_mtry,
+#            numStop = 5,
+#            m = 50,
+#            s_mtry = c("5", "BRM"),
 #            na.rm = TRUE)
 
 ## ----tuning.bestRFEAT, collapse = FALSE---------------------------------------
@@ -438,7 +438,7 @@ bestRFEAT(training = training,
           y = 3:5,
           numStop = c(5, 10), # set of possible numStop
           m = c(20, 30), # set of possible m
-          s_mtry = c("BRM", "1")) # set of possible s_mtry 
+          s_mtry = c("1", "BRM")) # set of possible s_mtry 
 
 ## ----bestModelRFEAT, collapse = FALSE-----------------------------------------
 bestRFEAT_model <- RFEAT(data = PISAindex,

@@ -822,9 +822,9 @@ As in `bestEAT()`, the `bestRFEAT` function is applied to find the optimal hyper
 ```{r bestRFEAT, eval = FALSE}
 bestRFEAT(training, test,
           x, y,
-          numStop,
-          m,
-          s_mtry,
+          numStop = 5,
+          m = 50,
+          s_mtry = c("5", "BRM"),
           na.rm = TRUE)
 ```
 
@@ -842,7 +842,7 @@ bestRFEAT(training = training,
           y = 3:5,
           numStop = c(5, 10), # set of possible numStop
           m = c(20, 30), # set of possible m
-          s_mtry = c("BRM", 1)) # set of possible s_mtry 
+          s_mtry = c("1", "BRM")) # set of possible s_mtry 
 ```
 
 The best Random Forest + Efficiency Analysis Trees model is given by the hyperparameters `{numStop = 5, m = 20, s_mtry = "BRM"}` with `RMSE = 54.18`.

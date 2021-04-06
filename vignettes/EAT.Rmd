@@ -822,9 +822,9 @@ As in `bestEAT()`, the `bestRFEAT` function is applied to find the optimal hyper
 ```{r bestRFEAT, eval = FALSE}
 bestRFEAT(training, test,
           x, y,
-          numStop,
-          m,
-          s_mtry,
+          numStop = 5,
+          m = 50,
+          s_mtry = c("5", "BRM"),
           na.rm = TRUE)
 ```
 

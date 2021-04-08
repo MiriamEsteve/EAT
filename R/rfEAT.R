@@ -93,7 +93,7 @@ RandomEAT <- function(data, x, y, numStop, s_mtry){
 #' 
 #' @examples 
 #' \donttest{
-#' simulated <- eat:::X2Y2.sim(N = 50, border = 0.1)
+#' simulated <- X2Y2.sim(N = 50, border = 0.1)
 #'
 #' RFmodel <- RFEAT(data = simulated, x = c(1,2), y = c(3, 4), numStop = 5,
 #'                   m = 50, s_mtry = "BRM", na.rm = TRUE)

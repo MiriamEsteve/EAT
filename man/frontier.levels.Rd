@@ -17,7 +17,7 @@ This function returns the frontier output levels of an Efficiency Analysis Trees
 }
 \examples{
 
-simulated <- eat:::Y1.sim(N = 50, nX = 3)
+simulated <- Y1.sim(N = 50, nX = 3)
 model <- EAT(data = simulated, x = c(1, 2, 3), y = 4, numStop = 10, fold = 5)
 frontier.levels(model)
 

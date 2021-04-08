@@ -5,8 +5,8 @@
 #' @description This package provides functions to determine production frontiers and technical efficiency measures through non-parametric techniques based upon regression trees. The package includes code for estimating radial input, output, directional and additive measures, plotting graphical representations of the scores and the production frontiers by means of trees, and determining rankings of importance of input variables in the analysis. Additionally, an adaptation of Random Forest by a set of individual Efficiency Analysis Trees for estimating technical efficiency is also included.
 #' 
 #' @author 
-#' \strong{Mantainer}: \itemize{
-#' \item{Míriam Esteve Campello \email{miriam.estevec@@umh.es}}
+#' \strong{Mantainers}: \itemize{
+#' \item{Miriam Esteve Campello \email{miriam.estevec@@umh.es}}
 #' \item{Víctor Javier España Roch}
 #' } \cr
 #' Authors:

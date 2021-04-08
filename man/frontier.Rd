@@ -40,7 +40,7 @@ This function displays a plot with the frontier estimated by Efficiency Analysis
 }
 \examples{
 
-simulated <- eat:::Y1.sim(N = 50, nX = 1)
+simulated <- Y1.sim(N = 50, nX = 1)
 
 model <- EAT(data = simulated,
              x = 1,

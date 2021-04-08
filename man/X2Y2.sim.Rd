@@ -2,7 +2,7 @@
 % Please edit documentation in R/simulations.R
 \name{X2Y2.sim}
 \alias{X2Y2.sim}
-\title{2 inputs & 2 outputs scenario}
+\title{2 Inputs & 2 Outputs Scenario}
 \usage{
 X2Y2.sim(N, border, noise = NULL)
 }

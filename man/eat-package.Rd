@@ -14,8 +14,8 @@ Github: \url{https://github.com/MiriamEsteve/EAT} \cr
 \insertRef{esteve2020}{eat}
 }
 \author{
-\strong{Mantainer}: \itemize{
-\item{Míriam Esteve Campello \email{miriam.estevec@umh.es}}
+\strong{Mantainers}: \itemize{
+\item{Miriam Esteve Campello \email{miriam.estevec@umh.es}}
 \item{Víctor Javier España Roch}
 } \cr
 Authors:

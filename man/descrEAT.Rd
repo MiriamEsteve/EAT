@@ -16,7 +16,7 @@ List with centralization and dispersion measures and the root mean square error 
 This function returns a set of common measures for the leaf nodes of an Efficiency Analysis Trees model.
 }
 \examples{
-simulated <- eat:::Y1.sim(N = 50, nX = 3)
+simulated <- Y1.sim(N = 50, nX = 3)
 model <- EAT(data = simulated, x = c(1, 2, 3), y = 4, numStop = 10, fold = 5)
 descrEAT(model)
 

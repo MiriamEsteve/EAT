@@ -24,8 +24,8 @@
 #' @export
 #' 
 #' @examples 
-#' \dontrun{
-#' simulated <- eat:::X2Y2.sim(N = 50, border = 0.2)
+#' \donttest{
+#' simulated <- X2Y2.sim(N = 50, border = 0.2)
 #' EAT_model <- EAT(data = simulated, x = c(1,2), y = c(3, 4))
 #'
 #' EAT_scores <- efficiencyEAT(data = simulated, x = c(1, 2), y = c(3, 4), object = EAT_model,
@@ -133,8 +133,8 @@ efficiencyJitter <- function(object, df_scores, scores_model, upb = NULL, lwb = 
 #' @export
 #' 
 #' @examples 
-#' \dontrun{
-#' simulated <- eat:::X2Y2.sim(N = 50, border = 0.2)
+#' \donttest{
+#' simulated <- X2Y2.sim(N = 50, border = 0.2)
 #' EAT_model <- EAT(data = simulated, x = c(1,2), y = c(3, 4))
 #'
 #' scores <- efficiencyEAT(data = simulated, x = c(1, 2), y = c(3, 4), object = EAT_model, 

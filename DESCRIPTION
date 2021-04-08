@@ -16,7 +16,7 @@ Authors@R: c(
            comment = c(ORCID = "0000-0002-0867-0004")),
     person(given = "Xavier", 
            family = "Barber", 
-           role = c("ctr"),
+           role = c("aut"),
            comment = c(ORCID = "0000-0003-3079-5855"))
            )
 Description: Functions are provided to determine production frontiers and 
@@ -25,7 +25,10 @@ Description: Functions are provided to determine production frontiers and
     additive measures, plotting graphical representations of the scores and the production 
     frontiers by means of trees, and determining rankings of importance of input variables 
     in the analysis. Additionally, an adaptation of Random Forest by a set of individual 
-    Efficiency Analysis Trees for estimating technical efficiency is also included.
+    Efficiency Analysis Trees for estimating technical efficiency is also included. Miriam Esteve, 
+    Juan Aparicio, Alejandro Rabasa, Jesús J. Rodríguez-Sala (2020). "Efficiency analysis trees: 
+    A new methodology for estimating production frontiers through decision trees" 
+    <https://doi.org/10.1016/j.eswa.2020.113783>
 License: GPL-3
 Encoding: UTF-8
 LazyData: true

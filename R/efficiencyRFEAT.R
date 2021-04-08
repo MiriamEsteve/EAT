@@ -17,7 +17,7 @@
 #' 
 #' @examples
 #' \donttest{
-#' simulated <- eat:::X2Y2.sim(N = 50, border = 0.2)
+#' simulated <- X2Y2.sim(N = 50, border = 0.2)
 #' RFEAT_model <- RFEAT(data = simulated, x = c(1,2), y = c(3, 4))
 #'
 #' efficiencyRFEAT(data = simulated, x = c(1, 2), y = c(3, 4), object = RFEAT_model, 

@@ -66,14 +66,14 @@
 #' # Single output scenario #
 #' # ====================== #
 #'
-#' simulated <- eat:::Y1.sim(N = 50, nX = 3)
+#' simulated <- Y1.sim(N = 50, nX = 3)
 #' EAT(data = simulated, x = c(1, 2, 3), y = 4, numStop = 10, fold = 5, max.leaves = 6)
 #' 
 #' # ====================== #
 #' #  Multi output scenario #
 #' # ====================== #
 #'
-#' simulated <- eat:::X2Y2.sim(N = 50, border = 0.1)
+#' simulated <- X2Y2.sim(N = 50, border = 0.1)
 #' EAT(data = simulated, x = c(1,2), y = c(3, 4), numStop = 10, fold = 7, max.depth = 7)
 #' 
 #' @export
@@ -462,7 +462,7 @@ summary.EAT <- function(object, ...) {
 #' 
 #' @examples
 #' 
-#' simulated <- eat:::Y1.sim(N = 50, nX = 3)
+#' simulated <- Y1.sim(N = 50, nX = 3)
 #' model <- EAT(data = simulated, x = c(1, 2, 3), y = 4, numStop = 10, fold = 5)
 #' size(model)
 #' 
@@ -485,7 +485,7 @@ size <- function(object) {
 #' 
 #' @examples
 #' 
-#' simulated <- eat:::Y1.sim(N = 50, nX = 3)
+#' simulated <- Y1.sim(N = 50, nX = 3)
 #' model <- EAT(data = simulated, x = c(1, 2, 3), y = 4, numStop = 10, fold = 5)
 #' frontier.levels(model)
 #' 
@@ -513,7 +513,7 @@ frontier.levels <- function(object) {
 #' @importFrom stats median sd
 #' 
 #' @examples
-#' simulated <- eat:::Y1.sim(N = 50, nX = 3)
+#' simulated <- Y1.sim(N = 50, nX = 3)
 #' model <- EAT(data = simulated, x = c(1, 2, 3), y = 4, numStop = 10, fold = 5)
 #' descrEAT(model)
 #' 

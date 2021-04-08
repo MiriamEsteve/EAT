@@ -53,8 +53,6 @@ treesForRCV <- function(notLv, x, y, fold, numStop) {
   TAiv <- vector("list", fold)
 
   for (v in 1:fold) {
-    
-    # ¿Quitar?
     notLv[[v]] <- append(notLv[[v]], -1, 0)
     TAiv[[v]] <- deepEAT(notLv[[v]], x, y, numStop)
   }

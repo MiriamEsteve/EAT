@@ -1,6 +1,6 @@
 #' @title Random Forest + Efficiency Analysis Trees Efficiency Scores
 #'
-#' @description This function calculates the efficiency scores for each DMU through a Random Forest + Efficiency Analysis Trees model and the Banker Charnes and Cooper mathematical programming model with output orientation.
+#' @description This function calculates the efficiency scores for each DMU through a Random Forest + Efficiency Analysis Trees model and the Banker Charnes and Cooper mathematical programming model with output orientation. Efficiency level at 1.
 #'
 #' @param data Dataframe for which the efficiency score is calculated.
 #' @param x Vector. Column input indexes in data.

@@ -590,11 +590,11 @@ summary(bestEAT_model)
 
 The efficiency scores are numerical values that indicate the degree of efficiency of a set of DMUs. A dataset (`data`) and the corresponding indexes of input(s) (`x`) and output(s) (`y`) must be entered. It is recommended that the dataset with the DMUs whose efficiency is to be calculated coincide with those used to estimate the frontier. However, it is also possible to calculate the efficiency scores for a new dataset. The efficiency scores are calculated using the mathematical programming model included in the argument `score_model`. The following models are available:
   
-  * `BCC.OUT`: Banker Charnes and Cooper output-oriented radial model with efficiency level at 1.
-  * `BCC.INP`: Banker Charnes and Cooper input-oriented radial model with efficiency level at 1.
-  * `DDF`: Directional Distance Function with efficiency level at 0.
-  * `RSL.OUT`: output-oriented Rusell Model with efficiency level at 1.
-  * `RSL.INP`: input-oriented Rusell Model with efficiency level at 1.
+  * `BCC.OUT`: Banker Charnes and Cooper output-oriented radial model. Efficiency level at 1.
+  * `BCC.INP`: Banker Charnes and Cooper input-oriented radial model. Efficiency level at 1.
+  * `DDF`: Directional Distance Function. Efficiency level at 0.
+  * `RSL.OUT`: output-oriented Russell Model. Efficiency level at 1.
+  * `RSL.INP`: input-oriented Russell Model. Efficiency level at 1.
   * `WAM.MIP`: Weighted Additive Model with Measure of Inefficiency Proportion. Efficiency level at 0.
   * `WAM.RAM`: Weighted Additive Model with Range Adjusted Measure of Inefficiency. Efficiency level at 0.
 

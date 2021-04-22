@@ -25,7 +25,7 @@ efficiencyRFEAT(data, x, y, object, digits = 3, FDH = TRUE, na.rm = TRUE)
 Dataframe with input variables and efficiency scores through a Random Forest + Efficiency Analysis Trees model.
 }
 \description{
-This function calculates the efficiency scores for each DMU through a Random Forest + Efficiency Analysis Trees model and the Banker Charnes and Cooper mathematical programming model with output orientation.
+This function calculates the efficiency scores for each DMU through a Random Forest + Efficiency Analysis Trees model and the Banker Charnes and Cooper mathematical programming model with output orientation. Efficiency level at 1.
 }
 \examples{
 \donttest{

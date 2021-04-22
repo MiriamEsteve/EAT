@@ -13,7 +13,7 @@ plotRFEAT(object)
 Line plot with the OOB error and the number of trees in the forest.
 }
 \description{
-Plot a graph with the Out-of-Bag error for the training dataset and a forest consisting of k trees.
+Plot a graph with the Out-of-Bag error for a forest consisting of k trees.
 }
 \examples{
 \donttest{

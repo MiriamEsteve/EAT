@@ -1,6 +1,6 @@
 #' @title Random Forest + Efficiency Analysis Trees Plot
 #'
-#' @description Plot a graph with the Out-of-Bag error for the training dataset and a forest consisting of k trees.
+#' @description Plot a graph with the Out-of-Bag error for a forest consisting of k trees.
 #'
 #' @param object A RFEAT object.
 #'

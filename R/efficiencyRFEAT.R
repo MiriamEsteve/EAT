@@ -105,7 +105,7 @@ efficiencyRFEAT <- function(data, x, y, object, digits = 3, FDH = TRUE, na.rm = 
     names(scores_FDH) <- FDH_model
     rownames(scores_FDH) <- rwn
     
-    descriptive_FDH <- scores_FDH %>%
+    descriptive[2, ] <- scores_FDH %>%
       summarise("Model" = "FDH",
                 "Mean" = round(mean(scores_FDH[, 1]), digits),
                 "Std. Dev." = round(sd(scores_FDH[, 1]), digits),
@@ -121,8 +121,6 @@ efficiencyRFEAT <- function(data, x, y, object, digits = 3, FDH = TRUE, na.rm = 
     
     cat("\n")
     print(descriptive, row.names = FALSE)
-    cat("\n")
-    print(descriptive_FDH, row.names = FALSE)
     
     invisible(scores_df)
     
@@ -137,8 +135,6 @@ efficiencyRFEAT <- function(data, x, y, object, digits = 3, FDH = TRUE, na.rm = 
     cat("\n") 
     print(descriptive, row.names = FALSE)
     
-    
     invisible(scores_df)
-    
   }
 }

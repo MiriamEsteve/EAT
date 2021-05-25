@@ -496,7 +496,7 @@ efficiencyCEAT <- function(data, x, y, object,
     names(scores_DEA) <- DEA_model
     rownames(scores_DEA) <- rwn
     
-    descriptive_DEA <- scores %>%
+    descriptive[2, ] <- scores %>%
       summarise("Model" = "DEA",
                 "Mean" = round(mean(scores_DEA[, 1]), digits),
                 "Std. Dev." = round(sd(scores_DEA[, 1]), digits),
@@ -506,17 +506,12 @@ efficiencyCEAT <- function(data, x, y, object,
                 "Q3" = round(quantile(scores_DEA[, 1])[[3]], digits),
                 "Max" = round(max(scores_DEA[, 1]), digits)
       )
-  }
-  
-  if (DEA == TRUE){
     
     scores_df <- cbind(data, round(scores, digits), round(scores_DEA, digits))
     print(scores_df[, c(ncol(scores_df) - 1, ncol(scores_df))])
     
     cat("\n")
     print(descriptive, row.names = FALSE)
-    cat("\n")
-    print(descriptive_DEA, row.names = FALSE)
     
     invisible(scores_df)
     
@@ -528,7 +523,6 @@ efficiencyCEAT <- function(data, x, y, object,
     cat("\n") 
     print(descriptive, row.names = FALSE)
         
-    
     invisible(scores_df)
     
   }

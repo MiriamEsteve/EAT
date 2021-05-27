@@ -173,7 +173,7 @@ M_Breiman <- function(object, digits) {
 #' @param threshold Numeric. Importance score value in which a line is graphed.
 #' @param digits Integer. Decimal units.
 #'
-#' @return Dataframe with the importance scores. If \code{barplot = TRUE}, it is returned a list containing the scores and the barplot.
+#' @return Dataframe with the importance scores and a barplot representing the the variable importance if \code{barplot = TRUE}.
 #' 
 #' @examples
 #' \donttest{

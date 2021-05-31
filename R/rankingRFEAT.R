@@ -78,7 +78,7 @@ imp_var_RFEAT <- function(object, digits = 2){
   rownames(imp) <- object[["data"]][["input_names"]]
   colnames(imp) <- "Importance"
   
-  imp <- imp %>%
+  imp <- round(imp, digits) %>%
     arrange(desc(Importance))
   
   return(imp)

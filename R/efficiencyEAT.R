@@ -289,7 +289,6 @@ EAT_RSL_out <- function(j, scores, x_k, y_k, atreeTk, ytreeTk, nX, nY, N_leaves)
 EAT_WAM <- function(j, scores, x_k, y_k, atreeTk, ytreeTk, nX, nY, N_leaves, weights) {
   
   # Range for RAM measures
-  
   if (weights == "RAM") {
     ranges <- apply(x_k, 2, max) - apply(x_k, 2, min)
   }
@@ -299,7 +298,7 @@ EAT_WAM <- function(j, scores, x_k, y_k, atreeTk, ytreeTk, nX, nY, N_leaves, wei
     objVal <- matrix(ncol = nX + nY + N_leaves, nrow = 1)
     
     if (weights == "MIP") {
-      objVal[1:(nX + nY)] <- c(1 / x_k[d, ], 1 / y_k[d, ]) 
+      objVal[1:(nX + nY)] <- c(1 / x_k[d, ], 1 / y_k[d, ])
       
     } else if (weights == "RAM"){
       objVal[1:(nX + nY)] <- ranges
@@ -319,7 +318,7 @@ EAT_WAM <- function(j, scores, x_k, y_k, atreeTk, ytreeTk, nX, nY, N_leaves, wei
       vec[(1:nX)[- xi]] <- 0
       vec[(nX + 1):(nX + nY)] <- 0
       vec[(nX + nY + 1):(nY + nX + N_leaves)] <- atreeTk[, xi]
-      
+
       add.constraint(lps, xt = vec, "<=",  rhs = x_k[d, xi])
     }
     
@@ -335,7 +334,8 @@ EAT_WAM <- function(j, scores, x_k, y_k, atreeTk, ytreeTk, nX, nY, N_leaves, wei
     }
     
     # Constrain 2.3 - lambda = 1
-    add.constraint(lprec = lps, xt = c(rep(0, nY + nX), rep(1, N_leaves)), type = "=", rhs = 1)
+    add.constraint(lprec = lps, xt = c(rep(0, nY + nX), rep(1, N_leaves)), 
+                   type = "=", rhs = 1)
     
     # Constrain 2.4
     set.type(lps, columns = 1:N_leaves + (nX + nY), type = c("binary"))

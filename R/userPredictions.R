@@ -96,7 +96,7 @@ predictRFEAT <- function(object, newdata, x) {
   }
 
   train_names <- object[["data"]][["input_names"]]
-  test_names <- names(newdata)
+  test_names <- names(newdata)[x]
   
   if (!identical(sort(train_names), sort(test_names))) {
     stop("Different variable names in training and test set")

@@ -14,7 +14,7 @@ rankingRFEAT(object, barplot = TRUE, digits = 2)
 \item{digits}{Integer. Decimal units.}
 }
 \value{
-Dataframe with the importance scores. If \code{barplot = TRUE}, it is returned a list containing the scores and the barplot.
+Dataframe with the importance scores and a barplot representing the the variable importance if \code{barplot = TRUE}.
 }
 \description{
 This function calculates variable importance through a Random Forest + Efficiency Analysis Trees model.

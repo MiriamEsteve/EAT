@@ -34,7 +34,8 @@ predictEAT <- function(object, newdata, x) {
    stop("Different variable names in training set and test set.")
   }
   
-  newdata <- as.data.frame(newdata[, x])
+  # Select variables and reorder as in training data
+  newdata <- as.data.frame(newdata[, x])[train_names]
   
   y <- object[["data"]][["y"]] 
   
@@ -93,14 +94,16 @@ predictRFEAT <- function(object, newdata, x) {
     stop(paste(deparse(substitute(object)), "must be a RFEAT object"))
     
   }
-  
-  newdata <- newdata[,x]
+
   train_names <- object[["data"]][["input_names"]]
   test_names <- names(newdata)
   
   if (!identical(sort(train_names), sort(test_names))) {
     stop("Different variable names in training and test set")
   }
+  
+  # Select variables and reorder as in training data
+  newdata <- newdata[, x][train_names]
   
   y <- object[["data"]][["y"]] 
   forest <- object[["forest"]]

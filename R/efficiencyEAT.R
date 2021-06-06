@@ -16,6 +16,7 @@
 #'
 #' @return A numerical vector with efficiency scores.
 EAT_BCC_out <- function(j, scores, x_k, y_k, atreeTk, ytreeTk, nX, nY, N_leaves) {
+  
   for(d in 1:j){
     
     objVal <- matrix(ncol = N_leaves + 1, nrow = 1)
@@ -290,7 +291,10 @@ EAT_WAM <- function(j, scores, x_k, y_k, atreeTk, ytreeTk, nX, nY, N_leaves, wei
   
   # Range for RAM measures
   if (weights == "RAM") {
-    ranges <- apply(x_k, 2, max) - apply(x_k, 2, min)
+    InputRanges <- apply(x_k, 2, max) - apply(x_k, 2, min)
+    OutputRanges <- apply(y_k, 2, max) - apply(y_k, 2, min)
+    
+    ranges <- c(InputRanges, OutputRanges) / (nX + nY)
   }
   
   for(d in 1:j){
@@ -302,7 +306,7 @@ EAT_WAM <- function(j, scores, x_k, y_k, atreeTk, ytreeTk, nX, nY, N_leaves, wei
       
     } else if (weights == "RAM"){
       objVal[1:(nX + nY)] <- ranges
-      
+
     }
     
     # structure for lpSolve
@@ -318,8 +322,8 @@ EAT_WAM <- function(j, scores, x_k, y_k, atreeTk, ytreeTk, nX, nY, N_leaves, wei
       vec[(1:nX)[- xi]] <- 0
       vec[(nX + 1):(nX + nY)] <- 0
       vec[(nX + nY + 1):(nY + nX + N_leaves)] <- atreeTk[, xi]
-
-      add.constraint(lps, xt = vec, "<=",  rhs = x_k[d, xi])
+      
+      add.constraint(lps, xt = vec, "=",  rhs = x_k[d, xi])
     }
     
     for(yi in 1:nY)
@@ -330,7 +334,7 @@ EAT_WAM <- function(j, scores, x_k, y_k, atreeTk, ytreeTk, nX, nY, N_leaves, wei
       vec[((nX + 1):(nX + nY))[- yi]] <- 0
       vec[(nX + nY + 1):(nY + nX + N_leaves)] <- ytreeTk[, yi]
       
-      add.constraint(lps, xt = vec, ">=", rhs = y_k[d, yi])
+      add.constraint(lps, xt = vec, "=", rhs = y_k[d, yi])
     }
     
     # Constrain 2.3 - lambda = 1
@@ -418,7 +422,7 @@ efficiencyEAT <- function(data, x, y, object,
   if (!identical(sort(train_names), sort(names(data)))) {
     stop("Different variable names in training and data set")
   }
-
+  
   j <- nrow(data)
   scores <- matrix(nrow = j, ncol = 1)
   x_k <- as.matrix(data[, x])

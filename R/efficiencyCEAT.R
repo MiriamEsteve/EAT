@@ -276,7 +276,10 @@ CEAT_WAM <- function(j, scores, x_k, y_k, atreeTk, ytreeTk, nX, nY, N_leaves, we
   # Range for RAM measures
   
   if (weights == "RAM") {
-    ranges <- apply(x_k, 2, max) - apply(x_k, 2, min)
+    InputRanges <- apply(x_k, 2, max) - apply(x_k, 2, min)
+    OutputRanges <- apply(y_k, 2, max) - apply(y_k, 2, min)
+    
+    ranges <- c(InputRanges, OutputRanges) / (nX + nY)
   }
   
   for(d in 1:j){
@@ -384,7 +387,7 @@ efficiencyCEAT <- function(data, x, y, object,
   if (!scores_model %in% c("BCC.OUT", "BCC.INP", "DDF", 
                            "RSL.OUT", "RSL.INP", "WAM.MIP",
                            "WAM.RAM")){
-    stop(paste(scores_model, "is not available. Please, check help(\"efficiencyEAT\")"))
+    stop(paste(scores_model, "is not available. Please, check help(\"efficiencyCEAT\")"))
   }
   
   rwn_data <- preProcess(data, x, y, na.rm = na.rm)

@@ -8,4 +8,4 @@ Bug fixes:
 
 - Now, in `efficiencyEAT()`, `efficiencyCEAT()` and `efficiencyRFEAT()` descriptive table of scores are shown in only one table.
 
-- `predictEAT()` and `predictRFEAT()` varied their predictions depending on the position of the inputs. Now it is fixed.
+- `predictEAT()` and `predictRFEAT()` have been unified in the generic function `predict()`.

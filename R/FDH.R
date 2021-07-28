@@ -9,7 +9,7 @@
 #' @return Data frame with the original data and the predicted values through a Free Disposal Hull model.
 predictFDH <- function(data, x, y) {
   
-  if(class(data) == "list") {
+  if(is(data, "list")) {
     data <- as.data.frame(data[- 1]) 
     
     print_results <- FALSE
@@ -18,7 +18,7 @@ predictFDH <- function(data, x, y) {
     print_results <- TRUE
   }
   
-  data <- preProcess(data, x, y, na.rm = TRUE)[[2]]
+  data <- preProcess(data, x, y, na.rm = TRUE)
   x <- 1:(ncol(data) - length(y))
   y <- (length(x) + 1):ncol(data)
 

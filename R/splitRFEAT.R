@@ -76,16 +76,16 @@ select_mtry <- function(s_mtry, t, nX, nY){
 #'
 #' @description This function randomly selects the variables that are evaluated to divide a node and removes those that do not present variability.
 #' 
-#' @param data Dataframe containing the training set.
-#' @param x Vector. Column input indexes in data.
+#' @param data \code{data.frame} containing the training set.
+#' @param x Column input indexes in data.
 #' @param t Node which is being split.
-#' @param mtry Integer. Number of inputs selected for a node to be split.
+#' @param mtry Number of inputs selected for a node to be split.
 #' 
 #' @return Index of the variables by which the node is divided.
 mtry_inputSelection <- function(data, x, t, mtry){
   
   # Columns without variability
-  drpVars <- which(apply(data[t[['index']], x], 2, sd) == 0)
+  drpVars <- which(apply(data[t[['index']], x, drop = FALSE], 2, sd) == 0)
   
   # If all variables have variability drpVars = 0 to select all variables
   if (length(drpVars) == 0) drpVars <- 0

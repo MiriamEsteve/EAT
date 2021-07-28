@@ -1,14 +1,14 @@
-#' @title Random Forest + Efficiency Analysis Trees Efficiency Scores
+#' @title Efficiency Scores computed through Random Forest + Efficiency Analysis Trees 
 #'
 #' @description This function calculates the efficiency scores for each DMU through a Random Forest + Efficiency Analysis Trees model and the Banker Charnes and Cooper mathematical programming model with output orientation. Efficiency level at 1.
 #'
-#' @param data Dataframe for which the efficiency score is calculated.
-#' @param x Vector. Column input indexes in data.
-#' @param y Vector. Column output indexes in data.
-#' @param object A RFEAT object.
-#' @param digits Integer. Decimal units for scores.
-#' @param FDH Logical. If \code{TRUE}, FDH scores are computed.
-#' @param na.rm Logical. If \code{TRUE}, \code{NA} rows are omitted.
+#' @param data \code{data.frame} or \code{matrix} containing the variables in the model.
+#' @param x Column input indexes in \code{data}.
+#' @param y Column output indexes in \code{data}.
+#' @param object A \code{RFEAT} object.
+#' @param digits Decimal units for scores.
+#' @param FDH \code{logical}. If \code{TRUE}, FDH scores are computed.
+#' @param na.rm \code{logical}. If \code{TRUE}, \code{NA} rows are omitted.
 #'
 #' @importFrom dplyr %>% mutate summarise
 #' @importFrom stats median quantile sd
@@ -24,10 +24,10 @@
 #'                 digits = 2, FDH = TRUE, na.rm = TRUE)
 #' }
 #'
-#' @return Dataframe with input variables and efficiency scores through a Random Forest + Efficiency Analysis Trees model.
+#' @return \code{data.frame} introduced as argument with efficiency scores computed through a Random Forest + Efficiency Analysis Trees model.
 efficiencyRFEAT <- function(data, x, y, object, digits = 3, FDH = TRUE, na.rm = TRUE){
   
-  if (class(object) != "RFEAT"){
+  if (!is(object, "RFEAT")){
     stop(paste(deparse(substitute(object)), "must be a RFEAT object."))
     
   } 
@@ -38,10 +38,10 @@ efficiencyRFEAT <- function(data, x, y, object, digits = 3, FDH = TRUE, na.rm = 
   
   train_names <- c(object[["data"]][["input_names"]], object[["data"]][["output_names"]])
   
-  rwn_data <- preProcess(data, x, y, na.rm = na.rm)
+  # Rownames
+  rwn <- row.names(data)
   
-  rwn <- rwn_data[[1]]
-  data <- rwn_data[[2]]
+  data <- preProcess(data, x, y, na.rm = na.rm)
   
   x <- 1:(ncol(data) - length(y))
   y <- (length(x) + 1):ncol(data)

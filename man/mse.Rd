@@ -2,7 +2,7 @@
 % Please edit documentation in R/splitEAT.R
 \name{mse}
 \alias{mse}
-\title{Mean Square Error}
+\title{Mean Squared Error}
 \usage{
 mse(data, t, y)
 }

@@ -1,12 +1,12 @@
-#' @title Ranking of variables by Random Forest + Efficiency Analysis Trees.
+#' @title Ranking of variables by Random Forest + Efficiency Analysis Trees model.
 #'
 #' @description This function calculates variable importance through a Random Forest + Efficiency Analysis Trees model.
 #'
-#' @param object A RFEAT object.
-#' @param barplot Logical. If \code{TRUE}, a barplot with importance scores is displayed.
-#' @param digits Integer. Decimal units.
+#' @param object A \code{RFEAT} object.
+#' @param barplot \code{logical}. If \code{TRUE}, a barplot with importance scores is displayed.
+#' @param digits Decimal units.
 #'
-#' @return Dataframe with the importance scores and a barplot representing the the variable importance if \code{barplot = TRUE}.
+#' @return \code{data.frame} with the importance scores and a barplot representing the variable importance if \code{barplot = TRUE}.
 #' 
 #' @examples 
 #' \donttest{
@@ -21,9 +21,8 @@
 #' @export   
 rankingRFEAT <- function(object, barplot = TRUE, digits = 2) {
   
-  if (class(object) != "RFEAT"){
+  if (!is(object, "RFEAT")){
     stop(paste(deparse(substitute(object)), "must be a RFEAT object."))
-    
   }
   
   if (digits < 0) {
@@ -43,17 +42,17 @@ rankingRFEAT <- function(object, barplot = TRUE, digits = 2) {
   } else {
     return(scores)
   }
-  
 }
 
 #' @title Variable Importance through Random Forest + Efficiency Analysis Trees
 #'
 #' @description Variable Importance through Random Forest + Efficiency Analysis Trees.
 #'
-#' @param object A RFEAT object
-#' @param digits Integer. Decimal units.
+#' @param object A \code{RFEAT} object
+#' @param digits Decimal units.
 #' 
 #' @importFrom dplyr %>% arrange
+#' 
 #' @return Vector of input importance scores
 imp_var_RFEAT <- function(object, digits = 2){
   

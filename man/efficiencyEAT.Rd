@@ -2,7 +2,7 @@
 % Please edit documentation in R/efficiencyEAT.R
 \name{efficiencyEAT}
 \alias{efficiencyEAT}
-\title{Efficiency Analysis Trees Efficiency Scores}
+\title{Efficiency Scores computed through Efficiency Analysis Trees.}
 \usage{
 efficiencyEAT(
   data,
@@ -16,13 +16,13 @@ efficiencyEAT(
 )
 }
 \arguments{
-\item{data}{Dataframe containing the DMU for which the efficiency score is calculated.}
+\item{data}{\code{data.frame} or \code{matrix} containing the variables in the model.}
 
-\item{x}{Vector. Column input indexes in data.}
+\item{x}{Column input indexes in \code{data}.}
 
-\item{y}{Vector. Column output indexes in data.}
+\item{y}{Column output indexes in \code{data}.}
 
-\item{object}{An EAT object.}
+\item{object}{An \code{EAT} object.}
 
 \item{scores_model}{Mathematical programming model to calculate scores. 
 \itemize{
@@ -35,14 +35,14 @@ efficiencyEAT(
 \item{\code{WAM.RAM}} Weighted Additive Model. Range Adjusted Measure of Inefficiency. Efficiency level at 0.
 }}
 
-\item{digits}{Integer. Decimal units for scores.}
+\item{digits}{Decimal units for scores.}
 
-\item{FDH}{Logical. If \code{TRUE}, FDH scores are also calculated with the programming model selected in \code{scores_model}.}
+\item{FDH}{\code{logical}. If \code{TRUE}, FDH scores are also computed with the programming model selected in \code{scores_model}.}
 
-\item{na.rm}{Logical. If \code{TRUE}, \code{NA} rows are omitted.}
+\item{na.rm}{\code{logical}. If \code{TRUE}, \code{NA} rows are omitted.}
 }
 \value{
-Dataframe introduced as argument with efficiency scores calculated through an Efficiency Analysis Trees model.
+\code{data.frame} introduced as argument with efficiency scores computed through an Efficiency Analysis Trees model.
 }
 \description{
 This function calculates the efficiency scores for each DMU by an Efficiency Analysis Trees model.

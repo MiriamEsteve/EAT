@@ -1,8 +1,8 @@
 #' @title Random Forest + Efficiency Analysis Trees Plot
 #'
-#' @description Plot a graph with the Out-of-Bag error for a forest consisting of k trees.
+#' @description Plot a graph with the Out-of-Bag error for a forest consisting of m trees.
 #'
-#' @param object A RFEAT object.
+#' @param object A \code{RFEAT} object.
 #'
 #' @importFrom ggplot2 aes geom_point geom_line xlab ylab
 #' 
@@ -18,7 +18,7 @@
 #' 
 #' @export
 plotRFEAT <- function(object) {
-  if (class(object) != "RFEAT"){
+  if (!is(object, "RFEAT")){
     stop(paste(deparse(substitute(object)), "must be a RFEAT object"))
     
   }

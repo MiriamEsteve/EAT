@@ -1,41 +1,34 @@
 #' @title Model Prediction for Efficiency Analysis Trees.
 #'
-#' @description This function predicts the expected output by an EAT object.
+#' @description This function predicts the expected output by an \code{EAT} object.
 #'
-#' @param object An EAT object.
-#' @param newdata Dataframe. Set of input variables to predict on.
+#' @param object An \code{EAT} object.
+#' @param newdata \code{data.frame}. Set of input variables to predict on.
 #' @param x Inputs index.
 #'
 #' @importFrom dplyr %>%
 #'
-#' @return Data frame with the original data and the predicted values.
+#' @return \code{data.frame} with the original data and the predicted values.
 #' 
-#' @examples
-#' 
+#' @examples 
 #' \donttest{
 #' simulated <- X2Y2.sim(N = 50, border = 0.2)
 #' EAT_model <- EAT(data = simulated, x = c(1,2), y = c(3, 4))
 #' 
-#' predictEAT(object = EAT_model, newdata = simulated, x = c(1,2))
+#' predict(object = EAT_model, newdata = simulated, x = c(1, 2))
 #' }
 #' 
 #' @export
-predictEAT <- function(object, newdata, x) {
-  
-  if (class(object) != "EAT"){
-    stop(paste(deparse(substitute(object)), "must be an EAT object"))
-    
-  }
-  
+predict.EAT <- function(object, newdata, x) {
   train_names <- object[["data"]][["input_names"]]
   test_names <- names(newdata)[x]
   
   if (!identical(sort(train_names), sort(test_names))) {
-   stop("Different variable names in training set and test set.")
+    stop("Different variable names in training set and test set.")
   }
   
   # Select variables and reorder as in training data
-  newdata <- as.data.frame(newdata[, x])[train_names]
+  newdata <- newdata[, x, drop = FALSE][train_names]
   
   y <- object[["data"]][["y"]] 
   
@@ -66,35 +59,27 @@ predictEAT <- function(object, newdata, x) {
   return(predictions)
 }
 
-
 #' @title Model prediction for Random Forest + Efficiency Analysis Trees model.
 #'
-#' @description This function predicts the expected output by a RFEAT object.
+#' @description This function predicts the expected output by a \code{RFEAT} object.
 #'
-#' @param object A RFEAT object.
-#' @param newdata Dataframe. Set of input variables to predict on.
-#' @param x Inputs index
+#' @param object A \code{RFEAT} object.
+#' @param newdata \code{data.frame}. Set of input variables to predict on.
+#' @param x Inputs index.
 #'
 #' @importFrom dplyr %>%
 #'
-#' @return Data frame with the original data and the predicted values.
+#' @return \code{data.frame} with the original data and the predicted values.
 #' 
 #' @examples 
 #' \donttest{
 #' simulated <- X2Y2.sim(N = 50, border = 0.2)
-#' RFEAT_model <- RFEAT(data = simulated, x = c(1,2), y = c(3, 4))
+#' RFEAT_model <- RFEAT(data = simulated, x = c(1, 2), y = c(3, 4))
 #' 
-#' predictRFEAT(object = RFEAT_model, newdata = simulated, x = c(1,2))
+#' predict(object = RFEAT_model, newdata = simulated, x = c(1, 2))
 #' }
-#' 
-#' @export
-predictRFEAT <- function(object, newdata, x) {
+predict.RFEAT <- function(object, newdata, x) {
   
-  if (class(object) != "RFEAT"){
-    stop(paste(deparse(substitute(object)), "must be a RFEAT object"))
-    
-  }
-
   train_names <- object[["data"]][["input_names"]]
   test_names <- names(newdata)[x]
   
@@ -103,7 +88,7 @@ predictRFEAT <- function(object, newdata, x) {
   }
   
   # Select variables and reorder as in training data
-  newdata <- newdata[, x][train_names]
+  newdata <- newdata[, x, drop = FALSE][train_names]
   
   y <- object[["data"]][["y"]] 
   forest <- object[["forest"]]

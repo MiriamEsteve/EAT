@@ -352,14 +352,14 @@ EAT_WAM <- function(j, scores, x_k, y_k, atreeTk, ytreeTk, nX, nY, N_leaves, wei
   
 }
 
-#' @title Efficiency Analysis Trees Efficiency Scores
+#' @title Efficiency Scores computed through Efficiency Analysis Trees.
 #'
 #' @description This function calculates the efficiency scores for each DMU by an Efficiency Analysis Trees model.
 #' 
-#' @param data Dataframe containing the DMU for which the efficiency score is calculated.
-#' @param x Vector. Column input indexes in data.
-#' @param y Vector. Column output indexes in data.
-#' @param object An EAT object.
+#' @param data \code{data.frame} or \code{matrix} containing the variables in the model.
+#' @param x Column input indexes in \code{data}.
+#' @param y Column output indexes in \code{data}.
+#' @param object An \code{EAT} object.
 #' @param scores_model Mathematical programming model to calculate scores. 
 #' \itemize{
 #' \item{\code{BCC.OUT}} BCC model. Output-oriented. Efficiency level at 1.
@@ -370,9 +370,9 @@ EAT_WAM <- function(j, scores, x_k, y_k, atreeTk, ytreeTk, nX, nY, N_leaves, wei
 #' \item{\code{WAM.MIP}} Weighted Additive Model. Measure of Inefficiency Proportions. Efficiency level at 0.
 #' \item{\code{WAM.RAM}} Weighted Additive Model. Range Adjusted Measure of Inefficiency. Efficiency level at 0.
 #' }
-#' @param digits Integer. Decimal units for scores.
-#' @param FDH Logical. If \code{TRUE}, FDH scores are also calculated with the programming model selected in \code{scores_model}.
-#' @param na.rm Logical. If \code{TRUE}, \code{NA} rows are omitted.
+#' @param digits Decimal units for scores.
+#' @param FDH \code{logical}. If \code{TRUE}, FDH scores are also computed with the programming model selected in \code{scores_model}.
+#' @param na.rm \code{logical}. If \code{TRUE}, \code{NA} rows are omitted.
 #'  
 #' @importFrom dplyr summarise %>%
 #' @importFrom stats median quantile sd
@@ -389,14 +389,13 @@ EAT_WAM <- function(j, scores, x_k, y_k, atreeTk, ytreeTk, nX, nY, N_leaves, wei
 #'               scores_model = "BCC.OUT", digits = 2, FDH = TRUE, na.rm = TRUE)
 #' }
 #' 
-#' @return Dataframe introduced as argument with efficiency scores calculated through an Efficiency Analysis Trees model.
+#' @return \code{data.frame} introduced as argument with efficiency scores computed through an Efficiency Analysis Trees model.
 efficiencyEAT <- function(data, x, y, object, 
                           scores_model, digits = 3, FDH = TRUE,
                           na.rm = TRUE) {
   
-  if (class(object) != "EAT"){
+  if (!is(object, "EAT")){
     stop(paste(deparse(substitute(object)), "must be an EAT object."))
-    
   } 
   
   if (digits < 0) {
@@ -409,10 +408,7 @@ efficiencyEAT <- function(data, x, y, object,
     stop(paste(scores_model, "is not available. Please, check help(\"efficiencyEAT\")"))
   }
   
-  rwn_data <- preProcess(data, x, y, na.rm = na.rm)
-  
-  rwn <- rwn_data[[1]]
-  data <- rwn_data[[2]]
+  data <- preProcess(data, x, y, na.rm = na.rm)
   
   x <- 1:(ncol(data) - length(y))
   y <- (length(x) + 1):ncol(data)
@@ -500,7 +496,7 @@ efficiencyEAT <- function(data, x, y, object,
 
   scores <- as.data.frame(scores)
   names(scores) <- EAT_model
-  rownames(scores) <- rwn
+  rownames(scores) <- row.names(data)
   
   descriptive <- scores %>%
     summarise("Model" = "EAT",
@@ -517,7 +513,7 @@ efficiencyEAT <- function(data, x, y, object,
     
     scores_FDH <- as.data.frame(scores_FDH)
     names(scores_FDH) <- FDH_model
-    rownames(scores_FDH) <- rwn
+    rownames(scores_FDH) <- row.names(data)
     
     descriptive[2, ] <- scores_FDH %>%
       summarise("Model" = "FDH",
@@ -547,6 +543,5 @@ efficiencyEAT <- function(data, x, y, object,
     print(descriptive, row.names = FALSE)
         
     invisible(scores_df)
-    
   }
 }

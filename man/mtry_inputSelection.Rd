@@ -7,13 +7,13 @@
 mtry_inputSelection(data, x, t, mtry)
 }
 \arguments{
-\item{data}{Dataframe containing the training set.}
+\item{data}{\code{data.frame} containing the training set.}
 
-\item{x}{Vector. Column input indexes in data.}
+\item{x}{Column input indexes in data.}
 
 \item{t}{Node which is being split.}
 
-\item{mtry}{Integer. Number of inputs selected for a node to be split.}
+\item{mtry}{Number of inputs selected for a node to be split.}
 }
 \value{
 Index of the variables by which the node is divided.

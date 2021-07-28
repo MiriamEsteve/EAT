@@ -2,24 +2,24 @@
 % Please edit documentation in R/rankingEAT.R
 \name{rankingEAT}
 \alias{rankingEAT}
-\title{Ranking of Variables by Efficiency Analysis Trees}
+\title{Ranking of Variables by Efficiency Analysis Trees model.}
 \usage{
 rankingEAT(object, barplot = TRUE, threshold = 70, digits = 2)
 }
 \arguments{
-\item{object}{An EAT object.}
+\item{object}{An \code{EAT} object.}
 
-\item{barplot}{Logical. If \code{TRUE}, a barplot with the importance scores is displayed.}
+\item{barplot}{\code{logical}. If \code{TRUE}, a barplot with the importance scores is displayed.}
 
-\item{threshold}{Numeric. Importance score value in which a line is graphed.}
+\item{threshold}{Importance score value in which a line is graphed.}
 
-\item{digits}{Integer. Decimal units.}
+\item{digits}{Decimal units.}
 }
 \value{
-Dataframe with the importance scores and a barplot representing the the variable importance if \code{barplot = TRUE}.
+\code{data.frame} with the importance scores and a barplot representing the the variable importance if \code{barplot = TRUE}.
 }
 \description{
-This function calculates variable importance through an Efficiency Analysis Trees model.
+This function computes the variable importance through an Efficiency Analysis Trees model.
 }
 \examples{
 \donttest{

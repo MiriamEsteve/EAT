@@ -7,7 +7,7 @@
 size(object)
 }
 \arguments{
-\item{object}{An EAT object.}
+\item{object}{An \code{EAT} object.}
 }
 \value{
 Print with the number of leaf nodes at the tree.

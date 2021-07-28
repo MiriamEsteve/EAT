@@ -17,29 +17,29 @@ bestEAT(
 )
 }
 \arguments{
-\item{training}{Training dataframe or matrix containing the variables for model construction.}
+\item{training}{Training \code{data.frame} or \code{matrix} containing the variables for model construction.}
 
-\item{test}{Test dataframe or matrix containing the variables for model assessment.}
+\item{test}{Test \code{data.frame} or \code{matrix} containing the variables for model assessment.}
 
-\item{x}{Vector. Column input indexes in data.}
+\item{x}{Column input indexes in \code{training}.}
 
-\item{y}{Vector. Column output indexes in data.}
+\item{y}{Column output indexes in \code{training}.}
 
-\item{numStop}{Vector. Set of minimum number of observations in a node for a split to be attempted.}
+\item{numStop}{Set of minimum number of observations in a node for a split to be attempted.}
 
-\item{fold}{Vector. Set of number of folds in which the dataset to apply cross-validation during the pruning is divided.}
+\item{fold}{Set of number of folds in which the dataset to apply cross-validation during the pruning is divided.}
 
-\item{max.depth}{Integer. Depth of the tree.}
+\item{max.depth}{Depth of the tree.}
 
-\item{max.leaves}{Integer. Maximum number of leaf nodes.}
+\item{max.leaves}{Maximum number of leaf nodes.}
 
-\item{na.rm}{Logical. If \code{TRUE}, \code{NA} rows are omitted.}
+\item{na.rm}{\code{logical}. If \code{TRUE}, \code{NA} rows are omitted.}
 }
 \value{
-Dataframe in which each row corresponds to a given set of hyperparameters and the root mean square error (RMSE).
+\code{data.frame} in which each row corresponds to a given set of hyperparameters and the root mean squared error (RMSE).
 }
 \description{
-This funcion calculates the root mean square error (RMSE) for an Efficiency Analysis Trees model built with a set of given hyperparameters.
+This funcion computes the root mean squared error (RMSE) for an Efficiency Analysis Trees model built with a set of given hyperparameters.
 }
 \examples{
 \donttest{

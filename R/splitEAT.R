@@ -197,7 +197,7 @@ split <- function(data, tree, leaves, t, x, y, numStop) {
   return(list(tree, leaves))
 }
 
-#' @title Mean Square Error
+#' @title Mean Squared Error
 #'
 #' @description This function calculates the Mean Square Error between the predicted value and the observations in a given node.
 #'

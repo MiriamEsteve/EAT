@@ -7,7 +7,7 @@
 plotEAT(object)
 }
 \arguments{
-\item{object}{An EAT object.}
+\item{object}{An \code{EAT} object.}
 }
 \value{
 Plot object with the following elements for each node:

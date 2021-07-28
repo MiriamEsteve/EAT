@@ -333,14 +333,14 @@ CEAT_WAM <- function(j, scores, x_k, y_k, atreeTk, ytreeTk, nX, nY, N_leaves, we
   
 }
 
-#' @title Convex Efficiency Analysis Tree Efficiency Scores
+#' @title Efficiency Scores computed through Convex Efficiency Analysis Trees
 #'
-#' @description This function calculates the efficiency scores for each DMU through a convex Efficiency Analysis Trees model.
+#' @description This function computes the efficiency scores for each DMU through a convex Efficiency Analysis Trees model.
 #' 
-#' @param data Dataframe containing the DMU for which the efficiency score is calculated.
-#' @param x Vector. Column input indexes in data.
-#' @param y Vector. Column output indexes in data.
-#' @param object An EAT object.
+#' @param data \code{data.frame} or \code{matrix} containing the variables in the model.
+#' @param x Column input indexes in \code{data}.
+#' @param y Column output indexes in \code{data}.
+#' @param object An \code{EAT} object.
 #' @param scores_model Mathematical programming model to calculate scores. 
 #' \itemize{
 #' \item{\code{BCC.OUT}} BCC model. Output-oriented. Efficiency level at 1.
@@ -351,9 +351,9 @@ CEAT_WAM <- function(j, scores, x_k, y_k, atreeTk, ytreeTk, nX, nY, N_leaves, we
 #' \item{\code{WAM.MIP}} Weighted Additive Model. Measure of Inefficiency Proportions. Efficiency level at 0.
 #' \item{\code{WAM.RAM}} Weighted Additive Model. Range Adjusted Measure of Inefficiency. Efficiency level at 0.
 #' }
-#' @param digits Integer. Decimal units for scores.
-#' @param DEA Logical. If \code{TRUE}, DEA scores are calculated with the programming model selected in \code{scores_model}
-#' @param na.rm Logical. If \code{TRUE}, \code{NA} rows are omitted.
+#' @param digits Decimal units for scores.
+#' @param DEA \code{logical}. If \code{TRUE}, DEA scores are calculated with the programming model selected in \code{scores_model}
+#' @param na.rm \code{logical}. If \code{TRUE}, \code{NA} rows are omitted.
 #'  
 #' @importFrom dplyr summarise %>%
 #' @importFrom stats median quantile sd
@@ -370,14 +370,13 @@ CEAT_WAM <- function(j, scores, x_k, y_k, atreeTk, ytreeTk, nX, nY, N_leaves, we
 #'               scores_model = "BCC.OUT", digits = 2, DEA = TRUE, na.rm = TRUE)
 #' }
 #'
-#' @return Dataframe with input variables and efficiency scores through a convex EAT model.
+#' @return \code{data.frame} introduced as argument with efficiency scores computed through a Convex Efficiency Analysis Trees model.
 efficiencyCEAT <- function(data, x, y, object, 
                            scores_model, digits = 3, DEA = TRUE,
                            na.rm = TRUE) {
   
-  if (class(object) != "EAT"){
+  if (!is(object, "EAT")){
     stop(paste(deparse(substitute(object)), "must be an EAT object"))
-    
   } 
   
   if (digits < 0) {
@@ -390,10 +389,7 @@ efficiencyCEAT <- function(data, x, y, object,
     stop(paste(scores_model, "is not available. Please, check help(\"efficiencyCEAT\")"))
   }
   
-  rwn_data <- preProcess(data, x, y, na.rm = na.rm)
-  
-  rwn <- rwn_data[[1]]
-  data <- rwn_data[[2]]
+  data <- preProcess(data, x, y, na.rm = na.rm)
   
   x <- 1:(ncol(data) - length(y))
   y <- (length(x) + 1):ncol(data)
@@ -481,7 +477,7 @@ efficiencyCEAT <- function(data, x, y, object,
 
   scores <- as.data.frame(scores)
   names(scores) <- CEAT_model
-  rownames(scores) <- rwn
+  rownames(scores) <- row.names(data)
   
   descriptive <- scores %>%
     summarise("Model" = "CEAT",
@@ -497,7 +493,7 @@ efficiencyCEAT <- function(data, x, y, object,
   if (DEA == TRUE){
     scores_DEA <- as.data.frame(scores_DEA)
     names(scores_DEA) <- DEA_model
-    rownames(scores_DEA) <- rwn
+    rownames(scores_DEA) <- row.names(data)
     
     descriptive[2, ] <- scores %>%
       summarise("Model" = "DEA",

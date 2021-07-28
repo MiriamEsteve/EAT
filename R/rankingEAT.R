@@ -164,16 +164,16 @@ M_Breiman <- function(object, digits) {
   return(m)
 }
 
-#' @title Ranking of Variables by Efficiency Analysis Trees
+#' @title Ranking of Variables by Efficiency Analysis Trees model.
 #'
-#' @description This function calculates variable importance through an Efficiency Analysis Trees model.
+#' @description This function computes the variable importance through an Efficiency Analysis Trees model.
 #'
-#' @param object An EAT object.
-#' @param barplot Logical. If \code{TRUE}, a barplot with the importance scores is displayed.
-#' @param threshold Numeric. Importance score value in which a line is graphed.
-#' @param digits Integer. Decimal units.
+#' @param object An \code{EAT} object.
+#' @param barplot \code{logical}. If \code{TRUE}, a barplot with the importance scores is displayed.
+#' @param threshold Importance score value in which a line is graphed.
+#' @param digits Decimal units.
 #'
-#' @return Dataframe with the importance scores and a barplot representing the the variable importance if \code{barplot = TRUE}.
+#' @return \code{data.frame} with the importance scores and a barplot representing the the variable importance if \code{barplot = TRUE}.
 #' 
 #' @examples
 #' \donttest{
@@ -189,9 +189,8 @@ M_Breiman <- function(object, digits) {
 #' @export   
 rankingEAT <- function(object, barplot = TRUE, threshold = 70, digits = 2) {
   
-  if (class(object) != "EAT") {
+  if (!is(object, "EAT")) {
     stop(paste(deparse(substitute(object)), "must be an EAT object."))
-    
   } 
   
   if (threshold < 0) {
@@ -215,5 +214,4 @@ rankingEAT <- function(object, barplot = TRUE, threshold = 70, digits = 2) {
   } else {
     return(scores)
   }
-
 }

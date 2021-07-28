@@ -7,9 +7,9 @@
 imp_var_RFEAT(object, digits = 2)
 }
 \arguments{
-\item{object}{A RFEAT object}
+\item{object}{A \code{RFEAT} object}
 
-\item{digits}{Integer. Decimal units.}
+\item{digits}{Decimal units.}
 }
 \value{
 Vector of input importance scores

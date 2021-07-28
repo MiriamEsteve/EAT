@@ -16,24 +16,24 @@ EAT(
 )
 }
 \arguments{
-\item{data}{Data frame or matrix containing the variables in the model.}
+\item{data}{\code{data.frame} or \code{matrix} containing the variables in the model.}
 
-\item{x}{Vector. Column input indexes in data.}
+\item{x}{Column input indexes in data.}
 
-\item{y}{Vector. Column output indexes in data.}
+\item{y}{Column output indexes in data.}
 
-\item{numStop}{Integer. Minimum number of observations in a node for a split to be attempted.}
+\item{numStop}{Minimum number of observations in a node for a split to be attempted.}
 
-\item{fold}{Integer. Set of number of folds in which the dataset to apply cross-validation during the pruning is divided.}
+\item{fold}{Set of number of folds in which the dataset to apply cross-validation during the pruning is divided.}
 
-\item{max.depth}{Integer. Depth of the tree.}
+\item{max.depth}{Depth of the tree.}
 
-\item{max.leaves}{Integer. Maximum number of leaf nodes.}
+\item{max.leaves}{Maximum number of leaf nodes.}
 
-\item{na.rm}{Logical. If \code{TRUE}, \code{NA} rows are omitted.}
+\item{na.rm}{\code{logical}. If \code{TRUE}, \code{NA} rows are omitted.}
 }
 \value{
-An EAT object containing:
+An \code{EAT} object containing:
 \itemize{
   \item{\code{data} \itemize{
                       \item{\code{df}}: data frame containing the variables in the model.

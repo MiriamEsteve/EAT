@@ -2,7 +2,7 @@
 % Please edit documentation in R/efficiencyCEAT.R
 \name{efficiencyCEAT}
 \alias{efficiencyCEAT}
-\title{Convex Efficiency Analysis Tree Efficiency Scores}
+\title{Efficiency Scores computed through Convex Efficiency Analysis Trees}
 \usage{
 efficiencyCEAT(
   data,
@@ -16,13 +16,13 @@ efficiencyCEAT(
 )
 }
 \arguments{
-\item{data}{Dataframe containing the DMU for which the efficiency score is calculated.}
+\item{data}{\code{data.frame} or \code{matrix} containing the variables in the model.}
 
-\item{x}{Vector. Column input indexes in data.}
+\item{x}{Column input indexes in \code{data}.}
 
-\item{y}{Vector. Column output indexes in data.}
+\item{y}{Column output indexes in \code{data}.}
 
-\item{object}{An EAT object.}
+\item{object}{An \code{EAT} object.}
 
 \item{scores_model}{Mathematical programming model to calculate scores. 
 \itemize{
@@ -35,17 +35,17 @@ efficiencyCEAT(
 \item{\code{WAM.RAM}} Weighted Additive Model. Range Adjusted Measure of Inefficiency. Efficiency level at 0.
 }}
 
-\item{digits}{Integer. Decimal units for scores.}
+\item{digits}{Decimal units for scores.}
 
-\item{DEA}{Logical. If \code{TRUE}, DEA scores are calculated with the programming model selected in \code{scores_model}}
+\item{DEA}{\code{logical}. If \code{TRUE}, DEA scores are calculated with the programming model selected in \code{scores_model}}
 
-\item{na.rm}{Logical. If \code{TRUE}, \code{NA} rows are omitted.}
+\item{na.rm}{\code{logical}. If \code{TRUE}, \code{NA} rows are omitted.}
 }
 \value{
-Dataframe with input variables and efficiency scores through a convex EAT model.
+\code{data.frame} introduced as argument with efficiency scores computed through a Convex Efficiency Analysis Trees model.
 }
 \description{
-This function calculates the efficiency scores for each DMU through a convex Efficiency Analysis Trees model.
+This function computes the efficiency scores for each DMU through a convex Efficiency Analysis Trees model.
 }
 \examples{
 

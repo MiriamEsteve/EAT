@@ -2,19 +2,19 @@
 % Please edit documentation in R/rankingRFEAT.R
 \name{rankingRFEAT}
 \alias{rankingRFEAT}
-\title{Ranking of variables by Random Forest + Efficiency Analysis Trees.}
+\title{Ranking of variables by Random Forest + Efficiency Analysis Trees model.}
 \usage{
 rankingRFEAT(object, barplot = TRUE, digits = 2)
 }
 \arguments{
-\item{object}{A RFEAT object.}
+\item{object}{A \code{RFEAT} object.}
 
-\item{barplot}{Logical. If \code{TRUE}, a barplot with importance scores is displayed.}
+\item{barplot}{\code{logical}. If \code{TRUE}, a barplot with importance scores is displayed.}
 
-\item{digits}{Integer. Decimal units.}
+\item{digits}{Decimal units.}
 }
 \value{
-Dataframe with the importance scores and a barplot representing the the variable importance if \code{barplot = TRUE}.
+\code{data.frame} with the importance scores and a barplot representing the variable importance if \code{barplot = TRUE}.
 }
 \description{
 This function calculates variable importance through a Random Forest + Efficiency Analysis Trees model.

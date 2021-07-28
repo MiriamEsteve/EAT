@@ -16,27 +16,27 @@ bestRFEAT(
 )
 }
 \arguments{
-\item{training}{Training dataframe or matrix containing the variables for model construction.}
+\item{training}{Training \code{data.frame} or \code{matrix} containing the variables for model construction.}
 
-\item{test}{Test dataframe or matrix containing the variables for model assessment.}
+\item{test}{Test \code{data.frame} or \code{matrix} containing the variables for model assessment.}
 
-\item{x}{Vector. Column input indexes in data.}
+\item{x}{Column input indexes in \code{training}.}
 
-\item{y}{Vector. Column output indexes in data.}
+\item{y}{Column output indexes in \code{training}.}
 
-\item{numStop}{Vector. Set of minimum number of observations in a node for a split to be attempted.}
+\item{numStop}{Set of minimum number of observations in a node for a split to be attempted.}
 
-\item{m}{Vector. Set of number of trees to be built.}
+\item{m}{Set of number of trees to be built.}
 
-\item{s_mtry}{Character vector. Set of options for selecting the number of inputs to be selected in each split.}
+\item{s_mtry}{\code{character}. Set of options for selecting the number of inputs to be selected in each split.}
 
-\item{na.rm}{Logical. If \code{TRUE}, \code{NA} rows are omitted.}
+\item{na.rm}{\code{logical}. If \code{TRUE}, \code{NA} rows are omitted.}
 }
 \value{
-Dataframe in which each row corresponds to a given set of hyperparameters and the root mean square error (RMSE).
+\code{data.frame} in which each row corresponds to a given set of hyperparameters and the root mean squared error (RMSE).
 }
 \description{
-This funcion calculates the root mean square error (RMSE) for a Random Forest + Efficiency Analysis Trees model built with a set of given hyperparameters.
+This funcion computes the root mean squared error (RMSE) for a Random Forest + Efficiency Analysis Trees model built with a set of given hyperparameters.
 }
 \examples{
 \donttest{

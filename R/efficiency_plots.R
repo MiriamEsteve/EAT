@@ -36,7 +36,7 @@
 #' 
 #' @return Jitter plot with DMUs and scores.
 efficiencyJitter <- function(object, df_scores, scores_model, upb = NULL, lwb = NULL) {
-  if (class(object) != "EAT"){
+  if (!is(object, "EAT")){
     stop(paste(deparse(substitute(object)), "must be an EAT object."))
     
   } 

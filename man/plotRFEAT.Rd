@@ -7,13 +7,13 @@
 plotRFEAT(object)
 }
 \arguments{
-\item{object}{A RFEAT object.}
+\item{object}{A \code{RFEAT} object.}
 }
 \value{
 Line plot with the OOB error and the number of trees in the forest.
 }
 \description{
-Plot a graph with the Out-of-Bag error for a forest consisting of k trees.
+Plot a graph with the Out-of-Bag error for a forest consisting of m trees.
 }
 \examples{
 \donttest{

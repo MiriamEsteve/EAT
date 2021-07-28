@@ -7,10 +7,10 @@
 descrEAT(object)
 }
 \arguments{
-\item{object}{An EAT object.}
+\item{object}{An \code{EAT} object.}
 }
 \value{
-List with centralization and dispersion measures and the root mean square error (RMSE) for each node. In case of a single output, the result of the function is a data frame.
+List with centralization and dispersion measures and the root mean squared error (RMSE) for each node. In case of a single output, the result of the function is a \code{data.frame}.
 }
 \description{
 This function returns a set of common measures for the leaf nodes of an Efficiency Analysis Trees model.

@@ -2,7 +2,7 @@
 #'
 #' @description Plot a tree-structure for an Efficiency Analysis Trees model. 
 #'
-#' @param object An EAT object.
+#' @param object An \code{EAT} object.
 #'
 #' @importFrom partykit as.partynode party partysplit
 #' @importFrom ggparty ggparty geom_edge geom_edge_label geom_node_label
@@ -27,7 +27,7 @@
 #' 
 #' @export
 plotEAT <- function(object) {
-  if (class(object) != "EAT"){
+  if (!is(object, "EAT")){
     stop(paste(deparse(substitute(object)), "must be an EAT object"))
     
   } 

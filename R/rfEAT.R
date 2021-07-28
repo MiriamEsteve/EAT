@@ -69,15 +69,15 @@ RandomEAT <- function(data, x, y, numStop, s_mtry){
   return(tree)
 }
 
-#' @title Random Forest EAT
+#' @title Random Forest + Efficiency Analysis Trees
 #'
 #' @description This function builds \code{m} individual Efficiency Analysis Trees in a forest structure.
 #' 
-#' @param data Dataframe or matrix containing the variables in the model.
-#' @param x Vector. Column input indexes in data.
-#' @param y Vector. Column output indexes in data.
-#' @param numStop Integer. Minimum number of observations in a node for a split to be attempted.
-#' @param m Integer. Number of trees to be built.
+#' @param data \code{data.frame} or \code{matrix} containing the variables in the model.
+#' @param x Column input indexes in data.
+#' @param y Column output indexes in data.
+#' @param numStop Minimum number of observations in a node for a split to be attempted.
+#' @param m Number of trees to be built.
 #' @param s_mtry Number of variables randomly sampled as candidates at each split. The available options are:
 #' \itemize{
 #' \item{\code{"BRM"}}: \code{in / 3}
@@ -85,9 +85,9 @@ RandomEAT <- function(data, x, y, numStop, s_mtry){
 #' \item{\code{"DEA2"}}: \code{(t.obs / 3) - out}
 #' \item{\code{"DEA3"}}: \code{t.obs - 2 * out}
 #' \item{\code{"DEA4"}}: \code{min(t.obs / out, (t.obs / 3) - out)}
-#' \item{integer}
+#' \item{Any integer}
 #' }
-#' @param na.rm Logical. If \code{TRUE}, NA rows are omitted.
+#' @param na.rm \code{logical}. If \code{TRUE}, \code{NA} rows are omitted.
 #'
 #' @importFrom dplyr %>% row_number
 #' 
@@ -99,7 +99,7 @@ RandomEAT <- function(data, x, y, numStop, s_mtry){
 #'                   m = 50, s_mtry = "BRM", na.rm = TRUE)
 #' }
 #' 
-#' @return A RFEAT object containing:
+#' @return A \code{RFEAT} object containing:
 #' \itemize{
 #'   \item{\code{data} \itemize{
 #'                       \item{\code{df}}: data frame containing the variables in the model.
@@ -115,7 +115,7 @@ RandomEAT <- function(data, x, y, numStop, s_mtry){
 #'                         \item{\code{s_mtry}}: s_mtry hyperparameter value.
 #'                         \item{\code{na.rm}}: na.rm hyperparameter value.}
 #'        }
-#'   \item{\code{forest}: list structure containing the individual EAT.}
+#'   \item{\code{forest}: list structure containing the individual EAT models.}
 #'   \item{\code{error}: Out-of-Bag error at the forest.}   
 #'   \item{\code{OOB}: list containing Out-of-Bag set for each tree.}
 #' }
@@ -128,27 +128,24 @@ RFEAT <- function(data, x, y, numStop = 5, m = 50,
   # Transform character to number (if it's possible)
   # Numbers accepted
   # If character, available option
-  
   if (!is.na(suppressWarnings(as.numeric(s_mtry)))){
     s_mtry <- as.numeric(s_mtry)
     
   } else if (!s_mtry %in% c("BRM", "DEA1", "DEA2", "DEA3", "DEA4")) {
     stop(paste(s_mtry, "is not available. Plase, cheack help(\"RFEAT\")"))
-    
   }
   
   # m argument bad introduced
-  
   if (m < 0) {
     stop(paste('m =', m, 'must be greater than or equal 1.'))
-    
   }
   
+  # Rownames
+  rwn <- row.names(data)
+  
   data <- preProcess(data = data, x = x, y = y, numStop = numStop, na.rm = na.rm)
-  
-  rwn <- data[[1]]
-  
-  data <- data[[2]] %>%
+
+  data <- data %>%
     mutate(id = row_number())
   
   # Reorder index 'x' and 'y' in data

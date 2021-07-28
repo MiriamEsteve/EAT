@@ -2,27 +2,27 @@
 % Please edit documentation in R/efficiencyRFEAT.R
 \name{efficiencyRFEAT}
 \alias{efficiencyRFEAT}
-\title{Random Forest + Efficiency Analysis Trees Efficiency Scores}
+\title{Efficiency Scores computed through Random Forest + Efficiency Analysis Trees}
 \usage{
 efficiencyRFEAT(data, x, y, object, digits = 3, FDH = TRUE, na.rm = TRUE)
 }
 \arguments{
-\item{data}{Dataframe for which the efficiency score is calculated.}
+\item{data}{\code{data.frame} or \code{matrix} containing the variables in the model.}
 
-\item{x}{Vector. Column input indexes in data.}
+\item{x}{Column input indexes in \code{data}.}
 
-\item{y}{Vector. Column output indexes in data.}
+\item{y}{Column output indexes in \code{data}.}
 
-\item{object}{A RFEAT object.}
+\item{object}{A \code{RFEAT} object.}
 
-\item{digits}{Integer. Decimal units for scores.}
+\item{digits}{Decimal units for scores.}
 
-\item{FDH}{Logical. If \code{TRUE}, FDH scores are computed.}
+\item{FDH}{\code{logical}. If \code{TRUE}, FDH scores are computed.}
 
-\item{na.rm}{Logical. If \code{TRUE}, \code{NA} rows are omitted.}
+\item{na.rm}{\code{logical}. If \code{TRUE}, \code{NA} rows are omitted.}
 }
 \value{
-Dataframe with input variables and efficiency scores through a Random Forest + Efficiency Analysis Trees model.
+\code{data.frame} introduced as argument with efficiency scores computed through a Random Forest + Efficiency Analysis Trees model.
 }
 \description{
 This function calculates the efficiency scores for each DMU through a Random Forest + Efficiency Analysis Trees model and the Banker Charnes and Cooper mathematical programming model with output orientation. Efficiency level at 1.

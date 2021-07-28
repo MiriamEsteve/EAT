@@ -2,20 +2,20 @@
 % Please edit documentation in R/rfEAT.R
 \name{RFEAT}
 \alias{RFEAT}
-\title{Random Forest EAT}
+\title{Random Forest + Efficiency Analysis Trees}
 \usage{
 RFEAT(data, x, y, numStop = 5, m = 50, s_mtry = "BRM", na.rm = TRUE)
 }
 \arguments{
-\item{data}{Dataframe or matrix containing the variables in the model.}
+\item{data}{\code{data.frame} or \code{matrix} containing the variables in the model.}
 
-\item{x}{Vector. Column input indexes in data.}
+\item{x}{Column input indexes in data.}
 
-\item{y}{Vector. Column output indexes in data.}
+\item{y}{Column output indexes in data.}
 
-\item{numStop}{Integer. Minimum number of observations in a node for a split to be attempted.}
+\item{numStop}{Minimum number of observations in a node for a split to be attempted.}
 
-\item{m}{Integer. Number of trees to be built.}
+\item{m}{Number of trees to be built.}
 
 \item{s_mtry}{Number of variables randomly sampled as candidates at each split. The available options are:
 \itemize{
@@ -24,13 +24,13 @@ RFEAT(data, x, y, numStop = 5, m = 50, s_mtry = "BRM", na.rm = TRUE)
 \item{\code{"DEA2"}}: \code{(t.obs / 3) - out}
 \item{\code{"DEA3"}}: \code{t.obs - 2 * out}
 \item{\code{"DEA4"}}: \code{min(t.obs / out, (t.obs / 3) - out)}
-\item{integer}
+\item{Any integer}
 }}
 
-\item{na.rm}{Logical. If \code{TRUE}, NA rows are omitted.}
+\item{na.rm}{\code{logical}. If \code{TRUE}, \code{NA} rows are omitted.}
 }
 \value{
-A RFEAT object containing:
+A \code{RFEAT} object containing:
 \itemize{
   \item{\code{data} \itemize{
                       \item{\code{df}}: data frame containing the variables in the model.
@@ -46,7 +46,7 @@ A RFEAT object containing:
                         \item{\code{s_mtry}}: s_mtry hyperparameter value.
                         \item{\code{na.rm}}: na.rm hyperparameter value.}
        }
-  \item{\code{forest}: list structure containing the individual EAT.}
+  \item{\code{forest}: list structure containing the individual EAT models.}
   \item{\code{error}: Out-of-Bag error at the forest.}   
   \item{\code{OOB}: list containing Out-of-Bag set for each tree.}
 }

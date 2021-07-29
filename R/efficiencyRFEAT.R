@@ -38,9 +38,6 @@ efficiencyRFEAT <- function(data, x, y, object, digits = 3, FDH = TRUE, na.rm = 
   
   train_names <- c(object[["data"]][["input_names"]], object[["data"]][["output_names"]])
   
-  # Rownames
-  rwn <- row.names(data)
-  
   data <- preProcess(data, x, y, na.rm = na.rm)
   
   x <- 1:(ncol(data) - length(y))
@@ -76,7 +73,7 @@ efficiencyRFEAT <- function(data, x, y, object, digits = 3, FDH = TRUE, na.rm = 
   
   scoreRF <- as.data.frame(data$scoreRF)
   names(scoreRF) <- "RFEAT_BCC_OUT"
-  rownames(scoreRF) <- rwn
+  rownames(scoreRF) <- row.names(data)
   
   descriptive <- scoreRF %>%
     summarise("Model" = "RFEAT",
@@ -103,7 +100,7 @@ efficiencyRFEAT <- function(data, x, y, object, digits = 3, FDH = TRUE, na.rm = 
     
     scores_FDH <- as.data.frame(scores_FDH)
     names(scores_FDH) <- FDH_model
-    rownames(scores_FDH) <- rwn
+    rownames(scores_FDH) <- row.names(data)
     
     descriptive[2, ] <- scores_FDH %>%
       summarise("Model" = "FDH",

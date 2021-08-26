@@ -2,13 +2,13 @@
 % Please edit documentation in R/objects.R
 \name{EAT_object}
 \alias{EAT_object}
-\title{EAT object}
+\title{Create a EAT object}
 \usage{
 EAT_object(
   data,
   x,
   y,
-  register_names,
+  rownames,
   numStop,
   fold,
   max.depth,
@@ -18,29 +18,29 @@ EAT_object(
 )
 }
 \arguments{
-\item{data}{Dataframe or matrix containing the variables in the model.}
+\item{data}{\code{data.frame} or \code{matrix} containing the variables in the model.}
 
-\item{x}{Vector. Column input indexes in data.}
+\item{x}{Column input indexes in \code{data}.}
 
-\item{y}{Vector. Column output indexes in data.}
+\item{y}{Column output indexes in \code{data}.}
 
-\item{register_names}{String vector. Data rownames.}
+\item{rownames}{\code{string}. Data rownames.}
 
-\item{numStop}{Integer. Minimum number of observations in a node for a split to be attempted.}
+\item{numStop}{Minimum number of observations in a node for a split to be attempted.}
 
-\item{fold}{Integer. Set of number of folds in which the dataset to apply cross-validation during the pruning is divided.}
+\item{fold}{Set of number of folds in which the dataset to apply cross-validation during the pruning is divided.}
 
-\item{max.depth}{Integer. Maximum number of leaf nodes.}
+\item{max.depth}{Maximum number of leaf nodes.}
 
-\item{max.leaves}{Integer. Depth of the tree.}
+\item{max.leaves}{Depth of the tree.}
 
-\item{na.rm}{Logical. If True, NA rows are omitted. If False, an error occurs in case of NA rows.}
+\item{na.rm}{\code{logical}. If \code{TRUE}, \code{NA} rows are omitted. If \code{FALSE}, an error occurs in case of \code{NA} rows.}
 
-\item{tree}{A list containing the nodes of the EAT pruned tree.}
+\item{tree}{\code{list} containing the nodes of the Efficiency Analysis Trees pruned model.}
 }
 \value{
-An EAT object
+An \code{EAT} object.
 }
 \description{
-This function saves information about the EAT model
+This function saves information about the Efficiency Analysis Trees model.
 }

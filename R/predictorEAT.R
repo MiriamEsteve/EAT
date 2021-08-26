@@ -2,7 +2,7 @@
 #'
 #' @description This function predicts the expected value based on a set of inputs.
 #'
-#' @param tree List structure with the tree nodes.
+#' @param tree \code{list} with the tree nodes.
 #' @param register Set of independent values.
 #'
 #' @return The expected value of the dependent variable based on the given register.

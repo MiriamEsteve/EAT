@@ -1,22 +1,22 @@
-#' @title EAT object
+#' @title Create a EAT object
 #'
-#' @description This function saves information about the EAT model 
+#' @description This function saves information about the Efficiency Analysis Trees model.
 #'
-#' @param data Dataframe or matrix containing the variables in the model.
-#' @param x Vector. Column input indexes in data.
-#' @param y Vector. Column output indexes in data.
-#' @param register_names String vector. Data rownames.
-#' @param numStop Integer. Minimum number of observations in a node for a split to be attempted.
-#' @param fold Integer. Set of number of folds in which the dataset to apply cross-validation during the pruning is divided.
-#' @param max.depth Integer. Maximum number of leaf nodes.
-#' @param max.leaves Integer. Depth of the tree.
-#' @param na.rm Logical. If True, NA rows are omitted. If False, an error occurs in case of NA rows.
-#' @param tree A list containing the nodes of the EAT pruned tree.
+#' @param data \code{data.frame} or \code{matrix} containing the variables in the model.
+#' @param x Column input indexes in \code{data}.
+#' @param y Column output indexes in \code{data}.
+#' @param rownames \code{string}. Data rownames.
+#' @param numStop Minimum number of observations in a node for a split to be attempted.
+#' @param fold Set of number of folds in which the dataset to apply cross-validation during the pruning is divided.
+#' @param max.depth Maximum number of leaf nodes.
+#' @param max.leaves Depth of the tree.
+#' @param na.rm \code{logical}. If \code{TRUE}, \code{NA} rows are omitted. If \code{FALSE}, an error occurs in case of \code{NA} rows.
+#' @param tree \code{list} containing the nodes of the Efficiency Analysis Trees pruned model.
 #'
 #' @importFrom dplyr %>% select filter
 #'
-#' @return An EAT object
-EAT_object <- function(data, x, y, register_names, numStop, fold, max.depth, max.leaves, na.rm, tree) {
+#' @return An \code{EAT} object.
+EAT_object <- function(data, x, y, rownames, numStop, fold, max.depth, max.leaves, na.rm, tree) {
   
   # Output and input names
   output_names <- names(data)[y]
@@ -72,7 +72,7 @@ EAT_object <- function(data, x, y, register_names, numStop, fold, max.depth, max
                                    y = y,
                                    input_names = input_names,
                                    output_names = output_names,
-                                   row_names = register_names),
+                                   row_names = rownames),
                      "control" = list(fold = fold, 
                                       numStop = numStop,
                                       max.leaves = max.leaves,
@@ -91,16 +91,16 @@ EAT_object <- function(data, x, y, register_names, numStop, fold, max.depth, max
   
 }
 
-#' @title RFEAT object
+#' @title Create a RFEAT object
 #'
-#' @description This function saves information about the RFEAT model 
+#' @description This function saves information about the Random Forest for Efficiency Analysis Trees model.
 #' 
-#' @param data Dataframe or matrix containing the variables in the model.
-#' @param x Vector. Column input indexes in data.
-#' @param y Vector. Column output indexes in data.
-#' @param register_names String vector. Data rownames.
-#' @param numStop Integer. Minimun number of observations in a node for a split to be attempted.
-#' @param m Integer. Number of trees to be built.
+#' @param data \code{data.frame} or \code{matrix} containing the variables in the model.
+#' @param x Column input indexes in \code{data}.
+#' @param y Column output indexes in \code{data}.
+#' @param rownames \code{string}. Data rownames.
+#' @param numStop Minimun number of observations in a node for a split to be attempted.
+#' @param m Number of trees to be built.
 #' @param s_mtry Select number of inputs in each split.
 #' \itemize{
 #' \item{\code{"Breiman"}}: \code{in / 3}
@@ -109,15 +109,15 @@ EAT_object <- function(data, x, y, register_names, numStop, fold, max.depth, max
 #' \item{\code{"DEA3"}}: \code{t.obs - 2 * out}
 #' \item{\code{"DEA4"}}: \code{min(t.obs / out, (t.obs / 3) - out)}
 #' }
-#' @param na.rm Logical. If \code{TRUE}, NA rows are omitted.
-#' @param forest A list containing the individual EAT trees.
-#' @param error Error in forest.
-#' @param OOB List containing the observations with which each tree has been trained.
+#' @param na.rm \code{logical}. If \code{TRUE}, \code{NA} rows are omitted.
+#' @param forest \code{list} containing the individual Efficiency Analysis Trees.
+#' @param error Error in Random Forest for Efficiency Analysis Trees.
+#' @param OOB \code{list} containing the observations with which each tree has been trained.
 #'
 #' @importFrom dplyr %>% select filter
 #'
-#' @return A RFEAT object
-RFEAT_object <- function(data, x, y, register_names, numStop, m, s_mtry, na.rm, forest, error, OOB) {
+#' @return A \code{RFEAT} object.
+RFEAT_object <- function(data, x, y, rownames, numStop, m, s_mtry, na.rm, forest, error, OOB) {
   
   # Output and input names
   output_names <- names(data)[y]
@@ -128,7 +128,7 @@ RFEAT_object <- function(data, x, y, register_names, numStop, m, s_mtry, na.rm, 
                                      y = y,
                                      input_names = input_names,
                                      output_names = output_names,
-                                     row_names = register_names),
+                                     row_names = rownames),
                        "control" = list(numStop = numStop,
                                         m = m,
                                         s_mtry = s_mtry,

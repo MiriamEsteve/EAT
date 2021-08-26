@@ -7,7 +7,7 @@
 predictor(tree, register)
 }
 \arguments{
-\item{tree}{List structure with the tree nodes.}
+\item{tree}{\code{list} with the tree nodes.}
 
 \item{register}{Set of independent values.}
 }

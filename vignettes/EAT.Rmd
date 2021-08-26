@@ -797,8 +797,7 @@ As in `rankingEAT()`, the `rankingRFEAT` function allows an importance score for
 ```{r rankingRFEAT, eval = FALSE}
 rankingRFEAT(object, 
              barplot = TRUE, 
-             digits = 2,
-)
+             digits = 2)
 ```
 
 For example (this function is usually computationally exhaustive, thus a database reduction is carried out):
@@ -906,12 +905,12 @@ Finally, an example is shown that aims to show the different predictions made by
                      # numStop = 5,
                      # fold = 5)
 
-# bestRFEAT_model <- EAT(data = PISAindex,
-                       # x = c(6, 7, 8, 12, 17),
-                       # y = 3:5,
-                       # numStop = 3,
-                       # m = 30,
-                       # s_mtry = 'BRM')
+# bestRFEAT_model <- RFEAT(data = PISAindex,
+                         # x = c(6, 7, 8, 12, 17),
+                         # y = 3:5,
+                         # numStop = 3,
+                         # m = 30,
+                         # s_mtry = 'BRM')
 
 predictions_EAT <- predict(object = bestEAT_model,
                            newdata = PISAindex,

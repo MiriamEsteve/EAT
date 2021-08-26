@@ -2,13 +2,13 @@
 % Please edit documentation in R/objects.R
 \name{RFEAT_object}
 \alias{RFEAT_object}
-\title{RFEAT object}
+\title{Create a RFEAT object}
 \usage{
 RFEAT_object(
   data,
   x,
   y,
-  register_names,
+  rownames,
   numStop,
   m,
   s_mtry,
@@ -19,17 +19,17 @@ RFEAT_object(
 )
 }
 \arguments{
-\item{data}{Dataframe or matrix containing the variables in the model.}
+\item{data}{\code{data.frame} or \code{matrix} containing the variables in the model.}
 
-\item{x}{Vector. Column input indexes in data.}
+\item{x}{Column input indexes in \code{data}.}
 
-\item{y}{Vector. Column output indexes in data.}
+\item{y}{Column output indexes in \code{data}.}
 
-\item{register_names}{String vector. Data rownames.}
+\item{rownames}{\code{string}. Data rownames.}
 
-\item{numStop}{Integer. Minimun number of observations in a node for a split to be attempted.}
+\item{numStop}{Minimun number of observations in a node for a split to be attempted.}
 
-\item{m}{Integer. Number of trees to be built.}
+\item{m}{Number of trees to be built.}
 
 \item{s_mtry}{Select number of inputs in each split.
 \itemize{
@@ -40,17 +40,17 @@ RFEAT_object(
 \item{\code{"DEA4"}}: \code{min(t.obs / out, (t.obs / 3) - out)}
 }}
 
-\item{na.rm}{Logical. If \code{TRUE}, NA rows are omitted.}
+\item{na.rm}{\code{logical}. If \code{TRUE}, \code{NA} rows are omitted.}
 
-\item{forest}{A list containing the individual EAT trees.}
+\item{forest}{\code{list} containing the individual Efficiency Analysis Trees.}
 
-\item{error}{Error in forest.}
+\item{error}{Error in Random Forest for Efficiency Analysis Trees.}
 
-\item{OOB}{List containing the observations with which each tree has been trained.}
+\item{OOB}{\code{list} containing the observations with which each tree has been trained.}
 }
 \value{
-A RFEAT object
+A \code{RFEAT} object.
 }
 \description{
-This function saves information about the RFEAT model
+This function saves information about the Random Forest for Efficiency Analysis Trees model.
 }

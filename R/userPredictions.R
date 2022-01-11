@@ -1,4 +1,4 @@
-#' @title Model Prediction for Efficiency Analysis Trees.
+#' @title Model Prediction for Efficiency Analysis Trees.77
 #'
 #' @description This function predicts the expected output by an \code{EAT} object.
 #'

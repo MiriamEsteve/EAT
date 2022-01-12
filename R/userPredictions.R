@@ -78,6 +78,7 @@ predict.EAT <- function(object, newdata, x) {
 #' 
 #' predict(object = RFEAT_model, newdata = simulated, x = c(1, 2))
 #' }
+#' @export
 predict.RFEAT <- function(object, newdata, x) {
   
   train_names <- object[["data"]][["input_names"]]

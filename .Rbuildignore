@@ -8,3 +8,4 @@
 ^simulaciones
 ^revdep$
 ^README\.Rmd$
+^cran-comments\.md$

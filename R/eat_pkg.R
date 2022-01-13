@@ -36,7 +36,8 @@ utils::globalVariables(c("SL", "a", "R", "N", "id", "Proportion", "index", # EAT
                          "x1", "Frontier", # frontier + Model
                          "X1", "X2", "X3", "X4", "X5", "X6", "X7", # imp_var_EAT + id
                          "splitvar", "Id", "n1", # plotEAT + R
-                         "RMSE" # plotRFEAT
+                         "RMSE", # plotRFEAT
+                         "is"
                          ))
 
 # RFEAT_object : id

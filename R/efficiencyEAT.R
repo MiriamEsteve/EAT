@@ -1,16 +1,16 @@
 #' @title Banker, Charnes and Cooper Programming Model with Output Orientation for an Efficiency Analysis Trees model
 #'
-#' @description Banker, Charnes and Cooper programming model with output orientation for an Efficiency Analysis Tree model.
+#' @description Banker, Charnes and Cooper programming model with output orientation for an Efficiency Analysis Trees model.
 #'
-#' @param j Integer. Number of DMUs.
-#' @param scores Matrix. Empty matrix for scores.
-#' @param x_k Dataframe. Set of input variables.
-#' @param y_k Dataframe. Set of output variables.
-#' @param atreeTk Matrix. Set of "a" Pareto-coordinates.
-#' @param ytreeTk Matrix. Set of predictions.
-#' @param nX Integer. Number of inputs.
-#' @param nY Integer. Number of outputs.
-#' @param N_leaves Integer. Number of leaf nodes. 
+#' @param j Number of DMUs.
+#' @param scores \code{matrix}. Empty matrix for scores.
+#' @param x_k \code{data.frame}. Set of input variables.
+#' @param y_k \code{data.frame} Set of output variables.
+#' @param atreeTk \code{matrix} Set of "a" Pareto-coordinates.
+#' @param ytreeTk \code{matrix} Set of predictions.
+#' @param nX Number of inputs.
+#' @param nY Number of outputs.
+#' @param N_leaves Number of leaf nodes. 
 #'
 #' @importFrom lpSolveAPI make.lp lp.control set.objfn add.constraint set.type set.bounds get.objective
 #'
@@ -52,17 +52,17 @@ EAT_BCC_out <- function(j, scores, x_k, y_k, atreeTk, ytreeTk, nX, nY, N_leaves)
 
 #' @title Banker, Charnes and Cooper Programming Model with Input Orientation for an Efficiency Analysis Trees model
 #'
-#' @description Banker, Charnes and Cooper programming model with input orientation for an Efficiency Analysis Tree model.
+#' @description Banker, Charnes and Cooper programming model with input orientation for an Efficiency Analysis Trees model.
 #'
-#' @param j Integer. Number of DMUs.
-#' @param scores Matrix. Empty matrix for scores.
-#' @param x_k Dataframe. Set of input variables.
-#' @param y_k Dataframe. Set of output variables.
-#' @param atreeTk Matrix. Set of "a" Pareto-coordinates.
-#' @param ytreeTk Matrix. Set of predictions.
-#' @param nX Integer. Number of inputs.
-#' @param nY Integer. Number of outputs.
-#' @param N_leaves Integer. Number of leaf nodes. 
+#' @param j Number of DMUs.
+#' @param scores \code{matrix}. Empty matrix for scores.
+#' @param x_k \code{data.frame}. Set of input variables.
+#' @param y_k \code{data.frame} Set of output variables.
+#' @param atreeTk \code{matrix} Set of "a" Pareto-coordinates.
+#' @param ytreeTk \code{matrix} Set of predictions.
+#' @param nX Number of inputs.
+#' @param nY Number of outputs.
+#' @param N_leaves Number of leaf nodes. 
 #'
 #' @importFrom lpSolveAPI make.lp lp.control set.objfn add.constraint set.type set.bounds get.objective
 #'
@@ -104,17 +104,17 @@ EAT_BCC_in <- function(j, scores, x_k, y_k, atreeTk, ytreeTk, nX, nY, N_leaves) 
 
 #' @title Directional Distance Function Programming Model for an Efficiency Analysis Trees model
 #'
-#' @description Directional Distance Function for an Efficiency Analysis Tree model.
+#' @description Directional Distance Function for an Efficiency Analysis Trees model.
 #'
-#' @param j Integer. Number of DMUs.
-#' @param scores Matrix. Empty matrix for scores.
-#' @param x_k Dataframe. Set of input variables.
-#' @param y_k Dataframe. Set of output variables.
-#' @param atreeTk Matrix. Set of "a" Pareto-coordinates.
-#' @param ytreeTk Matrix. Set of predictions.
-#' @param nX Integer. Number of inputs.
-#' @param nY Integer. Number of outputs.
-#' @param N_leaves Integer. Number of leaf nodes.
+#' @param j Number of DMUs.
+#' @param scores \code{matrix}. Empty matrix for scores.
+#' @param x_k \code{data.frame}. Set of input variables.
+#' @param y_k \code{data.frame} Set of output variables.
+#' @param atreeTk \code{matrix} Set of "a" Pareto-coordinates.
+#' @param ytreeTk \code{matrix} Set of predictions.
+#' @param nX Number of inputs.
+#' @param nY Number of outputs.
+#' @param N_leaves Number of leaf nodes. 
 #'
 #' @importFrom lpSolveAPI make.lp lp.control set.objfn add.constraint set.type set.bounds get.objective
 #'
@@ -157,15 +157,15 @@ EAT_DDF <- function(j, scores, x_k, y_k, atreeTk, ytreeTk, nX, nY, N_leaves) {
 #'
 #' @description Russell Model with input orientation for an Efficiency Analysis Trees model.
 #'
-#' @param j Integer. Number of DMUs.
-#' @param scores Matrix. Empty matrix for scores.
-#' @param x_k Dataframe. Set of input variables.
-#' @param y_k Dataframe. Set of output variables.
-#' @param atreeTk Matrix. Set of "a" Pareto-coordinates.
-#' @param ytreeTk Matrix. Set of predictions.
-#' @param nX Integer. Number of inputs.
-#' @param nY Integer. Number of outputs.
-#' @param N_leaves Integer. Number of leaf nodes.
+#' @param j Number of DMUs.
+#' @param scores \code{matrix}. Empty matrix for scores.
+#' @param x_k \code{data.frame}. Set of input variables.
+#' @param y_k \code{data.frame} Set of output variables.
+#' @param atreeTk \code{matrix} Set of "a" Pareto-coordinates.
+#' @param ytreeTk \code{matrix} Set of predictions.
+#' @param nX Number of inputs.
+#' @param nY Number of outputs.
+#' @param N_leaves Number of leaf nodes. 
 #'
 #' @importFrom lpSolveAPI make.lp lp.control set.objfn add.constraint set.type set.bounds get.objective
 #'
@@ -213,17 +213,17 @@ EAT_RSL_in <- function(j, scores, x_k, y_k, atreeTk, ytreeTk, nX, nY, N_leaves) 
 
 #' @title Russell Model with Output Orientation for an Efficiency Analysis Trees model
 #'
-#' @description Russell Model with output orientation for an Efficiency Analysis Tree model.
+#' @description Russell Model with output orientation for an Efficiency Analysis Trees model.
 #'
-#' @param j Integer. Number of DMUs.
-#' @param scores Matrix. Empty matrix for scores.
-#' @param x_k Dataframe. Set of input variables.
-#' @param y_k Dataframe. Set of output variables.
-#' @param atreeTk Matrix. Set of "a" Pareto-coordinates.
-#' @param ytreeTk Matrix. Set of predictions.
-#' @param nX Integer. Number of inputs.
-#' @param nY Integer. Number of outputs.
-#' @param N_leaves Integer. Number of leaf nodes.
+#' @param j Number of DMUs.
+#' @param scores \code{matrix}. Empty matrix for scores.
+#' @param x_k \code{data.frame}. Set of input variables.
+#' @param y_k \code{data.frame} Set of output variables.
+#' @param atreeTk \code{matrix} Set of "a" Pareto-coordinates.
+#' @param ytreeTk \code{matrix} Set of predictions.
+#' @param nX Number of inputs.
+#' @param nY Number of outputs.
+#' @param N_leaves Number of leaf nodes. 
 #'
 #' @importFrom lpSolveAPI make.lp lp.control set.objfn add.constraint set.type set.bounds get.objective
 #'
@@ -273,15 +273,15 @@ EAT_RSL_out <- function(j, scores, x_k, y_k, atreeTk, ytreeTk, nX, nY, N_leaves)
 #'
 #' @description Weighted Additive Model for an Efficiency Analysis Trees model.
 #'
-#' @param j Integer. Number of DMUs.
-#' @param scores Matrix. Empty matrix for scores.
-#' @param x_k Dataframe. Set of input variables.
-#' @param y_k Dataframe. Set of output variables.
-#' @param atreeTk Matrix. Set of "a" Pareto-coordinates.
-#' @param ytreeTk Matrix. Set of predictions.
-#' @param nX Integer. Number of inputs.
-#' @param nY Integer. Number of outputs.
-#' @param N_leaves Integer. Number of leaf nodes.
+#' @param j Number of DMUs.
+#' @param scores \code{matrix}. Empty matrix for scores.
+#' @param x_k \code{data.frame}. Set of input variables.
+#' @param y_k \code{data.frame} Set of output variables.
+#' @param atreeTk \code{matrix} Set of "a" Pareto-coordinates.
+#' @param ytreeTk \code{matrix} Set of predictions.
+#' @param nX Number of inputs.
+#' @param nY Number of outputs.
+#' @param N_leaves Number of leaf nodes. 
 #' @param weights Character. \code{"MIP"} for Measure of Inefficiency Proportion or \code{"RAM"} for Range Adjusted Measure of Inefficiency.
 #'
 #' @importFrom lpSolveAPI make.lp lp.control set.objfn add.constraint set.type set.bounds get.objective
@@ -352,7 +352,7 @@ EAT_WAM <- function(j, scores, x_k, y_k, atreeTk, ytreeTk, nX, nY, N_leaves, wei
   
 }
 
-#' @title Efficiency Scores computed through Efficiency Analysis Trees.
+#' @title Efficiency Scores computed through an Efficiency Analysis Trees model.
 #'
 #' @description This function calculates the efficiency scores for each DMU by an Efficiency Analysis Trees model.
 #' 
@@ -394,9 +394,9 @@ efficiencyEAT <- function(data, x, y, object,
                           scores_model, digits = 3, FDH = TRUE,
                           na.rm = TRUE) {
   
-  if (!is(object, "EAT")){
+  if (!is(object, "EAT")) {
     stop(paste(deparse(substitute(object)), "must be an EAT object."))
-  } 
+  }
   
   if (digits < 0) {
     stop(paste('digits =', digits, 'must be greater than 0.'))

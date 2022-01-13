@@ -1,15 +1,16 @@
 Package: eat
 Title: Efficiency Analysis Trees
-Version: 0.1.0
+Version: 0.1.1
 Authors@R: c(
     person(given = "Miriam", 
            family = "Esteve", 
            role = c("cre", "aut"),
-           email = "miriam.estevec@umh.es",
+           email = "mestevecampello@gmail.com",
            comment = c(ORCID = "0000-0002-5908-0581")),
     person(given = "Víctor", 
            family = "España", 
-           role = c("aut")),
+           role = c("aut"),
+           comment = c(ORCID = "0000-0002-1807-6180")),
     person(given = "Juan", 
            family = "Aparicio", 
            role = c("aut"),
@@ -35,7 +36,6 @@ Imports:
     dplyr,
     conflicted,
     stats,
-    knitr,
     ggplot2,
     ggparty,
     partykit,
@@ -48,6 +48,7 @@ Suggests:
     rmarkdown,
     testthat,
     kableExtra,
+    knitr,
     usethis,
     devtools
 RdMacros: 

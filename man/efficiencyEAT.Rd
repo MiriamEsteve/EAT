@@ -2,7 +2,7 @@
 % Please edit documentation in R/efficiencyEAT.R
 \name{efficiencyEAT}
 \alias{efficiencyEAT}
-\title{Efficiency Scores computed through Efficiency Analysis Trees.}
+\title{Efficiency Scores computed through an Efficiency Analysis Trees model.}
 \usage{
 efficiencyEAT(
   data,

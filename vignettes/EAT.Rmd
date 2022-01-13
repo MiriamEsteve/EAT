@@ -437,7 +437,7 @@ rankingEAT(object,
            digits = 2)
 ```
 
-The importance score represents how influential each variable is in the model. In this case, the cut-off point is set at 70 and therefore important variables are considered: **AAE** (Acess to Advance Education), **WS** (Water and Sanitation), **NBMC** (Nutrition and Basic Medical Care), **HW** (Health and Wellness) and **S** (Shelter). 
+The importance score represents how influential each variable is in the model. In this case, the cut-off point is set at 70 and therefore important variables are considered: **AAE** (Access to Advanced Education), **WS** (Water and Sanitation), **NBMC** (Nutrition and Basic Medical Care), **HW** (Health and Wellness) and **S** (Shelter). 
 
 ```{r multioutput.importance, fig.width = 7.2, fig.height = 6}
 rankingEAT(object = multioutput_model,

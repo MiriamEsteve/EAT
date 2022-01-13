@@ -153,11 +153,11 @@ EAT <- function(data, x, y, numStop = 5, fold = 5,
 
 #' @title Deep Efficiency Analysis Trees
 #'
-#' @description This function creates a deep tree and a set of possible prunings by pruning through the weakest-link pruning procedure.
+#' @description This function creates a deep Efficiency Analysis Tree and a set of possible prunings by the weakest-link pruning procedure.
 #'
-#' @param data Dataframe or matrix containing the variables in the model.
-#' @param x Vector. Column input indexes in data.
-#' @param y Vector. Column output indexes in data.
+#' @param data \code{data.frame} or \code{matrix} containing the variables in the model.
+#' @param x Column input indexes in data.
+#' @param y Column output indexes in data.
 #' @param numStop Integer. Minimum number of observations in a node for a split to be attempted.
 #' @param max.depth Integer. Depth of the tree.
 #' @param max.leaves Integer. Maximum number of leaf nodes.
@@ -278,6 +278,10 @@ deepEAT <- function(data, x, y, numStop = 5, max.depth = NULL, max.leaves = NULL
 #' @export
 print.EAT <- function(x, ...) {
   
+  if (!inherits(x, "EAT")){
+    stop(paste(deparse(substitute(x)), "must be an EAT object"))
+  }
+  
   tree <- x[["tree"]]
   input_names <- x[["data"]][["input_names"]]
   
@@ -345,6 +349,10 @@ print.EAT <- function(x, ...) {
 #' 
 #' @export
 summary.EAT <- function(object, ...) {
+  
+  if (!inherits(object, "EAT")){
+    stop(paste(deparse(substitute(object)), "must be an EAT object"))
+  }
   
   results <- object[["nodes_df"]] %>%
     filter(SL == -1) %>%
@@ -470,6 +478,10 @@ summary.EAT <- function(object, ...) {
 #' @export
 size <- function(object) {
   
+  if (!is(object, "EAT")) {
+    stop(paste(deparse(substitute(object)), "must be an EAT object."))
+  }
+  
   size <- object[["model"]][["leaf_nodes"]]
   
   cat(paste('The number of leaf nodes of the EAT model is:', size))
@@ -492,6 +504,10 @@ size <- function(object) {
 #' 
 #' @export
 frontier.levels <- function(object) {
+  
+  if (!is(object, "EAT")) {
+    stop(paste(deparse(substitute(object)), "must be an EAT object."))
+  }
   
   frontier.levels <- as.data.frame(unique(object[["model"]][["y"]]))
   colnames(frontier.levels) <- object[["data"]][["output_names"]]
@@ -520,6 +536,10 @@ frontier.levels <- function(object) {
 #' 
 #' @export
 descrEAT <- function(object) {
+  
+  if (!is(object, "EAT")) {
+    stop(paste(deparse(substitute(object)), "must be an EAT object."))
+  }
   
   data <- object[["data"]][["df"]]
   x <- object[["data"]][["x"]]

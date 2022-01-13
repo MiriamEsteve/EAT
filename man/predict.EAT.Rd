@@ -4,7 +4,7 @@
 \alias{predict.EAT}
 \title{Model Prediction for Efficiency Analysis Trees.}
 \usage{
-\method{predict}{EAT}(object, newdata, x)
+\method{predict}{EAT}(object, newdata, x, ...)
 }
 \arguments{
 \item{object}{An \code{EAT} object.}
@@ -12,6 +12,8 @@
 \item{newdata}{\code{data.frame}. Set of input variables to predict on.}
 
 \item{x}{Inputs index.}
+
+\item{...}{further arguments passed to or from other methods.}
 }
 \value{
 \code{data.frame} with the original data and the predicted values.

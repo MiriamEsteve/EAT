@@ -23,14 +23,13 @@ rankingRFEAT <- function(object, barplot = TRUE, digits = 2) {
   
   if (!is(object, "RFEAT")){
     stop(paste(deparse(substitute(object)), "must be a RFEAT object."))
-  }
   
-  if (digits < 0) {
+  } else if (digits < 0) {
     stop(paste('digits =', digits, 'must be greater than 0.'))
-  }
   
-  if(length(object[["data"]][["x"]]) < 2){
+  } else if(length(object[["data"]][["x"]]) < 2){
     stop("More than two predictors are necessary.")
+    
   }
   
   scores <- imp_var_RFEAT(object = object, digits = digits)

@@ -5,6 +5,7 @@
 #' @param object An \code{EAT} object.
 #' @param newdata \code{data.frame}. Set of input variables to predict on.
 #' @param x Inputs index.
+#' @param ... further arguments passed to or from other methods.
 #'
 #' @importFrom dplyr %>%
 #'
@@ -19,7 +20,12 @@
 #' }
 #' 
 #' @export
-predict.EAT <- function(object, newdata, x) {
+predict.EAT <- function(object, newdata, x, ...) {
+  
+  if (!inherits(object, "EAT")){
+    stop(paste(deparse(substitute(object)), "must be an EAT object"))
+  }
+  
   train_names <- object[["data"]][["input_names"]]
   test_names <- names(newdata)[x]
   
@@ -66,6 +72,7 @@ predict.EAT <- function(object, newdata, x) {
 #' @param object A \code{RFEAT} object.
 #' @param newdata \code{data.frame}. Set of input variables to predict on.
 #' @param x Inputs index.
+#' @param ... further arguments passed to or from other methods.
 #'
 #' @importFrom dplyr %>%
 #'
@@ -79,7 +86,11 @@ predict.EAT <- function(object, newdata, x) {
 #' predict(object = RFEAT_model, newdata = simulated, x = c(1, 2))
 #' }
 #' @export
-predict.RFEAT <- function(object, newdata, x) {
+predict.RFEAT <- function(object, newdata, x, ...) {
+  
+  if (!inherits(object, "RFEAT")){
+    stop(paste(deparse(substitute(object)), "must be a RFEAT object"))
+  }
   
   train_names <- object[["data"]][["input_names"]]
   test_names <- names(newdata)[x]

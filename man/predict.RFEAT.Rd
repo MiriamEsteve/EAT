@@ -4,7 +4,7 @@
 \alias{predict.RFEAT}
 \title{Model prediction for Random Forest + Efficiency Analysis Trees model.}
 \usage{
-\method{predict}{RFEAT}(object, newdata, x)
+\method{predict}{RFEAT}(object, newdata, x, ...)
 }
 \arguments{
 \item{object}{A \code{RFEAT} object.}
@@ -12,6 +12,8 @@
 \item{newdata}{\code{data.frame}. Set of input variables to predict on.}
 
 \item{x}{Inputs index.}
+
+\item{...}{further arguments passed to or from other methods.}
 }
 \value{
 \code{data.frame} with the original data and the predicted values.

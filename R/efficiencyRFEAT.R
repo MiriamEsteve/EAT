@@ -1,4 +1,4 @@
-#' @title Efficiency Scores computed through Random Forest + Efficiency Analysis Trees 
+#' @title Efficiency Scores computed through a Random Forest + Efficiency Analysis Trees model.
 #'
 #' @description This function calculates the efficiency scores for each DMU through a Random Forest + Efficiency Analysis Trees model and the Banker Charnes and Cooper mathematical programming model with output orientation. Efficiency level at 1.
 #'
@@ -27,12 +27,10 @@
 #' @return \code{data.frame} introduced as argument with efficiency scores computed through a Random Forest + Efficiency Analysis Trees model.
 efficiencyRFEAT <- function(data, x, y, object, digits = 3, FDH = TRUE, na.rm = TRUE){
   
-  if (!is(object, "RFEAT")){
+  if (!is(object, "RFEAT")) {
     stop(paste(deparse(substitute(object)), "must be a RFEAT object."))
     
-  } 
-  
-  if (digits < 0) {
+    } else if (digits < 0) {
     stop(paste('digits =', digits, 'must be greater than 0.'))
   }
   

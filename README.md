@@ -31,7 +31,6 @@ And the development version from
 [GitHub](https://github.com/MiriamEsteve/EAT) with:
 
 ``` r
-# install.packages("devtools")
 devtools::install_github("MiriamEsteve/EAT")
 ```
 
@@ -53,7 +52,7 @@ single_model <- EAT(data = PISAindex,
 #> [conflicted] Will prefer dplyr::filter over any other package
 ```
 
-  - Print an EAT object
+  - Print an `EAT` object
 
 <!-- end list -->
 
@@ -65,15 +64,7 @@ print(single_model)
     #>  
     #>  |  [2] PFC < 77.2 --> y: [ 478 ] || R: 2324.47 n(t): 34 
     #>  
-    #>  |   |  [4] PFC < 65.45 --> y: [ 428 ] || R: 390.17 n(t): 16 
-    #>  
-    #>  |   |   |  [6] PFC < 61.31 --> y: [ 417 ] || R: 169.56 n(t): 7 
-    #>  
-    #>  |   |   |   |  [8] PFC < 59.4 --> y: [ 417 ] <*> || R: 112.19 n(t): 4 
-    #>  
-    #>  |   |   |   |  [9] PFC >= 59.4 --> y: [ 417 ] <*> || R: 57.36 n(t): 3 
-    #>  
-    #>  |   |   |  [7] PFC >= 61.31 --> y: [ 428 ] <*> || R: 139.79 n(t): 9 
+    #>  |   |  [4] PFC < 65.45 --> y: [ 428 ] <*> || R: 390.17 n(t): 16 
     #>  
     #>  |   |  [5] PFC >= 65.45 --> y: [ 478 ] <*> || R: 637.08 n(t): 18 
     #>  
@@ -81,7 +72,7 @@ print(single_model)
     #>  
     #> <*> is a leaf node
 
-  - Summary of an EAT object
+  - Summary of an `EAT` object
 
 <!-- end list -->
 
@@ -98,20 +89,18 @@ summary(single_model)
     #>  
     #>  id n(t)  % S_PISA    R(t)
     #>   3   38 53    551 2452.83
+    #>   4   16 22    428  390.17
     #>   5   18 25    478  637.08
-    #>   7    9 12    428  139.79
-    #>   8    4  6    417  112.19
-    #>   9    3  4    417   57.36
     #> 
     #>  # ========================== # 
     #>  #            Tree            # 
     #>  # ========================== # 
     #>  
-    #>  Interior nodes: 4 
-    #>      Leaf nodes: 5 
-    #>     Total nodes: 9 
+    #>  Interior nodes: 2 
+    #>      Leaf nodes: 3 
+    #>     Total nodes: 5 
     #>  
-    #>            R(T): 3399.25 
+    #>            R(T): 3480.08 
     #>         numStop: 5 
     #>            fold: 5 
     #>       max.depth: 
@@ -124,12 +113,8 @@ summary(single_model)
     #>  Node 1 --> {2,3} || PFC --> {R: 4777.31, s: 77.2}
     #> 
     #>  Node 2 --> {4,5} || PFC --> {R: 1027.25, s: 65.45}
-    #> 
-    #>  Node 4 --> {6,7} || PFC --> {R: 309.35, s: 61.31}
-    #> 
-    #>  Node 6 --> {8,9} || PFC --> {R: 169.56, s: 59.4}
 
-  - Number of leaf nodes of an EAT object
+  - Number of leaf nodes of an `EAT` object
 
 <!-- end list -->
 
@@ -137,9 +122,9 @@ summary(single_model)
 size(single_model)
 ```
 
-    #> The number of leaf nodes of the EAT model is: 5
+    #> The number of leaf nodes of the EAT model is: 3
 
-  - Frontier levels of output for an EAT object
+  - Frontier levels of output for an `EAT` object
 
 <!-- end list -->
 
@@ -151,11 +136,10 @@ frontier.levels(single_model)
 
     #>   S_PISA
     #> 1    551
-    #> 2    478
-    #> 3    428
-    #> 4    417
+    #> 2    428
+    #> 3    478
 
-  - Descriptive analysis for an EAT object
+  - Descriptive analysis for an `EAT` object
 
 <!-- end list -->
 
@@ -171,10 +155,6 @@ descriptiveEAT
     #> 3    3   38  53 489.21  851.95 29.19 419 478.00  494.0 504.50 551  68.17
     #> 4    4   16  22 394.62  684.65 26.17 336 381.50  398.0 414.00 428  41.90
     #> 5    5   18  25 436.67  889.29 29.82 386 415.25  433.5 468.00 478  50.48
-    #> 6    6    7  10 384.71  818.57 28.61 336 370.00  398.0 401.00 417  41.76
-    #> 7    7    9  12 402.33  517.00 22.74 365 384.00  413.0 419.00 428  33.44
-    #> 8    8    4   6 383.50 1196.33 34.59 336 371.25  390.5 402.75 417  44.94
-    #> 9    9    3   4 386.33  654.33 25.58 357 377.50  398.0 401.00 404  37.10
 
   - Plot the frontier
 
@@ -187,7 +167,8 @@ frontier(object = single_model,
          rwn = TRUE)
 ```
 
-    #> Warning: Ignoring unknown parameters: max.overlaps
+    #> Warning: ggrepel: 8 unlabeled data points (too many overlaps). Consider
+    #> increasing max.overlaps
 
 <img src="man/figures/README-frontier-1.png" width="100%" />
 
@@ -266,7 +247,7 @@ bestEAT(training = training,
         fold = c(5, 7))
 ```
 
-    #> Warning in preProcess(training, x, y, na.rm = na.rm): Rows with NA values have been omitted .
+    #> Warning in preProcess(test, x, y, na.rm = na.rm): Rows with NA values have been omitted .
 
     #> [conflicted] Removing existing preference
 
@@ -293,12 +274,12 @@ bestEAT(training = training,
     #> [conflicted] Will prefer dplyr::filter over any other package
 
     #>   numStop fold  RMSE leaves
-    #> 1      10    7 55.12      8
-    #> 2       5    5 56.96      9
-    #> 3       7    5 56.96      8
-    #> 4       5    7 56.96      9
-    #> 5       7    7 56.96      8
-    #> 6      10    5 79.81      5
+    #> 1       7    5 66.94     10
+    #> 2       7    7 66.94     10
+    #> 3       5    7 71.87      8
+    #> 4       5    5 84.60      7
+    #> 5      10    5 85.06      5
+    #> 6      10    7 85.06      5
 
   - Efficiency scores EAT
 
@@ -352,7 +333,7 @@ scores_EAT <-  efficiencyEAT(data = PISAindex,
     #> AUS       1.095       1.054
     #> RUS       1.000       1.000
     #> ITA       1.021       1.021
-    #> SVK       1.188       1.037
+    #> SVK       1.187       1.037
     #> LUX       1.155       1.155
     #> HUN       1.146       1.000
     #> LTU       1.143       1.060
@@ -368,24 +349,24 @@ scores_EAT <-  efficiencyEAT(data = PISAindex,
     #> GRC       1.058       1.058
     #> SRB       1.086       1.000
     #> MYS       1.091       1.068
-    #> ALB       1.000       1.000
+    #> ALB       1.026       1.000
     #> BGR       1.127       1.127
     #> ARE       1.270       1.177
     #> MNE       1.152       1.128
     #> ROU       1.122       1.122
     #> KAZ       1.204       1.179
     #> MDA       1.000       1.000
-    #> AZE       1.048       1.048
+    #> AZE       1.075       1.048
     #> THA       1.005       1.005
     #> URY       1.293       1.200
     #> CHL       1.241       1.169
     #> QAT       1.315       1.239
     #> MEX       1.021       1.021
-    #> BIH       1.048       1.048
+    #> BIH       1.075       1.048
     #> CRI       1.149       1.149
     #> JOR       1.114       1.093
-    #> PER       1.032       1.032
-    #> GEO       1.089       1.089
+    #> PER       1.059       1.032
+    #> GEO       1.117       1.089
     #> MKD       1.036       1.036
     #> LBN       1.115       1.115
     #> COL       1.036       1.036
@@ -395,16 +376,14 @@ scores_EAT <-  efficiencyEAT(data = PISAindex,
     #> SAU       1.238       1.215
     #> MAR       1.135       1.135
     #> PAN       1.173       1.173
-    #> PHL       1.168       1.168
-    #> DOM       1.241       1.241
+    #> PHL       1.199       1.168
+    #> DOM       1.274       1.241
     #> 
     #>  Model  Mean Std. Dev. Min    Q1 Median    Q3   Max
-    #>    EAT 1.111     0.074   1 1.054  1.106 1.106 1.315
-    #> 
-    #>  Model  Mean Std. Dev. Min   Q1 Median    Q3   Max
-    #>    FDH 1.081     0.065   1 1.03  1.069 1.069 1.241
+    #>    EAT 1.114     0.074   1 1.061  1.110 1.110 1.315
+    #>    FDH 1.081     0.065   1 1.030  1.069 1.069 1.241
 
-  - Efficiency scores convex EAT
+  - Efficiency scores CEAT
 
 <!-- end list -->
 
@@ -420,64 +399,64 @@ scores_CEAT <- efficiencyCEAT(data = PISAindex,
 
     #>     CEAT_BCC_INP DEA_BCC_INP
     #> SGP        0.878       1.000
-    #> JPN        0.877       0.986
-    #> KOR        0.886       0.989
-    #> EST        0.862       0.969
-    #> NLD        0.747       0.824
-    #> POL        0.872       0.968
-    #> CHE        0.709       0.777
-    #> CAN        0.775       0.865
-    #> DNK        0.705       0.772
-    #> SVN        0.832       0.920
-    #> BEL        0.747       0.821
-    #> FIN        0.794       0.888
-    #> SWE        0.735       0.809
-    #> GBR        0.760       0.840
-    #> NOR        0.694       0.757
-    #> DEU        0.734       0.809
-    #> IRL        0.743       0.816
-    #> AUT        0.725       0.792
-    #> CZE        0.801       0.880
-    #> LVA        0.774       0.843
-    #> FRA        0.738       0.808
-    #> ISL        0.687       0.739
-    #> NZL        0.779       0.862
-    #> PRT        0.791       0.865
-    #> AUS        0.766       0.845
-    #> RUS        0.866       0.936
-    #> ITA        0.778       0.832
-    #> SVK        0.739       0.787
-    #> LUX        0.676       0.729
-    #> HUN        0.797       0.864
-    #> LTU        0.785       0.851
-    #> ESP        0.772       0.838
-    #> USA        0.767       0.846
-    #> BLR        0.770       0.826
-    #> MLT        0.726       0.771
-    #> HRV        0.813       0.875
-    #> ISR        0.726       0.771
-    #> TUR        0.891       0.953
-    #> UKR        0.855       0.916
-    #> CYP        0.656       0.678
-    #> GRC        0.782       0.822
-    #> SRB        0.800       0.829
-    #> MYS        0.767       0.792
+    #> JPN        0.872       0.986
+    #> KOR        0.878       0.989
+    #> EST        0.857       0.969
+    #> NLD        0.736       0.824
+    #> POL        0.862       0.968
+    #> CHE        0.697       0.777
+    #> CAN        0.768       0.865
+    #> DNK        0.693       0.772
+    #> SVN        0.821       0.920
+    #> BEL        0.735       0.821
+    #> FIN        0.787       0.888
+    #> SWE        0.724       0.809
+    #> GBR        0.750       0.840
+    #> NOR        0.680       0.757
+    #> DEU        0.723       0.809
+    #> IRL        0.731       0.816
+    #> AUT        0.712       0.792
+    #> CZE        0.788       0.880
+    #> LVA        0.758       0.843
+    #> FRA        0.725       0.808
+    #> ISL        0.669       0.739
+    #> NZL        0.769       0.862
+    #> PRT        0.776       0.865
+    #> AUS        0.754       0.845
+    #> RUS        0.846       0.936
+    #> ITA        0.756       0.832
+    #> SVK        0.717       0.787
+    #> LUX        0.660       0.729
+    #> HUN        0.779       0.864
+    #> LTU        0.768       0.851
+    #> ESP        0.755       0.838
+    #> USA        0.756       0.846
+    #> BLR        0.750       0.826
+    #> MLT        0.703       0.771
+    #> HRV        0.792       0.875
+    #> ISR        0.703       0.771
+    #> TUR        0.866       0.953
+    #> UKR        0.831       0.916
+    #> CYP        0.628       0.678
+    #> GRC        0.754       0.822
+    #> SRB        0.767       0.829
+    #> MYS        0.734       0.792
     #> ALB        1.000       1.000
-    #> BGR        0.683       0.691
-    #> ARE        0.646       0.663
+    #> BGR        0.661       0.691
+    #> ARE        0.616       0.663
     #> MNE        0.698       0.698
-    #> ROU        0.691       0.701
+    #> ROU        0.662       0.701
     #> KAZ        0.696       0.696
-    #> MDA        0.811       0.825
+    #> MDA        0.771       0.825
     #> AZE        0.967       0.967
-    #> THA        0.776       0.787
-    #> URY        0.627       0.637
-    #> CHL        0.665       0.692
-    #> QAT        0.597       0.599
-    #> MEX        0.753       0.755
+    #> THA        0.744       0.787
+    #> URY        0.602       0.637
+    #> CHL        0.638       0.692
+    #> QAT        0.591       0.599
+    #> MEX        0.746       0.755
     #> BIH        0.782       0.782
     #> CRI        0.615       0.615
-    #> JOR        0.717       0.731
+    #> JOR        0.682       0.731
     #> PER        0.795       0.795
     #> GEO        0.798       0.798
     #> MKD        0.768       0.768
@@ -493,9 +472,7 @@ scores_CEAT <- efficiencyCEAT(data = PISAindex,
     #> DOM        0.804       0.804
     #> 
     #>  Model  Mean Std. Dev.   Min    Q1 Median    Q3 Max
-    #>   CEAT 0.762     0.075 0.597 0.715  0.766 0.766   1
-    #> 
-    #>  Model  Mean Std. Dev.   Min    Q1 Median    Q3 Max
+    #>   CEAT 0.749     0.077 0.591 0.698  0.749 0.749   1
     #>    DEA 0.805     0.094 0.599 0.739  0.801 0.801   1
 
   - Efficiency jitter plot
@@ -508,8 +485,6 @@ efficiencyJitter(object = single_model,
                  scores_model = "BCC.OUT",
                  lwb = 1.2)
 ```
-
-    #> Warning: Removed 1 rows containing missing values (geom_segment).
 
 <img src="man/figures/README-jitter-1.png" width="100%" />
 
@@ -542,7 +517,7 @@ forest <- RFEAT(data = PISAindex,
 
     #> [conflicted] Will prefer dplyr::filter over any other package
 
-  - Print a RFEAT object
+  - Print a `RFEAT` object
 
 <!-- end list -->
 
@@ -557,7 +532,7 @@ print(forest)
     #>  #           Forest           # 
     #>  # ========================== # 
     #>  
-    #>  Error: 769.12
+    #>  Error: 738.42
     #>  numStop: 5
     #>  No. of trees (m): 30
     #>  No. of inputs tried (s_mtry): BRM
@@ -635,19 +610,19 @@ rankingRFEAT(object = forest, barplot = TRUE,
 
     #> $scores
     #>         Importance
-    #> PS      20.2493184
-    #> AAE     18.9779994
-    #> ABK     14.8586188
-    #> EQ      12.2054732
-    #> HW       8.4796820
-    #> WS       6.3913334
-    #> I        4.8541311
-    #> S        4.6211393
-    #> AIC      1.9723101
-    #> PR      -0.3904787
-    #> NBMC    -0.4392665
-    #> GDP_PPP -0.5431303
-    #> PFC     -2.0894308
+    #> PS           14.25
+    #> PR           14.08
+    #> AAE          13.97
+    #> EQ           11.86
+    #> S            10.80
+    #> HW            9.36
+    #> AIC           6.36
+    #> I             4.49
+    #> NBMC          3.26
+    #> WS           -1.79
+    #> GDP_PPP      -4.68
+    #> PFC          -4.77
+    #> ABK          -6.11
     #> 
     #> $barplot
 
@@ -667,7 +642,7 @@ bestRFEAT(training = training,
           s_mtry = c("BRM", "3"))
 ```
 
-    #> Warning in preProcess(training, x, y, na.rm = na.rm): Rows with NA values have been omitted .
+    #> Warning in preProcess(test, x, y, na.rm = na.rm): Rows with NA values have been omitted .
 
     #> [conflicted] Removing existing preference
 
@@ -702,14 +677,14 @@ bestRFEAT(training = training,
     #> [conflicted] Will prefer dplyr::filter over any other package
 
     #>   numStop  m s_mtry  RMSE
-    #> 1       5 40      3 48.89
-    #> 2       5 30    BRM 49.04
-    #> 3       5 40    BRM 49.04
-    #> 4       5 30      3 49.61
-    #> 5      10 30    BRM 55.44
-    #> 6      10 40    BRM 55.76
-    #> 7      10 40      3 58.74
-    #> 8      10 30      3 60.07
+    #> 1       5 40      3 57.44
+    #> 2       5 40    BRM 57.72
+    #> 3       5 30    BRM 58.39
+    #> 4       5 30      3 59.13
+    #> 5      10 30    BRM 62.43
+    #> 6      10 40    BRM 63.18
+    #> 7      10 40      3 65.02
+    #> 8      10 30      3 68.43
 
   - RFEAT scores
 
@@ -724,84 +699,82 @@ efficiencyRFEAT(data = PISAindex,
 ```
 
     #>     RFEAT_BCC_OUT FDH_BCC_OUT
-    #> SGP         0.933       1.000
-    #> JPN         0.996       1.000
-    #> KOR         0.983       1.000
-    #> EST         0.977       1.000
-    #> NLD         1.004       1.000
-    #> POL         0.985       1.000
-    #> CHE         1.013       1.002
-    #> CAN         1.011       1.008
-    #> DNK         1.021       1.014
-    #> SVN         1.001       1.000
-    #> BEL         1.003       1.000
-    #> FIN         1.026       1.018
-    #> SWE         1.032       1.028
-    #> GBR         1.026       1.000
+    #> SGP         0.936       1.000
+    #> JPN         1.024       1.000
+    #> KOR         1.004       1.000
+    #> EST         0.982       1.000
+    #> NLD         0.999       1.000
+    #> POL         0.982       1.000
+    #> CHE         1.026       1.002
+    #> CAN         1.010       1.008
+    #> DNK         1.017       1.014
+    #> SVN         1.004       1.000
+    #> BEL         1.006       1.000
+    #> FIN         1.021       1.018
+    #> SWE         1.029       1.028
+    #> GBR         1.019       1.000
     #> NOR         1.039       1.030
-    #> DEU         1.032       1.032
-    #> IRL         1.032       1.032
-    #> AUT         1.027       1.034
+    #> DEU         1.028       1.032
+    #> IRL         1.031       1.032
+    #> AUT         1.024       1.034
     #> CZE         1.014       1.000
-    #> LVA         0.992       1.000
-    #> FRA         1.026       1.000
-    #> ISL         1.061       1.042
-    #> NZL         1.047       1.045
-    #> PRT         0.991       1.000
+    #> LVA         0.997       1.000
+    #> FRA         1.037       1.000
+    #> ISL         1.070       1.042
+    #> NZL         1.048       1.045
+    #> PRT         0.995       1.000
     #> AUS         1.054       1.051
-    #> RUS         0.970       1.000
-    #> ITA         1.006       1.000
-    #> SVK         0.990       1.000
-    #> LUX         1.047       1.000
-    #> HUN         1.007       1.000
-    #> LTU         1.011       1.000
+    #> RUS         0.963       1.000
+    #> ITA         1.011       1.000
+    #> SVK         0.997       1.000
+    #> LUX         1.053       1.000
+    #> HUN         1.008       1.000
+    #> LTU         1.020       1.000
     #> ESP         1.030       1.000
-    #> USA         1.041       1.000
-    #> BLR         1.000       1.000
-    #> MLT         1.021       1.000
-    #> HRV         1.030       1.000
-    #> ISR         1.051       1.000
-    #> TUR         0.976       1.000
-    #> UKR         0.995       1.000
-    #> CYP         1.087       1.000
-    #> GRC         1.064       1.007
-    #> SRB         0.993       1.000
-    #> MYS         1.004       1.000
-    #> ALB         0.995       1.000
-    #> BGR         1.025       1.000
-    #> ARE         1.003       1.000
-    #> MNE         1.026       1.000
-    #> ROU         1.027       1.000
-    #> KAZ         1.035       1.000
-    #> MDA         1.006       1.000
-    #> AZE         0.989       1.000
-    #> THA         0.985       1.000
-    #> URY         1.058       1.000
-    #> CHL         1.093       1.005
-    #> QAT         1.042       1.000
-    #> MEX         1.000       1.000
-    #> BIH         1.046       1.000
-    #> CRI         1.082       1.000
-    #> JOR         1.047       1.000
-    #> PER         1.007       1.000
-    #> GEO         1.083       1.000
-    #> MKD         1.051       1.000
-    #> LBN         1.045       1.000
-    #> COL         1.057       1.000
-    #> BRA         1.090       1.000
-    #> ARG         1.191       1.000
-    #> IDN         1.020       1.000
-    #> SAU         1.118       1.000
-    #> MAR         1.029       1.000
-    #> PAN         1.166       1.000
-    #> PHL         1.045       1.000
-    #> DOM         1.123       1.000
+    #> USA         1.033       1.000
+    #> BLR         0.992       1.000
+    #> MLT         1.026       1.000
+    #> HRV         1.034       1.000
+    #> ISR         1.050       1.000
+    #> TUR         0.979       1.000
+    #> UKR         0.981       1.000
+    #> CYP         1.095       1.000
+    #> GRC         1.063       1.007
+    #> SRB         1.002       1.000
+    #> MYS         0.998       1.000
+    #> ALB         0.982       1.000
+    #> BGR         1.031       1.000
+    #> ARE         1.014       1.000
+    #> MNE         1.022       1.000
+    #> ROU         1.031       1.000
+    #> KAZ         1.018       1.000
+    #> MDA         1.003       1.000
+    #> AZE         0.972       1.000
+    #> THA         0.991       1.000
+    #> URY         1.045       1.000
+    #> CHL         1.097       1.005
+    #> QAT         1.070       1.000
+    #> MEX         1.005       1.000
+    #> BIH         1.042       1.000
+    #> CRI         1.085       1.000
+    #> JOR         1.046       1.000
+    #> PER         0.997       1.000
+    #> GEO         1.060       1.000
+    #> MKD         1.052       1.000
+    #> LBN         1.037       1.000
+    #> COL         1.055       1.000
+    #> BRA         1.074       1.000
+    #> ARG         1.157       1.000
+    #> IDN         1.034       1.000
+    #> SAU         1.100       1.000
+    #> MAR         1.031       1.000
+    #> PAN         1.116       1.000
+    #> PHL         1.049       1.000
+    #> DOM         1.145       1.000
     #> 
-    #>  Model Mean Std. Dev.   Min    Q1 Median    Q3   Max
-    #>  RFEAT 1.03     0.043 0.933 1.002  1.026 1.026 1.191
-    #> 
-    #>  Model  Mean Std. Dev. Min Q1 Median Q3   Max
-    #>    FDH 1.005     0.012   1  1      1  1 1.051
+    #>  Model  Mean Std. Dev.   Min    Q1 Median    Q3   Max
+    #>  RFEAT 1.029     0.039 0.936 1.003  1.026 1.026 1.157
+    #>    FDH 1.005     0.012 1.000 1.000  1.000 1.000 1.051
 
   - EAT and RFEAT predictions
 
@@ -811,9 +784,7 @@ efficiencyRFEAT(data = PISAindex,
 input <- c(6, 7, 8, 12, 17)
 output <- 3:5
 
-EAT_model <- EAT(data = PISAindex,
-                 x = input,
-                 y = output)
+EAT_model <- EAT(data = PISAindex, x = input, y = output)
 ```
 
     #> [conflicted] Removing existing preference
@@ -823,9 +794,7 @@ EAT_model <- EAT(data = PISAindex,
     #> Warning in preProcess(data = data, x = x, y = y, numStop = numStop, fold = fold, : Rows with NA values have been omitted .
 
 ``` r
-RFEAT_model <- RFEAT(data = PISAindex,
-                     x = input,
-                     y = output)
+RFEAT_model <- RFEAT(data = PISAindex, x = input, y = output)
 ```
 
     #> [conflicted] Removing existing preference
@@ -835,12 +804,8 @@ RFEAT_model <- RFEAT(data = PISAindex,
 
 ``` r
 # PREDICTIONS
-
-predictions_EAT <- predictEAT(object = EAT_model,
-                              newdata = PISAindex[, input])
-
-predictions_RFEAT <- predictRFEAT(object = RFEAT_model,
-                                  newdata = PISAindex[, input])
+predictions_EAT <- predict(object = EAT_model, newdata = PISAindex[, input])
+predictions_RFEAT <- predict(object = RFEAT_model, newdata = PISAindex[, input])
 ```
 
 Please, check the vignette for more details.

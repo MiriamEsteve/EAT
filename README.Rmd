@@ -34,7 +34,6 @@ install.packages("eat")
 And the development version from [GitHub](https://github.com/MiriamEsteve/EAT) with:
 
 ``` r
-# install.packages("devtools")
 devtools::install_github("MiriamEsteve/EAT")
 ```
 ## Example
@@ -52,31 +51,31 @@ single_model <- EAT(data = PISAindex,
                     y = 3) # output
 ```
 
-* Print an EAT object
+* Print an `EAT` object
 
 ```{r print.model1, collapse = FALSE}
 print(single_model)
 ```
 
-* Summary of an EAT object
+* Summary of an `EAT` object
 
 ```{r summary.model1, collapse = FALSE}
 summary(single_model)
 ```
 
-* Number of leaf nodes of an EAT object
+* Number of leaf nodes of an `EAT` object
 
 ```{r size.model1, collapse = FALSE}
 size(single_model)
 ```
 
-* Frontier levels of output for an EAT object
+* Frontier levels of output for an `EAT` object
 
 ```{r frt.model1, collapse = FALSE}
 frontier.levels(single_model)
 ```
 
-* Descriptive analysis for an EAT object
+* Descriptive analysis for an `EAT` object
 
 ```{r perf.model1, collapse = FALSE}
 descriptiveEAT <- descrEAT(single_model)
@@ -150,7 +149,7 @@ scores_EAT <-  efficiencyEAT(data = PISAindex,
                             FDH = TRUE)
 ```
 
-* Efficiency scores convex EAT
+* Efficiency scores CEAT
 
 ```{r scoresCEAT, collapse = FALSE}
 scores_CEAT <- efficiencyCEAT(data = PISAindex,
@@ -190,7 +189,7 @@ forest <- RFEAT(data = PISAindex,
                 na.rm = TRUE)
 ```
 
-* Print a RFEAT object
+* Print a `RFEAT` object
 
 ```{r print.RFEAT, collapse = FALSE}
 print(forest)
@@ -237,21 +236,12 @@ efficiencyRFEAT(data = PISAindex,
 input <- c(6, 7, 8, 12, 17)
 output <- 3:5
 
-EAT_model <- EAT(data = PISAindex,
-                 x = input,
-                 y = output)
-
-RFEAT_model <- RFEAT(data = PISAindex,
-                     x = input,
-                     y = output)
+EAT_model <- EAT(data = PISAindex, x = input, y = output)
+RFEAT_model <- RFEAT(data = PISAindex, x = input, y = output)
 
 # PREDICTIONS
-
-predictions_EAT <- predictEAT(object = EAT_model,
-                              newdata = PISAindex[, input])
-
-predictions_RFEAT <- predictRFEAT(object = RFEAT_model,
-                                  newdata = PISAindex[, input])
+predictions_EAT <- predict(object = EAT_model, newdata = PISAindex[, input])
+predictions_RFEAT <- predict(object = RFEAT_model, newdata = PISAindex[, input])
 ```
 
 Please, check the vignette for more details.

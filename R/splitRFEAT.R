@@ -8,7 +8,7 @@
 #' 
 #' @importFrom dplyr %>% row_number
 #' 
-#' @return List containing training dataframe and list with binary respose as 0 if the observations have been selected for training and 0 in any other case.
+#' @return List containing training dataframe and list with binary response as 0 if the observations have been selected for training and 0 in any other case.
 bagging <- function(data, x, y){
   df_train <- data.frame(matrix(ncol = length(c(x, y)), nrow = 0))
   colnames(df_train) <- names(data[, c(x, y)])

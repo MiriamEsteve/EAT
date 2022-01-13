@@ -2,8 +2,8 @@
 #'
 #' @description This function returns a jitter plot from \code{ggplot2}. This graphic shows how DMUs are grouped into leaf nodes in a model built using the \code{EAT} function. Each leaf node groups DMUs with the same level of resources. The dot and the black line represent, respectively, the mean value and the standard deviation of the scores of its node. Additionally, efficient DMU labels always are displayed based on the model entered in the \code{scores_model} argument. Finally, the user can specify an upper bound \code{upn} and a lower bound \code{lwb} in order to show, in addition, the labels whose efficiency score lies between them.
 #'
-#' @param object An EAT object.
-#' @param df_scores Dataframe with efficiency scores (from \code{efficiencyEAT} or \code{efficiencyCEAT}).
+#' @param object An \code{EAT} object.
+#' @param df_scores \code{data.frame} with efficiency scores (from \code{efficiencyEAT} or \code{efficiencyCEAT}).
 #' @param scores_model Mathematical programming model to calculate scores. 
 #' \itemize{
 #' \item{\code{BCC.OUT}} BCC model. Output-oriented.
@@ -36,10 +36,10 @@
 #' 
 #' @return Jitter plot with DMUs and scores.
 efficiencyJitter <- function(object, df_scores, scores_model, upb = NULL, lwb = NULL) {
-  if (!is(object, "EAT")){
+  
+  if (!is(object, "EAT")) {
     stop(paste(deparse(substitute(object)), "must be an EAT object."))
-    
-  } 
+  }
   
   # Available score model
   
@@ -124,7 +124,7 @@ efficiencyJitter <- function(object, df_scores, scores_model, upb = NULL, lwb = 
 #'
 #' @description Density plot for efficiency scores.
 #'
-#' @param df_scores Dataframe with efficiency scores.
+#' @param df_scores \code{data.frame} with efficiency scores.
 #' @param model String vector. Scoring models in the order shown in \code{df_scores} by columns. The available models are: \code{"EAT"}, \code{"FDH"}, \code{"CEAT"}, \code{"DEA"} and \code{"RFEAT"}.
 #'
 #' @importFrom ggplot2 ggplot geom_density

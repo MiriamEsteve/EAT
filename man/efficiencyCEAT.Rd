@@ -2,7 +2,7 @@
 % Please edit documentation in R/efficiencyCEAT.R
 \name{efficiencyCEAT}
 \alias{efficiencyCEAT}
-\title{Efficiency Scores computed through Convex Efficiency Analysis Trees}
+\title{Efficiency Scores computed through a Convexified Efficiency Analysis Trees model.}
 \usage{
 efficiencyCEAT(
   data,
@@ -42,10 +42,10 @@ efficiencyCEAT(
 \item{na.rm}{\code{logical}. If \code{TRUE}, \code{NA} rows are omitted.}
 }
 \value{
-\code{data.frame} introduced as argument with efficiency scores computed through a Convex Efficiency Analysis Trees model.
+\code{data.frame} introduced as argument with efficiency scores computed through a Convexified Efficiency Analysis Trees model.
 }
 \description{
-This function computes the efficiency scores for each DMU through a convex Efficiency Analysis Trees model.
+This function computes the efficiency scores for each DMU through a Convexified Efficiency Analysis Trees model.
 }
 \examples{
 

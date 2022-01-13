@@ -2,7 +2,7 @@
 % Please edit documentation in R/efficiencyRFEAT.R
 \name{efficiencyRFEAT}
 \alias{efficiencyRFEAT}
-\title{Efficiency Scores computed through Random Forest + Efficiency Analysis Trees}
+\title{Efficiency Scores computed through a Random Forest + Efficiency Analysis Trees model.}
 \usage{
 efficiencyRFEAT(data, x, y, object, digits = 3, FDH = TRUE, na.rm = TRUE)
 }

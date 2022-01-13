@@ -18,9 +18,9 @@
 #' 
 #' @export
 plotRFEAT <- function(object) {
+  
   if (!is(object, "RFEAT")){
     stop(paste(deparse(substitute(object)), "must be a RFEAT object"))
-    
   }
   
   m <- object[["control"]][["m"]]

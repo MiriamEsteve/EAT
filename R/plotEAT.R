@@ -27,9 +27,9 @@
 #' 
 #' @export
 plotEAT <- function(object) {
+  
   if (!is(object, "EAT")){
     stop(paste(deparse(substitute(object)), "must be an EAT object"))
-    
   } 
   
   tree <- object[["tree"]]

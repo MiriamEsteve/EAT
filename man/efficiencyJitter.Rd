@@ -7,9 +7,9 @@
 efficiencyJitter(object, df_scores, scores_model, upb = NULL, lwb = NULL)
 }
 \arguments{
-\item{object}{An EAT object.}
+\item{object}{An \code{EAT} object.}
 
-\item{df_scores}{Dataframe with efficiency scores (from \code{efficiencyEAT} or \code{efficiencyCEAT}).}
+\item{df_scores}{\code{data.frame} with efficiency scores (from \code{efficiencyEAT} or \code{efficiencyCEAT}).}
 
 \item{scores_model}{Mathematical programming model to calculate scores. 
 \itemize{

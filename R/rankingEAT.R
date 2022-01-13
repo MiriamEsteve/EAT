@@ -191,18 +191,16 @@ rankingEAT <- function(object, barplot = TRUE, threshold = 70, digits = 2) {
   
   if (!is(object, "EAT")) {
     stop(paste(deparse(substitute(object)), "must be an EAT object."))
-  } 
   
-  if (threshold < 0) {
+  } else if (threshold < 0) {
     stop(paste('threshold =', threshold, 'must be greater than 0.'))
-  }
-  
-  if (digits < 0) {
+    
+  } else if (digits < 0) {
     stop(paste('digits =', digits, 'must be greater than 0.'))
-  }
   
-  if(length(object[["data"]][["x"]]) < 2){
+  } else if(length(object[["data"]][["x"]]) < 2) {
     stop("More than two predictors are necessary.")
+    
   }
   
   scores <- M_Breiman(object = object, digits = digits)

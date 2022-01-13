@@ -39,7 +39,6 @@ frontier <- function(object, FDH = FALSE, observed.data = FALSE, observed.color 
   
   if (!is(object, "EAT")){
     stop(paste(deparse(substitute(object)), "must be an EAT object"))
-    
   } 
 
   t_data <- object[["data"]][["df"]]

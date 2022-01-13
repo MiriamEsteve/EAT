@@ -7,27 +7,27 @@
 EAT_DDF(j, scores, x_k, y_k, atreeTk, ytreeTk, nX, nY, N_leaves)
 }
 \arguments{
-\item{j}{Integer. Number of DMUs.}
+\item{j}{Number of DMUs.}
 
-\item{scores}{Matrix. Empty matrix for scores.}
+\item{scores}{\code{matrix}. Empty matrix for scores.}
 
-\item{x_k}{Dataframe. Set of input variables.}
+\item{x_k}{\code{data.frame}. Set of input variables.}
 
-\item{y_k}{Dataframe. Set of output variables.}
+\item{y_k}{\code{data.frame} Set of output variables.}
 
-\item{atreeTk}{Matrix. Set of "a" Pareto-coordinates.}
+\item{atreeTk}{\code{matrix} Set of "a" Pareto-coordinates.}
 
-\item{ytreeTk}{Matrix. Set of predictions.}
+\item{ytreeTk}{\code{matrix} Set of predictions.}
 
-\item{nX}{Integer. Number of inputs.}
+\item{nX}{Number of inputs.}
 
-\item{nY}{Integer. Number of outputs.}
+\item{nY}{Number of outputs.}
 
-\item{N_leaves}{Integer. Number of leaf nodes.}
+\item{N_leaves}{Number of leaf nodes.}
 }
 \value{
 A numerical vector with efficiency scores.
 }
 \description{
-Directional Distance Function for an Efficiency Analysis Tree model.
+Directional Distance Function for an Efficiency Analysis Trees model.
 }

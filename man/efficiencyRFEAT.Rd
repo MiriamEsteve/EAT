@@ -28,10 +28,12 @@ efficiencyRFEAT(
 
 \item{FDH}{\code{logical}. If \code{TRUE}, FDH scores are computed.}
 
+\item{print.table}{\code{logical}. If \code{TRUE}, a summary descriptive table of the efficiency scores is displayed.}
+
 \item{na.rm}{\code{logical}. If \code{TRUE}, \code{NA} rows are omitted.}
 }
 \value{
-A \code{data.frame} with the efficiency scores computed through a Random Forest + Efficiency Analysis Trees model.
+A \code{data.frame} with the efficiency scores computed through a Random Forest + Efficiency Analysis Trees model. Optionally, a summary descriptive table of the efficiency scores can be displayed.
 }
 \description{
 This function computes the efficiency scores for each DMU through a Random Forest + Efficiency Analysis Trees model and the Banker Charnes and Cooper mathematical programming model with output orientation. Efficiency level at 1.

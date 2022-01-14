@@ -40,12 +40,12 @@ efficiencyEAT(
 
 \item{FDH}{\code{logical}. If \code{TRUE}, FDH scores are also computed with the programming model selected in \code{scores_model}.}
 
-\item{print.table}{\code{logical}. If \code{TRUE}, a table with summary statistics of the efficiency scores is shown.}
+\item{print.table}{\code{logical}. If \code{TRUE}, a summary descriptive table of the efficiency scores is displayed.}
 
 \item{na.rm}{\code{logical}. If \code{TRUE}, \code{NA} rows are omitted.}
 }
 \value{
-A \code{data.frame} with the efficiency scores computed through an Efficiency Analysis Trees model.
+A \code{data.frame} with the efficiency scores computed through an Efficiency Analysis Trees model. Optionally, a summary descriptive table of the efficiency scores can be displayed.
 }
 \description{
 This function computes the efficiency scores for each DMU through an Efficiency Analysis Trees model.

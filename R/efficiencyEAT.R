@@ -372,7 +372,7 @@ EAT_WAM <- function(j, scores, x_k, y_k, atreeTk, ytreeTk, nX, nY, N_leaves, wei
 #' }
 #' @param digits Decimal units for scores.
 #' @param FDH \code{logical}. If \code{TRUE}, FDH scores are also computed with the programming model selected in \code{scores_model}.
-#' @param print.table \code{logical}. If \code{TRUE}, a table with summary descriptive table of the efficiency scores is displayed. 
+#' @param print.table \code{logical}. If \code{TRUE}, a summary descriptive table of the efficiency scores is displayed. 
 #' @param na.rm \code{logical}. If \code{TRUE}, \code{NA} rows are omitted.
 #'  
 #' @importFrom dplyr summarise %>%

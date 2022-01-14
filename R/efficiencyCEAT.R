@@ -353,7 +353,7 @@ CEAT_WAM <- function(j, scores, x_k, y_k, atreeTk, ytreeTk, nX, nY, N_leaves, we
 #' }
 #' @param digits Decimal units for scores.
 #' @param DEA \code{logical}. If \code{TRUE}, the DEA scores are also calculated with the programming model selected in \code{scores_model}.
-#' @param print.table \code{logical}. If \code{TRUE}, a table with summary descriptive table of the efficiency scores is displayed. 
+#' @param print.table \code{logical}. If \code{TRUE}, a summary descriptive table of the efficiency scores is displayed. 
 #' @param na.rm \code{logical}. If \code{TRUE}, \code{NA} rows are omitted.
 #'  
 #' @importFrom dplyr summarise %>%

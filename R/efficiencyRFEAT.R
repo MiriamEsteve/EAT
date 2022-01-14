@@ -8,7 +8,7 @@
 #' @param object A \code{RFEAT} object.
 #' @param digits Decimal units for scores.
 #' @param FDH \code{logical}. If \code{TRUE}, FDH scores are computed.
-#' @param print.table \code{logical}. If \code{TRUE}, a table with summary descriptive table of the efficiency scores is displayed. 
+#' @param print.table \code{logical}. If \code{TRUE}, a summary descriptive table of the efficiency scores is displayed. 
 #' @param na.rm \code{logical}. If \code{TRUE}, \code{NA} rows are omitted.
 #'
 #' @importFrom dplyr %>% mutate summarise

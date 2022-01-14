@@ -66,21 +66,19 @@ summary(single_model)
 * Number of leaf nodes of an `EAT` object
 
 ```{r size.model1, collapse = FALSE}
-size(single_model)
+EAT_size(single_model)
 ```
 
 * Frontier levels of output for an `EAT` object
 
 ```{r frt.model1, collapse = FALSE}
-frontier.levels(single_model)
+EAT_frontier_levels(single_model)
 ```
 
 * Descriptive analysis for an `EAT` object
 
 ```{r perf.model1, collapse = FALSE}
-descriptiveEAT <- descrEAT(single_model)
-
-descriptiveEAT
+EAT_leaf_stats(single_model)
 ```
 
 * Plot the frontier
@@ -90,7 +88,6 @@ frontier(object = single_model,
          FDH = TRUE, 
          observed.data = TRUE,
          rwn = TRUE)
-
 ```
 
 * EAT model with 13 inputs and 3 outputs
@@ -135,10 +132,7 @@ bestEAT(training = training,
 * Efficiency scores EAT
 
 ```{r eff_EAT, collapse = FALSE}
-
-single_model <- EAT(data = PISAindex, 
-                    x = 15, # input 
-                    y = 3) # output
+single_model <- EAT(data = PISAindex, x = 15, y = 3)
 
 scores_EAT <-  efficiencyEAT(data = PISAindex,
                             x = 15, 
@@ -146,7 +140,8 @@ scores_EAT <-  efficiencyEAT(data = PISAindex,
                             object = single_model, 
                             scores_model = "BCC.OUT",
                             digits = 3,
-                            FDH = TRUE)
+                            FDH = TRUE,
+                            print.table = TRUE)
 ```
 
 * Efficiency scores CEAT
@@ -158,7 +153,8 @@ scores_CEAT <- efficiencyCEAT(data = PISAindex,
                               object = single_model, 
                               scores_model = "BCC.INP",
                               digits = 3,
-                              DEA = TRUE)
+                              DEA = TRUE,
+                              print.table = TRUE)
 ```
 
 * Efficiency jitter plot
@@ -181,8 +177,8 @@ efficiencyDensity(df_scores = scores_EAT[, 3:4],
 
 ```{r RFEAT_model, collapse = FALSE}
 forest <- RFEAT(data = PISAindex, 
-                x = 6:18, # input 
-                y = 5, # output
+                x = 6:18, 
+                y = 5, 
                 numStop = 5, 
                 m = 30,
                 s_mtry = "BRM",
@@ -224,10 +220,11 @@ bestRFEAT(training = training,
 
 ```{r RFEAT_scores, collapse = FALSE}
 efficiencyRFEAT(data = PISAindex,
-                x = 6:18, # input
-                y = 5, # output
+                x = 6:18,
+                y = 5,
                 object = forest,
-                FDH = TRUE)
+                FDH = TRUE,
+                print.table = TRUE)
 ```
 
 * EAT and RFEAT predictions 

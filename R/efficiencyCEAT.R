@@ -352,7 +352,8 @@ CEAT_WAM <- function(j, scores, x_k, y_k, atreeTk, ytreeTk, nX, nY, N_leaves, we
 #' \item{\code{WAM.RAM}} Weighted Additive Model. Range Adjusted Measure of Inefficiency. Efficiency level at 0.
 #' }
 #' @param digits Decimal units for scores.
-#' @param DEA \code{logical}. If \code{TRUE}, DEA scores are calculated with the programming model selected in \code{scores_model}
+#' @param DEA \code{logical}. If \code{TRUE}, the DEA scores are also calculated with the programming model selected in \code{scores_model}.
+#' @param print.table \code{logical}. If \code{TRUE}, a table with summary descriptive table of the efficiency scores is displayed. 
 #' @param na.rm \code{logical}. If \code{TRUE}, \code{NA} rows are omitted.
 #'  
 #' @importFrom dplyr summarise %>%
@@ -367,28 +368,28 @@ CEAT_WAM <- function(j, scores, x_k, y_k, atreeTk, ytreeTk, nX, nY, N_leaves, we
 #' EAT_model <- EAT(data = simulated, x = c(1,2), y = c(3, 4))
 #'
 #' efficiencyCEAT(data = simulated, x = c(1, 2), y = c(3, 4), object = EAT_model, 
-#'               scores_model = "BCC.OUT", digits = 2, DEA = TRUE, na.rm = TRUE)
+#'               scores_model = "BCC.OUT", digits = 2, DEA = TRUE, print.table = TRUE,
+#'               na.rm = TRUE)
 #' }
 #'
-#' @return \code{data.frame} introduced as argument with efficiency scores computed through a Convexified Efficiency Analysis Trees model.
+#' @return A \code{data.frame} with the efficiency scores computed through a Convexified Efficiency Analysis Trees model. Optionally, a summary descriptive table of the efficiency scores can be displayed.
 efficiencyCEAT <- function(data, x, y, object, 
                            scores_model, digits = 3, DEA = TRUE,
-                           na.rm = TRUE) {
+                           print.table = FALSE, na.rm = TRUE) {
+  
+  # Possible errors
   
   if (!is(object, "EAT")) {
     stop(paste(deparse(substitute(object)), "must be an EAT object."))
-  }
   
-  if (digits < 0) {
+  } else if (digits < 0) {
     stop(paste('digits =', digits, 'must be greater than 0.'))
-  }
   
-  if (!scores_model %in% c("BCC.OUT", "BCC.INP", "DDF", 
-                           "RSL.OUT", "RSL.INP", "WAM.MIP",
-                           "WAM.RAM")){
+  } else if (!scores_model %in% c("BCC.OUT", "BCC.INP", "DDF", "RSL.OUT", "RSL.INP", 
+                                  "WAM.MIP","WAM.RAM")) {
     stop(paste(scores_model, "is not available. Please, check help(\"efficiencyCEAT\")"))
   }
-  
+
   data <- preProcess(data, x, y, na.rm = na.rm)
   
   x <- 1:(ncol(data) - length(y))
@@ -396,8 +397,10 @@ efficiencyCEAT <- function(data, x, y, object,
   
   train_names <- c(object[["data"]][["input_names"]], object[["data"]][["output_names"]])
   
+  # Possible error
+  
   if (!identical(sort(train_names), sort(names(data)))) {
-    stop("Different variable names in training and data set")
+    stop("Different variable names in training and data.")
   }
 
   j <- nrow(data)
@@ -507,22 +510,23 @@ efficiencyCEAT <- function(data, x, y, object,
       )
     
     scores_df <- cbind(data, round(scores, digits), round(scores_DEA, digits))
-    print(scores_df[, c(ncol(scores_df) - 1, ncol(scores_df))])
     
-    cat("\n")
-    print(descriptive, row.names = FALSE)
+    if (print.table == TRUE) {
+      print(descriptive, row.names = FALSE)
+      cat("\n") 
+    }
     
-    invisible(scores_df)
+    return(scores_df[, c(ncol(scores_df) - 1, ncol(scores_df))])
     
   } else {
     
     scores_df <- cbind(data, round(scores, digits))
-    print(round(scores_df[, ncol(scores_df)], digits))
     
-    cat("\n") 
-    print(descriptive, row.names = FALSE)
+    if (print.table == TRUE) {
+      print(descriptive, row.names = FALSE)
+      cat("\n") 
+    }
         
-    invisible(scores_df)
-    
+    return(round(scores_df[, ncol(scores_df)], digits))
   }
 }

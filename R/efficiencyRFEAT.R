@@ -1,6 +1,6 @@
 #' @title Efficiency Scores computed through a Random Forest + Efficiency Analysis Trees model.
 #'
-#' @description This function calculates the efficiency scores for each DMU through a Random Forest + Efficiency Analysis Trees model and the Banker Charnes and Cooper mathematical programming model with output orientation. Efficiency level at 1.
+#' @description This function computes the efficiency scores for each DMU through a Random Forest + Efficiency Analysis Trees model and the Banker Charnes and Cooper mathematical programming model with output orientation. Efficiency level at 1.
 #'
 #' @param data \code{data.frame} or \code{matrix} containing the variables in the model.
 #' @param x Column input indexes in \code{data}.
@@ -8,6 +8,7 @@
 #' @param object A \code{RFEAT} object.
 #' @param digits Decimal units for scores.
 #' @param FDH \code{logical}. If \code{TRUE}, FDH scores are computed.
+#' @param print.table \code{logical}. If \code{TRUE}, a table with summary descriptive table of the efficiency scores is displayed. 
 #' @param na.rm \code{logical}. If \code{TRUE}, \code{NA} rows are omitted.
 #'
 #' @importFrom dplyr %>% mutate summarise
@@ -24,25 +25,31 @@
 #'                 digits = 2, FDH = TRUE, na.rm = TRUE)
 #' }
 #'
-#' @return \code{data.frame} introduced as argument with efficiency scores computed through a Random Forest + Efficiency Analysis Trees model.
-efficiencyRFEAT <- function(data, x, y, object, digits = 3, FDH = TRUE, na.rm = TRUE){
+#' @return A \code{data.frame} with the efficiency scores computed through a Random Forest + Efficiency Analysis Trees model. Optionally, a summary descriptive table of the efficiency scores can be displayed.
+efficiencyRFEAT <- function(data, x, y, object, digits = 3, 
+                            FDH = TRUE, print.table = FALSE,
+                            na.rm = TRUE){
+  
+  # Possible errors
   
   if (!is(object, "RFEAT")) {
     stop(paste(deparse(substitute(object)), "must be a RFEAT object."))
     
-    } else if (digits < 0) {
+  } else if (digits < 0) {
     stop(paste('digits =', digits, 'must be greater than 0.'))
   }
-  
-  train_names <- c(object[["data"]][["input_names"]], object[["data"]][["output_names"]])
   
   data <- preProcess(data, x, y, na.rm = na.rm)
   
   x <- 1:(ncol(data) - length(y))
   y <- (length(x) + 1):ncol(data)
-
+  
+  train_names <- c(object[["data"]][["input_names"]], object[["data"]][["output_names"]])
+  
+  # Possible errors
+  
   if (!identical(sort(train_names), sort(names(data)))) {
-    stop("Different variable names in training and data")
+    stop("Different variable names in training and data.")
   }
   
   N <- nrow(data)
@@ -112,24 +119,23 @@ efficiencyRFEAT <- function(data, x, y, object, digits = 3, FDH = TRUE, na.rm = 
       )
     
     scores_df <- cbind(data, round(scoreRF, digits), round(scores_FDH, digits))
-    print(scores_df[, c(ncol(scores_df) - 1, ncol(scores_df))])
     
-    cat("\n")
-    print(descriptive, row.names = FALSE)
+    if (print.table == TRUE) {
+      print(descriptive, row.names = FALSE)
+      cat("\n") 
+    }
     
-    invisible(scores_df)
+    return(scores_df[, c(ncol(scores_df) - 1, ncol(scores_df))])
     
   } else {
     
     scores_df <- cbind(data, round(scoreRF, digits))
     
-    print(paste("BCC output orientation programming model"))
-    cat("\n")
-    print(round(scores_df[, ncol(scores_df)], digits))
-    
-    cat("\n") 
-    print(descriptive, row.names = FALSE)
-    
-    invisible(scores_df)
+    if (print.table == TRUE) {
+      print(descriptive, row.names = FALSE)
+      cat("\n") 
+    }
+
+    return(round(scores_df[, ncol(scores_df)], digits))
   }
 }

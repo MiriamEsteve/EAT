@@ -354,7 +354,7 @@ EAT_WAM <- function(j, scores, x_k, y_k, atreeTk, ytreeTk, nX, nY, N_leaves, wei
 
 #' @title Efficiency Scores computed through an Efficiency Analysis Trees model.
 #'
-#' @description This function calculates the efficiency scores for each DMU by an Efficiency Analysis Trees model.
+#' @description This function computes the efficiency scores for each DMU through an Efficiency Analysis Trees model.
 #' 
 #' @param data \code{data.frame} or \code{matrix} containing the variables in the model.
 #' @param x Column input indexes in \code{data}.
@@ -372,6 +372,7 @@ EAT_WAM <- function(j, scores, x_k, y_k, atreeTk, ytreeTk, nX, nY, N_leaves, wei
 #' }
 #' @param digits Decimal units for scores.
 #' @param FDH \code{logical}. If \code{TRUE}, FDH scores are also computed with the programming model selected in \code{scores_model}.
+#' @param print.table \code{logical}. If \code{TRUE}, a table with summary descriptive table of the efficiency scores is displayed. 
 #' @param na.rm \code{logical}. If \code{TRUE}, \code{NA} rows are omitted.
 #'  
 #' @importFrom dplyr summarise %>%
@@ -386,25 +387,25 @@ EAT_WAM <- function(j, scores, x_k, y_k, atreeTk, ytreeTk, nX, nY, N_leaves, wei
 #' EAT_model <- EAT(data = simulated, x = c(1,2), y = c(3, 4))
 #'
 #' efficiencyEAT(data = simulated, x = c(1, 2), y = c(3, 4), object = EAT_model, 
-#'               scores_model = "BCC.OUT", digits = 2, FDH = TRUE, na.rm = TRUE)
+#'               scores_model = "BCC.OUT", digits = 2, FDH = TRUE, print.table = TRUE,
+#'               na.rm = TRUE)
 #' }
 #' 
-#' @return \code{data.frame} introduced as argument with efficiency scores computed through an Efficiency Analysis Trees model.
+#' @return A \code{data.frame} with the efficiency scores computed through an Efficiency Analysis Trees model. Optionally, a summary descriptive table of the efficiency scores can be displayed.
 efficiencyEAT <- function(data, x, y, object, 
                           scores_model, digits = 3, FDH = TRUE,
-                          na.rm = TRUE) {
+                          print.table = FALSE, na.rm = TRUE) {
+  
+  # Possible errors
   
   if (!is(object, "EAT")) {
     stop(paste(deparse(substitute(object)), "must be an EAT object."))
-  }
-  
-  if (digits < 0) {
+    
+  } else if (digits < 0) {
     stop(paste('digits =', digits, 'must be greater than 0.'))
-  }
-  
-  if (!scores_model %in% c("BCC.OUT", "BCC.INP", "DDF", 
-                           "RSL.OUT", "RSL.INP", "WAM.MIP",
-                           "WAM.RAM")){
+    
+  } else if (!scores_model %in% c("BCC.OUT", "BCC.INP", "DDF", "RSL.OUT", "RSL.INP", 
+                                  "WAM.MIP","WAM.RAM")) {
     stop(paste(scores_model, "is not available. Please, check help(\"efficiencyEAT\")"))
   }
   
@@ -415,8 +416,10 @@ efficiencyEAT <- function(data, x, y, object,
   
   train_names <- c(object[["data"]][["input_names"]], object[["data"]][["output_names"]])
   
+  # Possible errors
+  
   if (!identical(sort(train_names), sort(names(data)))) {
-    stop("Different variable names in training and data set")
+    stop("Different variable names in training and data.")
   }
   
   j <- nrow(data)
@@ -527,21 +530,23 @@ efficiencyEAT <- function(data, x, y, object,
       )
     
     scores_df <- cbind(data, round(scores, digits), round(scores_FDH, digits))
-    print(scores_df[, c(ncol(scores_df) - 1, ncol(scores_df))])
     
-    cat("\n")
-    print(descriptive, row.names = FALSE)
+    if (print.table == TRUE) {
+      print(descriptive, row.names = FALSE)
+      cat("\n")
+    }
     
-    invisible(scores_df)
+    return(scores_df[, c(ncol(scores_df) - 1, ncol(scores_df))])
     
   } else {
     
     scores_df <- cbind(data, round(scores, digits))
-    print(round(scores_df[, ncol(scores_df)], digits))
     
-    cat("\n") 
-    print(descriptive, row.names = FALSE)
-        
-    invisible(scores_df)
+    if (print.table == TRUE) {
+      print(descriptive, row.names = FALSE)
+      cat("\n") 
+    }
+    
+    return(round(scores_df[, ncol(scores_df)], digits))
   }
 }

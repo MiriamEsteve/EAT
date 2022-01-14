@@ -156,16 +156,16 @@ EAT <- function(data, x, y, numStop = 5, fold = 5,
 #' @description This function creates a deep Efficiency Analysis Tree and a set of possible prunings by the weakest-link pruning procedure.
 #'
 #' @param data \code{data.frame} or \code{matrix} containing the variables in the model.
-#' @param x Column input indexes in data.
-#' @param y Column output indexes in data.
-#' @param numStop Integer. Minimum number of observations in a node for a split to be attempted.
-#' @param max.depth Integer. Depth of the tree.
-#' @param max.leaves Integer. Maximum number of leaf nodes.
+#' @param x Column input indexes in \code{data}.
+#' @param y Column output indexes in \code{data}.
+#' @param numStop Minimum number of observations in a node for a split to be attempted.
+#' @param max.depth Maximum depth of the tree.
+#' @param max.leaves Maximum number of leaf nodes.
 #'
 #' @importFrom dplyr filter mutate %>% row_number
 #' @importFrom conflicted conflict_prefer
 #'
-#' @return List containing each possible pruning for the deep tree and its associated alpha value. 
+#' @return A \code{list} containing each possible pruning for the deep tree and its associated alpha value. 
 deepEAT <- function(data, x, y, numStop = 5, max.depth = NULL, max.leaves = NULL) {
   
   # Check if deepEAT is called by EAT
@@ -461,22 +461,21 @@ summary.EAT <- function(object, ...) {
   }
 }
 
-#' @title Efficiency Analysis Trees Size
+#' @title Number of Leaf Nodes in an Efficiency Analysis Trees model
 #' 
-#' @description This function returns the number of leaf nodes at the tree.
+#' @description This function returns the number of leaf nodes for an Efficiency Analysis Trees model.
 #'
 #' @param object An \code{EAT} object.
 #' 
-#' @return Print with the number of leaf nodes at the tree.
+#' @return Number of leaf nodes of the Efficiency Analysis Trees model introduced.
 #' 
 #' @examples
-#' 
 #' simulated <- Y1.sim(N = 50, nX = 3)
-#' model <- EAT(data = simulated, x = c(1, 2, 3), y = 4, numStop = 10, fold = 5)
-#' size(model)
+#' EAT_model <- EAT(data = simulated, x = c(1, 2, 3), y = 4, numStop = 10, fold = 5)
+#' EAT_size(EAT_model)
 #' 
 #' @export
-size <- function(object) {
+EAT_size <- function(object) {
   
   if (!is(object, "EAT")) {
     stop(paste(deparse(substitute(object)), "must be an EAT object."))
@@ -486,24 +485,25 @@ size <- function(object) {
   
   cat(paste('The number of leaf nodes of the EAT model is:', size))
   
+  return(size)
+  
 }
 
-#' @title Efficiency Analysis Trees Frontier Output Levels
+#' @title Output Levels in an Efficiency Analysis Trees model
 #'
-#' @description This function returns the frontier output levels of an Efficiency Analysis Trees model.
+#' @description This function returns the frontier output levels for an Efficiency Analysis Trees model.
 #'
 #' @param object An \code{EAT} object.
 #' 
-#' @return \code{data.frame} with the frontier output levels at the leaf nodes.
+#' @return A \code{data.frame} with the frontier output levels at the leaf nodes of the Efficiency Analysis Trees model introduced.
 #' 
 #' @examples
-#' 
 #' simulated <- Y1.sim(N = 50, nX = 3)
-#' model <- EAT(data = simulated, x = c(1, 2, 3), y = 4, numStop = 10, fold = 5)
-#' frontier.levels(model)
+#' EAT_model <- EAT(data = simulated, x = c(1, 2, 3), y = 4, numStop = 10, fold = 5)
+#' EAT_frontier_levels(EAT_model)
 #' 
 #' @export
-frontier.levels <- function(object) {
+EAT_frontier_levels <- function(object) {
   
   if (!is(object, "EAT")) {
     stop(paste(deparse(substitute(object)), "must be an EAT object."))
@@ -518,24 +518,36 @@ frontier.levels <- function(object) {
   
 }
 
-#' @title Leaf Nodes Descriptive
+#' @title Descriptive Summary Statistics Table for the Leaf Nodes of an Efficiency Analysis Trees model
 #'
-#' @description This function returns a set of common measures for the leaf nodes of an Efficiency Analysis Trees model. 
+#' @description This function returns a descriptive summary statistics table for each output variable calculated from the leaf nodes observations of an Efficiency Analysis Trees model. Specifically, it computes the number of observations, the proportion of observations, the mean, the variance, the standard deviation, the minimum, the first quartile, the median, the third quartile, the maximum and the root mean squared error. 
 #' 
 #' @param object An \code{EAT} object.
 #' 
-#' @return List with centralization and dispersion measures and the root mean squared error (RMSE) for each node. In case of a single output, the result of the function is a \code{data.frame}. 
-#' 
+#' @return A \code{list} or a \code{data.frame} (for 1 output scenario) with the following summary statistics:
+#' \itemize{
+#'   \item{\code{N}: number of observations.}
+#'   \item{\code{Proportion}: proportion of observations.}
+#'   \item{\code{mean}: mean.}
+#'   \item{\code{var}: variance.}   
+#'   \item{\code{sd}: standard deviation.}
+#'   \item{\code{min}: minimun.}
+#'   \item{\code{Q1}: first quartile.}
+#'   \item{\code{median}: median.}
+#'   \item{\code{Q3}: third quartile.}
+#'   \item{\code{max}: maximum.}
+#'   \item{\code{RMSE}: root mean squared error.}
+#' } 
 #' 
 #' @importFrom stats median sd
 #' 
 #' @examples
 #' simulated <- Y1.sim(N = 50, nX = 3)
-#' model <- EAT(data = simulated, x = c(1, 2, 3), y = 4, numStop = 10, fold = 5)
-#' descrEAT(model)
+#' EAT_model <- EAT(data = simulated, x = c(1, 2, 3), y = 4, numStop = 10, fold = 5)
+#' EAT_leaf_stats(EAT_model)
 #' 
 #' @export
-descrEAT <- function(object) {
+EAT_leaf_stats <- function(object) {
   
   if (!is(object, "EAT")) {
     stop(paste(deparse(substitute(object)), "must be an EAT object."))

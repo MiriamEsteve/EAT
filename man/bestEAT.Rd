@@ -25,21 +25,21 @@ bestEAT(
 
 \item{y}{Column output indexes in \code{training}.}
 
-\item{numStop}{Set of minimum number of observations in a node for a split to be attempted.}
+\item{numStop}{Minimum number of observations in a node for a split to be attempted.}
 
-\item{fold}{Set of number of folds in which the dataset to apply cross-validation during the pruning is divided.}
+\item{fold}{Folds in which the dataset to apply cross-validation during the pruning is divided.}
 
-\item{max.depth}{Depth of the tree.}
+\item{max.depth}{Maximum depth of the tree.}
 
 \item{max.leaves}{Maximum number of leaf nodes.}
 
 \item{na.rm}{\code{logical}. If \code{TRUE}, \code{NA} rows are omitted.}
 }
 \value{
-\code{data.frame} in which each row corresponds to a given set of hyperparameters and the root mean squared error (RMSE).
+A \code{data.frame} with the sets of hyperparameters and the root mean squared error (RMSE) associated for each model.
 }
 \description{
-This funcion computes the root mean squared error (RMSE) for an Efficiency Analysis Trees model built with a set of given hyperparameters.
+This funcion computes the root mean squared error (RMSE) for a set of Efficiency Analysis Trees models built with a grid of given hyperparameters.
 }
 \examples{
 \donttest{
@@ -48,7 +48,7 @@ data("PISAindex")
 n <- nrow(PISAindex) # Observations in the dataset
 selected <- sample(1:n, n * 0.7) # Training indexes
 training <- PISAindex[selected, ] # Training set
-test <- PISAindex[-selected, ] # Test set
+test <- PISAindex[- selected, ] # Test set
 
 bestEAT(training = training, 
         test = test,

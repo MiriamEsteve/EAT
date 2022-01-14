@@ -1,8 +1,8 @@
-#' @title Alpha Calculation for Pruning Procedure
+#' @title Alpha Calculation for Pruning Procedure of Efficiency Analysis Trees
 #'
-#' @description This function gets the minimum alpha for each subtree evaluated during the pruning procedure of Efficiency Analysis Trees.
+#' @description This function gets the minimum alpha for each subtree evaluated during the pruning procedure of the Efficiency Analysis Trees technique.
 #'
-#' @param tree A list containing EAT nodes.
+#' @param tree A \code{list} containing the EAT nodes.
 #'
 #' @return Numeric value corresponding to the minimum alpha associated with a suitable node to be pruned.
 alpha <- function(tree) {
@@ -33,10 +33,10 @@ alpha <- function(tree) {
 #'
 #' @description This function computes the error of a branch as the sum of the errors of its child nodes.
 #'
-#' @param t List. A given EAT node.
-#' @param tree A list containing EAT nodes.
+#' @param t \code{list}. A given EAT node.
+#' @param tree A \code{list} containing the EAT nodes.
 #'
-#' @return List containing the sum of the errors of the child nodes of the pruned node and the total number of leaf nodes that come from it.
+#' @return A \code{list} containing (1) the sum of the errors of the child nodes of the pruned node and (2) the total number of leaf nodes that come from it.
 RBranch <- function(t, tree) {
   if (t[["SL"]] == -1) {
     return(list(t[["R"]], 1))

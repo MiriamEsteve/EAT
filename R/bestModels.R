@@ -1,14 +1,14 @@
 #' @title Tuning an Efficiency Analysis Trees model
 #'
-#' @description This funcion computes the root mean squared error (RMSE) for an Efficiency Analysis Trees model built with a set of given hyperparameters. 
+#' @description This funcion computes the root mean squared error (RMSE) for a set of Efficiency Analysis Trees models built with a grid of given hyperparameters. 
 #'
 #' @param training Training \code{data.frame} or \code{matrix} containing the variables for model construction.
 #' @param test Test \code{data.frame} or \code{matrix} containing the variables for model assessment.
 #' @param x Column input indexes in \code{training}.
 #' @param y Column output indexes in \code{training}.
-#' @param numStop Set of minimum number of observations in a node for a split to be attempted.
-#' @param fold Set of number of folds in which the dataset to apply cross-validation during the pruning is divided.
-#' @param max.depth Depth of the tree.
+#' @param numStop Minimum number of observations in a node for a split to be attempted.
+#' @param fold Folds in which the dataset to apply cross-validation during the pruning is divided.
+#' @param max.depth Maximum depth of the tree.
 #' @param max.leaves Maximum number of leaf nodes.
 #' @param na.rm \code{logical}. If \code{TRUE}, \code{NA} rows are omitted.
 #' 
@@ -23,7 +23,7 @@
 #' n <- nrow(PISAindex) # Observations in the dataset
 #' selected <- sample(1:n, n * 0.7) # Training indexes
 #' training <- PISAindex[selected, ] # Training set
-#' test <- PISAindex[-selected, ] # Test set
+#' test <- PISAindex[- selected, ] # Test set
 #' 
 #' bestEAT(training = training, 
 #'         test = test,
@@ -33,7 +33,7 @@
 #'         fold = c(5, 7, 10))
 #' }
 #'
-#' @return \code{data.frame} in which each row corresponds to a given set of hyperparameters and the root mean squared error (RMSE).
+#' @return A \code{data.frame} with the sets of hyperparameters and the root mean squared error (RMSE) associated for each model.
 bestEAT <- function(training, test, x, y, numStop = 5, fold = 5, max.depth = NULL, 
                     max.leaves = NULL, na.rm = TRUE) {
 
@@ -114,20 +114,19 @@ bestEAT <- function(training, test, x, y, numStop = 5, fold = 5, max.depth = NUL
   hp <- hp %>% arrange(RMSE)
   
   return(hp)
-  
 }
 
 #' @title Tuning a Random Forest + Efficiency Analysis Trees model
 #'
-#' @description This funcion computes the root mean squared error (RMSE) for a Random Forest + Efficiency Analysis Trees model built with a set of given hyperparameters. 
+#' @description This funcion computes the root mean squared error (RMSE) for a set of Random FOrest + Efficiency Analysis Trees models built with a grid of given hyperparameters. 
 #'
 #' @param training Training \code{data.frame} or \code{matrix} containing the variables for model construction.
 #' @param test Test \code{data.frame} or \code{matrix} containing the variables for model assessment.
 #' @param x Column input indexes in \code{training}.
 #' @param y Column output indexes in \code{training}.
-#' @param numStop Set of minimum number of observations in a node for a split to be attempted.
-#' @param m Set of number of trees to be built.
-#' @param s_mtry \code{character}. Set of options for selecting the number of inputs to be selected in each split.
+#' @param numStop Minimum number of observations in a node for a split to be attempted.
+#' @param m Number of trees to be built.
+#' @param s_mtry \code{character}. Number of inputs to be selected in each split. See ``
 #' @param na.rm \code{logical}. If \code{TRUE}, \code{NA} rows are omitted.
 #' 
 #' @examples
@@ -150,7 +149,7 @@ bestEAT <- function(training, test, x, y, numStop = 5, fold = 5, max.depth = NUL
 #' 
 #' @export
 #'
-#' @return \code{data.frame} in which each row corresponds to a given set of hyperparameters and the root mean squared error (RMSE).
+#' @return A \code{data.frame} with the sets of hyperparameters and the root mean squared error (RMSE) associated for each model.
 bestRFEAT <- function(training, test, x, y, numStop = 5, m = 50, 
                       s_mtry = c("5", "BRM"), na.rm = TRUE) {
   

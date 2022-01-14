@@ -9,18 +9,18 @@ deepEAT(data, x, y, numStop = 5, max.depth = NULL, max.leaves = NULL)
 \arguments{
 \item{data}{\code{data.frame} or \code{matrix} containing the variables in the model.}
 
-\item{x}{Column input indexes in data.}
+\item{x}{Column input indexes in \code{data}.}
 
-\item{y}{Column output indexes in data.}
+\item{y}{Column output indexes in \code{data}.}
 
-\item{numStop}{Integer. Minimum number of observations in a node for a split to be attempted.}
+\item{numStop}{Minimum number of observations in a node for a split to be attempted.}
 
-\item{max.depth}{Integer. Depth of the tree.}
+\item{max.depth}{Maximum depth of the tree.}
 
-\item{max.leaves}{Integer. Maximum number of leaf nodes.}
+\item{max.leaves}{Maximum number of leaf nodes.}
 }
 \value{
-List containing each possible pruning for the deep tree and its associated alpha value.
+A \code{list} containing each possible pruning for the deep tree and its associated alpha value.
 }
 \description{
 This function creates a deep Efficiency Analysis Tree and a set of possible prunings by the weakest-link pruning procedure.

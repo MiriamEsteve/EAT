@@ -24,19 +24,19 @@ bestRFEAT(
 
 \item{y}{Column output indexes in \code{training}.}
 
-\item{numStop}{Set of minimum number of observations in a node for a split to be attempted.}
+\item{numStop}{Minimum number of observations in a node for a split to be attempted.}
 
-\item{m}{Set of number of trees to be built.}
+\item{m}{Number of trees to be built.}
 
-\item{s_mtry}{\code{character}. Set of options for selecting the number of inputs to be selected in each split.}
+\item{s_mtry}{\code{character}. Number of inputs to be selected in each split. See ``}
 
 \item{na.rm}{\code{logical}. If \code{TRUE}, \code{NA} rows are omitted.}
 }
 \value{
-\code{data.frame} in which each row corresponds to a given set of hyperparameters and the root mean squared error (RMSE).
+A \code{data.frame} with the sets of hyperparameters and the root mean squared error (RMSE) associated for each model.
 }
 \description{
-This funcion computes the root mean squared error (RMSE) for a Random Forest + Efficiency Analysis Trees model built with a set of given hyperparameters.
+This funcion computes the root mean squared error (RMSE) for a set of Random FOrest + Efficiency Analysis Trees models built with a grid of given hyperparameters.
 }
 \examples{
 \donttest{

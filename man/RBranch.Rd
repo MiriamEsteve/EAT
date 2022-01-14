@@ -7,12 +7,12 @@
 RBranch(t, tree)
 }
 \arguments{
-\item{t}{List. A given EAT node.}
+\item{t}{\code{list}. A given EAT node.}
 
-\item{tree}{A list containing EAT nodes.}
+\item{tree}{A \code{list} containing the EAT nodes.}
 }
 \value{
-List containing the sum of the errors of the child nodes of the pruned node and the total number of leaf nodes that come from it.
+A \code{list} containing (1) the sum of the errors of the child nodes of the pruned node and (2) the total number of leaf nodes that come from it.
 }
 \description{
 This function computes the error of a branch as the sum of the errors of its child nodes.

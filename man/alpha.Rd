@@ -2,16 +2,16 @@
 % Please edit documentation in R/alpha.R
 \name{alpha}
 \alias{alpha}
-\title{Alpha Calculation for Pruning Procedure}
+\title{Alpha Calculation for Pruning Procedure of Efficiency Analysis Trees}
 \usage{
 alpha(tree)
 }
 \arguments{
-\item{tree}{A list containing EAT nodes.}
+\item{tree}{A \code{list} containing the EAT nodes.}
 }
 \value{
 Numeric value corresponding to the minimum alpha associated with a suitable node to be pruned.
 }
 \description{
-This function gets the minimum alpha for each subtree evaluated during the pruning procedure of Efficiency Analysis Trees.
+This function gets the minimum alpha for each subtree evaluated during the pruning procedure of the Efficiency Analysis Trees technique.
 }

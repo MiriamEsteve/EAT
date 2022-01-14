@@ -12,6 +12,7 @@ efficiencyEAT(
   scores_model,
   digits = 3,
   FDH = TRUE,
+  print.table = FALSE,
   na.rm = TRUE
 )
 }
@@ -39,13 +40,15 @@ efficiencyEAT(
 
 \item{FDH}{\code{logical}. If \code{TRUE}, FDH scores are also computed with the programming model selected in \code{scores_model}.}
 
+\item{print.table}{\code{logical}. If \code{TRUE}, a table with summary statistics of the efficiency scores is shown.}
+
 \item{na.rm}{\code{logical}. If \code{TRUE}, \code{NA} rows are omitted.}
 }
 \value{
-\code{data.frame} introduced as argument with efficiency scores computed through an Efficiency Analysis Trees model.
+A \code{data.frame} with the efficiency scores computed through an Efficiency Analysis Trees model.
 }
 \description{
-This function calculates the efficiency scores for each DMU by an Efficiency Analysis Trees model.
+This function computes the efficiency scores for each DMU through an Efficiency Analysis Trees model.
 }
 \examples{
 
@@ -54,7 +57,8 @@ simulated <- X2Y2.sim(N = 50, border = 0.2)
 EAT_model <- EAT(data = simulated, x = c(1,2), y = c(3, 4))
 
 efficiencyEAT(data = simulated, x = c(1, 2), y = c(3, 4), object = EAT_model, 
-              scores_model = "BCC.OUT", digits = 2, FDH = TRUE, na.rm = TRUE)
+              scores_model = "BCC.OUT", digits = 2, FDH = TRUE, print.table = TRUE,
+              na.rm = TRUE)
 }
 
 }

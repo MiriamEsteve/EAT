@@ -4,7 +4,16 @@
 \alias{efficiencyRFEAT}
 \title{Efficiency Scores computed through a Random Forest + Efficiency Analysis Trees model.}
 \usage{
-efficiencyRFEAT(data, x, y, object, digits = 3, FDH = TRUE, na.rm = TRUE)
+efficiencyRFEAT(
+  data,
+  x,
+  y,
+  object,
+  digits = 3,
+  FDH = TRUE,
+  print.table = FALSE,
+  na.rm = TRUE
+)
 }
 \arguments{
 \item{data}{\code{data.frame} or \code{matrix} containing the variables in the model.}
@@ -22,10 +31,10 @@ efficiencyRFEAT(data, x, y, object, digits = 3, FDH = TRUE, na.rm = TRUE)
 \item{na.rm}{\code{logical}. If \code{TRUE}, \code{NA} rows are omitted.}
 }
 \value{
-\code{data.frame} introduced as argument with efficiency scores computed through a Random Forest + Efficiency Analysis Trees model.
+A \code{data.frame} with the efficiency scores computed through a Random Forest + Efficiency Analysis Trees model.
 }
 \description{
-This function calculates the efficiency scores for each DMU through a Random Forest + Efficiency Analysis Trees model and the Banker Charnes and Cooper mathematical programming model with output orientation. Efficiency level at 1.
+This function computes the efficiency scores for each DMU through a Random Forest + Efficiency Analysis Trees model and the Banker Charnes and Cooper mathematical programming model with output orientation. Efficiency level at 1.
 }
 \examples{
 \donttest{

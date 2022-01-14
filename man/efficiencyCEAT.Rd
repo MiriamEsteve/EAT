@@ -12,6 +12,7 @@ efficiencyCEAT(
   scores_model,
   digits = 3,
   DEA = TRUE,
+  print.table = FALSE,
   na.rm = TRUE
 )
 }
@@ -37,12 +38,12 @@ efficiencyCEAT(
 
 \item{digits}{Decimal units for scores.}
 
-\item{DEA}{\code{logical}. If \code{TRUE}, DEA scores are calculated with the programming model selected in \code{scores_model}}
+\item{DEA}{\code{logical}. If \code{TRUE}, the DEA scores are also calculated with the programming model selected in \code{scores_model}.}
 
 \item{na.rm}{\code{logical}. If \code{TRUE}, \code{NA} rows are omitted.}
 }
 \value{
-\code{data.frame} introduced as argument with efficiency scores computed through a Convexified Efficiency Analysis Trees model.
+A \code{data.frame} with the efficiency scores computed through a Convexified Efficiency Analysis Trees model.
 }
 \description{
 This function computes the efficiency scores for each DMU through a Convexified Efficiency Analysis Trees model.
@@ -54,7 +55,8 @@ simulated <- X2Y2.sim(N = 50, border = 0.2)
 EAT_model <- EAT(data = simulated, x = c(1,2), y = c(3, 4))
 
 efficiencyCEAT(data = simulated, x = c(1, 2), y = c(3, 4), object = EAT_model, 
-              scores_model = "BCC.OUT", digits = 2, DEA = TRUE, na.rm = TRUE)
+              scores_model = "BCC.OUT", digits = 2, DEA = TRUE, print.table = TRUE,
+              na.rm = TRUE)
 }
 
 }

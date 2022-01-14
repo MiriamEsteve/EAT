@@ -14,4 +14,18 @@ Bug fixes:
 
 Bug fixes:
 
-- `predict()` did not work properly when a `RFEAT` object was introduced. Now, it is fixed. 
+- `predict()` did not work properly when a `RFEAT` object was introduced. Now, it is fixed.
+
+# eat 0.1.2
+
+- Renamed `size()` as `EAT_size()`.
+
+- Renamed `frontier.levels()` as `EAT_frontier_levels()`.
+
+- Renamed `descrEAT` as `EAT_leaf_stats()`.
+
+- Argument `print.table` included in `efficiencyEAT()`, `efficiencyCEAT()` and `efficiencyRFEAT`. Now, the summary descriptive table of the efficiency scores is optionally displayed.
+
+- Now, `efficiencyEAT()`, `efficiencyCEAT()` and `efficiencyRFEAT` only return the efficiency scores.
+
+- Now, `predict()` only returns predictions.

@@ -715,10 +715,10 @@ efficiencyDensity(df_scores,
 In this case, we compare EAT vs FDH and CEAT vs DEA:
 
 ```{r density_single, collapse = FALSE, fig.width = 7.2, fig.height = 6, fig.align = 'center'}
-efficiencyDensity(df_scores = scores_EAT[, 3:4],
+efficiencyDensity(df_scores = scores_EAT,
                   model = c("EAT", "FDH"))
 
-efficiencyDensity(df_scores = scores_CEAT[, 3:4],
+efficiencyDensity(df_scores = scores_CEAT,
                   model = c("CEAT", "DEA"))
 
 ```
@@ -741,7 +741,7 @@ cursed_scores <- efficiencyEAT(data = PISAindex,
 ```
 
 ```{r cursed.density, collapse = FALSE, fig.width = 7.2, fig.height = 6, fig.align = 'center'}
-efficiencyDensity(df_scores = cursed_scores[, 17:18], model = c("EAT", "FDH"))
+efficiencyDensity(df_scores = cursed_scores, model = c("EAT", "FDH"))
 ```
 
 ## Random Forest

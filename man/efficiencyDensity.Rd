@@ -9,7 +9,7 @@ efficiencyDensity(df_scores, model = c("EAT", "FDH"))
 \arguments{
 \item{df_scores}{\code{data.frame} with efficiency scores.}
 
-\item{model}{String vector. Scoring models in the order shown in \code{df_scores} by columns. The available models are: \code{"EAT"}, \code{"FDH"}, \code{"CEAT"}, \code{"DEA"} and \code{"RFEAT"}.}
+\item{model}{\code{chraracter} vector. Scoring models in the order of \code{df_scores} by columns. The available models are: \code{"EAT"}, \code{"FDH"}, \code{"CEAT"}, \code{"DEA"} and \code{"RFEAT"}.}
 }
 \value{
 Density plot for efficiency scores.
@@ -20,12 +20,13 @@ Density plot for efficiency scores.
 \examples{
 \donttest{
 simulated <- X2Y2.sim(N = 50, border = 0.2)
+
 EAT_model <- EAT(data = simulated, x = c(1,2), y = c(3, 4))
 
 scores <- efficiencyEAT(data = simulated, x = c(1, 2), y = c(3, 4), object = EAT_model, 
                         scores_model = "BCC.OUT", digits = 2, FDH = TRUE, na.rm = TRUE)
-
-efficiencyDensity(df_scores = scores[, 5:6],
+                        
+efficiencyDensity(df_scores = scores,
                   model = c("EAT", "FDH"))
 } 
 

@@ -2,13 +2,13 @@
 #'
 #' @description This function is used to simulate the data in a single output scenario.
 #'
-#' @param N Integer. Sample size.
-#' @param nX Integer. Number of inputs. \code{1}, \code{3}, \code{6}, \code{9}, \code{12} and \code{15} are acceptable.
+#' @param N Sample size.
+#' @param nX Number of inputs. \code{1}, \code{3}, \code{6}, \code{9}, \code{12} and \code{15} are acceptable.
 #'
 #' @importFrom dplyr %>%
 #' @importFrom stats runif rnorm
 #'
-#' @return Data frame with the values of a scenario with nX inputs and 1 output.
+#' @return \code{data.frame} with simulated data.
 #' 
 #' @export
 Y1.sim <- function(N, nX) {
@@ -75,7 +75,7 @@ Y1.sim <- function(N, nX) {
 }
 
 
-#' @title 2 Inputs & 2 Outputs Scenario
+#' @title 2 Inputs & 2 Outputs Data Generation
 #'
 #' @description This function is used to simulate the data in a scenario with 2 inputs and 2 outputs.
 #'
@@ -86,7 +86,7 @@ Y1.sim <- function(N, nX) {
 #' @importFrom dplyr %>%
 #' @importFrom stats runif rnorm
 #'
-#' @return Data frame with the values of a scenario with 2 inputs and 2 outputs.
+#' @return \code{data.frame} with simulated data. 
 #' 
 #' @export
 X2Y2.sim <- function(N, border, noise = NULL) {

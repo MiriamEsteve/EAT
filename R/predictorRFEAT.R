@@ -2,7 +2,7 @@
 #'
 #' @description This function predicts the expected value based on a set of inputs.
 #'
-#' @param forest List containing individual Efficiency Analysis Trees.
+#' @param forest \code{list} containing the individual Efficiency Analysis Trees.
 #' @param xn Row indexes in data.
 #'
 #' @return Vector of predictions.

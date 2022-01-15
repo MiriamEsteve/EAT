@@ -2,7 +2,7 @@
 #'
 #' @description This function verifies if a specific tree keeps to Pareto-dominance properties.
 #'
-#' @param tree A list containing EAT nodes.
+#' @param tree A \code{list} containing the EAT nodes.
 #'
 #' @return Message indicating if the tree is acceptable or warning in case of breaking any Pareto-dominance relationship.
 checkEAT <- function(tree) {

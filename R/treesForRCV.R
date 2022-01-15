@@ -5,7 +5,7 @@
 #' @param data Data to be split into train and test subsets.
 #' @param fold Parts in which the original set is divided, to perform Cross-Validation.
 #'
-#' @return List structure with the train and the test set.
+#' @return A \code{list} structure with the train and the test set.
 generateLv <- function(data, fold) {
   data <- data[sample(nrow(data), replace = FALSE), ] # Reorder to Cross-Validation
   data <- data %>% mutate(id = row_number())

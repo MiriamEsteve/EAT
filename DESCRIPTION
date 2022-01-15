@@ -48,7 +48,6 @@ Suggests:
     rmarkdown,
     testthat,
     kableExtra,
-    knitr,
     usethis,
     devtools
 RdMacros: 

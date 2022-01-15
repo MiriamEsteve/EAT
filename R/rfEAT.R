@@ -2,13 +2,13 @@
 #'
 #' @description This function builds an individual tree for Random Forest
 #'
-#' @param data Dataframe containing the training set.
+#' @param data \code{data.frame} containing the training set.
 #' @param x Vector. Column input indexes in data.
 #' @param y Vector. Column output indexes in data.
-#' @param numStop Integer. Minimum number of observations in a node for a split to be attempted.
+#' @param numStop Minimum number of observations in a node for a split to be attempted.
 #' @param s_mtry Number of variables randomly sampled as candidates at each split. The available options are: \code{"BRM"}, \code{"DEA1"}, \code{"DEA2"}, \code{"DEA3"}, \code{"DEA4"} or any integer.
 #' 
-#' @return List of m trees in forest and the error that will be used in the ranking of the importance of the variables.
+#' @return A \code{list} of m trees in forest and the error that will be used in the ranking of the importance of the variables.
 RandomEAT <- function(data, x, y, numStop, s_mtry){
   
   # Size data
@@ -115,9 +115,9 @@ RandomEAT <- function(data, x, y, numStop, s_mtry){
 #'                         \item{\code{s_mtry}}: s_mtry hyperparameter value.
 #'                         \item{\code{na.rm}}: na.rm hyperparameter value.}
 #'        }
-#'   \item{\code{forest}: list structure containing the individual EAT models.}
+#'   \item{\code{forest}: \code{list} containing the individual EAT models.}
 #'   \item{\code{error}: Out-of-Bag error at the forest.}   
-#'   \item{\code{OOB}: list containing Out-of-Bag set for each tree.}
+#'   \item{\code{OOB}: \code{list} containing Out-of-Bag set for each tree.}
 #' }
 #' 
 #' @export

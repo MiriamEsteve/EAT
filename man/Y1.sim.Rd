@@ -7,12 +7,12 @@
 Y1.sim(N, nX)
 }
 \arguments{
-\item{N}{Integer. Sample size.}
+\item{N}{Sample size.}
 
-\item{nX}{Integer. Number of inputs. \code{1}, \code{3}, \code{6}, \code{9}, \code{12} and \code{15} are acceptable.}
+\item{nX}{Number of inputs. \code{1}, \code{3}, \code{6}, \code{9}, \code{12} and \code{15} are acceptable.}
 }
 \value{
-Data frame with the values of a scenario with nX inputs and 1 output.
+\code{data.frame} with simulated data.
 }
 \description{
 This function is used to simulate the data in a single output scenario.

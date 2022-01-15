@@ -7,7 +7,7 @@
 checkEAT(tree)
 }
 \arguments{
-\item{tree}{A list containing EAT nodes.}
+\item{tree}{A \code{list} containing the EAT nodes.}
 }
 \value{
 Message indicating if the tree is acceptable or warning in case of breaking any Pareto-dominance relationship.

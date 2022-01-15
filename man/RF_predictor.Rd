@@ -7,7 +7,7 @@
 RF_predictor(forest, xn)
 }
 \arguments{
-\item{forest}{List containing individual Efficiency Analysis Trees.}
+\item{forest}{\code{list} containing the individual Efficiency Analysis Trees.}
 
 \item{xn}{Row indexes in data.}
 }

@@ -12,7 +12,7 @@ generateLv(data, fold)
 \item{fold}{Parts in which the original set is divided, to perform Cross-Validation.}
 }
 \value{
-List structure with the train and the test set.
+A \code{list} structure with the train and the test set.
 }
 \description{
 This function splits the original data in two new data sets: a train set and a test set.

@@ -2,7 +2,7 @@
 % Please edit documentation in R/simulations.R
 \name{X2Y2.sim}
 \alias{X2Y2.sim}
-\title{2 Inputs & 2 Outputs Scenario}
+\title{2 Inputs & 2 Outputs Data Generation}
 \usage{
 X2Y2.sim(N, border, noise = NULL)
 }
@@ -14,7 +14,7 @@ X2Y2.sim(N, border, noise = NULL)
 \item{noise}{Random noise.}
 }
 \value{
-Data frame with the values of a scenario with 2 inputs and 2 outputs.
+\code{data.frame} with simulated data.
 }
 \description{
 This function is used to simulate the data in a scenario with 2 inputs and 2 outputs.

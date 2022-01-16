@@ -9,7 +9,7 @@
 #'
 #' @importFrom dplyr %>%
 #'
-#' @return \code{data.frame} with the original data and the predicted values.
+#' @return \code{data.frame} with the predicted values.
 #' 
 #' @examples 
 #' \donttest{
@@ -74,7 +74,7 @@ predict.EAT <- function(object, newdata, x, ...) {
 #'
 #' @importFrom dplyr %>%
 #'
-#' @return \code{data.frame} with the original data and the predicted values.
+#' @return \code{data.frame} with the predicted values.
 #' 
 #' @examples 
 #' \donttest{
